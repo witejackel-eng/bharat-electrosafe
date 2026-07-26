@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { Cookie, ShieldCheck, BarChart3, Megaphone } from 'lucide-react';
+import { Cookie, ShieldCheck, BarChart3, Megaphone, X } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -172,6 +172,19 @@ export function CookieConsent() {
     return () => window.clearTimeout(t);
   }, [mounted, consent]);
 
+  // Broadcast banner visibility so sibling components (e.g. StickyCTABar)
+  // can hide themselves while the banner occupies the bottom of the viewport.
+  const isBannerVisible = view === 'visible' && !consent;
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.dispatchEvent(
+      new CustomEvent('be:cookie-visible', {
+        detail: { visible: isBannerVisible },
+      })
+    );
+  }, [isBannerVisible]);
+
   const handleAcceptAll = () => {
     writeConsent({ analytics: true, marketing: true });
     setView('hidden');
@@ -198,8 +211,6 @@ export function CookieConsent() {
 
   if (!mounted) return null;
 
-  const isBannerVisible = view === 'visible' && !consent;
-
   return (
     <>
       <div
@@ -210,14 +221,14 @@ export function CookieConsent() {
         aria-modal="false"
         aria-hidden={!isBannerVisible}
         className={cn(
-          'fixed inset-x-0 bottom-0 z-50 pointer-events-none',
+          'fixed inset-x-0 bottom-0 z-40 pointer-events-none',
           'px-3 pb-3 sm:px-4 sm:pb-4'
         )}
       >
         <div
           className={cn(
-            'pointer-events-auto mx-auto w-full max-w-5xl',
-            'rounded-2xl border border-white/15 shadow-2xl',
+            'pointer-events-auto mx-auto w-full max-w-3xl relative',
+            'rounded-2xl border border-white/15 shadow-xl',
             'bg-navy text-white',
             'backdrop-blur supports-[backdrop-filter]:bg-navy/95',
             'transition-all duration-500 ease-out',
@@ -228,30 +239,40 @@ export function CookieConsent() {
           style={manrope}
         >
           {/* top accent line */}
-          <div className="h-[3px] rounded-t-2xl bg-gradient-to-r from-orange/0 via-orange to-orange/0" />
+          <div className="h-[2px] rounded-t-2xl bg-gradient-to-r from-orange/0 via-orange to-orange/0" />
 
-          <div className="p-4 sm:p-5 md:p-6">
+          {/* quick dismiss (top-right) — treats dismissal as necessary-only */}
+          <button
+            type="button"
+            onClick={handleNecessaryOnly}
+            aria-label="Dismiss cookie banner"
+            className="absolute top-2 right-2 size-6 grid place-items-center rounded-full text-white/70 hover:bg-white/10 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-1 focus-visible:ring-offset-navy"
+          >
+            <X className="size-3.5" aria-hidden="true" />
+          </button>
+
+          <div className="p-3 sm:p-4 pr-9 sm:pr-10">
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:gap-6">
               {/* icon + copy */}
               <div className="flex items-start gap-3 md:gap-4 md:flex-1">
                 <div
-                  className="shrink-0 grid place-items-center w-11 h-11 rounded-xl bg-white/10 border border-white/15 text-orange"
+                  className="shrink-0 grid place-items-center w-9 h-9 rounded-xl bg-white/10 border border-white/15 text-orange"
                   aria-hidden="true"
                 >
-                  <Cookie className="size-5" />
+                  <Cookie className="size-4" />
                 </div>
                 <div className="min-w-0">
-                  <h2 className="text-base sm:text-lg font-semibold tracking-tight text-white">
+                  <h2 className="text-sm sm:text-base font-semibold tracking-tight text-white">
                     We value your privacy
                   </h2>
-                  <p className="mt-1.5 text-sm leading-relaxed text-white/75">
+                  <p className="mt-1 text-[0.8rem] leading-snug text-white/75">
                     Bharat Electrosafe uses cookies to keep our product
                     documentation, quote requests and technical resources working
                     smoothly. Necessary cookies are always on. You can accept all
                     or choose your preferences.{' '}
                     <a
                       href="#"
-                      className="text-orange hover:text-orange-light underline underline-offset-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange rounded-sm"
+                      className="text-orange hover:text-orange-light underline underline-offset-2 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-orange rounded-sm"
                     >
                       Privacy Policy
                     </a>
@@ -261,29 +282,29 @@ export function CookieConsent() {
               </div>
 
               {/* actions */}
-              <div className="flex flex-col gap-2 md:flex-col md:items-stretch md:w-56 lg:w-64 shrink-0">
+              <div className="flex flex-col gap-2 md:w-44 lg:w-48 shrink-0">
                 <button
                   type="button"
                   onClick={handleAcceptAll}
-                  className="inline-flex items-center justify-center gap-2 h-10 px-5 rounded-lg bg-orange hover:bg-orange-hover text-white text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+                  className="inline-flex items-center justify-center gap-1.5 h-8 px-3 rounded-lg bg-orange hover:bg-orange-hover text-white text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
                 >
-                  <ShieldCheck className="size-4" />
+                  <ShieldCheck className="size-3.5" />
                   Accept all
                 </button>
-                <div className="flex flex-col gap-2 sm:flex-row md:flex-col">
+                <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={handleNecessaryOnly}
-                    className="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg border border-white/25 hover:border-white/40 hover:bg-white/5 text-white text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+                    className="inline-flex items-center justify-center gap-1 h-8 px-2 rounded-lg border border-white/25 hover:border-white/40 hover:bg-white/5 text-white text-[0.7rem] font-medium leading-tight transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
                   >
                     Necessary only
                   </button>
                   <button
                     type="button"
                     onClick={handleOpenPrefs}
-                    className="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg border border-white/25 hover:border-white/40 hover:bg-white/5 text-white text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+                    className="inline-flex items-center justify-center gap-1 h-8 px-2 rounded-lg border border-white/25 hover:border-white/40 hover:bg-white/5 text-white text-[0.7rem] font-medium leading-tight transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
                   >
-                    Manage preferences
+                    Manage prefs
                   </button>
                 </div>
               </div>

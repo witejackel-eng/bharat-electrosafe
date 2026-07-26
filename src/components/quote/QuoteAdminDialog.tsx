@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Select,
@@ -24,7 +23,16 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 import {
   LayoutDashboard,
   RefreshCw,
@@ -38,8 +46,19 @@ import {
   ChevronDown,
   Inbox,
   AlertCircle,
+  Download,
+  Check,
 } from 'lucide-react';
 import { productSystems } from '@/data/products';
+import {
+  QUOTE_STATUS_LABELS,
+  QUOTE_STATUS_ORDER,
+  setQuoteStatus,
+  useQuoteStatuses,
+  type QuoteStatus,
+  type QuoteStatusMap,
+} from '@/lib/quote-status-store';
+import { downloadCsv, type CsvQuoteRow } from '@/lib/csv-export';
 
 interface QuoteAdminDialogProps {
   open: boolean;
@@ -66,6 +85,8 @@ const manropeStyle = { fontFamily: "'Manrope', sans-serif" } as const;
 
 type FilterValue = 'all' | 'class-A' | 'class-B' | 'class-C' | 'other';
 
+type StatusFilterValue = 'all' | QuoteStatus;
+
 const FILTER_OPTIONS: { value: FilterValue; label: string }[] = [
   { value: 'all', label: 'All systems' },
   { value: 'class-A', label: 'Class A' },
@@ -73,6 +94,47 @@ const FILTER_OPTIONS: { value: FilterValue; label: string }[] = [
   { value: 'class-C', label: 'Class C' },
   { value: 'other', label: 'Other systems' },
 ];
+
+const STATUS_FILTER_OPTIONS: { value: StatusFilterValue; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'new', label: 'New' },
+  { value: 'reviewed', label: 'Reviewed' },
+  { value: 'quoted', label: 'Quoted' },
+  { value: 'archived', label: 'Archived' },
+];
+
+/** Tailwind class string for the status badge / trigger chip background. */
+function statusBadgeClasses(status: QuoteStatus): string {
+  switch (status) {
+    case 'new':
+      // Dark amber text on orange bg — meets WCAG AA 4.5:1 contrast for small text.
+      return 'bg-orange text-amber-950';
+    case 'reviewed':
+      return 'bg-steel/20 text-navy border border-steel/30';
+    case 'quoted':
+      return 'bg-emerald-600 text-white';
+    case 'archived':
+      return 'bg-muted text-steel';
+    default:
+      return 'bg-orange text-amber-950';
+  }
+}
+
+/** Tailwind class string for the small coloured dot in the dropdown menu. */
+function statusDotClasses(status: QuoteStatus): string {
+  switch (status) {
+    case 'new':
+      return 'bg-orange';
+    case 'reviewed':
+      return 'bg-steel';
+    case 'quoted':
+      return 'bg-emerald-600';
+    case 'archived':
+      return 'bg-steel-light';
+    default:
+      return 'bg-orange';
+  }
+}
 
 /* ---------- Helpers ---------- */
 
@@ -120,8 +182,18 @@ function StatCard({
 }: {
   label: string;
   value: number;
-  accent?: 'navy' | 'orange';
+  accent?: 'navy' | 'orange' | 'steel' | 'emerald' | 'muted';
 }) {
+  const dotClass =
+    accent === 'orange'
+      ? 'bg-orange'
+      : accent === 'steel'
+        ? 'bg-steel'
+        : accent === 'emerald'
+          ? 'bg-emerald-600'
+          : accent === 'muted'
+            ? 'bg-steel-light'
+            : 'bg-navy/40';
   return (
     <div
       className="rounded-xl border border-border/60 bg-white px-4 py-3 dark:bg-card"
@@ -132,9 +204,7 @@ function StatCard({
           {label}
         </span>
         <span
-          className={`inline-block size-1.5 rounded-full ${
-            accent === 'orange' ? 'bg-orange' : 'bg-navy/40'
-          }`}
+          className={`inline-block size-1.5 rounded-full ${dotClass}`}
           aria-hidden="true"
         />
       </div>
@@ -157,8 +227,12 @@ export function QuoteAdminDialog({ open, onOpenChange }: QuoteAdminDialogProps) 
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
   const [filter, setFilter] = useState<FilterValue>('all');
+  const [statusFilter, setStatusFilter] = useState<StatusFilterValue>('all');
   const [query, setQuery] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  // Reactive map of quote id -> status (backed by localStorage).
+  const statusMap: QuoteStatusMap = useQuoteStatuses();
 
   const fetchQuotes = useCallback(async () => {
     setStatus('loading');
@@ -203,6 +277,12 @@ export function QuoteAdminDialog({ open, onOpenChange }: QuoteAdminDialogProps) 
         return false;
       }
 
+      // Filter by status
+      if (statusFilter !== 'all') {
+        const recStatus = statusMap[rec.id] ?? 'new';
+        if (recStatus !== statusFilter) return false;
+      }
+
       if (!q) return true;
       const haystack = [
         rec.id,
@@ -217,14 +297,34 @@ export function QuoteAdminDialog({ open, onOpenChange }: QuoteAdminDialogProps) 
         .toLowerCase();
       return haystack.includes(q);
     });
-  }, [quotes, filter, query]);
+  }, [quotes, filter, statusFilter, query, statusMap]);
 
   const counts = useMemo(() => {
     const classA = quotes.filter((q) => q.productClass === 'A').length;
     const classB = quotes.filter((q) => q.productClass === 'B').length;
     const classC = quotes.filter((q) => q.productClass === 'C').length;
-    return { total: quotes.length, classA, classB, classC };
-  }, [quotes]);
+    let newCount = 0;
+    let reviewedCount = 0;
+    let quotedCount = 0;
+    let archivedCount = 0;
+    for (const q of quotes) {
+      const s = statusMap[q.id] ?? 'new';
+      if (s === 'new') newCount += 1;
+      else if (s === 'reviewed') reviewedCount += 1;
+      else if (s === 'quoted') quotedCount += 1;
+      else if (s === 'archived') archivedCount += 1;
+    }
+    return {
+      total: quotes.length,
+      classA,
+      classB,
+      classC,
+      newCount,
+      reviewedCount,
+      quotedCount,
+      archivedCount,
+    };
+  }, [quotes, statusMap]);
 
   const handleCopyEmail = useCallback(
     async (email: string) => {
@@ -244,6 +344,45 @@ export function QuoteAdminDialog({ open, onOpenChange }: QuoteAdminDialogProps) 
     [toast]
   );
 
+  const handleStatusChange = useCallback(
+    (quoteId: string, next: QuoteStatus) => {
+      setQuoteStatus(quoteId, next);
+      toast({
+        title: `Marked as ${QUOTE_STATUS_LABELS[next].toLowerCase()}`,
+        description: `Quote ${quoteId} updated.`,
+      });
+    },
+    [toast]
+  );
+
+  const handleExportCsv = useCallback(() => {
+    if (filteredQuotes.length === 0) return;
+    const rows: CsvQuoteRow[] = filteredQuotes.map((rec) => {
+      const recStatus: QuoteStatus = statusMap[rec.id] ?? 'new';
+      return {
+        reference: rec.id,
+        submittedAt: formatAbsoluteTime(rec.submittedAt),
+        name: rec.name,
+        company: rec.company ?? '',
+        email: rec.email,
+        phone: rec.phone,
+        productSystem: resolveProductSystemName(rec.productSystem),
+        productClass: classLabel(rec.productClass),
+        voltage: rec.operatingVoltage ?? '',
+        quantity: rec.quantity ?? '',
+        dimensions: rec.dimensions ?? '',
+        deliveryLocation: rec.deliveryLocation ?? '',
+        message: rec.message ?? '',
+        status: QUOTE_STATUS_LABELS[recStatus],
+      };
+    });
+    downloadCsv(rows);
+    toast({
+      title: `Exported ${rows.length} quote${rows.length === 1 ? '' : 's'} to CSV`,
+      description: 'Saved to your downloads folder.',
+    });
+  }, [filteredQuotes, statusMap, toast]);
+
   const toggleExpand = useCallback((id: string) => {
     setExpandedId((prev) => (prev === id ? null : id));
   }, []);
@@ -255,6 +394,7 @@ export function QuoteAdminDialog({ open, onOpenChange }: QuoteAdminDialogProps) 
         setExpandedId(null);
         setQuery('');
         setFilter('all');
+        setStatusFilter('all');
       }
       onOpenChange(next);
     },
@@ -315,6 +455,18 @@ export function QuoteAdminDialog({ open, onOpenChange }: QuoteAdminDialogProps) 
               <span>Refresh</span>
             </Button>
 
+            <Button
+              type="button"
+              size="sm"
+              onClick={handleExportCsv}
+              disabled={status === 'loading' || filteredQuotes.length === 0}
+              className="h-9 bg-navy hover:bg-navy-light text-white font-medium border-transparent"
+              aria-label="Export filtered quotes as CSV"
+            >
+              <Download className="size-4" />
+              <span>Export CSV</span>
+            </Button>
+
             <Select
               value={filter}
               onValueChange={(v) => setFilter(v as FilterValue)}
@@ -347,12 +499,67 @@ export function QuoteAdminDialog({ open, onOpenChange }: QuoteAdminDialogProps) 
             </div>
           </div>
 
-          {/* Stats */}
+          {/* Stats — primary (volume / class mix) */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
             <StatCard label="Total requests" value={counts.total} accent="navy" />
             <StatCard label="Class A" value={counts.classA} accent="orange" />
             <StatCard label="Class B" value={counts.classB} accent="orange" />
             <StatCard label="Class C" value={counts.classC} accent="orange" />
+          </div>
+
+          {/* Stats — workflow status */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+            <StatCard label="New" value={counts.newCount} accent="orange" />
+            <StatCard label="Reviewed" value={counts.reviewedCount} accent="steel" />
+            <StatCard label="Quoted" value={counts.quotedCount} accent="emerald" />
+            <StatCard label="Archived" value={counts.archivedCount} accent="muted" />
+          </div>
+
+          {/* Status filter chips */}
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[0.65rem] font-medium uppercase tracking-wider text-steel mr-1">
+              Status
+            </span>
+            {STATUS_FILTER_OPTIONS.map((opt) => {
+              const active = statusFilter === opt.value;
+              const count =
+                opt.value === 'all'
+                  ? quotes.length
+                  : opt.value === 'new'
+                    ? counts.newCount
+                    : opt.value === 'reviewed'
+                      ? counts.reviewedCount
+                      : opt.value === 'quoted'
+                        ? counts.quotedCount
+                        : counts.archivedCount;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => setStatusFilter(opt.value)}
+                  aria-pressed={active}
+                  className={cn(
+                    'inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors',
+                    'focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-1',
+                    active
+                      ? 'bg-navy text-white'
+                      : 'bg-white/70 text-steel hover:text-navy border border-border/60 dark:bg-card/60'
+                  )}
+                  style={manropeStyle}
+                >
+                  <span>{opt.label}</span>
+                  <span
+                    className={cn(
+                      'tabular-nums text-[0.65rem] rounded-full px-1.5',
+                      active ? 'bg-white/15 text-white' : 'bg-muted text-steel'
+                    )}
+                    style={{ fontVariantNumeric: 'tabular-nums' }}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -385,14 +592,20 @@ export function QuoteAdminDialog({ open, onOpenChange }: QuoteAdminDialogProps) 
                   {filteredQuotes.map((rec, idx) => {
                     const isExpanded = expandedId === rec.id;
                     const striped = idx % 2 === 1;
+                    const currentStatus: QuoteStatus =
+                      statusMap[rec.id] ?? 'new';
                     return (
                       <QuoteRow
                         key={rec.id}
                         record={rec}
                         striped={striped}
                         expanded={isExpanded}
+                        currentStatus={currentStatus}
                         onToggleExpand={() => toggleExpand(rec.id)}
                         onCopyEmail={() => void handleCopyEmail(rec.email)}
+                        onStatusChange={(next) =>
+                          handleStatusChange(rec.id, next)
+                        }
                       />
                     );
                   })}
@@ -426,14 +639,18 @@ function QuoteRow({
   record,
   striped,
   expanded,
+  currentStatus,
   onToggleExpand,
   onCopyEmail,
+  onStatusChange,
 }: {
   record: QuoteRecord;
   striped: boolean;
   expanded: boolean;
+  currentStatus: QuoteStatus;
   onToggleExpand: () => void;
   onCopyEmail: () => void;
+  onStatusChange: (next: QuoteStatus) => void;
 }) {
   return (
     <>
@@ -504,12 +721,66 @@ function QuoteRow({
           </div>
         </td>
         <td className="py-3 pr-3 align-top">
-          <Badge
-            className="bg-orange text-white border-transparent hover:bg-orange"
-            style={manropeStyle}
-          >
-            NEW
-          </Badge>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                aria-haspopup="menu"
+                aria-label={`Change status for quote ${record.id}. Current: ${QUOTE_STATUS_LABELS[currentStatus]}`}
+                className={cn(
+                  'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5',
+                  'text-[0.7rem] font-semibold uppercase tracking-wider',
+                  'transition-colors cursor-pointer',
+                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-1',
+                  statusBadgeClasses(currentStatus)
+                )}
+                style={manropeStyle}
+              >
+                <span>{QUOTE_STATUS_LABELS[currentStatus]}</span>
+                <ChevronDown
+                  className="size-3 transition-transform duration-150 data-[state=open]:rotate-180"
+                  aria-hidden="true"
+                />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="start"
+              className="w-44"
+              style={manropeStyle}
+            >
+              <DropdownMenuLabel className="text-[0.65rem] uppercase tracking-wider text-steel">
+                Set status
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {QUOTE_STATUS_ORDER.map((s) => {
+                const isActive = s === currentStatus;
+                return (
+                  <DropdownMenuItem
+                    key={s}
+                    onSelect={() => onStatusChange(s)}
+                    className="gap-2 cursor-pointer"
+                  >
+                    <span
+                      className={cn(
+                        'size-2 rounded-full shrink-0',
+                        statusDotClasses(s)
+                      )}
+                      aria-hidden="true"
+                    />
+                    <span className="flex-1 text-navy">
+                      {QUOTE_STATUS_LABELS[s]}
+                    </span>
+                    {isActive ? (
+                      <Check
+                        className="size-3.5 text-orange"
+                        aria-hidden="true"
+                      />
+                    ) : null}
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </td>
         <td className="py-3 pr-2 align-top">
           <div className="flex items-center justify-end gap-1.5">

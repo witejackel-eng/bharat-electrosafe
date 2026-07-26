@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, useSyncExternalStore } from 'react';
 import { MessageCircle, X, ArrowUp, ShieldCheck, Clock } from 'lucide-react';
 
 interface Message {
@@ -18,11 +18,55 @@ const INITIAL_GREETING: Message = {
   timestamp: new Date(),
 };
 
+// Shared external store for cookie banner visibility.
+const COOKIE_STORAGE_KEY = 'be-cookie-consent';
+const cookieListeners = new Set<() => void>();
+let cookieCached = false;
+let cookieInit = false;
+
+function initCookieStore() {
+  if (cookieInit || typeof window === 'undefined') return;
+  cookieInit = true;
+  try {
+    const consent = window.localStorage.getItem(COOKIE_STORAGE_KEY);
+    cookieCached = !consent;
+  } catch {
+    cookieCached = false;
+  }
+  window.addEventListener('be:cookie-visible', (e: Event) => {
+    const ce = e as CustomEvent<{ visible: boolean }>;
+    const next = Boolean(ce.detail?.visible);
+    if (next !== cookieCached) {
+      cookieCached = next;
+      cookieListeners.forEach((l) => l());
+    }
+  });
+}
+function subscribeCookie(cb: () => void) {
+  initCookieStore();
+  cookieListeners.add(cb);
+  return () => {
+    cookieListeners.delete(cb);
+  };
+}
+function getCookieClient() {
+  initCookieStore();
+  return cookieCached;
+}
+function getCookieServer() {
+  return false;
+}
+
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([INITIAL_GREETING]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const cookieVisible = useSyncExternalStore(
+    subscribeCookie,
+    getCookieClient,
+    getCookieServer
+  );
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -39,6 +83,9 @@ export function ChatWidget() {
       inputRef.current.focus();
     }
   }, [open]);
+
+  // Shift up when the cookie banner is visible (banner is ~6rem tall with padding).
+  const bottomOffset = cookieVisible ? '7.5rem' : '1.5rem';
 
   const sendMessage = async () => {
     const trimmed = input.trim();
@@ -101,8 +148,8 @@ export function ChatWidget() {
           type="button"
           onClick={() => setOpen(true)}
           aria-label="Open chat assistant"
-          className="fixed bottom-6 left-6 z-50 w-14 h-14 rounded-full bg-orange hover:bg-orange-hover text-white shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-105 group"
-          style={{ fontFamily: "'Manrope', sans-serif" }}
+          className="fixed left-6 z-50 w-14 h-14 rounded-full bg-orange hover:bg-orange-hover text-white shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-105 group"
+          style={{ fontFamily: "'Manrope', sans-serif", bottom: bottomOffset }}
         >
           {/* Pulsing ring animation */}
           <span
@@ -118,10 +165,11 @@ export function ChatWidget() {
       {/* Chat panel */}
       {open && (
         <div
-          className="fixed bottom-6 left-6 z-50 max-w-sm w-[calc(100vw-2rem)] sm:w-96 max-h-[70vh] rounded-2xl shadow-2xl border border-border/60 overflow-hidden flex flex-col"
+          className="fixed left-6 z-50 max-w-sm w-[calc(100vw-2rem)] sm:w-96 max-h-[70vh] rounded-2xl shadow-2xl border border-border/60 overflow-hidden flex flex-col"
           style={{
             fontFamily: "'Manrope', sans-serif",
             animation: 'chatPanelIn 0.3s ease-out forwards',
+            bottom: bottomOffset,
           }}
         >
           {/* Header */}

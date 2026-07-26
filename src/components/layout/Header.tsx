@@ -76,11 +76,17 @@ export function Header() {
           borderRadius: scrolled ? '12px' : '18px',
           height: scrolled ? '58px' : '72px',
           boxShadow: scrolled
-            ? '0 4px 20px rgba(27, 42, 74, 0.08), 0 1px 3px rgba(27, 42, 74, 0.04)'
+            ? '0 8px 28px rgba(27, 42, 74, 0.12), 0 2px 6px rgba(27, 42, 74, 0.06)'
             : '0 1px 8px rgba(27, 42, 74, 0.04)',
           padding: '0 24px',
         }}
       >
+        {/* bottom accent line — fades in on scroll for more presence */}
+        <div
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange/40 to-transparent pointer-events-none transition-opacity duration-300"
+          style={{ opacity: scrolled ? 1 : 0 }}
+        />
         {/* Brand Block */}
         <div className="flex items-center gap-3 shrink-0">
           <div
@@ -195,7 +201,7 @@ export function Header() {
         {/* CTA + Mobile Menu */}
         <div className="flex items-center gap-2">
           <QuoteAdminTrigger className="hidden md:inline-flex" />
-          <SearchTrigger className="hidden md:inline-flex" />
+          <SearchTrigger className="hidden md:inline-flex border border-border/60 bg-white/60 hover:bg-white hover:border-orange/40 text-navy text-xs font-medium h-9 px-3 rounded-lg transition-colors items-center gap-2" />
           <QuoteButton
             className="hidden md:inline-flex bg-orange hover:bg-orange-hover text-white font-medium text-sm h-9 px-5 rounded-lg transition-colors"
           >

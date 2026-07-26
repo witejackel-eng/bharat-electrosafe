@@ -12,6 +12,8 @@ import { ContactSection } from '@/components/home/ContactSection';
 import { FinalCTA } from '@/components/home/FinalCTA';
 import { FAQSection } from '@/components/home/FAQSection';
 import { WhyChooseUs } from '@/components/home/WhyChooseUs';
+import { CaseStudiesSection } from '@/components/home/CaseStudiesSection';
+import { InsightsSection } from '@/components/home/InsightsSection';
 import { QuoteProvider } from '@/components/quote/QuoteProvider';
 import { QuoteAdminProvider } from '@/components/quote/QuoteAdminProvider';
 import { ProductDetailProvider } from '@/components/products/ProductDetailProvider';
@@ -20,6 +22,8 @@ import { ApplicationDetailProvider } from '@/components/applications/Application
 import { ScrollToTop } from '@/components/ui-custom/ScrollToTop';
 import { CookieConsent } from '@/components/ui-custom/CookieConsent';
 import { ChatWidget } from '@/components/chat/ChatWidget';
+import { ScrollProgressBar } from '@/components/ui-custom/ScrollProgressBar';
+import { StickyCTABar } from '@/components/ui-custom/StickyCTABar';
 
 function SectionDivider({ variant = 'default' }: { variant?: 'default' | 'dark' | 'accent' }) {
   if (variant === 'dark') {
@@ -142,7 +146,11 @@ export default function Home() {
                   <SectionDivider variant="accent" />
                   <HomeApplications />
                   <SectionDivider variant="default" />
+                  <CaseStudiesSection />
+                  <SectionDivider variant="accent" />
                   <TestimonialsSection />
+                  <SectionDivider variant="default" />
+                  <InsightsSection />
                   <SectionDivider variant="accent" />
                   <ResourcesSection />
                   <SectionDivider variant="default" />
@@ -153,7 +161,9 @@ export default function Home() {
                   <FinalCTA />
                 </div>
                 <Footer />
+                <ScrollProgressBar />
                 <ScrollToTop />
+                <StickyCTABar />
                 <CookieConsent />
                 <ChatWidget />
               </main>
