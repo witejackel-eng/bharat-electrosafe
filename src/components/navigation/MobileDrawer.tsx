@@ -15,10 +15,14 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
+import { QuoteButton } from '@/components/quote/QuoteButton';
+import { useProductDetail } from '@/components/products/ProductDetailProvider';
 import { Menu } from 'lucide-react';
 import Link from 'next/link';
 
 export function MobileDrawer() {
+  const { openProduct } = useProductDetail();
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -26,9 +30,11 @@ export function MobileDrawer() {
           <Menu className="size-5" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[85vw] max-w-sm bg-ivory p-0">
+      <SheetContent side="right" className="w-[85vw] max-w-sm bg-ivory p-0 overflow-y-auto">
         <SheetHeader className="p-5 pb-0">
-          <SheetTitle className="text-navy font-semibold text-lg">Bharat Electrosafe</SheetTitle>
+          <SheetTitle className="text-navy font-semibold text-lg" style={{ fontFamily: "'Manrope', sans-serif" }}>
+            Bharat Electrosafe
+          </SheetTitle>
         </SheetHeader>
 
         <nav className="flex flex-col p-5 pt-2">
@@ -41,13 +47,18 @@ export function MobileDrawer() {
                 <div className="flex flex-col gap-1 pl-2">
                   {productSystems.map((system) => (
                     <div key={system.id}>
-                      <Link
-                        href={system.exploreLink}
-                        className="flex items-center gap-2 py-2 text-sm text-navy/80 hover:text-orange transition-colors"
+                      <button
+                        type="button"
+                        onClick={() => {
+                          // Close sheet by clicking overlay trigger after a small delay
+                          // The Sheet component manages its own state, so we navigate by triggering a state reset
+                          openProduct(system.id);
+                        }}
+                        className="flex items-center gap-2 py-2 text-sm text-navy/80 hover:text-orange transition-colors w-full text-left"
                       >
                         <span className="text-eyebrow text-[0.65rem]">{system.index}</span>
                         {system.name}
-                      </Link>
+                      </button>
                       <div className="pl-6 pb-1">
                         {system.variants.map((v) => (
                           <div key={v} className="text-xs text-steel py-0.5">{v}</div>
@@ -74,7 +85,7 @@ export function MobileDrawer() {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col gap-1 pl-2">
-                  <Link href="#about" className="py-2 text-sm text-navy/80 hover:text-orange transition-colors">About</Link>
+                  <Link href="#company" className="py-2 text-sm text-navy/80 hover:text-orange transition-colors">About</Link>
                   <Link href="#applications" className="py-2 text-sm text-navy/80 hover:text-orange transition-colors">Applications</Link>
                   <Link href="#contact" className="py-2 text-sm text-navy/80 hover:text-orange transition-colors">Contact</Link>
                 </div>
@@ -83,9 +94,9 @@ export function MobileDrawer() {
           </Accordion>
 
           <div className="mt-6 flex flex-col gap-3">
-            <Button className="w-full bg-orange hover:bg-orange-hover text-white font-medium">
+            <QuoteButton className="w-full bg-orange hover:bg-orange-hover text-white font-medium h-11">
               Request a Quote
-            </Button>
+            </QuoteButton>
             <a
               href="tel:+911234567890"
               className="text-center text-sm text-steel hover:text-navy transition-colors"

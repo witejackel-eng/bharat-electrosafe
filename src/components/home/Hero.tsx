@@ -3,23 +3,29 @@
 import { useState } from 'react';
 import { Reveal } from '@/components/motion/Reveal';
 import { Button } from '@/components/ui/button';
+import { QuoteButton } from '@/components/quote/QuoteButton';
+import { useProductDetail } from '@/components/products/ProductDetailProvider';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { productSystems } from '@/data/products';
 
 const systemIndicators = [
   {
     index: '01',
+    id: 'electrical-insulation',
     name: 'Electrical insulation',
     description: 'Insulating mats for Class A, B and C requirements',
   },
   {
     index: '02',
+    id: 'visible-safety',
     name: 'Visible safety',
     description: 'Strip, bi-colour and reflective safety variants',
   },
   {
     index: '03',
+    id: 'civil-protection',
     name: 'Civil protection',
     description: 'Geomembrane and water-stop systems',
   },
@@ -27,13 +33,13 @@ const systemIndicators = [
 
 export function Hero() {
   const [activeSystem, setActiveSystem] = useState<number | null>(null);
+  const { openProduct } = useProductDetail();
 
   return (
     <section className="relative overflow-hidden bg-background pt-24 md:pt-28 lg:pt-32 pb-16 md:pb-24">
       {/* Subtle material texture band at top */}
       <div className="absolute top-0 left-0 right-0 h-px bg-orange/20" />
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-        {/* Mobile: Copy first, image below */}
         {/* Desktop: Two-column layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left column: Copy */}
@@ -55,11 +61,13 @@ export function Hero() {
             </Reveal>
 
             {/* System indicators */}
-            <div className="flex flex-col gap-3 mt-2">
+            <div className="flex flex-col gap-2 mt-2">
               {systemIndicators.map((system, i) => (
                 <Reveal key={system.index} delay={240 + i * 80}>
-                  <div
-                    className="group flex items-start gap-3 py-2 cursor-pointer"
+                  <button
+                    type="button"
+                    onClick={() => openProduct(system.id)}
+                    className="group flex items-start gap-3 py-2 w-full text-left cursor-pointer rounded-lg"
                     onMouseEnter={() => setActiveSystem(i)}
                     onMouseLeave={() => setActiveSystem(null)}
                     style={{
@@ -69,10 +77,12 @@ export function Hero() {
                   >
                     <span className="text-eyebrow shrink-0 mt-0.5">{system.index}</span>
                     <div>
-                      <span className="text-sm font-semibold text-navy block">{system.name}</span>
+                      <span className="text-sm font-semibold text-navy block group-hover:text-orange transition-colors">
+                        {system.name}
+                      </span>
                       <span className="text-xs text-steel">{system.description}</span>
                     </div>
-                  </div>
+                  </button>
                 </Reveal>
               ))}
             </div>
@@ -89,13 +99,12 @@ export function Hero() {
                     <ArrowRight className="size-4 ml-1" />
                   </Link>
                 </Button>
-                <Button
+                <QuoteButton
                   variant="outline"
                   className="border-navy text-navy hover:bg-navy hover:text-white font-medium px-6 h-11 rounded-lg"
-                  asChild
                 >
-                  <Link href="#quote">Request a technical quote</Link>
-                </Button>
+                  Request a technical quote
+                </QuoteButton>
               </div>
               <Link
                 href="#proof"
@@ -111,7 +120,7 @@ export function Hero() {
             <Reveal delay={300} translateY={30} duration={800}>
               <div className="relative w-full aspect-[7/4] rounded-2xl overflow-hidden bg-muted">
                 {/* Material texture strip as section accent */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange via-orange/60 to-transparent" />
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange via-orange/60 to-transparent z-10" />
                 <Image
                   src="/images/hero-composition.png"
                   alt="Bharat Electrosafe product systems — insulating mats, visible-safety variants, geomembranes and water-stop solutions"
@@ -121,6 +130,21 @@ export function Hero() {
                   priority
                   sizes="(max-width: 1024px) 100vw, 58vw"
                 />
+                {/* Floating label overlays */}
+                <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
+                  {productSystems.map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => openProduct(s.id)}
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm border border-white/40 text-xs font-medium text-navy hover:bg-white transition-colors"
+                      style={{ fontFamily: "'Manrope', sans-serif" }}
+                    >
+                      <span className="text-orange font-bold">{s.index}</span>
+                      {s.name}
+                    </button>
+                  ))}
+                </div>
               </div>
             </Reveal>
           </div>

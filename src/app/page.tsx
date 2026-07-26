@@ -1,11 +1,16 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/home/Hero';
+import { StatsBar } from '@/components/home/StatsBar';
 import { HomeProductSystems } from '@/components/home/HomeProductSystems';
 import { ProductSelection } from '@/components/home/ProductSelection';
 import { HomeProofCentre } from '@/components/home/HomeProofCentre';
 import { HomeApplications } from '@/components/home/HomeApplications';
+import { ContactSection } from '@/components/home/ContactSection';
 import { FinalCTA } from '@/components/home/FinalCTA';
+import { QuoteProvider } from '@/components/quote/QuoteProvider';
+import { ProductDetailProvider } from '@/components/products/ProductDetailProvider';
+import { ScrollToTop } from '@/components/ui-custom/ScrollToTop';
 
 function SectionDivider({ variant = 'default' }: { variant?: 'default' | 'dark' | 'accent' }) {
   if (variant === 'dark') {
@@ -46,22 +51,30 @@ function SectionDivider({ variant = 'default' }: { variant?: 'default' | 'dark' 
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col">
-      <Header />
-      <div className="flex-1">
-        <Hero />
-        <SectionDivider variant="accent" />
-        <HomeProductSystems />
-        <SectionDivider variant="default" />
-        <ProductSelection />
-        <SectionDivider variant="dark" />
-        <HomeProofCentre />
-        <SectionDivider variant="accent" />
-        <HomeApplications />
-        <SectionDivider variant="default" />
-        <FinalCTA />
-      </div>
-      <Footer />
-    </main>
+    <QuoteProvider>
+      <ProductDetailProvider>
+        <main className="min-h-screen flex flex-col">
+          <Header />
+          <div className="flex-1">
+            <Hero />
+            <StatsBar />
+            <SectionDivider variant="accent" />
+            <HomeProductSystems />
+            <SectionDivider variant="default" />
+            <ProductSelection />
+            <SectionDivider variant="dark" />
+            <HomeProofCentre />
+            <SectionDivider variant="accent" />
+            <HomeApplications />
+            <SectionDivider variant="default" />
+            <ContactSection />
+            <SectionDivider variant="default" />
+            <FinalCTA />
+          </div>
+          <Footer />
+          <ScrollToTop />
+        </main>
+      </ProductDetailProvider>
+    </QuoteProvider>
   );
 }

@@ -127,3 +127,71 @@ Stage Summary:
 - Footer: sticky, complete route inventory
 - No errors, no hydration warnings, no broken assets
 - Cron job set up for continuous 15-minute review cycles
+
+---
+Task ID: 3
+Agent: cron-review-cycle-1
+Task: QA testing and add critical missing features (quote form, product detail dialog, contact section, stats bar, scroll-to-top)
+
+## Current project status description/assessment
+
+QA pass via agent-browser identified several critical functionality gaps despite stable rendering:
+
+1. **CRITICAL: No working Request a Quote form** — the primary CTA just linked to its own section anchor (#quote), no actual form existed.
+2. **Broken anchor links** — `#electrical-insulation`, `#visible-safety`, `#civil-protection`, `#contact`, `#about` didn't exist as IDs.
+3. **No product detail interaction** — clicking "Explore" buttons went nowhere.
+4. **No Contact section** despite footer referencing contact info.
+5. **No visual interest sections** between Hero and Product Systems (could use stats counters).
+
+## Current goals/completed modifications/verification results
+
+### Work Log:
+- Created `/api/quote` API endpoint with POST (submit) and GET (list) methods, Zod validation, in-memory store, generates quote reference ID like `Q-MS23ZT6J`
+- Created `QuoteDialog` component with full multi-field form: name, email, phone, company, product system (select), class (select), operating voltage, dimensions, quantity, delivery location, message; loading state, error state, success state with reference ID display
+- Created `QuoteProvider` context to manage dialog state globally — `useQuote()` hook with `openQuote({productSystem, productClass})` and `closeQuote()`
+- Created `QuoteButton` reusable component — accepts productSystem/productClass props, opens dialog with pre-selected values
+- Created `ProductDetailDialog` with rich content: large image, variants grid, class specifications table (for insulation), key features with checkmarks, standards badges, dual CTAs (Request quote for this product / Talk to technical sales)
+- Created `ProductDetailProvider` context — `useProductDetail()` hook with `openProduct(productId)`
+- Extended `products.ts` data with `detailCopy`, `features[]`, `standards[]` fields for each system
+- Updated `HomeProductSystems` — added `id={system.id}` anchor IDs, made image and explore link clickable to open product detail dialog
+- Updated `Hero` — system indicators now clickable to open product detail, hero image has floating product system label buttons that open detail dialog, "Request a technical quote" uses QuoteButton
+- Updated `Header` — "Request a Quote" CTA now uses QuoteButton (opens dialog)
+- Updated `ProductSystemPanel` — products are now buttons that open detail dialog, added "View certificates and test reports" footer link
+- Updated `MobileDrawer` — uses QuoteButton for Request a Quote, product items open detail dialog
+- Updated `ProductSelection` — class cards are now QuoteButtons that open quote dialog with pre-selected class, "Ask technical sales" uses QuoteButton
+- Updated `FinalCTA` — "Request a Quote" uses QuoteButton with showArrow
+- Created new `StatsBar` component with animated counters (35+ years, 500+ clients, 16 states, 3 systems) using IntersectionObserver, ease-out cubic easing, tabular numerals
+- Created new `ContactSection` with: 4 contact info cards (facility, phone, email, hours) with icons, WhatsApp CTA card (navy bg with orange accent), stylized map placeholder with pulsing location pin and label
+- Created `ScrollToTop` component — fixed bottom-right button, appears after 600px scroll, smooth scroll behavior
+- Updated `page.tsx` to wrap everything in QuoteProvider + ProductDetailProvider, added StatsBar after Hero, added ContactSection before FinalCTA, added ScrollToTop
+
+### Verification Results:
+- Page renders successfully (GET / 200)
+- Quote form: opened via header CTA, filled fields, selected product system, submitted → success state shows reference ID Q-MS23ZT6J
+- API verified: POST /api/quote 200, GET /api/quote returns stored quote with all fields
+- Product Detail Dialog: opens via product system buttons in hero, panel, and product systems section; shows all content (variants, class table, features, standards, CTAs)
+- Scroll-to-top: appears after scrolling, click returns to top smoothly
+- Mobile drawer: opens, Products accordion expands, all 3 systems listed with variants
+- No console errors, no runtime errors
+- Lint: 0 errors, 1 acceptable warning (custom fonts in layout)
+
+## Unresolved issues or risks, and priority recommendations for the next phase
+
+### Remaining items for next cycle:
+1. **Document download functionality** — Preview/Download buttons on certificate cards don't actually download anything. Could generate mock PDFs or link to placeholder files.
+2. **Newsletter/subscribe form** in footer — would capture leads
+3. **Testimonials section** — could add client testimonials with photos
+4. **Product comparison feature** — "Compare full specifications" could open a comparison view
+5. **Search functionality** — search across products/applications
+6. **Dark mode toggle** — globals.css has dark theme defined but no toggle exists
+7. **Performance optimization** — could add image lazy loading hints, prefetch links
+8. **SEO improvements** — add JSON-LD structured data for Organization and Product types
+9. **Accessibility audit** — verify ARIA labels, keyboard navigation through dialogs
+10. **More micro-animations** — could add subtle parallax on hero image, magnetic buttons
+
+### Priority recommendations:
+- HIGH: Add document download functionality (mock PDFs in /public/documents/)
+- MEDIUM: Add testimonials section with client photos and project context
+- MEDIUM: Add dark mode toggle (theme already defined in CSS)
+- LOW: Add JSON-LD structured data for SEO
+- LOW: Add product comparison view
