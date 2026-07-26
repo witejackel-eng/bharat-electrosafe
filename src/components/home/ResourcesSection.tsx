@@ -167,11 +167,11 @@ export function ResourcesSection() {
                   <button
                     type="button"
                     onClick={() => downloadResource(res)}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-navy hover:text-orange transition-colors"
+                    className="group/dl inline-flex items-center gap-1.5 text-xs font-medium text-navy hover:text-orange transition-colors px-2.5 py-1.5 rounded-md hover:bg-orange-soft"
                     style={{ fontFamily: "'Manrope', sans-serif" }}
                     aria-label={`Download ${res.title}`}
                   >
-                    <Download className="size-3.5" />
+                    <Download className="size-3.5 transition-transform group-hover/dl:translate-y-0.5" />
                     Download
                   </button>
                 </div>

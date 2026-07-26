@@ -47,7 +47,7 @@ export function ProductSelection() {
                 productSystem="electrical-insulation"
                 productClass={cls.className}
                 variant="ghost"
-                className="w-full !bg-navy-dark hover:!bg-navy-light/30 !border !border-white/10 hover:!border-orange/40 !rounded-2xl !p-6 md:!p-8 !h-auto !flex !flex-col !items-start !text-left transition-all duration-300"
+                className="w-full !bg-navy-dark hover:!bg-navy-light/30 !border !border-white/10 hover:!border-orange/40 !rounded-2xl !p-6 md:!p-8 !h-auto !flex !flex-col !items-start !text-left transition-all duration-300 group/cls"
               >
                 <span className="text-eyebrow mb-4 block" style={{ color: '#F07830', fontFamily: "'Manrope', sans-serif" }}>
                   CLASS {cls.className}
@@ -59,7 +59,7 @@ export function ProductSelection() {
                   >
                     {cls.voltage}
                   </span>
-                  <span className="text-spec text-white/60" style={{ fontFamily: "'Manrope', sans-serif" }}>{cls.voltageUnit}</span>
+                  <span className="text-spec text-white/70" style={{ fontFamily: "'Manrope', sans-serif" }}>{cls.voltageUnit}</span>
                 </div>
                 <div className="flex items-baseline gap-2 mb-4">
                   <span
@@ -68,15 +68,15 @@ export function ProductSelection() {
                   >
                     {cls.thickness}
                   </span>
-                  <span className="text-spec text-white/60" style={{ fontFamily: "'Manrope', sans-serif" }}>{cls.thicknessUnit}</span>
+                  <span className="text-spec text-white/70" style={{ fontFamily: "'Manrope', sans-serif" }}>{cls.thicknessUnit}</span>
                 </div>
-                <div className="w-full h-[2px] bg-orange/30 mb-4 rounded-full" />
-                <p className="text-sm text-white/50 leading-relaxed" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                <div className="w-full h-[2px] bg-orange/30 mb-4 rounded-full group-hover/cls:bg-orange/60 transition-colors" />
+                <p className="text-sm text-white/75 leading-relaxed" style={{ fontFamily: "'Manrope', sans-serif" }}>
                   {cls.description}
                 </p>
-                <span className="mt-4 text-xs text-orange/80 inline-flex items-center gap-1">
+                <span className="mt-4 text-xs text-orange/90 inline-flex items-center gap-1 font-medium">
                   Request quote for Class {cls.className}
-                  <ArrowRight className="size-3" />
+                  <ArrowRight className="size-3 transition-transform group-hover/cls:translate-x-1" />
                 </span>
               </QuoteButton>
             </Reveal>
@@ -95,7 +95,7 @@ export function ProductSelection() {
             </Button>
             <QuoteButton
               variant="outline"
-              className="border-white/20 text-white/80 hover:bg-white/10 hover:text-white hover:border-white/30 font-medium px-6 h-11 rounded-lg"
+              className="border-white/30 text-white hover:bg-white/10 hover:text-white hover:border-white/50 font-medium px-6 h-11 rounded-lg"
             >
               Ask technical sales
             </QuoteButton>
@@ -104,10 +104,10 @@ export function ProductSelection() {
           {/* Alternative path */}
           <Link
             href="#civil-protection"
-            className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-orange mt-6 transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-orange mt-6 transition-colors group/alt"
           >
             Not selecting an electrical mat?
-            <span className="transition-transform duration-200 hover:translate-x-1">Explore waterproofing and water-stop systems →</span>
+            <span className="transition-transform duration-200 group-hover/alt:translate-x-1">Explore waterproofing and water-stop systems →</span>
           </Link>
         </Reveal>
       </div>

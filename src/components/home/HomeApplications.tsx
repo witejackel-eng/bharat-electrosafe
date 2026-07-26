@@ -3,11 +3,14 @@
 import { applications } from '@/data/applications';
 import { Reveal } from '@/components/motion/Reveal';
 import { Button } from '@/components/ui/button';
+import { useApplicationDetail } from '@/components/applications/ApplicationDetailProvider';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
 export function HomeApplications() {
+  const { openApplication } = useApplicationDetail();
+
   return (
     <section id="applications" className="bg-background py-20 md:py-28">
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
@@ -28,10 +31,11 @@ export function HomeApplications() {
         <div id="applications-grid" className="mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
           {applications.map((app, i) => (
             <Reveal key={app.id} delay={i * 80} translateY={16}>
-              <Link
-                href={`#${app.id}`}
-                aria-label={`${app.name} — ${app.system}`}
-                className="group relative block rounded-2xl overflow-hidden bg-muted aspect-[4/3] md:aspect-[3/2] lg:aspect-square"
+              <button
+                type="button"
+                onClick={() => openApplication(app.id)}
+                aria-label={`${app.name} — ${app.system}. Open application details.`}
+                className="group relative block w-full text-left rounded-2xl overflow-hidden bg-muted aspect-[4/3] md:aspect-[3/2] lg:aspect-square cursor-pointer"
               >
                 <Image
                   src={app.image}
@@ -47,16 +51,22 @@ export function HomeApplications() {
                 <div className="absolute top-3 left-3 text-xs font-semibold text-white/70 tabular-nums" style={{ fontFamily: "'Manrope', sans-serif" }}>
                   0{i + 1}
                 </div>
+                {/* "View details" hint icon (top-right, hover-only) */}
+                <div className="absolute top-3 right-3 inline-flex items-center justify-center size-7 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <ArrowUpRight className="size-3.5" />
+                </div>
+                {/* Anchor for backward-compat with footer/hash links */}
                 <div id={app.id} className="absolute -top-32" aria-hidden="true" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
                   <span className="text-sm md:text-base font-semibold text-white block" style={{ fontFamily: "'Manrope', sans-serif" }}>
                     {app.name}
                   </span>
-                  <span className="text-xs text-orange/80 font-medium" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                  <span className="text-xs text-orange/80 font-medium inline-flex items-center gap-1" style={{ fontFamily: "'Manrope', sans-serif" }}>
                     {app.system}
+                    <ArrowUpRight className="size-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </span>
                 </div>
-              </Link>
+              </button>
             </Reveal>
           ))}
         </div>

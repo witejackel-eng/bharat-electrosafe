@@ -110,7 +110,7 @@ export function ContactSection() {
                     <h3 className="text-xl font-bold text-white mb-2" style={{ fontFamily: "'Manrope', sans-serif" }}>
                       Chat with us on WhatsApp
                     </h3>
-                    <p className="text-sm text-white/60 mb-4" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                    <p className="text-sm text-white/80 mb-4 leading-relaxed" style={{ fontFamily: "'Manrope', sans-serif" }}>
                       Send product images, drawings or specifications directly. We respond within working hours.
                     </p>
                     <span className="inline-flex items-center gap-2 text-sm font-medium text-white group-hover:text-orange transition-colors">

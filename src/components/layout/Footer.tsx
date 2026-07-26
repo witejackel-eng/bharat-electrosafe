@@ -64,17 +64,17 @@ export function Footer() {
               <span className="font-semibold text-white text-base">Bharat Electrosafe</span>
             </div>
             <p
-              className="text-sm text-white/60 leading-relaxed mb-4 max-w-[320px]"
+              className="text-sm text-white/75 leading-relaxed mb-4 max-w-[320px]"
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
               Electrical insulating mats, visible-safety variants, geomembranes and water-stop solutions.
             </p>
-            <div className="flex flex-col gap-2 text-sm text-white/60">
+            <div className="flex flex-col gap-2 text-sm text-white/80">
               <span className="inline-flex items-center gap-2">
                 <MapPin className="size-3.5 text-orange" />
                 Plot No. 12, Sector 7, IMT Manesar
               </span>
-              <span className="pl-5">Gurugram, Haryana 122050, India</span>
+              <span className="pl-5 text-white/70">Gurugram, Haryana 122050, India</span>
               <a
                 href="tel:+911234567890"
                 className="inline-flex items-center gap-2 hover:text-white transition-colors"
@@ -103,7 +103,7 @@ export function Footer() {
                   <li key={i}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/60 hover:text-white transition-colors inline-flex items-center gap-1.5 group"
+                      className="text-sm text-white/75 hover:text-white hover:translate-x-0.5 transition-all inline-flex items-center gap-1.5 group"
                     >
                       <span
                         className="w-0 group-hover:w-2 h-px bg-orange transition-all duration-200"
@@ -125,7 +125,7 @@ export function Footer() {
               Stay ahead of specification changes.
             </h3>
             <p
-              className="text-sm text-white/60"
+              className="text-sm text-white/70 leading-relaxed"
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
               Standard updates, new datasheets and case studies — sent quarterly.
@@ -139,7 +139,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p
-            className="text-xs text-white/40"
+            className="text-xs text-white/60"
             style={{ fontFamily: "'Manrope', sans-serif" }}
           >
             © {new Date().getFullYear()} Bharat Electrosafe. All rights reserved.
@@ -147,22 +147,23 @@ export function Footer() {
           <div className="flex items-center gap-6">
             <Link
               href="#"
-              className="text-xs text-white/40 hover:text-white/70 transition-colors"
+              className="text-xs text-white/60 hover:text-white transition-colors"
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
               Privacy Policy
             </Link>
             <Link
               href="#"
-              className="text-xs text-white/40 hover:text-white/70 transition-colors"
+              className="text-xs text-white/60 hover:text-white transition-colors"
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
               Terms of Use
             </Link>
             <span
-              className="text-xs text-white/40"
+              className="text-xs text-white/60 inline-flex items-center gap-1.5"
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange" aria-hidden="true" />
               Made in India
             </span>
           </div>

@@ -11,8 +11,12 @@ import { ResourcesSection } from '@/components/home/ResourcesSection';
 import { ContactSection } from '@/components/home/ContactSection';
 import { FinalCTA } from '@/components/home/FinalCTA';
 import { QuoteProvider } from '@/components/quote/QuoteProvider';
+import { QuoteAdminProvider } from '@/components/quote/QuoteAdminProvider';
 import { ProductDetailProvider } from '@/components/products/ProductDetailProvider';
+import { SearchProvider } from '@/components/search/SearchProvider';
+import { ApplicationDetailProvider } from '@/components/applications/ApplicationDetailProvider';
 import { ScrollToTop } from '@/components/ui-custom/ScrollToTop';
+import { CookieConsent } from '@/components/ui-custom/CookieConsent';
 
 function SectionDivider({ variant = 'default' }: { variant?: 'default' | 'dark' | 'accent' }) {
   if (variant === 'dark') {
@@ -107,41 +111,48 @@ const productLd = {
 export default function Home() {
   return (
     <QuoteProvider>
-      <ProductDetailProvider>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }}
-        />
-        <main className="min-h-screen flex flex-col bg-background">
-          <Header />
-          <div className="flex-1">
-            <Hero />
-            <StatsBar />
-            <SectionDivider variant="accent" />
-            <HomeProductSystems />
-            <SectionDivider variant="default" />
-            <ProductSelection />
-            <SectionDivider variant="dark" />
-            <HomeProofCentre />
-            <SectionDivider variant="accent" />
-            <HomeApplications />
-            <SectionDivider variant="default" />
-            <TestimonialsSection />
-            <SectionDivider variant="accent" />
-            <ResourcesSection />
-            <SectionDivider variant="default" />
-            <ContactSection />
-            <SectionDivider variant="default" />
-            <FinalCTA />
-          </div>
-          <Footer />
-          <ScrollToTop />
-        </main>
-      </ProductDetailProvider>
+      <QuoteAdminProvider>
+        <ProductDetailProvider>
+          <SearchProvider>
+            <ApplicationDetailProvider>
+              <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+              />
+              <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }}
+              />
+              <main className="min-h-screen flex flex-col bg-background">
+                <Header />
+                <div className="flex-1">
+                  <Hero />
+                  <StatsBar />
+                  <SectionDivider variant="accent" />
+                  <HomeProductSystems />
+                  <SectionDivider variant="default" />
+                  <ProductSelection />
+                  <SectionDivider variant="dark" />
+                  <HomeProofCentre />
+                  <SectionDivider variant="accent" />
+                  <HomeApplications />
+                  <SectionDivider variant="default" />
+                  <TestimonialsSection />
+                  <SectionDivider variant="accent" />
+                  <ResourcesSection />
+                  <SectionDivider variant="default" />
+                  <ContactSection />
+                  <SectionDivider variant="default" />
+                  <FinalCTA />
+                </div>
+                <Footer />
+                <ScrollToTop />
+                <CookieConsent />
+              </main>
+            </ApplicationDetailProvider>
+          </SearchProvider>
+        </ProductDetailProvider>
+      </QuoteAdminProvider>
     </QuoteProvider>
   );
 }

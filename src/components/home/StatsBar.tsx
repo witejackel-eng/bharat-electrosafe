@@ -68,12 +68,21 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
 
 export function StatsBar() {
   return (
-    <section className="bg-ivory-light py-16 md:py-20 border-y border-border/40">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+    <section className="bg-ivory-light py-16 md:py-20 border-y border-border/40 relative overflow-hidden">
+      {/* Subtle decorative grid pattern background */}
+      <div
+        className="absolute inset-0 opacity-[0.025] pointer-events-none"
+        style={{
+          backgroundImage: 'linear-gradient(to right, var(--color-navy) 1px, transparent 1px), linear-gradient(to bottom, var(--color-navy) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
+        }}
+        aria-hidden="true"
+      />
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           {stats.map((stat, i) => (
             <Reveal key={stat.label} delay={i * 80} translateY={12}>
-              <div className="text-center md:text-left">
+              <div className="text-center md:text-left group/stat">
                 <div className="flex items-baseline justify-center md:justify-start gap-1 mb-2">
                   <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                 </div>
@@ -83,6 +92,8 @@ export function StatsBar() {
                 >
                   {stat.label}
                 </span>
+                {/* Orange safety line under each stat */}
+                <div className="hidden md:block h-px bg-gradient-to-r from-orange/60 via-orange/20 to-transparent mt-3 max-w-[80px] group-hover/stat:max-w-[120px] transition-all duration-500" />
               </div>
             </Reveal>
           ))}

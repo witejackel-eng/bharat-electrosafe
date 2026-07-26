@@ -16,7 +16,9 @@ import {
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { QuoteButton } from '@/components/quote/QuoteButton';
+import { QuoteAdminTrigger } from '@/components/quote/QuoteAdminTrigger';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { SearchTrigger } from '@/components/search/SearchTrigger';
 import { useProductDetail } from '@/components/products/ProductDetailProvider';
 import { Menu } from 'lucide-react';
 import Link from 'next/link';
@@ -38,7 +40,10 @@ export function MobileDrawer() {
           </SheetTitle>
         </SheetHeader>
 
-        <nav className="flex flex-col p-5 pt-2">
+        <nav className="flex flex-col p-5 pt-3 gap-3">
+          {/* Search trigger at top of mobile drawer */}
+          <SearchTrigger compact={false} className="w-full justify-start h-10" />
+
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="products">
               <AccordionTrigger className="text-navy font-medium text-base py-3">
@@ -110,6 +115,20 @@ export function MobileDrawer() {
                 <ThemeToggle />
               </div>
             </div>
+          </div>
+
+          {/* Admin access — discreet, below the main navigation */}
+          <div className="mt-6 pt-4 border-t border-border">
+            <div
+              className="text-[0.65rem] font-medium uppercase tracking-wider text-steel mb-2"
+              style={{ fontFamily: "'Manrope', sans-serif" }}
+            >
+              Internal
+            </div>
+            <QuoteAdminTrigger
+              showLabel={true}
+              className="w-full justify-start px-0 h-9 text-sm text-steel hover:text-orange"
+            />
           </div>
         </nav>
       </SheetContent>

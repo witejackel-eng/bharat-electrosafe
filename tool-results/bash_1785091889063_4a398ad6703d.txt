@@ -1,0 +1,302 @@
+443 /home/z/my-project/worklog.md
+---LINES---
+5. **No visual interest sections** between Hero and Product Systems (could use stats counters).
+
+## Current goals/completed modifications/verification results
+
+### Work Log:
+- Created `/api/quote` API endpoint with POST (submit) and GET (list) methods, Zod validation, in-memory store, generates quote reference ID like `Q-MS23ZT6J`
+- Created `QuoteDialog` component with full multi-field form: name, email, phone, company, product system (select), class (select), operating voltage, dimensions, quantity, delivery location, message; loading state, error state, success state with reference ID display
+- Created `QuoteProvider` context to manage dialog state globally — `useQuote()` hook with `openQuote({productSystem, productClass})` and `closeQuote()`
+- Created `QuoteButton` reusable component — accepts productSystem/productClass props, opens dialog with pre-selected values
+- Created `ProductDetailDialog` with rich content: large image, variants grid, class specifications table (for insulation), key features with checkmarks, standards badges, dual CTAs (Request quote for this product / Talk to technical sales)
+- Created `ProductDetailProvider` context — `useProductDetail()` hook with `openProduct(productId)`
+- Extended `products.ts` data with `detailCopy`, `features[]`, `standards[]` fields for each system
+- Updated `HomeProductSystems` — added `id={system.id}` anchor IDs, made image and explore link clickable to open product detail dialog
+- Updated `Hero` — system indicators now clickable to open product detail, hero image has floating product system label buttons that open detail dialog, "Request a technical quote" uses QuoteButton
+- Updated `Header` — "Request a Quote" CTA now uses QuoteButton (opens dialog)
+- Updated `ProductSystemPanel` — products are now buttons that open detail dialog, added "View certificates and test reports" footer link
+- Updated `MobileDrawer` — uses QuoteButton for Request a Quote, product items open detail dialog
+- Updated `ProductSelection` — class cards are now QuoteButtons that open quote dialog with pre-selected class, "Ask technical sales" uses QuoteButton
+- Updated `FinalCTA` — "Request a Quote" uses QuoteButton with showArrow
+- Created new `StatsBar` component with animated counters (35+ years, 500+ clients, 16 states, 3 systems) using IntersectionObserver, ease-out cubic easing, tabular numerals
+- Created new `ContactSection` with: 4 contact info cards (facility, phone, email, hours) with icons, WhatsApp CTA card (navy bg with orange accent), stylized map placeholder with pulsing location pin and label
+- Created `ScrollToTop` component — fixed bottom-right button, appears after 600px scroll, smooth scroll behavior
+- Updated `page.tsx` to wrap everything in QuoteProvider + ProductDetailProvider, added StatsBar after Hero, added ContactSection before FinalCTA, added ScrollToTop
+
+### Verification Results:
+- Page renders successfully (GET / 200)
+- Quote form: opened via header CTA, filled fields, selected product system, submitted → success state shows reference ID Q-MS23ZT6J
+- API verified: POST /api/quote 200, GET /api/quote returns stored quote with all fields
+- Product Detail Dialog: opens via product system buttons in hero, panel, and product systems section; shows all content (variants, class table, features, standards, CTAs)
+- Scroll-to-top: appears after scrolling, click returns to top smoothly
+- Mobile drawer: opens, Products accordion expands, all 3 systems listed with variants
+- No console errors, no runtime errors
+- Lint: 0 errors, 1 acceptable warning (custom fonts in layout)
+
+## Unresolved issues or risks, and priority recommendations for the next phase
+
+### Remaining items for next cycle:
+1. **Document download functionality** — Preview/Download buttons on certificate cards don't actually download anything. Could generate mock PDFs or link to placeholder files.
+2. **Newsletter/subscribe form** in footer — would capture leads
+3. **Testimonials section** — could add client testimonials with photos
+4. **Product comparison feature** — "Compare full specifications" could open a comparison view
+5. **Search functionality** — search across products/applications
+6. **Dark mode toggle** — globals.css has dark theme defined but no toggle exists
+7. **Performance optimization** — could add image lazy loading hints, prefetch links
+8. **SEO improvements** — add JSON-LD structured data for Organization and Product types
+9. **Accessibility audit** — verify ARIA labels, keyboard navigation through dialogs
+10. **More micro-animations** — could add subtle parallax on hero image, magnetic buttons
+
+### Priority recommendations:
+- HIGH: Add document download functionality (mock PDFs in /public/documents/)
+- MEDIUM: Add testimonials section with client photos and project context
+- MEDIUM: Add dark mode toggle (theme already defined in CSS)
+- LOW: Add JSON-LD structured data for SEO
+- LOW: Add product comparison view
+
+---
+Task ID: 4
+Agent: cron-review-cycle-2
+Task: QA via agent-browser, fix bugs, add new features (testimonials, dark mode, JSON-LD, newsletter, document downloads, compare dialog), polish styling
+
+## Current project status description/assessment
+
+Prior cycles built a complete Bharat Electrosafe homepage with Hero, StatsBar, ProductSystems, ProductSelection, ProofCentre, Applications, Contact, FinalCTA, plus working Quote dialog, ProductDetail dialog, and ScrollToTop. QA pass with agent-browser found:
+
+**Bugs identified:**
+- 8 broken anchor links: `#about`, `#resources`, `#substations`, `#control-rooms`, `#power-utilities`, `#railways-metro`, `#manufacturing`, `#tunnels-water` referenced by footer/proof centre but no matching IDs in DOM
+- Document thumbnails in ProofCentre all identical (same `mat-texture.png` placeholder)
+- L&T client name truncated in marquee
+- Document Preview/Download buttons were non-functional
+- DialogContent default `sm:max-w-lg` (512px) was overriding intended `max-w-3xl` / `max-w-6xl` on dialogs, making them render too narrow
+
+**Missing features:** testimonials, dark mode toggle, JSON-LD SEO, newsletter subscribe, technical resources section, product comparison.
+
+## Current goals/completed modifications/verification results
+
+### Work Log:
+
+**1. Bug fixes**
+- Added `id="about"` and `id="resources"` anchors (About lives inside Company credibility strip; Resources is its own new section)
+- Added per-application anchor IDs (`#substations`, `#control-rooms`, etc.) inside the applications mosaic tiles (positioned `-top-32` for clean scroll-mt)
+- Updated Footer to point Applications column at `#applications-grid` (the mosaic container) and added Testimonials / Resources / Applications entries under Company column
+- Fixed DialogContent max-width override: changed `max-w-2xl/3xl/6xl` → `sm:max-w-2xl/3xl/6xl` on ProductDetailDialog, QuoteDialog, CompareDialog (the shadcn dialog default `sm:max-w-lg` was winning the cascade)
+- Fixed L&T marquee truncation: increased `min-width` 160→200px, added `whitespace-nowrap` + `truncate` on the name span and `min-w-0` on the wrapper
+- Fixed testimonials decorative quote icon (was `rotate-180 size-48` looking like "66" — repositioned to `top-8 right-8 size-32`)
+- Bumped document-card reference text contrast from `text-white/70` to `text-white/90 font-medium`
+
+**2. New features added**
+- **ThemeToggle + ThemeProvider** (`src/components/theme/`): next-themes integration with inline FOUC-prevention script in `<head>`. Mounted via `useSyncExternalStore` (avoids setState-in-effect lint error). Toggle in header (desktop) + mobile drawer.
+- **Dark mode CSS overrides** in `globals.css`: comprehensive `.dark` rules that remap brand tokens (`text-navy` → foreground, `bg-white` → card, `bg-ivory-light` → card, `bg-navy` → darker surface), header translucent dark surface, dark inputs, dark borders.
+- **TestimonialsSection** (`src/components/home/TestimonialsSection.tsx`): rotating carousel with 5 testimonials (author, role, organisation, sector, project context, 4–5 star rating). Auto-advances every 8s (pauses on hidden tab). Arrow buttons + dot indicators + progress bar. Left column = avatar/organisation/project; right column = stars + quote + counter.
+- **ResourcesSection** (`src/components/home/ResourcesSection.tsx`): 6 downloadable resources with category filters (All/Electrical/Civil/Quality). Each card: type accent, page count + file size, title, description, file tag, download button (client-side mock PDF generation via Blob). Decorative corner accent + watermark icon on hover.
+- **CompareDialog** (`src/components/products/CompareDialog.tsx`): 3-column comparison table with sticky first column, product card headers (image + name), 6 spec rows (function, variants, standards, voltage, applications, traceability), 4 capability checkmarks. Triggered via `openCompare()` from ProductDetailProvider context. Wired into HomeProductSystems header ("Compare systems" button) and ProductSelection ("Compare full specifications" CTA).
+- **NewsletterSubscribe** (`src/components/ui-custom/NewsletterSubscribe.tsx`): footer subscribe form with email input + arrow submit button. Loading/success/error states. On success, shows confirmation with "Subscribe another email" link. Validates email format.
+- **Subscribe API** (`src/app/api/subscribe/route.ts`): POST endpoint with Zod-style email validation, dedup logic, in-memory store. GET returns masked subscriber list. Tested: 201 response with `{ok:true, count:1}` and 200 duplicate detection.
+- **JSON-LD structured data**: Organization + Product schemas injected via `<script type="application/ld+json">` in page.tsx. Includes address, contactPoint, knowsAbout, certifies.
+- **Document download/preview** in ProofCentre: each document card now has wired Preview (opens Blob URL in new tab) and Download (saves `<doc-id>.pdf` to disk) buttons. Mock PDF content includes doc name, issuer, standard, reference.
+- **Document card visuals** in ProofCentre: replaced identical image thumbnails with stylised "document" UI — accent gradient background (navy/orange/steel), texture overlay, faux window-chrome top bar with traffic-light dots + file size, centered FileText icon + pill stamp ("BIS LICENSED" / "TESTED" / "CERTIFIED"), reference number at bottom.
+- **QualityDocument data** extended with `accent`, `stamp`, `reference` fields.
+- **Resources data** (`src/data/resources.ts`): 6 resources across 4 categories with type, description, fileType, fileSize, pages.
+- **Testimonials data** (`src/data/testimonials.ts`): 5 testimonials with quote, author, role, organization, abbreviation, sector, projectContext, rating.
+
+**3. Page composition**
+Updated `src/app/page.tsx`: inserted TestimonialsSection + ResourcesSection between HomeApplications and ContactSection. Added 2 JSON-LD scripts. Wrapped main in `bg-background` for theme consistency.
+
+### Verification Results:
+- Lint: 0 errors, 1 acceptable warning (custom font in head)
+- Dev server: stable, GET / 200, no errors
+- All anchor links resolve: about, resources, testimonials, contact, company, proof, products, applications, product-selection, electrical-insulation, visible-safety, civil-protection
+- Quote dialog: opens, fills, submits, success state with reference ID (Q-MS24558K)
+- Product detail dialog: opens via Hero indicators, ProductSystemPanel, HomeProductSystems
+- Compare dialog: opens via "Compare systems" button; 1152px wide; all text visible (no clipping); sticky first column works
+- Dark mode: toggle works, persists to localStorage, FOUC-free on reload, all sections readable
+- Newsletter API: POST returns 201, GET returns masked list
+- Mobile (390x844): no overflow, no clipping, layout intact
+- Desktop (1440x900): all 6 section screenshots rated "Good" by VLM
+- VLM confirms: hero clean, product systems strong hierarchy, proof centre professional, testimonials/resources clean, footer effective
+
+## Unresolved issues or risks, and priority recommendations for the next phase
+
+### Remaining items for next cycle:
+1. **Cron job review** — there is an existing 15-min recurring webDevReview cron; ensure it doesn't conflict with future edits
+2. **Test with real PDF assets** — current document downloads generate mock PDFs; could add real PDFs in `/public/documents/`
+3. **Search functionality** — could add a search bar in header that opens a command palette (cmdk) to find products/applications/resources
+4. **Cookie consent banner** — required for EU/UK traffic; not yet implemented
+5. **Analytics** — could add Plausible/Umami event tracking for quote submissions, downloads, compare opens
+6. **Image optimization** — could add `loading="lazy"` to below-the-fold images and use `next/image` priority only for hero
+7. **A11y audit** — verify keyboard nav through testimonials carousel, compare dialog table semantics, focus trap in dialogs
+8. **More application detail** — application tile clicks currently just scroll; could open an ApplicationDetailDialog with use cases + relevant product systems
+9. **Quote list/admin view** — `/api/quote` GET endpoint exists but no UI; could add a basic admin page
+10. **Theme toggle on dark navy sections** — ProductSelection section already uses light text on navy bg in light mode; verify it doesn't look weird in dark mode
+
+### Priority recommendations:
+- HIGH: Add cookie consent banner (compliance)
+- MEDIUM: Add search / command palette (UX)
+- MEDIUM: Add ApplicationDetailDialog (deeper content per tile)
+- LOW: Real PDF assets for downloads
+- LOW: Analytics event tracking
+
+---
+Task ID: 5
+Agent: cookie-consent-builder
+Task: Build a polished cookie consent banner component (Bharat Electrosafe homepage)
+
+Work Log:
+- Read `/home/z/my-project/worklog.md` to understand prior work (homepage built across tasks 1–4 with Hero, StatsBar, ProductSystems, ProductSelection, ProofCentre, Applications, Testimonials, Resources, Contact, FinalCTA, plus Quote/ProductDetail dialogs, theme toggle, search palette, ScrollToTop). Noted that Task 4 explicitly listed "Cookie consent banner" as HIGH priority for next cycle.
+- Inspected existing patterns: `src/components/ui-custom/ScrollToTop.tsx` (mount guard via setState in effect — outdated pattern), `src/components/ui-custom/NewsletterSubscribe.tsx` (Manrope inline style, orange/white/navy palette usage), shadcn `dialog.tsx`, `switch.tsx`, `button.tsx`, `label.tsx` to understand component APIs.
+- Read `src/app/globals.css` to confirm brand tokens (`bg-navy`, `bg-orange`, `hover:bg-orange-hover`, `text-orange`, `border-white/15` etc.) and the `.dark` overrides that remap `text-navy`/`bg-white` for dark mode.
+- Created `/home/z/my-project/src/components/ui-custom/CookieConsent.tsx`:
+  - `'use client'` directive.
+  - Mount guard via `useSyncExternalStore` (server snapshot = `false`, client snapshot = `true`) — renders nothing on SSR, avoids hydration mismatch, and avoids the `react-hooks/set-state-in-effect` lint error.
+  - Consent state read via a second `useSyncExternalStore` backed by localStorage, with module-level `cachedRaw`/`cachedParsed` so `getSnapshot` returns a stable reference (prevents the "result of getSnapshot should be cached to avoid an infinite loop" runtime error that I hit on the first iteration).
+  - Banner shows after a 1500ms `setTimeout` only if no prior consent exists; all `setState` calls happen inside the timeout callback, not synchronously in the effect body.
+  - Three actions: "Accept all" (orange filled, with `ShieldCheck` icon), "Necessary only" (outline), "Manage preferences" (outline).
+  - Manage preferences opens a Radix Dialog (`Dialog`/`DialogContent`/`DialogHeader`/`DialogTitle`/`DialogDescription`/`DialogFooter` from `@/components/ui/dialog`) with three rows: Necessary (always on, disabled `Switch` + "Always on" badge), Analytics (toggleable), Marketing (toggleable). Each row has a Lucide icon (`ShieldCheck`/`BarChart3`/`Megaphone`) in a tinted square, title, description, and a `Switch` styled with `data-[state=checked]:bg-orange`.
+  - Persisting to `localStorage` key `be-cookie-consent` with shape `{ version, timestamp, necessary: true, analytics, marketing }`. Versioned so future schema changes can invalidate old entries.
+  - Banner: bottom-fixed, `max-w-5xl` centered, `bg-navy text-white`, `border-white/15`, gradient orange top accent line, `Cookie` icon in tinted square, `aria-live="polite"`, `role="dialog"`, `aria-label="Cookie consent"`, slide-in via `translate-y` + opacity transition.
+  - Privacy Policy link uses `#` placeholder href as instructed.
+  - Manrope font applied via inline `style={{ fontFamily: "'Manrope', sans-serif" }}` to match other components.
+  - Radix Dialog handles focus trap and Esc-to-close automatically.
+  - Cancel/Save preferences buttons in dialog footer; Save persists the toggle state and hides the banner.
+  - Exported `_resetCookieConsent()` helper for dev convenience (clears localStorage + notifies listeners).
+- Integrated into `src/app/page.tsx`:
+  - Imported `CookieConsent` from `@/components/ui-custom/CookieConsent`.
+  - Added `<CookieConsent />` immediately after `<ScrollToTop />`, inside `<main>`, which is itself inside both `<QuoteProvider>` and `<ProductDetailProvider>` — so the banner has access to both contexts if needed in the future.
+- Lint: ran `bunx eslint src/components/ui-custom/CookieConsent.tsx src/app/page.tsx` — 0 errors, 0 warnings on the files this task created/modified.
+  - NOTE: Project-wide `bun run lint` currently reports 2 pre-existing errors in `src/components/search/SearchPalette.tsx` (lines 245 and 251, both `react-hooks/set-state-in-effect`). That file is untracked in git and was created by an earlier cron-review-cycle agent (file mtime predates this task). It is NOT touched by Task 5 and the errors are unrelated to the cookie consent work. Flagging here for the next cycle.
+- Verification with `agent-browser open http://localhost:3000`:
+  1. Cleared localStorage, reloaded, waited 2.5s → banner appeared at bottom of page (heading "We value your privacy", buttons "Accept all" / "Necessary only" / "Manage preferences", Privacy Policy link).
+  2. Screenshot saved: `/home/z/my-project/download/qa-cookie-consent.png` (330 KB).
+  3. Clicked "Manage preferences" → Radix Dialog opened with three rows: "Necessary ALWAYS ON" (disabled checked switch), "Analytics" (unchecked), "Marketing" (unchecked), plus Cancel and Save preferences buttons.
+  4. Screenshot saved: `/home/z/my-project/download/qa-cookie-preferences.png` (169 KB).
+  5. Clicked Analytics + Marketing toggles ON, clicked Save preferences → dialog closed, banner slid out, localStorage now contains `{"version":1,"timestamp":...,"necessary":true,"analytics":true,"marketing":true}`.
+  6. Reopened Manage preferences dialog, pressed Escape → dialog closed (Radix focus-trap + Esc handling verified), banner stayed visible (correct: user hadn't yet made a choice).
+  7. Clicked "Accept all" → banner disappeared, localStorage updated.
+  8. Reloaded page → banner did NOT reappear (localStorage persistence verified). No console errors, no runtime errors.
+- Hit one runtime issue during iteration: first version used a `useState(false)` mount guard set inside `useEffect` which (a) triggered the `react-hooks/set-state-in-effect` lint error and (b) after switching to `useSyncExternalStore`, hit the "result of getSnapshot should be cached to avoid an infinite loop" error because `getConsentSnapshot` returned a fresh object every call. Fixed by caching the last raw localStorage string and the parsed object at module scope, only re-parsing when the raw string changes.
+
+Stage Summary:
+- Created `/home/z/my-project/src/components/ui-custom/CookieConsent.tsx` — a polished, accessible, brand-aligned cookie consent banner with a preferences dialog. Uses shadcn `Dialog`/`Switch`/`Label`, Lucide icons (`Cookie`, `ShieldCheck`, `BarChart3`, `Megaphone`), Manrope font, navy/orange/ivory brand palette.
+- Banner: bottom-fixed, slide-in after 1500ms delay, `role="dialog" aria-label="Cookie consent"`, `aria-live="polite"`, three actions (Accept all / Necessary only / Manage preferences), Privacy Policy `#` link, dark-navy background with white text and orange primary button.
+- Preferences dialog: focus-trapped (Radix), Esc-to-close, three category rows with toggle switches; Necessary always on & disabled, Analytics & Marketing toggleable; Save preferences persists to localStorage.
+- Persistence: `localStorage.be-cookie-consent` with versioned shape; banner stays hidden after any choice is made, survives reload.
+- Integration: added `<CookieConsent />` to `src/app/page.tsx` after `<ScrollToTop />`, inside `<main>`, inside both `<QuoteProvider>` and `<ProductDetailProvider>`.
+- SSR-safe: renders nothing on server (mount guard via `useSyncExternalStore`), no hydration warnings.
+- Lint: my files pass cleanly. Project-wide lint has 2 pre-existing errors in `src/components/search/SearchPalette.tsx` from an earlier cycle — flagged but not in scope.
+- Screenshots: `download/qa-cookie-consent.png`, `download/qa-cookie-preferences.png`.
+
+---
+Task ID: 6
+Agent: search-palette-builder
+Task: Build a Search / Command Palette (cmd+K style) for the Bharat Electrosafe homepage
+
+## Current project status description/assessment
+
+Prior cycles (Tasks 1–5) delivered the complete Bharat Electrosafe homepage: Hero, StatsBar, ProductSystems, ProductSelection, ProofCentre, Applications, Testimonials, Resources, Contact, FinalCTA, plus Header (with scroll compression), Footer (sticky), QuoteDialog + QuoteProvider, ProductDetailDialog + ProductDetailProvider, CompareDialog (openCompare), ThemeToggle (next-themes), CookieConsent, ScrollToTop, and full dark-mode CSS overrides. Search was listed as a MEDIUM priority gap in Task 4's "remaining items".
+
+## Current goals/completed modifications/verification results
+
+### Work Log
+
+**1. Created `src/components/search/SearchProvider.tsx`**
+- React context with `openSearch({ initialQuery? })`, `closeSearch()`, and `isOpen` exposed via `useSearch()` hook.
+- Provider renders `<SearchPalette>` internally so consumers don't need to wire it up manually.
+- State: `open` (boolean) + `initialQuery` (string, reset on each open).
+
+**2. Created `src/components/search/SearchPalette.tsx`** (main client component)
+- Uses shadcn `Dialog` / `DialogContent` / `DialogTitle` (sr-only) / `DialogDescription` (sr-only) + `Input`.
+- DialogContent override: `top-[12vh] left-1/2 -translate-x-1/2 translate-y-0 sm:max-w-2xl max-h-[76vh] p-0 gap-0` — top-aligned (not centered), cmdk-style overlay (twMerge resolves the default `top-[50%] translate-y-[-50%]` to the new top-aligned position).
+- Auto-focuses input on open (effect with 60ms timeout for radix mount).
+- **Data sources**: imports `productSystems` from `@/data/products`, `applications` from `@/data/applications`, `resources` from `@/data/resources`, plus 7 Page/Anchor entries and 2 Action entries — all built into a single `SearchResult[]` via `useMemo`.
+- Each result has: `id`, `title`, `subtitle`, `category` (Product|Application|Resource|Page|Action), `icon` (lucide), `keywords[]`, `onSelect()`, `popular?` flag.
+- **Actions integration**: `Request a Quote` calls `useQuote().openQuote()` (deferred via setTimeout to let the palette close first); `Compare systems` calls `useProductDetail().openCompare()`; product results call `openProduct(id)`; pages/applications/resources use `document.querySelector('#anchor')?.scrollIntoView({ behavior: 'smooth', block: 'start' })`.
+- **Filtering**: case-insensitive substring match on title + subtitle + keywords (joined haystack).
+- **Grouping**: results rendered with interspersed category headers (Products, Applications, Resources, Pages, Actions) — preserves CATEGORY_ORDER.
+- **Empty state**: shows 8 curated "Popular" suggestions (Electrical Insulation, Substations, Insulating Mat Selection Guide, Products, Proof Centre, Contact, Request a Quote, Compare systems) — spans all 5 categories.
+- **No-results state**: dedicated panel with search icon and "try a different keyword" copy.
+- **Keyboard navigation**:
+  - Global `Cmd+K` / `Ctrl+K` listener (preventDefault) toggles open/close.
+  - ArrowDown / ArrowUp move highlightedIndex with wrap-around (handled on input `onKeyDown`).
+  - Enter triggers `onSelect()` of the highlighted item.
+  - Esc closes (handled natively by radix Dialog).
+  - Mouse hover also sets highlightedIndex (`onMouseEnter`).
+  - Highlighted item auto-scrolls into view via `useEffect` + `querySelector('[data-idx="N"]').scrollIntoView({ block: 'nearest' })`.
+- **State reset (lint-safe pattern)**: instead of `setState` inside effects, used the React "store previous value" derived-state pattern — `prevQuery` resets `highlightedIndex` when query changes; `prevOpen` resets query + highlightedIndex when dialog opens/closes. (Avoids `react-hooks/set-state-in-effect` errors.)
+- **Styling**: brand palette — `bg-orange-soft text-navy` for highlighted, `bg-orange text-white` for highlighted icon chip, `text-steel` for subtitles, `bg-ivory-light dark:bg-background` for results area, `bg-white/95 dark:bg-card/95` for header/footer. Manrope font via `style={{ fontFamily: "'Manrope', sans-serif" }}`. Dark-mode aware via `dark:` variants throughout.
+- **Footer**: keyboard hints — `↑↓ navigate`, `↵ select`, `esc close` (with kbd-styled pills) + "Bharat Electrosafe · Search" attribution.
+
+**3. Created `src/components/search/SearchTrigger.tsx`**
+- Button component with `Search` lucide icon, optional "Search" label, and `⌘K` (Mac) / `Ctrl K` (other platforms) hint pill (auto-detected via `navigator.platform`).
+- `compact` prop for icon-only mode.
+- `showHint` prop to hide the kbd pill on tight screens.
+- Calls `useSearch().openSearch()` on click.
+- Used in Header (desktop only) and MobileDrawer (full-width variant at top).
+
+**4. Modified `src/app/page.tsx`**
+- Added `import { SearchProvider } from '@/components/search/SearchProvider'`.
+- Wrapped the existing main + scripts in `<SearchProvider>` placed **inside** `<ProductDetailProvider>` (which is inside `<QuoteProvider>`) so the SearchPalette can call `useQuote().openQuote()` and `useProductDetail().openCompare()` / `openProduct(id)` for action results.
+- The SearchPalette is auto-rendered by the provider — no separate `<SearchPalette />` mount needed in page.tsx.
+- Preserved the existing `CookieConsent` component that was added by a prior task.
+
+**5. Modified `src/components/layout/Header.tsx`**
+- Imported `SearchTrigger`.
+- Added `<SearchTrigger className="hidden md:inline-flex" />` to the right-side action cluster, before the `<QuoteButton>`. Visual order: Search → Request a Quote → ThemeToggle → MobileDrawer.
+
+**6. Modified `src/components/navigation/MobileDrawer.tsx`**
+- Imported `SearchTrigger`.
+- Added a full-width `<SearchTrigger compact={false} className="w-full justify-start h-10" />` at the top of the mobile drawer nav (right after the SheetHeader), so mobile users have an obvious search entry point that opens the palette.
+- Adjusted nav padding (`pt-2` → `pt-3 gap-3`) to give the search trigger breathing room.
+
+### Verification Results
+- `bun run lint`: **0 errors, 1 acceptable warning** (custom-font warning in layout.tsx — pre-existing).
+- Dev server: GET / 200, no runtime errors.
+- agent-browser (1440×900 desktop):
+  - **Open via Cmd/Ctrl+K**: confirmed (palette opens, `Search Bharat Electrosafe` heading + search textbox appear).
+  - **Open via Header button**: confirmed (SearchTrigger button visible in header with ⌘K hint).
+  - **Empty state**: 8 popular suggestions across all 5 categories (Products, Applications, Resources, Pages, Actions) — verified via accessibility tree + VLM image analysis.
+  - **Type "insulat"**: returns Electrical Insulation product (first, highlighted) + Visible Safety, Civil Protection, Substations, Control Rooms, Power Utilities, Insulating Mat Selection Guide, IS 15652 Standard Summary, 33 kV Substation Case Study. ✓
+  - **Type "subst"**: returns Substations application (first, highlighted) + Case Study resource + Applications page. ✓
+  - **Type "civil"**: returns Civil Protection product + Tunnels/Water application + BharatMembrane Datasheet + Water-Stop System Technical Brief.
+  - **Type "quote"**: returns Testimonials page (matches "quotes" keyword) + Request a Quote action.
+  - **Type "compare"**: returns Compare systems action.
+  - **Arrow keys**: highlightedIndex moves correctly (verified via `getComputedStyle` backgroundColor check — highlighted item shows `rgba(232, 97, 26, 0.08)` = `bg-orange-soft`).
+  - **Enter on highlighted**: tested with "subst" → arrow-down twice, arrow-up once, Enter → page scrolled to #resources section (Case Study resource's onSelect fires `scrollToAnchor('#resources')`). Window scrollY confirmed at 8140px.
+  - **Click "Request a Quote" action**: closes palette, opens existing QuoteDialog with full form (Full name, Email, Company, Submit request, etc.). ✓
+  - **Click "Compare systems" action (via Enter)**: closes palette, opens existing CompareDialog with PRIMARY FUNCTION / VARIANTS rows + 3-column comparison table. ✓
+  - **Click Civil Protection product result**: closes palette, opens ProductDetailDialog for civil-protection (shows Waterproofing heading, AVAILABLE VARIANTS, KEY FEATURES, APPLICABLE STANDARDS, Request a quote for this product CTA). ✓
+  - **Esc closes palette**: confirmed.
+  - **Cmd/Ctrl+K toggles**: confirmed (opens when closed, closes when open).
+- agent-browser (390×844 mobile):
+  - SearchTrigger hidden in header (md:inline-flex), hamburger menu opens MobileDrawer.
+  - MobileDrawer shows full-width SearchTrigger at top.
+  - Clicking it opens the palette successfully.
+- VLM (vision) analysis of `qa-search-empty.png`: confirms palette is centered, has magnifying-glass input, all 5 category headers (PRODUCTS, APPLICATIONS, RESOURCES, PAGES, ACTIONS) visible, all 8 popular items with subtitles, keyboard-hint footer with navigate/select/close hints, no clipping/overlap.
+- VLM analysis of `qa-search-results.png`: confirms filtered results grouped under PRODUCTS/APPLICATIONS/RESOURCES, first item (Electrical Insulation) highlighted with orange-soft background + orange icon chip + return-arrow indicator, all results have appropriate icons and subtitles.
+
+### Screenshots saved
+- `/home/z/my-project/download/qa-search-empty.png` — palette open, no query, all 5 categories visible.
+- `/home/z/my-project/download/qa-search-results.png` — palette with "insulat" query showing 9 filtered results across 3 categories, first item highlighted.
+
+## Unresolved issues or risks, and priority recommendations for the next phase
+
+### Known minor items (not blockers):
+1. **Mobile drawer overlay interaction**: when SearchTrigger is clicked from inside the open MobileDrawer, the SearchPalette opens on top — but the MobileDrawer Sheet remains open underneath (slightly dimmed by the palette overlay). User can close the palette (Esc) to return to the drawer, or close both separately. Could be improved by lifting Sheet open-state and auto-closing on search trigger click — left as a future enhancement.
+2. **Radix `aria-describedby` warning**: a transient `Missing Description or aria-describedby for {DialogContent}` warning appears once on first mount — even though `DialogDescription` is rendered. This is a known radix race-condition quirk and doesn't affect functionality or accessibility (the description is correctly associated after mount). Other existing dialogs (QuoteDialog, CompareDialog) have the same behavior.
+3. **Substring matching is generous**: typing "insulat" matches all 3 products because every product's keyword list includes the generic term "insulation". This is acceptable for a discovery-oriented palette (Electrical Insulation is always first), but could be tightened by computing per-product keywords more strictly.
+
+### Files created
+- `src/components/search/SearchProvider.tsx`
+- `src/components/search/SearchPalette.tsx`
+- `src/components/search/SearchTrigger.tsx`
+
+### Files modified
+- `src/app/page.tsx` (added SearchProvider import + wrapped main in `<SearchProvider>`)
+- `src/components/layout/Header.tsx` (added SearchTrigger to desktop action cluster)
+- `src/components/navigation/MobileDrawer.tsx` (added SearchTrigger at top of drawer)
+
+### Priority recommendations for next cycle
+- LOW: Auto-close MobileDrawer when SearchTrigger is clicked (lift Sheet state).
+- LOW: Add recent-searches persistence (localStorage) to surface as a "Recent" group above "Popular".
+- LOW: Add `/search` analytics event tracking when the palette is opened / a result is selected.
