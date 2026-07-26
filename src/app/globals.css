@@ -237,3 +237,92 @@ html {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* ============================================================
+   Dark mode overrides
+   Many Bharat components use brand tokens (text-navy, bg-white,
+   bg-ivory-light, text-steel) directly. In dark mode we remap
+   these to theme-aware values so the same markup reads correctly.
+   ============================================================ */
+.dark {
+  --color-ivory: #0F1D35;
+  --color-ivory-light: #1B2A4A;
+  --color-navy: #F5F0E8;       /* swap: navy text → ivory in dark */
+  --color-navy-light: #2D3E5C;
+  --color-navy-dark: #0A1424;
+  --color-steel: #9CA3AF;       /* brighter steel for dark bg */
+  --color-steel-light: #6B7280;
+  --color-orange-soft: rgba(232, 97, 26, 0.16);
+  --color-border: #2D3E5C;
+}
+
+/* Map brand utility classes to dark-mode-appropriate values */
+.dark .text-navy { color: var(--foreground); }
+.dark .text-navy\/80 { color: rgba(245, 240, 232, 0.8); }
+.dark .text-navy\/70 { color: rgba(245, 240, 232, 0.7); }
+.dark .text-navy\/60 { color: rgba(245, 240, 232, 0.6); }
+.dark .text-steel { color: var(--muted-foreground); }
+
+.dark .bg-white { background-color: var(--card); }
+.dark .bg-white\/50 { background-color: rgba(27, 42, 74, 0.5); }
+.dark .bg-white\/80 { background-color: rgba(27, 42, 74, 0.8); }
+.dark .bg-white\/90 { background-color: rgba(27, 42, 74, 0.9); }
+.dark .bg-white\/95 { background-color: rgba(27, 42, 74, 0.95); }
+.dark .bg-ivory { background-color: var(--background); }
+.dark .bg-ivory-light { background-color: var(--card); }
+.dark .bg-background { background-color: var(--background); }
+
+.dark .border-border { border-color: var(--border); }
+.dark .border-border\/40 { border-color: rgba(255, 255, 255, 0.08); }
+.dark .border-border\/60 { border-color: rgba(255, 255, 255, 0.1); }
+
+/* Header: translucent dark surface in dark mode */
+.dark header .bg-white\/80,
+.dark header [class*="bg-white"] {
+  background-color: rgba(15, 29, 53, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* White text on navy stays the same; but navy-bg sections need a slightly
+   lighter surface in dark mode for separation. */
+.dark .bg-navy { background-color: #0A1424; }
+.dark .bg-navy-dark { background-color: #060D1A; }
+.dark .bg-navy-light { background-color: #1B2A4A; }
+
+/* Subtle backgrounds that were "bg-muted" need a dark equivalent */
+.dark .bg-muted { background-color: #1B2A4A; }
+
+/* Subtle "shadow-sm" cards in dark mode need a stronger border instead */
+.dark .shadow-sm { box-shadow: none; }
+.dark .hover\:shadow-md:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); }
+
+/* Outline buttons: border + text colors should adapt */
+.dark .border-navy { border-color: var(--foreground); }
+.dark .border-navy\/30 { border-color: rgba(245, 240, 232, 0.3); }
+.dark .text-navy\/70 { color: rgba(245, 240, 232, 0.7); }
+
+/* Gradient from-navy utility used in product selection cards */
+.dark .from-navy { --tw-gradient-from: #1B2A4A var(--tw-gradient-from-position); }
+.dark .to-navy-dark { --tw-gradient-to: #060D1A var(--tw-gradient-to-position); }
+
+/* Dialog / sheet content uses bg-white by default — override to card */
+.dark [role="dialog"][data-state="open"] > *:first-child,
+.dark [data-state="open"] .bg-white {
+  background-color: var(--card) !important;
+}
+
+/* Inputs in dark mode */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: rgba(255, 255, 255, 0.04);
+  color: var(--foreground);
+}
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: rgba(245, 240, 232, 0.4);
+}
+.dark input:focus,
+.dark textarea:focus {
+  border-color: var(--accent);
+}

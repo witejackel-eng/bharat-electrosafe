@@ -5,11 +5,13 @@ import { insulationClasses } from '@/data/products';
 import { Reveal } from '@/components/motion/Reveal';
 import { Button } from '@/components/ui/button';
 import { QuoteButton } from '@/components/quote/QuoteButton';
+import { useProductDetail } from '@/components/products/ProductDetailProvider';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 export function ProductSelection() {
   const [activeClass, setActiveClass] = useState<string | null>(null);
+  const { openCompare } = useProductDetail();
 
   return (
     <section id="product-selection" className="bg-navy py-20 md:py-28 relative overflow-hidden">
@@ -85,13 +87,11 @@ export function ProductSelection() {
         <Reveal delay={300}>
           <div className="mt-8 md:mt-10 flex flex-wrap items-center gap-4">
             <Button
+              onClick={openCompare}
               className="bg-orange hover:bg-orange-hover text-white font-medium px-6 h-11 rounded-lg"
-              asChild
             >
-              <Link href="#electrical-insulation">
-                Compare full specifications
-                <ArrowRight className="size-4 ml-1" />
-              </Link>
+              Compare full specifications
+              <ArrowRight className="size-4 ml-1" />
             </Button>
             <QuoteButton
               variant="outline"
