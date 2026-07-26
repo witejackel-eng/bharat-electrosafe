@@ -2,6 +2,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/home/Hero';
 import { StatsBar } from '@/components/home/StatsBar';
+import { VoltageCalculator } from '@/components/home/VoltageCalculator';
 import { HomeProductSystems } from '@/components/home/HomeProductSystems';
 import { ProductSelection } from '@/components/home/ProductSelection';
 import { HomeProofCentre } from '@/components/home/HomeProofCentre';
@@ -206,6 +207,7 @@ export default function Home() {
                 <div className="flex-1">
                   <Hero />
                   <StatsBar />
+                  <VoltageCalculator />
                   <SectionDivider variant="accent" />
                   <WhyChooseUs />
                   <SectionDivider variant="default" />

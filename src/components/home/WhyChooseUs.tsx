@@ -44,35 +44,46 @@ const features = [
 
 export function WhyChooseUs() {
   return (
-    <section className="bg-background py-20 md:py-28">
+    <section className="bg-background py-20 md:py-28 relative overflow-hidden">
       {/* Orange safety-line accent */}
       <div className="h-1 bg-gradient-to-r from-orange via-orange/30 to-transparent" />
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 pt-10 md:pt-14">
+      {/* Grain overlay for subtle texture */}
+      <div className="grain-overlay absolute inset-0 pointer-events-none" aria-hidden="true" />
+
+      {/* Floating decorative shapes */}
+      <div className="floating-shape w-64 h-64 rounded-full bg-navy top-[10%] -left-10" aria-hidden="true" style={{ animationDelay: '-3s' }} />
+      <div className="floating-shape w-48 h-48 rounded-full bg-orange bottom-[15%] -right-8" aria-hidden="true" style={{ animationDelay: '-7s' }} />
+      <div className="floating-shape w-32 h-32 bg-navy top-[40%] right-[20%]" aria-hidden="true" style={{ animationDelay: '-11s', transform: 'rotate(45deg)' }} />
+
+      {/* Decorative dot-grid strip at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 dot-grid-bg pointer-events-none" aria-hidden="true" />
+
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 pt-10 md:pt-14 relative z-10">
         <Reveal delay={0}>
-          <span className="text-eyebrow" style={{ fontFamily: "'Manrope', sans-serif" }}>
+          <span className="text-eyebrow gradient-text" style={{ fontFamily: "'Manrope', sans-serif" }}>
             Why choose us
           </span>
         </Reveal>
         <Reveal delay={80}>
           <h2
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy mt-3 max-w-[600px]"
+            className="text-2xl md:text-3xl lg:text-4xl font-bold gradient-text mt-3 max-w-[600px]"
             style={{ fontFamily: "'Manrope', sans-serif" }}
           >
             Engineering discipline that infrastructure projects depend on.
           </h2>
         </Reveal>
 
-        <div className="mt-10 md:mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="mt-10 md:mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 stagger-fade">
           {features.map((feature, i) => {
             const Icon = feature.icon;
             return (
               <Reveal key={feature.title} delay={160 + i * 60} translateY={12}>
                 <div
-                  className="p-6 rounded-2xl border border-border bg-white/80 backdrop-blur-[2px] hover:border-orange/30 hover:shadow-md hover:-translate-y-0.5 focus-within:border-orange/30 focus-within:shadow-md transition-all duration-200"
+                  className="corner-accent card-tilt p-6 rounded-2xl border border-border bg-white/80 backdrop-blur-[2px] hover:border-orange/30 hover:shadow-md hover:-translate-y-0.5 focus-within:border-orange/30 focus-within:shadow-md transition-all duration-200 group/card"
                   style={{ fontFamily: "'Manrope', sans-serif" }}
                 >
-                  <div className="w-12 h-12 rounded-xl bg-orange-soft flex items-center justify-center shrink-0 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-orange-soft flex items-center justify-center shrink-0 mb-4 transition-transform duration-200 group-hover/card:scale-110 group-hover/card:rotate-[5deg]">
                     <Icon className="size-6 text-orange" />
                   </div>
                   <h3 className="text-navy font-semibold text-sm md:text-base mb-2">

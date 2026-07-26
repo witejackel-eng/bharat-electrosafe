@@ -1,7 +1,8 @@
 'use client';
 
-import Link from 'next/link';
+import { useState } from 'react';
 import { Reveal } from '@/components/motion/Reveal';
+import { VirtualTourModal } from '@/components/home/VirtualTourModal';
 import {
   FlaskConical,
   Layers,
@@ -81,6 +82,8 @@ const stages: Stage[] = [
 ];
 
 export function ManufacturingProcessSection() {
+  const [tourOpen, setTourOpen] = useState(false);
+
   return (
     <section
       id="manufacturing"
@@ -201,17 +204,21 @@ export function ManufacturingProcessSection() {
         <Reveal delay={120}>
           <div className="mt-12 text-center">
             <p className="text-white/60 text-sm">Schedule a virtual plant tour</p>
-            <Link
-              href="#contact"
-              className="inline-flex items-center gap-2 mt-3 bg-orange hover:bg-orange-hover text-white font-semibold px-6 py-3 rounded-full transition-colors"
+            <button
+              onClick={() => setTourOpen(true)}
+              aria-label="Book a virtual plant tour"
+              className="inline-flex items-center gap-2 mt-3 bg-orange hover:bg-orange-hover text-white font-semibold px-6 py-3 rounded-full transition-colors cursor-pointer"
             >
               <Video className="size-4" />
               Book a tour
               <ArrowRight className="size-4" />
-            </Link>
+            </button>
           </div>
         </Reveal>
       </div>
+
+      {/* Virtual Tour Modal */}
+      <VirtualTourModal open={tourOpen} onClose={() => setTourOpen(false)} />
     </section>
   );
 }

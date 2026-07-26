@@ -63,8 +63,13 @@ export function Hero() {
       ref={sectionRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative overflow-hidden bg-background pt-24 md:pt-28 lg:pt-32 pb-16 md:pb-24"
+      className="relative overflow-hidden bg-background pt-24 md:pt-28 lg:pt-32 pb-16 md:pb-24 grain-overlay"
     >
+      {/* Floating decorative shapes — 2 orange circles, 1 navy diamond */}
+      <div className="floating-shape w-48 h-48 rounded-full bg-orange top-[8%] right-[10%]" aria-hidden="true" style={{ animationDelay: '-5s', zIndex: 0 }} />
+      <div className="floating-shape w-36 h-36 rounded-full bg-orange bottom-[20%] left-[5%]" aria-hidden="true" style={{ animationDelay: '-12s', zIndex: 0 }} />
+      <div className="floating-shape w-28 h-28 bg-navy top-[45%] right-[25%]" aria-hidden="true" style={{ animationDelay: '-8s', transform: 'rotate(45deg)', zIndex: 0 }} />
+
       {/* Animated gradient mesh background */}
       <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
         <div
@@ -101,7 +106,7 @@ export function Hero() {
             </Reveal>
 
             <Reveal delay={80} as="div">
-              <h1 className="text-3xl md:text-4xl lg:text-[2.75rem] xl:text-[3.2rem] font-bold text-navy leading-[1.1] tracking-tight" style={{ fontFamily: "'Manrope', sans-serif" }}>
+              <h1 className="text-3xl md:text-4xl lg:text-[2.75rem] xl:text-[3.4rem] font-bold text-navy leading-[1.1] tracking-tight" style={{ fontFamily: "'Manrope', sans-serif" }}>
                 {t('hero.title', locale)}
               </h1>
             </Reveal>
@@ -170,7 +175,7 @@ export function Hero() {
           {/* Right column: Hero composition */}
           <div className="lg:col-span-7 relative">
             <Reveal delay={300} translateY={30} duration={800}>
-              <div className="relative w-full aspect-[7/4] rounded-2xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40">
+              <div className="relative w-full aspect-[7/4] rounded-2xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40 border-glow">
                 {/* Material texture strip as section accent */}
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange via-orange/60 to-transparent z-10" />
                 <Image
