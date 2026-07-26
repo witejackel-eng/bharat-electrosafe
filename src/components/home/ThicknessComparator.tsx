@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Reveal } from '@/components/motion/Reveal';
 import { QuoteButton } from '@/components/quote/QuoteButton';
+import { useLocale } from '@/components/i18n/useLocale';
+import { t, Locale } from '@/lib/i18n';
 
 interface BarData {
   className: string;
@@ -14,35 +16,37 @@ interface BarData {
   fillDelay: number;
 }
 
-const bars: BarData[] = [
-  {
-    className: 'A',
-    voltageLabel: 'Class A — 3.3 kV',
-    thickness: 2.0,
-    thicknessLabel: '≥ 2.0 mm',
-    application: 'Low-voltage panels',
-    widthPercent: 40,
-    fillDelay: 0,
-  },
-  {
-    className: 'B',
-    voltageLabel: 'Class B — 11 kV',
-    thickness: 2.5,
-    thicknessLabel: '≥ 2.5 mm',
-    application: 'Medium-voltage substations',
-    widthPercent: 50,
-    fillDelay: 150,
-  },
-  {
-    className: 'C',
-    voltageLabel: 'Class C — 33 kV',
-    thickness: 3.0,
-    thicknessLabel: '≥ 3.0 mm',
-    application: 'High-voltage switchyards',
-    widthPercent: 60,
-    fillDelay: 300,
-  },
-];
+function getBars(locale: Locale): BarData[] {
+  return [
+    {
+      className: 'A',
+      voltageLabel: t('voltage.classA', locale),
+      thickness: 2.0,
+      thicknessLabel: '≥ 2.0 mm',
+      application: t('voltage.descA', locale),
+      widthPercent: 40,
+      fillDelay: 0,
+    },
+    {
+      className: 'B',
+      voltageLabel: t('voltage.classB', locale),
+      thickness: 2.5,
+      thicknessLabel: '≥ 2.5 mm',
+      application: t('voltage.descB', locale),
+      widthPercent: 50,
+      fillDelay: 150,
+    },
+    {
+      className: 'C',
+      voltageLabel: t('voltage.classC', locale),
+      thickness: 3.0,
+      thicknessLabel: '≥ 3.0 mm',
+      application: t('voltage.descC', locale),
+      widthPercent: 60,
+      fillDelay: 300,
+    },
+  ];
+}
 
 // Grid markers: 0.5mm increments up to 3.5mm
 // Each 0.5mm increment maps to 10% width (3.0mm = 60%, 3.5mm = 70%)
@@ -57,7 +61,9 @@ const gridMarkers = [
 ];
 
 export function ThicknessComparator() {
+  const locale = useLocale();
   const [selectedClass, setSelectedClass] = useState<string | null>(null);
+  const bars = getBars(locale);
 
   return (
     <section
@@ -82,12 +88,12 @@ export function ThicknessComparator() {
           <div className="lg:col-span-5">
             <Reveal delay={0}>
               <span className="text-eyebrow" style={{ color: '#F07830' }}>
-                Thickness comparison
+                {t('thickness.eyebrow', locale)}
               </span>
             </Reveal>
             <Reveal delay={80}>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mt-3 leading-tight">
-                See the difference in millimetres.
+                {t('thickness.title', locale)}
               </h2>
             </Reveal>
             {/* Decorative accent bar */}
@@ -100,15 +106,12 @@ export function ThicknessComparator() {
             </Reveal>
             <Reveal delay={200}>
               <p className="text-white/80 leading-relaxed max-w-[440px]">
-                As operating voltage rises, IS 15652 mandates thicker insulation.
-                Each class adds half a millimetre — a small number that carries
-                the weight of personnel safety behind every panel door.
+                {t('thickness.description', locale)}
               </p>
             </Reveal>
             <Reveal delay={280}>
               <p className="text-white/60 text-sm mt-4 leading-relaxed max-w-[440px]">
-                IS 15652 specifies minimum thickness for each rated voltage class.
-                Bharat Electrosafe manufactures each class at or above the minimum.
+                {t('thickness.safetyNote', locale)}
               </p>
             </Reveal>
           </div>
@@ -253,8 +256,7 @@ export function ThicknessComparator() {
                 {/* Safety note */}
                 <div className="mt-6 pt-4 border-t border-white/[0.08]">
                   <p className="text-xs text-white/60 leading-relaxed">
-                    IS 15652 specifies minimum thickness for each rated voltage class.
-                    Bharat Electrosafe manufactures each class at or above the minimum.
+                    {t('thickness.safetyNote', locale)}
                   </p>
                 </div>
               </div>

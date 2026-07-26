@@ -100,9 +100,10 @@ export function ManufacturingProcessSection() {
         {/* Header */}
         <div className="max-w-2xl">
           <Reveal delay={0}>
-            <span className="inline-block text-orange text-xs font-semibold uppercase tracking-[0.2em]">
+            <span className="inline-block text-orange text-xs font-semibold uppercase tracking-[0.2em] gradient-text">
               Inside the Manesar Plant
             </span>
+            <div className="accent-bar animate-underline-reveal" />
           </Reveal>
           <Reveal delay={60}>
             <h2 className="text-3xl md:text-4xl font-bold text-white mt-3 leading-tight">
@@ -207,7 +208,7 @@ export function ManufacturingProcessSection() {
             <button
               onClick={() => setTourOpen(true)}
               aria-label="Book a virtual plant tour"
-              className="inline-flex items-center gap-2 mt-3 bg-orange hover:bg-orange-hover text-white font-semibold px-6 py-3 rounded-full transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 mt-3 bg-orange hover:bg-orange-hover text-white font-semibold px-6 py-3 rounded-full transition-colors cursor-pointer animate-breathing-glow"
             >
               <Video className="size-4" />
               Book a tour

@@ -31,6 +31,7 @@ import { ChatWidget } from '@/components/chat/ChatWidget';
 import { ScrollProgressBar } from '@/components/ui-custom/ScrollProgressBar';
 import { StickyCTABar } from '@/components/ui-custom/StickyCTABar';
 import { QuickNav } from '@/components/ui-custom/QuickNav';
+import { SectionProgressIndicator } from '@/components/ui-custom/SectionProgressIndicator';
 
 function SectionDivider({ variant = 'default' }: { variant?: 'default' | 'dark' | 'accent' | 'dotted' }) {
   if (variant === 'dark') {
@@ -245,6 +246,7 @@ export default function Home() {
                 </div>
                 <Footer />
                 <ScrollProgressBar />
+                <SectionProgressIndicator />
                 <QuickNav />
                 <ScrollToTop />
                 <StickyCTABar />

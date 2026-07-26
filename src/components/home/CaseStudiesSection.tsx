@@ -83,7 +83,7 @@ export function CaseStudiesSection() {
   return (
     <section
       id="case-studies"
-      className="bg-background py-20 md:py-28 scroll-mt-32 relative overflow-hidden"
+      className="bg-background py-20 md:py-28 scroll-mt-32 relative overflow-hidden grain-overlay"
     >
       {/* Subtle dotted pattern background */}
       <div
@@ -96,21 +96,28 @@ export function CaseStudiesSection() {
         aria-hidden="true"
       />
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative">
+      {/* Floating decorative shapes */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="floating-shape absolute -top-16 -left-16 w-64 h-64 rounded-full bg-navy/[0.04] blur-3xl" />
+        <div className="floating-shape absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-orange/[0.06] blur-3xl" />
+      </div>
+
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-14">
           <div className="max-w-2xl">
             <Reveal delay={0}>
               <span
-                className="inline-block text-xs font-semibold tracking-wider uppercase text-orange"
+                className="inline-block text-xs font-semibold tracking-wider uppercase text-orange gradient-text"
                 style={{ fontFamily: "'Manrope', sans-serif" }}
               >
                 Case Studies
               </span>
+              <div className="accent-bar animate-underline-reveal" />
             </Reveal>
             <Reveal delay={80}>
               <h2
-                className="text-3xl md:text-4xl font-bold text-navy mt-3"
+                className="text-3xl md:text-4xl font-bold text-navy mt-3 gradient-text"
                 style={{ fontFamily: "'Manrope', sans-serif" }}
               >
                 Project outcomes that engineered trust.
@@ -148,7 +155,7 @@ export function CaseStudiesSection() {
               <Reveal key={cs.id} delay={150 + i * 80} translateY={16}>
                 <article
                   tabIndex={0}
-                  className="group h-full flex flex-col rounded-2xl border border-border/60 bg-white p-6 hover:border-orange/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 focus-visible:outline-2 focus-visible:outline-orange focus-visible:outline-offset-2 focus-visible:rounded-2xl"
+                  className="group h-full flex flex-col rounded-2xl border border-border/60 bg-white p-6 hover:border-orange/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 focus-visible:outline-2 focus-visible:outline-orange focus-visible:outline-offset-2 focus-visible:rounded-2xl card-tilt diagonal-line"
                   style={{ fontFamily: "'Manrope', sans-serif" }}
                   aria-labelledby={`${cs.id}-title`}
                 >
@@ -251,7 +258,7 @@ export function CaseStudiesSection() {
                   {/* Read full case study link */}
                   <Link
                     href="#"
-                    className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-orange hover:underline group/link"
+                    className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-orange hover:underline hover-lift group/link"
                     style={{ fontFamily: "'Manrope', sans-serif" }}
                   >
                     Read full case study

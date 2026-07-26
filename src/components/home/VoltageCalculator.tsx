@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Reveal } from '@/components/motion/Reveal';
 import { QuoteButton } from '@/components/quote/QuoteButton';
 import { Zap } from 'lucide-react';
+import { useLocale } from '@/components/i18n/useLocale';
+import { t, Locale } from '@/lib/i18n';
 
 type InsulationClass = null | 'A' | 'B' | 'C' | 'custom';
 
@@ -16,40 +18,42 @@ interface ClassInfo {
   productClass: string;
 }
 
-const classData: Record<string, ClassInfo> = {
-  A: {
-    title: 'Class A — 3.3 kV',
-    thickness: 'Thickness: ≥ 2.0 mm',
-    description: 'For low-voltage distribution panels',
-    borderColor: 'emerald',
-    borderClass: 'border-emerald-500/30',
-    productClass: 'Class A',
-  },
-  B: {
-    title: 'Class B — 11 kV',
-    thickness: 'Thickness: ≥ 2.5 mm',
-    description: 'For medium-voltage substations',
-    borderColor: 'blue',
-    borderClass: 'border-blue-500/30',
-    productClass: 'Class B',
-  },
-  C: {
-    title: 'Class C — 33 kV',
-    thickness: 'Thickness: ≥ 3.0 mm',
-    description: 'For high-voltage switchyards',
-    borderColor: 'orange',
-    borderClass: 'border-orange/30',
-    productClass: 'Class C',
-  },
-  custom: {
-    title: 'Custom Class — Above 33 kV',
-    thickness: 'Contact technical sales for specifications',
-    description: 'For ultra-high-voltage installations',
-    borderColor: 'orange',
-    borderClass: 'border-orange/30',
-    productClass: 'Custom',
-  },
-};
+function getClassData(locale: Locale): Record<string, ClassInfo> {
+  return {
+    A: {
+      title: t('voltage.classA', locale),
+      thickness: t('voltage.thicknessA', locale),
+      description: t('voltage.descA', locale),
+      borderColor: 'emerald',
+      borderClass: 'border-emerald-500/30',
+      productClass: 'Class A',
+    },
+    B: {
+      title: t('voltage.classB', locale),
+      thickness: t('voltage.thicknessB', locale),
+      description: t('voltage.descB', locale),
+      borderColor: 'blue',
+      borderClass: 'border-blue-500/30',
+      productClass: 'Class B',
+    },
+    C: {
+      title: t('voltage.classC', locale),
+      thickness: t('voltage.thicknessC', locale),
+      description: t('voltage.descC', locale),
+      borderColor: 'orange',
+      borderClass: 'border-orange/30',
+      productClass: 'Class C',
+    },
+    custom: {
+      title: t('voltage.classCustom', locale),
+      thickness: t('voltage.thicknessCustom', locale),
+      description: t('voltage.descCustom', locale),
+      borderColor: 'orange',
+      borderClass: 'border-orange/30',
+      productClass: 'Custom',
+    },
+  };
+}
 
 function determineClass(voltage: number): InsulationClass {
   if (voltage <= 0) return null;
@@ -60,6 +64,7 @@ function determineClass(voltage: number): InsulationClass {
 }
 
 export function VoltageCalculator() {
+  const locale = useLocale();
   const [rawVoltage, setRawVoltage] = useState<string>('');
   const [debouncedVoltage, setDebouncedVoltage] = useState<number>(0);
 
@@ -82,35 +87,37 @@ export function VoltageCalculator() {
     []
   );
 
+  const classData = getClassData(locale);
   const resultInfo = recommendedClass ? classData[recommendedClass] : null;
   const showPlaceholder = !recommendedClass;
 
   return (
     <section
       id="voltage-calculator"
-      className="bg-ivory-light py-20 md:py-28 scroll-mt-32"
+      className="bg-ivory-light py-20 md:py-28 scroll-mt-32 relative overflow-hidden grain-overlay"
       style={{ fontFamily: 'Manrope, ui-sans-serif, system-ui, sans-serif' }}
     >
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
+        {/* Floating decorative shapes */}
+        <div className="floating-shape w-48 h-48 rounded-full bg-orange -top-8 -right-6" aria-hidden="true" style={{ animationDelay: '-5s' }} />
+        <div className="floating-shape w-32 h-32 bg-navy bottom-[20%] left-[10%]" aria-hidden="true" style={{ animationDelay: '-12s', transform: 'rotate(45deg)' }} />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left column — eyebrow, heading, description */}
           <div className="lg:col-span-5">
             <Reveal delay={0}>
-              <span className="inline-block text-orange text-xs font-semibold uppercase tracking-[0.2em]">
-                Voltage selector tool
+              <span className="inline-block text-eyebrow gradient-text">
+                {t('voltage.eyebrow', locale)}
               </span>
+              <div className="accent-bar animate-underline-reveal" />
             </Reveal>
             <Reveal delay={60}>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy mt-3 leading-tight">
-                Find your insulation class in seconds.
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold gradient-text mt-3 leading-tight">
+                {t('voltage.title', locale)}
               </h2>
             </Reveal>
             <Reveal delay={120}>
               <p className="text-[#374151] dark:text-white/75 max-w-md leading-relaxed mt-4">
-                Enter your highest operating voltage and instantly see the
-                recommended insulating mat class, minimum thickness, and typical
-                application. IS&nbsp;15652 requires the mat&apos;s rated voltage
-                to exceed your installation voltage.
+                {t('voltage.description', locale)}
               </p>
             </Reveal>
             {/* Decorative accent bar */}
@@ -130,7 +137,7 @@ export function VoltageCalculator() {
                     className="block text-sm font-semibold text-navy dark:text-foreground mb-2"
                     style={{ fontFamily: 'Manrope, sans-serif' }}
                   >
-                    What is your highest operating voltage?
+                    {t('voltage.inputLabel', locale)}
                   </label>
                   <div className="relative mt-1">
                     <Zap
@@ -142,10 +149,10 @@ export function VoltageCalculator() {
                       type="number"
                       min="0"
                       step="0.1"
-                      placeholder="e.g. 6.6"
+                      placeholder={t('voltage.placeholder', locale)}
                       value={rawVoltage}
                       onChange={handleInputChange}
-                      aria-label="Operating voltage in kilovolts"
+                      aria-label={t('voltage.inputLabel', locale)}
                       className="w-full h-12 pl-10 pr-14 rounded-xl border border-border bg-ivory-light dark:bg-navy-dark text-navy dark:text-foreground text-lg font-medium placeholder:text-steel/50 dark:placeholder:text-white/40 focus:outline-none focus:border-orange focus:ring-1 focus:ring-orange/30 transition-colors"
                       style={{ fontFamily: 'Manrope, sans-serif', fontVariantNumeric: 'tabular-nums' }}
                     />
@@ -166,7 +173,7 @@ export function VoltageCalculator() {
                       style={{ fontFamily: 'Manrope, sans-serif' }}
                     >
                       <p className="text-steel dark:text-white/50 text-sm text-center px-4">
-                        Enter your operating voltage above
+                        {t('voltage.placeholderText', locale)}
                       </p>
                     </div>
                   ) : resultInfo ? (
@@ -194,7 +201,7 @@ export function VoltageCalculator() {
                           showArrow
                           className="bg-orange hover:bg-orange-hover text-white font-semibold shrink-0"
                         >
-                          Get quote
+                          {t('voltage.getQuote', locale)}
                         </QuoteButton>
                       </div>
                     </div>
@@ -206,9 +213,7 @@ export function VoltageCalculator() {
                   className="text-xs text-orange/80 mt-6 leading-relaxed"
                   style={{ fontFamily: 'Manrope, sans-serif' }}
                 >
-                  ⚠ Never use a mat rated below your installation&apos;s highest
-                  operating voltage. IS&nbsp;15652 requires the mat&apos;s rated
-                  voltage to exceed the actual operating voltage.
+                  {t('voltage.safetyNote', locale)}
                 </p>
               </div>
             </Reveal>

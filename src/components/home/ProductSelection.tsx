@@ -34,11 +34,12 @@ export function ProductSelection() {
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative">
         {/* Section header */}
         <Reveal delay={0}>
-          <span className="text-eyebrow" style={{ color: '#F07830' }}>Start with the requirement</span>
+          <span className="text-eyebrow gradient-text" style={{ color: '#F07830' }}>Start with the requirement</span>
+          <div className="accent-bar animate-underline-reveal" />
         </Reveal>
         <Reveal delay={80}>
           <h2
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mt-3 max-w-[640px]"
+            className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mt-3 max-w-[640px] gradient-text"
             style={{ fontFamily: "'Manrope', sans-serif" }}
           >
             Choose electrical insulation by the highest operating voltage.
@@ -49,10 +50,10 @@ export function ProductSelection() {
         <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           {insulationClasses.map((cls, i) => (
             <Reveal key={cls.className} delay={i * 100} translateY={18}>
-              <div className="relative group/cls">
+              <div className="relative group/cls animate-morph-border">
                 {/* Recommended badge on Class B */}
                 {cls.className === 'B' && (
-                  <div className="absolute -top-2 -right-2 z-20 inline-flex items-center px-2.5 py-1 rounded-full bg-orange text-white text-[0.65rem] font-bold uppercase tracking-wider shadow-md animate-badge-pulse" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                  <div className="absolute -top-2 -right-2 z-20 inline-flex items-center px-2.5 py-1 rounded-full bg-orange text-white text-[0.65rem] font-bold uppercase tracking-wider shadow-md animate-badge-pulse animate-breathing-glow" style={{ fontFamily: "'Manrope', sans-serif" }}>
                     Recommended
                   </div>
                 )}

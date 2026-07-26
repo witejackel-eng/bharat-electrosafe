@@ -193,19 +193,26 @@ export function SustainabilitySection() {
   return (
     <section
       id="sustainability"
-      className="bg-background py-20 md:py-28 scroll-mt-32"
+      className="bg-background py-20 md:py-28 scroll-mt-32 relative overflow-hidden grain-overlay"
       style={{ fontFamily: 'Manrope, ui-sans-serif, system-ui, sans-serif' }}
     >
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+      {/* Floating decorative shapes */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="floating-shape absolute -top-20 left-[8%] w-56 h-56 rounded-full bg-navy/[0.04] blur-3xl" />
+        <div className="floating-shape absolute bottom-[10%] right-[12%] w-44 h-44 bg-orange/[0.06] blur-3xl" style={{ transform: 'rotate(45deg)' }} />
+      </div>
+
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
         {/* ---------- Header ---------- */}
         <div className="max-w-2xl">
           <Reveal delay={60}>
-            <span className="text-eyebrow text-orange font-semibold uppercase tracking-[0.2em] text-xs">
+            <span className="text-eyebrow text-orange font-semibold uppercase tracking-[0.2em] text-xs gradient-text">
               Our Commitment
             </span>
+            <div className="accent-bar animate-underline-reveal" />
           </Reveal>
           <Reveal delay={120}>
-            <h2 className="text-3xl md:text-4xl font-bold text-navy dark:text-white mt-3">
+            <h2 className="text-3xl md:text-4xl font-bold text-navy dark:text-white mt-3 gradient-text">
               Engineered for safety. Designed for the planet.
             </h2>
           </Reveal>
@@ -247,7 +254,7 @@ export function SustainabilitySection() {
             return (
               <Reveal key={pillar.title} delay={480 + i * 80} translateY={14}>
                 <article
-                  className="bg-white dark:bg-card border border-border/60 rounded-2xl p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 h-full"
+                  className="bg-white dark:bg-card border border-border/60 rounded-2xl p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 h-full card-tilt diagonal-line"
                 >
                   <div
                     className="w-10 h-1 bg-orange rounded-full mb-4"
@@ -285,7 +292,7 @@ export function SustainabilitySection() {
                 {certifications.map((cert) => (
                   <span
                     key={cert}
-                    className="bg-white/10 text-white text-xs px-3 py-1.5 rounded-full whitespace-nowrap"
+                    className="bg-white/10 text-white text-xs px-3 py-1.5 rounded-full whitespace-nowrap animate-breathing-glow"
                   >
                     {cert}
                   </span>

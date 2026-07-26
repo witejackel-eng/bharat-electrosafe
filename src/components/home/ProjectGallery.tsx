@@ -132,22 +132,29 @@ export function ProjectGallery() {
   return (
     <section
       id="gallery"
-      className="bg-background py-20 md:py-28 scroll-mt-32 relative overflow-hidden"
+      className="bg-background py-20 md:py-28 scroll-mt-32 relative overflow-hidden grain-overlay"
     >
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative">
+      {/* Floating decorative shapes */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="floating-shape absolute top-[10%] left-[60%] w-56 h-56 rounded-full bg-orange/[0.06] blur-3xl" />
+        <div className="floating-shape absolute bottom-[15%] right-[8%] w-40 h-40 bg-navy/[0.04] blur-3xl" style={{ transform: 'rotate(45deg)' }} />
+      </div>
+
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
         {/* Header */}
         <div className="max-w-2xl mb-10 md:mb-14">
           <Reveal delay={0}>
             <span
-              className="text-eyebrow"
+              className="text-eyebrow gradient-text"
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
               Project Gallery
             </span>
+            <div className="accent-bar animate-underline-reveal" />
           </Reveal>
           <Reveal delay={80}>
             <h2
-              className="text-3xl md:text-4xl font-bold text-navy mt-3"
+              className="text-3xl md:text-4xl font-bold text-navy mt-3 gradient-text"
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
               From our production floor to your substation.
@@ -186,6 +193,7 @@ export function ProjectGallery() {
                     item.to,
                     item.minHeight,
                     'focus:outline-none focus-visible:outline-2 focus-visible:outline-orange focus-visible:outline-offset-2',
+                    'card-tilt border-glow',
                     reducedMotion
                       ? ''
                       : 'transition-all duration-300 hover:scale-105 hover:brightness-110 hover:shadow-2xl'

@@ -64,17 +64,24 @@ export function ResourcesSection() {
     filter === 'All' ? resources : resources.filter((r) => r.category === filter);
 
   return (
-    <section id="resources" className="bg-background py-20 md:py-28 scroll-mt-32">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+    <section id="resources" className="bg-background py-20 md:py-28 scroll-mt-32 relative overflow-hidden grain-overlay">
+      {/* Floating decorative shapes */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="floating-shape absolute top-[12%] right-[20%] w-56 h-56 rounded-full bg-orange/[0.06] blur-3xl" />
+        <div className="floating-shape absolute bottom-[8%] left-[15%] w-44 h-44 bg-navy/[0.04] blur-3xl" style={{ transform: 'rotate(45deg)' }} />
+      </div>
+
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
             <Reveal delay={0}>
-              <span className="text-eyebrow">Technical resources</span>
+              <span className="text-eyebrow gradient-text">Technical resources</span>
+              <div className="accent-bar animate-underline-reveal" />
             </Reveal>
             <Reveal delay={80}>
               <h2
-                className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy mt-3 max-w-[560px]"
+                className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy mt-3 max-w-[560px] gradient-text"
                 style={{ fontFamily: "'Manrope', sans-serif" }}
               >
                 Documents your engineering and procurement teams will actually use.
@@ -121,7 +128,7 @@ export function ResourcesSection() {
         <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {filtered.map((res, i) => (
             <Reveal key={res.id} delay={i * 70} translateY={16}>
-              <article className="group relative h-full flex flex-col p-6 rounded-2xl border border-border bg-white hover:shadow-md hover:-translate-y-1 transition-all duration-200 overflow-hidden">
+              <article className="group relative h-full flex flex-col p-6 rounded-2xl border border-border bg-white hover:shadow-md hover:-translate-y-1 transition-all duration-200 overflow-hidden card-tilt diagonal-line corner-accent">
                 {/* Animated gradient border on hover */}
                 <div
                   className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
@@ -196,7 +203,7 @@ export function ResourcesSection() {
                   <button
                     type="button"
                     onClick={() => downloadResource(res)}
-                    className="group/dl inline-flex items-center gap-1.5 text-xs font-medium text-navy hover:text-orange transition-all px-2.5 py-1.5 rounded-md hover:bg-orange-soft hover:scale-[1.05] duration-200"
+                    className="group/dl inline-flex items-center gap-1.5 text-xs font-medium text-navy hover:text-orange transition-all px-2.5 py-1.5 rounded-md hover:bg-orange-soft hover:scale-[1.05] duration-200 animate-breathing-glow"
                     style={{ fontFamily: "'Manrope', sans-serif" }}
                     aria-label={`Download ${res.title}`}
                   >
