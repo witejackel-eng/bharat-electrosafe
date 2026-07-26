@@ -38,30 +38,37 @@ export type QuoteStatusMap = Record<string, QuoteStatus>;
 
 const listeners = new Set<() => void>();
 
+// Module-level stable empty object — React's useSyncExternalStore requires
+// getServerSnapshot to return a referentially-stable value (otherwise it
+// detects an infinite render loop on the server).
+const EMPTY_STATUS_MAP: QuoteStatusMap = Object.freeze({}) as QuoteStatusMap;
+
 // Cache the raw localStorage string + parsed object so useSyncExternalStore
 // gets a stable reference between renders when nothing changed (otherwise
 // React detects an infinite render loop).
 let cachedRaw: string | null = null;
-let cachedParsed: QuoteStatusMap = {};
+let cachedParsed: QuoteStatusMap = EMPTY_STATUS_MAP;
 
 function isValidStatus(v: unknown): v is QuoteStatus {
   return typeof v === 'string' && VALID_STATUSES.includes(v);
 }
 
 function parseMap(raw: string | null): QuoteStatusMap {
-  if (!raw) return {};
+  if (!raw) return EMPTY_STATUS_MAP;
   try {
     const parsed = JSON.parse(raw) as unknown;
-    if (!parsed || typeof parsed !== 'object') return {};
+    if (!parsed || typeof parsed !== 'object') return EMPTY_STATUS_MAP;
     const result: QuoteStatusMap = {};
     for (const [key, value] of Object.entries(parsed as Record<string, unknown>)) {
       if (isValidStatus(value)) {
         result[key] = value;
       }
     }
-    return result;
+    // Return the stable empty reference when the parsed map is empty so
+    // useSyncExternalStore always gets a referentially-stable value.
+    return Object.keys(result).length === 0 ? EMPTY_STATUS_MAP : result;
   } catch {
-    return {};
+    return EMPTY_STATUS_MAP;
   }
 }
 
@@ -86,7 +93,7 @@ function subscribe(callback: () => void): () => void {
 }
 
 function getSnapshot(): QuoteStatusMap {
-  if (typeof window === 'undefined') return {};
+  if (typeof window === 'undefined') return EMPTY_STATUS_MAP;
   let raw: string | null = null;
   try {
     raw = window.localStorage.getItem(STORAGE_KEY);
@@ -102,7 +109,7 @@ function getSnapshot(): QuoteStatusMap {
 }
 
 function getServerSnapshot(): QuoteStatusMap {
-  return {};
+  return EMPTY_STATUS_MAP;
 }
 
 /* ------------------------------------------------------------------ */

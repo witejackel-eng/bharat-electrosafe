@@ -69,7 +69,7 @@ export function WhyChooseUs() {
             return (
               <Reveal key={feature.title} delay={160 + i * 60} translateY={12}>
                 <div
-                  className="p-6 rounded-2xl border border-border bg-white/80 backdrop-blur-[2px] hover:border-orange/30 hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+                  className="p-6 rounded-2xl border border-border bg-white/80 backdrop-blur-[2px] hover:border-orange/30 hover:shadow-md hover:-translate-y-0.5 focus-within:border-orange/30 focus-within:shadow-md transition-all duration-200"
                   style={{ fontFamily: "'Manrope', sans-serif" }}
                 >
                   <div className="w-12 h-12 rounded-xl bg-orange-soft flex items-center justify-center shrink-0 mb-4">
@@ -78,7 +78,7 @@ export function WhyChooseUs() {
                   <h3 className="text-navy font-semibold text-sm md:text-base mb-2">
                     {feature.title}
                   </h3>
-                  <p className="text-steel text-xs md:text-sm leading-relaxed">
+                  <p className="text-[#374151] dark:text-white/75 text-sm md:text-[0.95rem] leading-relaxed">
                     {feature.description}
                   </p>
                 </div>

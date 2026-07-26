@@ -57,7 +57,7 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   return (
     <span
       ref={ref}
-      className="text-4xl md:text-5xl font-bold text-navy counter-glow"
+      className="text-4xl md:text-5xl font-bold text-navy dark:text-white counter-glow"
       style={{ fontVariantNumeric: 'tabular-nums', fontFamily: "'Manrope', sans-serif" }}
     >
       {count}
@@ -97,7 +97,7 @@ export function StatsBar() {
                   <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                 </div>
                 <span
-                  className="text-xs md:text-sm text-steel font-medium uppercase tracking-wider flex items-center justify-center md:justify-start"
+                  className="text-xs md:text-sm text-[#4B5563] dark:text-white/70 font-medium uppercase tracking-wider flex items-center justify-center md:justify-start"
                   style={{ fontFamily: "'Manrope', sans-serif" }}
                 >
                   {/* Orange dot bullet before label */}
