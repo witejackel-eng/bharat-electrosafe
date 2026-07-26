@@ -238,6 +238,16 @@ html {
   border-radius: 4px;
 }
 
+/* Hide the Next.js dev indicator (the floating "N" badge in bottom-left) */
+nextjs-portal,
+[data-nextjs-router-dev-tools],
+[data-nextjs-dialog-overlay],
+[data-nextjs-dialog] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 /* ============================================================
    Dark mode overrides
    Many Bharat components use brand tokens (text-navy, bg-white,

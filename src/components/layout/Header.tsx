@@ -4,7 +4,9 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { ProductSystemPanel } from '@/components/navigation/ProductSystemPanel';
 import { MobileDrawer } from '@/components/navigation/MobileDrawer';
 import { QuoteButton } from '@/components/quote/QuoteButton';
+import { QuoteAdminTrigger } from '@/components/quote/QuoteAdminTrigger';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { SearchTrigger } from '@/components/search/SearchTrigger';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -192,6 +194,8 @@ export function Header() {
 
         {/* CTA + Mobile Menu */}
         <div className="flex items-center gap-2">
+          <QuoteAdminTrigger className="hidden md:inline-flex" />
+          <SearchTrigger className="hidden md:inline-flex" />
           <QuoteButton
             className="hidden md:inline-flex bg-orange hover:bg-orange-hover text-white font-medium text-sm h-9 px-5 rounded-lg transition-colors"
           >

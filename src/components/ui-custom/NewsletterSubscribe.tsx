@@ -84,14 +84,14 @@ export function NewsletterSubscribe() {
     <form onSubmit={submit} noValidate className="flex flex-col gap-2">
       <label
         htmlFor="newsletter-email"
-        className="text-xs font-medium text-white/80"
+        className="text-xs font-medium text-white/85"
         style={{ fontFamily: "'Manrope', sans-serif" }}
       >
         Technical updates from Bharat Electrosafe
       </label>
       <div className="relative flex items-center">
         <Mail
-          className="absolute left-3 size-4 text-white/40 pointer-events-none"
+          className="absolute left-3 size-4 text-white/60 pointer-events-none"
           aria-hidden="true"
         />
         <input
@@ -110,7 +110,7 @@ export function NewsletterSubscribe() {
           disabled={status === 'loading'}
           aria-label="Email address"
           aria-invalid={status === 'error'}
-          className="w-full h-10 pl-9 pr-12 rounded-lg bg-white/5 border border-white/15 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-orange focus:ring-1 focus:ring-orange transition-colors disabled:opacity-60"
+          className="w-full h-10 pl-9 pr-12 rounded-lg bg-white/5 border border-white/25 text-white placeholder:text-white/55 text-sm focus:outline-none focus:border-orange focus:ring-1 focus:ring-orange transition-colors disabled:opacity-60"
           style={{ fontFamily: "'Manrope', sans-serif" }}
         />
         <button
@@ -136,7 +136,7 @@ export function NewsletterSubscribe() {
         </p>
       )}
       <p
-        className="text-[0.7rem] text-white/40 leading-relaxed"
+        className="text-[0.7rem] text-white/55 leading-relaxed"
         style={{ fontFamily: "'Manrope', sans-serif" }}
       >
         Quarterly cadence. Unsubscribe anytime.

@@ -118,18 +118,23 @@ export function Hero() {
           {/* Right column: Hero composition */}
           <div className="lg:col-span-7 relative">
             <Reveal delay={300} translateY={30} duration={800}>
-              <div className="relative w-full aspect-[7/4] rounded-2xl overflow-hidden bg-muted">
+              <div className="relative w-full aspect-[7/4] rounded-2xl overflow-hidden bg-muted shadow-md ring-1 ring-border/40">
                 {/* Material texture strip as section accent */}
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange via-orange/60 to-transparent z-10" />
                 <Image
                   src="/images/hero-composition.png"
                   alt="Bharat Electrosafe product systems — insulating mats, visible-safety variants, geomembranes and water-stop solutions"
                   fill
-                  className="object-cover transition-transform duration-[800ms] ease-out"
+                  className="object-cover transition-transform duration-[1200ms] ease-out hover:scale-[1.04]"
                   style={{ transform: 'scale(1.035)' }}
                   priority
                   sizes="(max-width: 1024px) 100vw, 58vw"
                 />
+                {/* Decorative corner accent */}
+                <div className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-sm border border-white/40 text-[0.65rem] font-semibold text-navy tabular-nums shadow-sm" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange animate-pulse" aria-hidden="true" />
+                  ENGINEERED IN INDIA
+                </div>
                 {/* Floating label overlays */}
                 <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
                   {productSystems.map((s) => (
@@ -137,16 +142,22 @@ export function Hero() {
                       key={s.id}
                       type="button"
                       onClick={() => openProduct(s.id)}
-                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm border border-white/40 text-xs font-medium text-navy hover:bg-white transition-colors"
+                      className="group/pill inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-sm border border-white/40 text-xs font-medium text-navy hover:bg-white hover:border-orange/40 transition-all hover:shadow-sm"
                       style={{ fontFamily: "'Manrope', sans-serif" }}
                     >
                       <span className="text-orange font-bold">{s.index}</span>
                       {s.name}
+                      <span aria-hidden="true" className="text-orange opacity-0 group-hover/pill:opacity-100 transition-opacity">→</span>
                     </button>
                   ))}
                 </div>
               </div>
             </Reveal>
+            {/* Decorative grid pattern below image */}
+            <div className="hidden lg:block absolute -bottom-6 -left-6 -z-10 w-32 h-32 opacity-[0.04]" style={{
+              backgroundImage: 'linear-gradient(to right, var(--color-navy) 1px, transparent 1px), linear-gradient(to bottom, var(--color-navy) 1px, transparent 1px)',
+              backgroundSize: '12px 12px',
+            }} aria-hidden="true" />
           </div>
         </div>
       </div>
