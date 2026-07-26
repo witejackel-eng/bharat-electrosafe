@@ -12,15 +12,20 @@ export function HomeApplications() {
   const { openApplication } = useApplicationDetail();
 
   return (
-    <section id="applications" className="bg-background py-20 md:py-28">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+    <section id="applications" className="bg-background py-20 md:py-28 relative overflow-hidden grain-overlay">
+      {/* Floating decorative shapes */}
+      <div className="floating-shape w-32 h-32 rounded-full bg-orange top-12 right-[8%]" aria-hidden="true" />
+      <div className="floating-shape w-20 h-20 bg-navy rotate-45 bottom-20 left-[15%]" aria-hidden="true" />
+
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
         {/* Section header */}
         <Reveal delay={0}>
-          <span className="text-eyebrow">Applications</span>
+          <span className="text-eyebrow gradient-text">Applications</span>
         </Reveal>
         <Reveal delay={80}>
+          <div className="w-16 h-1 rounded-full bg-orange animate-underline-reveal mt-2" aria-hidden="true" />
           <h2
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy mt-3 max-w-[560px]"
+            className="text-2xl md:text-3xl lg:text-4xl font-bold gradient-text mt-3 max-w-[560px]"
             style={{ fontFamily: "'Manrope', sans-serif" }}
           >
             Designed for critical environments
@@ -35,7 +40,7 @@ export function HomeApplications() {
                 type="button"
                 onClick={() => openApplication(app.id)}
                 aria-label={`${app.name} — ${app.system}. Open application details.`}
-                className="group relative block w-full text-left rounded-2xl overflow-hidden bg-muted aspect-[4/3] md:aspect-[3/2] lg:aspect-square cursor-pointer"
+                className="group relative block w-full text-left rounded-2xl overflow-hidden bg-muted aspect-[4/3] md:aspect-[3/2] lg:aspect-square cursor-pointer card-tilt diagonal-line"
               >
                 <Image
                   src={app.image}

@@ -11,17 +11,22 @@ export function HomeProductSystems() {
   const { openProduct, openCompare } = useProductDetail();
 
   return (
-    <section id="products" className="bg-background py-20 md:py-28">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+    <section id="products" className="bg-background py-20 md:py-28 relative overflow-hidden grain-overlay">
+      {/* Floating decorative shapes */}
+      <div className="floating-shape w-36 h-36 rounded-full bg-navy bottom-16 right-[12%]" aria-hidden="true" />
+      <div className="floating-shape w-20 h-20 bg-orange rotate-45 top-20 left-[5%]" aria-hidden="true" />
+
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
         {/* Section header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div className="flex flex-col gap-3">
             <Reveal delay={0}>
-              <span className="text-eyebrow">What we make</span>
+              <span className="text-eyebrow gradient-text">What we make</span>
             </Reveal>
             <Reveal delay={80}>
+              <div className="w-16 h-1 rounded-full bg-orange animate-underline-reveal mt-2" aria-hidden="true" />
               <h2
-                className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy max-w-[600px] leading-tight"
+                className="text-2xl md:text-3xl lg:text-4xl font-bold gradient-text max-w-[600px] leading-tight"
                 style={{ fontFamily: "'Manrope', sans-serif" }}
               >
                 Three product systems covering electrical insulation, visible safety and civil protection.
@@ -76,7 +81,7 @@ export function HomeProductSystems() {
                     className={`md:col-span-7 relative w-full ${i % 2 === 1 ? 'md:[direction:ltr]' : ''} text-left group/img`}
                     aria-label={`View ${system.name} details`}
                   >
-                    <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-muted cursor-pointer shadow-sm hover:shadow-md transition-shadow duration-300 ring-1 ring-border/40">
+                    <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-muted cursor-pointer shadow-sm hover:shadow-md transition-shadow duration-300 ring-1 ring-border/40 border-glow">
                       {/* Orange safety line at edge - animated height */}
                       <div className="absolute left-0 w-[3px] bg-orange rounded-full z-10 transition-all duration-500 ease-out top-[20%] bottom-[20%] group-hover/img:top-[10%] group-hover/img:bottom-[10%]" />
                       {/* Glassmorphism overlay on hover */}

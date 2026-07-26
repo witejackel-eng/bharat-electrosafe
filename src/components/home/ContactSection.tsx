@@ -31,17 +31,22 @@ const contactItems = [
 
 export function ContactSection() {
   return (
-    <section id="contact" className="bg-background py-20 md:py-28 scroll-mt-32">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+    <section id="contact" className="bg-background py-20 md:py-28 scroll-mt-32 relative overflow-hidden grain-overlay">
+      {/* Floating decorative shapes */}
+      <div className="floating-shape w-36 h-36 rounded-full bg-navy top-16 right-[10%]" aria-hidden="true" />
+      <div className="floating-shape w-28 h-28 rounded-full bg-orange bottom-20 left-[12%]" aria-hidden="true" />
+
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start">
           {/* Left: Heading + contact info */}
           <div className="md:col-span-6">
             <Reveal delay={0}>
-              <span className="text-eyebrow">Contact</span>
+              <span className="text-eyebrow gradient-text">Contact</span>
             </Reveal>
             <Reveal delay={80}>
+              <div className="w-16 h-1 rounded-full bg-orange animate-underline-reveal mt-2" aria-hidden="true" />
               <h2
-                className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy mt-3 max-w-[480px]"
+                className="text-2xl md:text-3xl lg:text-4xl font-bold gradient-text mt-3 max-w-[480px]"
                 style={{ fontFamily: "'Manrope', sans-serif" }}
               >
                 Talk directly with our technical sales team.
@@ -57,7 +62,7 @@ export function ContactSection() {
               {contactItems.map((item, i) => {
                 const Icon = item.icon;
                 const content = (
-                  <div className="flex items-start gap-4 p-4 rounded-xl bg-white/90 backdrop-blur-[4px] border border-white/60 shadow-sm hover:border-orange/30 hover:shadow-md transition-all duration-200 relative overflow-hidden group/card">
+                  <div className="flex items-start gap-4 p-4 rounded-xl bg-white/90 backdrop-blur-[4px] border border-white/60 shadow-sm hover:border-orange/30 hover:shadow-md transition-all duration-200 relative overflow-hidden group/card card-tilt diagonal-line">
                     {/* Animated gradient line inside card on hover */}
                     <div
                       className="absolute top-0 left-0 w-[3px] h-full bg-border/40 group-hover/card:bg-gradient-to-b group-hover/card:from-orange group-hover/card:to-orange/20 transition-all duration-500 rounded-full"
@@ -100,7 +105,7 @@ export function ContactSection() {
                 href="https://wa.me/911234567890"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block p-6 md:p-8 rounded-2xl bg-navy text-white relative overflow-hidden"
+                className="group block p-6 md:p-8 rounded-2xl bg-navy text-white relative overflow-hidden animate-breathing-glow"
               >
                 {/* Decorative orange line */}
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange via-orange/60 to-transparent" />

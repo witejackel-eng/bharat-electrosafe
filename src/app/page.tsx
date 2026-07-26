@@ -18,6 +18,7 @@ import { InsightsSection } from '@/components/home/InsightsSection';
 import { ProjectGallery } from '@/components/home/ProjectGallery';
 import { SustainabilitySection } from '@/components/home/SustainabilitySection';
 import { ManufacturingProcessSection } from '@/components/home/ManufacturingProcessSection';
+import { ThicknessComparator } from '@/components/home/ThicknessComparator';
 import { DistributorSection } from '@/components/home/DistributorSection';
 import { QuoteProvider } from '@/components/quote/QuoteProvider';
 import { QuoteAdminProvider } from '@/components/quote/QuoteAdminProvider';
@@ -214,6 +215,7 @@ export default function Home() {
                   <HomeProductSystems />
                   <SectionDivider variant="default" />
                   <ProductSelection />
+                  <ThicknessComparator />
                   <SectionDivider variant="dark" />
                   <ManufacturingProcessSection />
                   <SectionDivider variant="accent" />

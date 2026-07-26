@@ -5,11 +5,30 @@ import { ArrowRight, CheckCircle2, Loader2, Mail } from 'lucide-react';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
+const CATEGORIES = [
+  { key: 'product-updates', label: 'Product updates', defaultChecked: true },
+  { key: 'is-15652-changes', label: 'IS 15652 changes', defaultChecked: false },
+  { key: 'sustainability-news', label: 'Sustainability news', defaultChecked: false },
+  { key: 'technical-resources', label: 'Technical resources', defaultChecked: false },
+];
+
 export function NewsletterSubscribe() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [message, setMessage] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [categories, setCategories] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    CATEGORIES.forEach((cat) => {
+      initial[cat.key] = cat.defaultChecked;
+    });
+    return initial;
+  });
+
+  const toggleCategory = useCallback((key: string) => {
+    setCategories((prev) => ({ ...prev, [key]: !prev[key] }));
+  }, []);
 
   const submit = useCallback(
     async (e: React.FormEvent) => {
@@ -19,11 +38,17 @@ export function NewsletterSubscribe() {
       setStatus('loading');
       setMessage('');
 
+      // Collect selected categories as comma-separated string
+      const selectedCategories = CATEGORIES
+        .filter((cat) => categories[cat.key])
+        .map((cat) => cat.key)
+        .join(',');
+
       try {
         const res = await fetch('/api/subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, source: 'footer' }),
+          body: JSON.stringify({ email, source: 'footer', categories: selectedCategories }),
         });
         const data = await res.json();
         if (!res.ok) {
@@ -39,7 +64,7 @@ export function NewsletterSubscribe() {
         setMessage('Network error. Please try again.');
       }
     },
-    [email, status]
+    [email, status, categories]
   );
 
   if (status === 'success') {
@@ -135,6 +160,39 @@ export function NewsletterSubscribe() {
           {message}
         </p>
       )}
+
+      {/* Category preference pills */}
+      <div className="flex flex-wrap gap-2 mt-1">
+        {CATEGORIES.map((cat) => {
+          const checked = categories[cat.key];
+          return (
+            <button
+              key={cat.key}
+              type="button"
+              onClick={() => toggleCategory(cat.key)}
+              aria-pressed={checked}
+              aria-label={`${cat.label} — ${checked ? 'selected' : 'not selected'}`}
+              className={`
+                inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg
+                text-xs font-medium transition-all duration-200 cursor-pointer
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-1 focus-visible:ring-offset-navy
+                ${
+                  checked
+                    ? 'border-orange bg-orange-soft text-orange border border-orange/60'
+                    : 'border border-white/20 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white/80'
+                }
+              `}
+              style={{ fontFamily: "'Manrope', sans-serif" }}
+            >
+              {checked && (
+                <span className="size-2.5 rounded-full bg-orange shrink-0" aria-hidden="true" />
+              )}
+              {cat.label}
+            </button>
+          );
+        })}
+      </div>
+
       <p
         className="text-[0.7rem] text-white/55 leading-relaxed"
         style={{ fontFamily: "'Manrope', sans-serif" }}
