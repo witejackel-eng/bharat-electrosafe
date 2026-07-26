@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  // Allow cross-origin dev requests from the sandbox environment
+  allowedDevOrigins: ['21.0.4.238:3000', 'localhost:3000'],
 };
 
 export default nextConfig;

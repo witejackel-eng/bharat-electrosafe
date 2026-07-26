@@ -38,6 +38,7 @@ interface NavSection {
 
 const SECTIONS: NavSection[] = [
   { id: 'products', label: 'Products' },
+  { id: 'voltage-calculator', label: 'Voltage' },
   { id: 'product-selection', label: 'Selection' },
   { id: 'manufacturing', label: 'Manufacturing' },
   { id: 'proof', label: 'Proof' },

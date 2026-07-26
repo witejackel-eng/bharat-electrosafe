@@ -27,12 +27,20 @@ export function TestimonialsSection() {
   const t = testimonials[active];
 
   return (
-    <section id="testimonials" className="bg-ivory-light py-20 md:py-28 scroll-mt-32 relative overflow-hidden">
+    <section id="testimonials" className="bg-ivory-light py-20 md:py-28 scroll-mt-32 relative overflow-hidden grain-overlay">
       {/* Decorative background quote mark */}
       <Quote
         className="absolute top-8 right-8 size-32 text-navy/[0.05] pointer-events-none"
         aria-hidden="true"
       />
+
+      {/* Floating decorative quote shapes */}
+      <div className="floating-shape top-[30%] left-[5%]" aria-hidden="true" style={{ animationDelay: '-4s' }}>
+        <Quote className="size-20 text-orange/[0.04]" />
+      </div>
+      <div className="floating-shape bottom-[10%] right-[15%]" aria-hidden="true" style={{ animationDelay: '-10s' }}>
+        <Quote className="size-16 text-navy/[0.04]" />
+      </div>
 
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative">
         {/* Header */}
@@ -78,7 +86,7 @@ export function TestimonialsSection() {
         <Reveal delay={120} translateY={20}>
           <div
             key={t.id}
-            className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 p-6 md:p-10 rounded-2xl bg-white border border-border hover:border-orange/40 transition-colors duration-500 shadow-sm group/testimonial relative overflow-hidden"
+            className="card-tilt border-glow grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 p-6 md:p-10 rounded-2xl bg-white border border-border hover:border-orange/40 transition-colors duration-500 shadow-sm group/testimonial relative overflow-hidden"
           >
             {/* Left: avatar + organization */}
             <div className="md:col-span-4 flex flex-col gap-4">
@@ -214,9 +222,7 @@ export function TestimonialsSection() {
               onClick={() => setActive(i)}
               aria-label={`Go to testimonial ${i + 1}`}
               aria-current={i === active}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === active ? 'w-8 bg-orange' : 'w-1.5 bg-border hover:bg-steel/60'
-              }`}
+              className={`h-1.5 rounded-full transition-all duration-400 ${i === active ? 'w-1.5 bg-orange scale-x-[5.33] origin-left' : 'w-1.5 bg-border hover:bg-steel/60 scale-x-100'}`}
             />
           ))}
         </div>

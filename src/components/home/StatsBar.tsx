@@ -57,7 +57,7 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   return (
     <span
       ref={ref}
-      className="text-4xl md:text-5xl font-bold text-navy dark:text-white counter-glow"
+      className="text-4xl md:text-5xl font-bold gradient-text counter-glow"
       style={{ fontVariantNumeric: 'tabular-nums', fontFamily: "'Manrope', sans-serif" }}
     >
       {count}
@@ -68,17 +68,16 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
 
 export function StatsBar() {
   return (
-    <section className="bg-ivory-light py-16 md:py-20 border-y border-border/40 relative overflow-hidden">
-      {/* Subtle decorative grid pattern background */}
-      <div
-        className="absolute inset-0 opacity-[0.025] pointer-events-none"
-        style={{
-          backgroundImage: 'linear-gradient(to right, var(--color-navy) 1px, transparent 1px), linear-gradient(to bottom, var(--color-navy) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
-        }}
-        aria-hidden="true"
-      />
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative">
+    <section className="bg-ivory-light py-16 md:py-20 border-y border-border/40 relative overflow-hidden grain-overlay">
+      {/* Dot-grid background pattern */}
+      <div className="absolute inset-0 dot-grid-bg pointer-events-none" aria-hidden="true" />
+
+      {/* Floating decorative shapes for visual depth */}
+      <div className="floating-shape w-40 h-40 rounded-full bg-orange top-[5%] -right-10" aria-hidden="true" style={{ animationDelay: '-2s' }} />
+      <div className="floating-shape w-56 h-56 rounded-full bg-navy bottom-[10%] -left-12" aria-hidden="true" style={{ animationDelay: '-9s' }} />
+      <div className="floating-shape w-24 h-24 bg-orange top-[50%] left-[30%]" aria-hidden="true" style={{ animationDelay: '-14s', transform: 'rotate(45deg)' }} />
+
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           {stats.map((stat, i) => (
             <Reveal key={stat.label} delay={i * 80} translateY={12}>
@@ -104,8 +103,13 @@ export function StatsBar() {
                   <span className="inline-block w-1 h-1 rounded-full bg-orange mr-1.5" aria-hidden="true" />
                   {stat.label}
                 </span>
-                {/* Orange safety line under each stat - smoother animation */}
-                <div className="hidden md:block h-px bg-gradient-to-r from-orange/60 via-orange/20 to-transparent mt-3 max-w-[80px] group-hover/stat:max-w-[120px] transition-all duration-700 ease-out" />
+                {/* Animated progress indicator — thin orange bar fills up on reveal */}
+                <div className="mt-3 h-0.5 w-full bg-border/40 rounded-full overflow-hidden">
+                  <div
+                    className="stat-progress-bar h-full bg-gradient-to-r from-orange to-orange/60 rounded-full"
+                    style={{ animationDelay: `${i * 200 + 400}ms` }}
+                  />
+                </div>
               </div>
             </Reveal>
           ))}
