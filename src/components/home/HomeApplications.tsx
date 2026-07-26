@@ -1,0 +1,141 @@
+'use client';
+
+import { applications } from '@/data/applications';
+import { Reveal } from '@/components/motion/Reveal';
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+
+export function HomeApplications() {
+  return (
+    <section id="applications" className="bg-background py-20 md:py-28">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+        {/* Section header */}
+        <Reveal delay={0}>
+          <span className="text-eyebrow">Applications</span>
+        </Reveal>
+        <Reveal delay={80}>
+          <h2
+            className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy mt-3 max-w-[560px]"
+            style={{ fontFamily: "'Manrope', sans-serif" }}
+          >
+            Designed for critical environments
+          </h2>
+        </Reveal>
+
+        {/* Application mosaic */}
+        <div className="mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
+          {applications.map((app, i) => (
+            <Reveal key={app.id} delay={i * 80} translateY={16}>
+              <Link
+                href={`#${app.id}`}
+                className="group relative block rounded-2xl overflow-hidden bg-muted aspect-[4/3] md:aspect-[3/2] lg:aspect-square"
+              >
+                <Image
+                  src={app.image}
+                  alt={app.name}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/30 to-transparent" />
+                {/* Orange safety line on hover */}
+                <div className="absolute bottom-0 left-0 w-0 group-hover:w-full h-[3px] bg-orange transition-all duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
+                  <span className="text-sm md:text-base font-semibold text-white block" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                    {app.name}
+                  </span>
+                  <span className="text-xs text-orange/80 font-medium" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                    {app.system}
+                  </span>
+                </div>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <Reveal delay={500}>
+          <div className="mt-8 md:mt-10">
+            <Button
+              variant="outline"
+              className="border-navy text-navy hover:bg-navy hover:text-white font-medium px-6 h-11 rounded-lg transition-all"
+              asChild
+            >
+              <Link href="#applications">
+                Explore applications
+                <ArrowRight className="size-4 ml-1" />
+              </Link>
+            </Button>
+          </div>
+        </Reveal>
+
+        {/* Company credibility strip */}
+        <div id="company" className="mt-20 md:mt-28 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-center">
+          {/* Factory image */}
+          <div className="md:col-span-5">
+            <Reveal delay={0} translateY={20}>
+              <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-muted">
+                {/* Safety line accent */}
+                <div className="absolute top-4 left-0 w-[3px] h-[50%] bg-orange rounded-full" />
+                <Image
+                  src="/images/factory.png"
+                  alt="Bharat Electrosafe manufacturing facility"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 42vw"
+                />
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Company info */}
+          <div className="md:col-span-7 flex flex-col gap-4">
+            <Reveal delay={80}>
+              <span className="text-eyebrow">Company</span>
+            </Reveal>
+            <Reveal delay={120}>
+              <h3 className="text-xl md:text-2xl font-bold text-navy" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                Manufacturing electrical safety systems since 1989.
+              </h3>
+            </Reveal>
+            <Reveal delay={160}>
+              <p className="text-sm text-steel leading-relaxed" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                Bharat Electrosafe produces insulating mats, visible-safety variants and civil-protection systems from its IMT Manesar facility, serving government utilities, railways and private-sector infrastructure.
+              </p>
+            </Reveal>
+
+            {/* Recognition labels */}
+            <Reveal delay={200}>
+              <div className="flex flex-wrap gap-3 mt-3">
+                <div className="inline-flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border bg-white hover:border-orange/30 hover:bg-orange-soft transition-all duration-200">
+                  <div className="w-2 h-2 rounded-full bg-orange" />
+                  <span className="text-spec text-navy" style={{ fontFamily: "'Manrope', sans-serif" }}>BIS Licensed</span>
+                </div>
+                <div className="inline-flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border bg-white hover:border-orange/30 hover:bg-orange-soft transition-all duration-200">
+                  <div className="w-2 h-2 rounded-full bg-orange" />
+                  <span className="text-spec text-navy" style={{ fontFamily: "'Manrope', sans-serif" }}>ISO 9001:2015</span>
+                </div>
+                <div className="inline-flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border bg-white hover:border-orange/30 hover:bg-orange-soft transition-all duration-200">
+                  <div className="w-2 h-2 rounded-full bg-orange" />
+                  <span className="text-spec text-navy" style={{ fontFamily: "'Manrope', sans-serif" }}>IS 15652</span>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={280}>
+              <Link
+                href="#about"
+                className="inline-flex items-center gap-2 text-sm font-medium text-orange hover:text-orange-hover transition-colors mt-2"
+              >
+                Learn more about Bharat Electrosafe
+                <span className="transition-transform duration-200 hover:translate-x-1">→</span>
+              </Link>
+            </Reveal>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
