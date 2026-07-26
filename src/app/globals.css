@@ -223,6 +223,9 @@
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+  /* Reserve space at the bottom for the sticky CTA bar so anchored sections
+     don't get hidden behind it. The bar is ~72px tall + 16px bottom offset. */
+  scroll-padding-bottom: 96px;
 }
 
 @media (prefers-reduced-motion: reduce) {

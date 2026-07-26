@@ -1,0 +1,302 @@
+     1→   300→   300→  - Privacy Policy link uses `#` placeholder href as instructed.
+     2→   301→   301→  - Manrope font applied via inline `style={{ fontFamily: "'Manrope', sans-serif" }}` to match other components.
+     3→   302→   302→  - Radix Dialog handles focus trap and Esc-to-close automatically.
+     4→   303→   303→  - Cancel/Save preferences buttons in dialog footer; Save persists the toggle state and hides the banner.
+     5→   304→   304→  - Exported `_resetCookieConsent()` helper for dev convenience (clears localStorage + notifies listeners).
+     6→   305→   305→- Integrated into `src/app/page.tsx`:
+     7→   306→   306→  - Imported `CookieConsent` from `@/components/ui-custom/CookieConsent`.
+     8→   307→   307→  - Added `<CookieConsent />` immediately after `<ScrollToTop />`, inside `<main>`, which is itself inside both `<QuoteProvider>` and `<ProductDetailProvider>` — so the banner has access to both contexts if needed in the future.
+     9→   308→   308→- Lint: ran `bunx eslint src/components/ui-custom/CookieConsent.tsx src/app/page.tsx` — 0 errors, 0 warnings on the files this task created/modified.
+    10→   309→   309→  - NOTE: Project-wide `bun run lint` currently reports 2 pre-existing errors in `src/components/search/SearchPalette.tsx` (lines 245 and 251, both `react-hooks/set-state-in-effect`). That file is untracked in git and was created by an earlier cron-review-cycle agent (file mtime predates this task). It is NOT touched by Task 5 and the errors are unrelated to the cookie consent work. Flagging here for the next cycle.
+    11→   310→   310→- Verification with `agent-browser open http://localhost:3000`:
+    12→   311→   311→  1. Cleared localStorage, reloaded, waited 2.5s → banner appeared at bottom of page (heading "We value your privacy", buttons "Accept all" / "Necessary only" / "Manage preferences", Privacy Policy link).
+    13→   312→   312→  2. Screenshot saved: `/home/z/my-project/download/qa-cookie-consent.png` (330 KB).
+    14→   313→   313→  3. Clicked "Manage preferences" → Radix Dialog opened with three rows: "Necessary ALWAYS ON" (disabled checked switch), "Analytics" (unchecked), "Marketing" (unchecked), plus Cancel and Save preferences buttons.
+    15→   314→   314→  4. Screenshot saved: `/home/z/my-project/download/qa-cookie-preferences.png` (169 KB).
+    16→   315→   315→  5. Clicked Analytics + Marketing toggles ON, clicked Save preferences → dialog closed, banner slid out, localStorage now contains `{"version":1,"timestamp":...,"necessary":true,"analytics":true,"marketing":true}`.
+    17→   316→   316→  6. Reopened Manage preferences dialog, pressed Escape → dialog closed (Radix focus-trap + Esc handling verified), banner stayed visible (correct: user hadn't yet made a choice).
+    18→   317→   317→  7. Clicked "Accept all" → banner disappeared, localStorage updated.
+    19→   318→   318→  8. Reloaded page → banner did NOT reappear (localStorage persistence verified). No console errors, no runtime errors.
+    20→   319→   319→- Hit one runtime issue during iteration: first version used a `useState(false)` mount guard set inside `useEffect` which (a) triggered the `react-hooks/set-state-in-effect` lint error and (b) after switching to `useSyncExternalStore`, hit the "result of getSnapshot should be cached to avoid an infinite loop" error because `getConsentSnapshot` returned a fresh object every call. Fixed by caching the last raw localStorage string and the parsed object at module scope, only re-parsing when the raw string changes.
+    21→   320→   320→
+    22→   321→   321→Stage Summary:
+    23→   322→   322→- Created `/home/z/my-project/src/components/ui-custom/CookieConsent.tsx` — a polished, accessible, brand-aligned cookie consent banner with a preferences dialog. Uses shadcn `Dialog`/`Switch`/`Label`, Lucide icons (`Cookie`, `ShieldCheck`, `BarChart3`, `Megaphone`), Manrope font, navy/orange/ivory brand palette.
+    24→   323→   323→- Banner: bottom-fixed, slide-in after 1500ms delay, `role="dialog" aria-label="Cookie consent"`, `aria-live="polite"`, three actions (Accept all / Necessary only / Manage preferences), Privacy Policy `#` link, dark-navy background with white text and orange primary button.
+    25→   324→   324→- Preferences dialog: focus-trapped (Radix), Esc-to-close, three category rows with toggle switches; Necessary always on & disabled, Analytics & Marketing toggleable; Save preferences persists to localStorage.
+    26→   325→   325→- Persistence: `localStorage.be-cookie-consent` with versioned shape; banner stays hidden after any choice is made, survives reload.
+    27→   326→   326→- Integration: added `<CookieConsent />` to `src/app/page.tsx` after `<ScrollToTop />`, inside `<main>`, inside both `<QuoteProvider>` and `<ProductDetailProvider>`.
+    28→   327→   327→- SSR-safe: renders nothing on server (mount guard via `useSyncExternalStore`), no hydration warnings.
+    29→   328→   328→- Lint: my files pass cleanly. Project-wide lint has 2 pre-existing errors in `src/components/search/SearchPalette.tsx` from an earlier cycle — flagged but not in scope.
+    30→   329→   329→- Screenshots: `download/qa-cookie-consent.png`, `download/qa-cookie-preferences.png`.
+    31→   330→   330→
+    32→   331→   331→---
+    33→   332→   332→Task ID: 6
+    34→   333→   333→Agent: search-palette-builder
+    35→   334→   334→Task: Build a Search / Command Palette (cmd+K style) for the Bharat Electrosafe homepage
+    36→   335→   335→
+    37→   336→   336→## Current project status description/assessment
+    38→   337→   337→
+    39→   338→   338→Prior cycles (Tasks 1–5) delivered the complete Bharat Electrosafe homepage: Hero, StatsBar, ProductSystems, ProductSelection, ProofCentre, Applications, Testimonials, Resources, Contact, FinalCTA, plus Header (with scroll compression), Footer (sticky), QuoteDialog + QuoteProvider, ProductDetailDialog + ProductDetailProvider, CompareDialog (openCompare), ThemeToggle (next-themes), CookieConsent, ScrollToTop, and full dark-mode CSS overrides. Search was listed as a MEDIUM priority gap in Task 4's "remaining items".
+    40→   339→   339→
+    41→   340→   340→## Current goals/completed modifications/verification results
+    42→   341→   341→
+    43→   342→   342→### Work Log
+    44→   343→   343→
+    45→   344→   344→**1. Created `src/components/search/SearchProvider.tsx`**
+    46→   345→   345→- React context with `openSearch({ initialQuery? })`, `closeSearch()`, and `isOpen` exposed via `useSearch()` hook.
+    47→   346→   346→- Provider renders `<SearchPalette>` internally so consumers don't need to wire it up manually.
+    48→   347→   347→- State: `open` (boolean) + `initialQuery` (string, reset on each open).
+    49→   348→   348→
+    50→   349→   349→**2. Created `src/components/search/SearchPalette.tsx`** (main client component)
+    51→   350→   350→- Uses shadcn `Dialog` / `DialogContent` / `DialogTitle` (sr-only) / `DialogDescription` (sr-only) + `Input`.
+    52→   351→   351→- DialogContent override: `top-[12vh] left-1/2 -translate-x-1/2 translate-y-0 sm:max-w-2xl max-h-[76vh] p-0 gap-0` — top-aligned (not centered), cmdk-style overlay (twMerge resolves the default `top-[50%] translate-y-[-50%]` to the new top-aligned position).
+    53→   352→   352→- Auto-focuses input on open (effect with 60ms timeout for radix mount).
+    54→   353→   353→- **Data sources**: imports `productSystems` from `@/data/products`, `applications` from `@/data/applications`, `resources` from `@/data/resources`, plus 7 Page/Anchor entries and 2 Action entries — all built into a single `SearchResult[]` via `useMemo`.
+    55→   354→   354→- Each result has: `id`, `title`, `subtitle`, `category` (Product|Application|Resource|Page|Action), `icon` (lucide), `keywords[]`, `onSelect()`, `popular?` flag.
+    56→   355→   355→- **Actions integration**: `Request a Quote` calls `useQuote().openQuote()` (deferred via setTimeout to let the palette close first); `Compare systems` calls `useProductDetail().openCompare()`; product results call `openProduct(id)`; pages/applications/resources use `document.querySelector('#anchor')?.scrollIntoView({ behavior: 'smooth', block: 'start' })`.
+    57→   356→   356→- **Filtering**: case-insensitive substring match on title + subtitle + keywords (joined haystack).
+    58→   357→   357→- **Grouping**: results rendered with interspersed category headers (Products, Applications, Resources, Pages, Actions) — preserves CATEGORY_ORDER.
+    59→   358→   358→- **Empty state**: shows 8 curated "Popular" suggestions (Electrical Insulation, Substations, Insulating Mat Selection Guide, Products, Proof Centre, Contact, Request a Quote, Compare systems) — spans all 5 categories.
+    60→   359→   359→- **No-results state**: dedicated panel with search icon and "try a different keyword" copy.
+    61→   360→   360→- **Keyboard navigation**:
+    62→   361→   361→  - Global `Cmd+K` / `Ctrl+K` listener (preventDefault) toggles open/close.
+    63→   362→   362→  - ArrowDown / ArrowUp move highlightedIndex with wrap-around (handled on input `onKeyDown`).
+    64→   363→   363→  - Enter triggers `onSelect()` of the highlighted item.
+    65→   364→   364→  - Esc closes (handled natively by radix Dialog).
+    66→   365→   365→  - Mouse hover also sets highlightedIndex (`onMouseEnter`).
+    67→   366→   366→  - Highlighted item auto-scrolls into view via `useEffect` + `querySelector('[data-idx="N"]').scrollIntoView({ block: 'nearest' })`.
+    68→   367→   367→- **State reset (lint-safe pattern)**: instead of `setState` inside effects, used the React "store previous value" derived-state pattern — `prevQuery` resets `highlightedIndex` when query changes; `prevOpen` resets query + highlightedIndex when dialog opens/closes. (Avoids `react-hooks/set-state-in-effect` errors.)
+    69→   368→   368→- **Styling**: brand palette — `bg-orange-soft text-navy` for highlighted, `bg-orange text-white` for highlighted icon chip, `text-steel` for subtitles, `bg-ivory-light dark:bg-background` for results area, `bg-white/95 dark:bg-card/95` for header/footer. Manrope font via `style={{ fontFamily: "'Manrope', sans-serif" }}`. Dark-mode aware via `dark:` variants throughout.
+    70→   369→   369→- **Footer**: keyboard hints — `↑↓ navigate`, `↵ select`, `esc close` (with kbd-styled pills) + "Bharat Electrosafe · Search" attribution.
+    71→   370→   370→
+    72→   371→   371→**3. Created `src/components/search/SearchTrigger.tsx`**
+    73→   372→   372→- Button component with `Search` lucide icon, optional "Search" label, and `⌘K` (Mac) / `Ctrl K` (other platforms) hint pill (auto-detected via `navigator.platform`).
+    74→   373→   373→- `compact` prop for icon-only mode.
+    75→   374→   374→- `showHint` prop to hide the kbd pill on tight screens.
+    76→   375→   375→- Calls `useSearch().openSearch()` on click.
+    77→   376→   376→- Used in Header (desktop only) and MobileDrawer (full-width variant at top).
+    78→   377→   377→
+    79→   378→   378→**4. Modified `src/app/page.tsx`**
+    80→   379→   379→- Added `import { SearchProvider } from '@/components/search/SearchProvider'`.
+    81→   380→   380→- Wrapped the existing main + scripts in `<SearchProvider>` placed **inside** `<ProductDetailProvider>` (which is inside `<QuoteProvider>`) so the SearchPalette can call `useQuote().openQuote()` and `useProductDetail().openCompare()` / `openProduct(id)` for action results.
+    82→   381→   381→- The SearchPalette is auto-rendered by the provider — no separate `<SearchPalette />` mount needed in page.tsx.
+    83→   382→   382→- Preserved the existing `CookieConsent` component that was added by a prior task.
+    84→   383→   383→
+    85→   384→   384→**5. Modified `src/components/layout/Header.tsx`**
+    86→   385→   385→- Imported `SearchTrigger`.
+    87→   386→   386→- Added `<SearchTrigger className="hidden md:inline-flex" />` to the right-side action cluster, before the `<QuoteButton>`. Visual order: Search → Request a Quote → ThemeToggle → MobileDrawer.
+    88→   387→   387→
+    89→   388→   388→**6. Modified `src/components/navigation/MobileDrawer.tsx`**
+    90→   389→   389→- Imported `SearchTrigger`.
+    91→   390→   390→- Added a full-width `<SearchTrigger compact={false} className="w-full justify-start h-10" />` at the top of the mobile drawer nav (right after the SheetHeader), so mobile users have an obvious search entry point that opens the palette.
+    92→   391→   391→- Adjusted nav padding (`pt-2` → `pt-3 gap-3`) to give the search trigger breathing room.
+    93→   392→   392→
+    94→   393→   393→### Verification Results
+    95→   394→   394→- `bun run lint`: **0 errors, 1 acceptable warning** (custom-font warning in layout.tsx — pre-existing).
+    96→   395→   395→- Dev server: GET / 200, no runtime errors.
+    97→   396→   396→- agent-browser (1440×900 desktop):
+    98→   397→   397→  - **Open via Cmd/Ctrl+K**: confirmed (palette opens, `Search Bharat Electrosafe` heading + search textbox appear).
+    99→   398→   398→  - **Open via Header button**: confirmed (SearchTrigger button visible in header with ⌘K hint).
+   100→   399→   399→  - **Empty state**: 8 popular suggestions across all 5 categories (Products, Applications, Resources, Pages, Actions) — verified via accessibility tree + VLM image analysis.
+   101→   400→   400→  - **Type "insulat"**: returns Electrical Insulation product (first, highlighted) + Visible Safety, Civil Protection, Substations, Control Rooms, Power Utilities, Insulating Mat Selection Guide, IS 15652 Standard Summary, 33 kV Substation Case Study. ✓
+   102→   401→   401→  - **Type "subst"**: returns Substations application (first, highlighted) + Case Study resource + Applications page. ✓
+   103→   402→   402→  - **Type "civil"**: returns Civil Protection product + Tunnels/Water application + BharatMembrane Datasheet + Water-Stop System Technical Brief.
+   104→   403→   403→  - **Type "quote"**: returns Testimonials page (matches "quotes" keyword) + Request a Quote action.
+   105→   404→   404→  - **Type "compare"**: returns Compare systems action.
+   106→   405→   405→  - **Arrow keys**: highlightedIndex moves correctly (verified via `getComputedStyle` backgroundColor check — highlighted item shows `rgba(232, 97, 26, 0.08)` = `bg-orange-soft`).
+   107→   406→   406→  - **Enter on highlighted**: tested with "subst" → arrow-down twice, arrow-up once, Enter → page scrolled to #resources section (Case Study resource's onSelect fires `scrollToAnchor('#resources')`). Window scrollY confirmed at 8140px.
+   108→   407→   407→  - **Click "Request a Quote" action**: closes palette, opens existing QuoteDialog with full form (Full name, Email, Company, Submit request, etc.). ✓
+   109→   408→   408→  - **Click "Compare systems" action (via Enter)**: closes palette, opens existing CompareDialog with PRIMARY FUNCTION / VARIANTS rows + 3-column comparison table. ✓
+   110→   409→   409→  - **Click Civil Protection product result**: closes palette, opens ProductDetailDialog for civil-protection (shows Waterproofing heading, AVAILABLE VARIANTS, KEY FEATURES, APPLICABLE STANDARDS, Request a quote for this product CTA). ✓
+   111→   410→   410→  - **Esc closes palette**: confirmed.
+   112→   411→   411→  - **Cmd/Ctrl+K toggles**: confirmed (opens when closed, closes when open).
+   113→   412→   412→- agent-browser (390×844 mobile):
+   114→   413→   413→  - SearchTrigger hidden in header (md:inline-flex), hamburger menu opens MobileDrawer.
+   115→   414→   414→  - MobileDrawer shows full-width SearchTrigger at top.
+   116→   415→   415→  - Clicking it opens the palette successfully.
+   117→   416→   416→- VLM (vision) analysis of `qa-search-empty.png`: confirms palette is centered, has magnifying-glass input, all 5 category headers (PRODUCTS, APPLICATIONS, RESOURCES, PAGES, ACTIONS) visible, all 8 popular items with subtitles, keyboard-hint footer with navigate/select/close hints, no clipping/overlap.
+   118→   417→   417→- VLM analysis of `qa-search-results.png`: confirms filtered results grouped under PRODUCTS/APPLICATIONS/RESOURCES, first item (Electrical Insulation) highlighted with orange-soft background + orange icon chip + return-arrow indicator, all results have appropriate icons and subtitles.
+   119→   418→   418→
+   120→   419→   419→### Screenshots saved
+   121→   420→   420→- `/home/z/my-project/download/qa-search-empty.png` — palette open, no query, all 5 categories visible.
+   122→   421→   421→- `/home/z/my-project/download/qa-search-results.png` — palette with "insulat" query showing 9 filtered results across 3 categories, first item highlighted.
+   123→   422→   422→
+   124→   423→   423→## Unresolved issues or risks, and priority recommendations for the next phase
+   125→   424→   424→
+   126→   425→   425→### Known minor items (not blockers):
+   127→   426→   426→1. **Mobile drawer overlay interaction**: when SearchTrigger is clicked from inside the open MobileDrawer, the SearchPalette opens on top — but the MobileDrawer Sheet remains open underneath (slightly dimmed by the palette overlay). User can close the palette (Esc) to return to the drawer, or close both separately. Could be improved by lifting Sheet open-state and auto-closing on search trigger click — left as a future enhancement.
+   128→   427→   427→2. **Radix `aria-describedby` warning**: a transient `Missing Description or aria-describedby for {DialogContent}` warning appears once on first mount — even though `DialogDescription` is rendered. This is a known radix race-condition quirk and doesn't affect functionality or accessibility (the description is correctly associated after mount). Other existing dialogs (QuoteDialog, CompareDialog) have the same behavior.
+   129→   428→   428→3. **Substring matching is generous**: typing "insulat" matches all 3 products because every product's keyword list includes the generic term "insulation". This is acceptable for a discovery-oriented palette (Electrical Insulation is always first), but could be tightened by computing per-product keywords more strictly.
+   130→   429→   429→
+   131→   430→   430→### Files created
+   132→   431→   431→- `src/components/search/SearchProvider.tsx`
+   133→   432→   432→- `src/components/search/SearchPalette.tsx`
+   134→   433→   433→- `src/components/search/SearchTrigger.tsx`
+   135→   434→   434→
+   136→   435→   435→### Files modified
+   137→   436→   436→- `src/app/page.tsx` (added SearchProvider import + wrapped main in `<SearchProvider>`)
+   138→   437→   437→- `src/components/layout/Header.tsx` (added SearchTrigger to desktop action cluster)
+   139→   438→   438→- `src/components/navigation/MobileDrawer.tsx` (added SearchTrigger at top of drawer)
+   140→   439→   439→
+   141→   440→   440→### Priority recommendations for next cycle
+   142→   441→   441→- LOW: Auto-close MobileDrawer when SearchTrigger is clicked (lift Sheet state).
+   143→   442→   442→- LOW: Add recent-searches persistence (localStorage) to surface as a "Recent" group above "Popular".
+   144→   443→   443→- LOW: Add `/search` analytics event tracking when the palette is opened / a result is selected.
+   145→   444→   444→
+   146→   445→   445→---
+   147→   446→   446→Task ID: 7
+   148→   447→   447→Agent: application-detail-builder
+   149→   448→   448→Task: Build an Application Detail Dialog for the Bharat Electrosafe homepage — rich modal opens when a user clicks any application tile in the HomeApplications section, replacing the previous scroll-only behaviour.
+   150→   449→   449→
+   151→   450→   450→## Current project status description/assessment
+   152→   451→   451→
+   153→   452→   452→Prior cycles (Tasks 1–6) delivered the full Bharat Electrosafe homepage: Hero, StatsBar, ProductSystems, ProductSelection, ProofCentre, Applications, Testimonials, Resources, Contact, FinalCTA, plus Header (with scroll compression + SearchTrigger), Footer (sticky), QuoteDialog + QuoteProvider, ProductDetailDialog + ProductDetailProvider (incl. openCompare), CompareDialog, ThemeToggle (next-themes), CookieConsent, ScrollToTop, SearchPalette + SearchProvider (cmdk-style), full dark-mode CSS overrides, and JSON-LD structured data. Task 4 explicitly listed "ApplicationDetailDialog (deeper content per tile)" as a MEDIUM priority gap — this task closes that gap.
+   154→   453→   453→
+   155→   454→   454→Before this task, application tiles in `HomeApplications.tsx` were plain `<Link href="#substations">` anchors that just scrolled the page (with `-top-32` anchor offsets). There was no per-application deep content.
+   156→   455→   455→
+   157→   456→   456→## Current goals / completed modifications / verification results
+   158→   457→   457→
+   159→   458→   458→### Work Log
+   160→   459→   459→
+   161→   460→   460→**1. Extended `src/data/applications.ts`**
+   162→   461→   461→- Read the existing file (6 applications with `id / name / system / systemShort / image` only) and added the requested rich detail fields to the `Application` interface and to each of the 6 applications:
+   163→   462→   462→  - `overview: string` — 2–3 sentence deployment overview.
+   164→   463→   463→  - `useCases: string[]` — 5 specific use cases per application.
+   165→   464→   464→  - `relatedProducts: string[]` — product-system IDs that apply (Substations/Power Utilities → `['electrical-insulation']`; Control Rooms / Railways / Manufacturing → `['electrical-insulation','visible-safety']`; Tunnels → `['civil-protection']`).
+   166→   465→   465→  - `standardsCompliance: { standard, scope }[]` — 2–3 standards with scope (e.g. `{ standard: 'IS 15652', scope: 'Insulating matting for electrical purposes' }`).
+   167→   466→   466→  - `keyConsiderations: { title, description }[]` — 4 engineering considerations per application.
+   168→   467→   467→  - `typicalSpecs: { label, value }[]` — 4 spec rows per application.
+   169→   468→   468→- Content is technically accurate per application:
+   170→   469→   469→  1. **Substations** — Class B/C, IS 15652, IEC 61111, CBIP/CEA, diamond anti-skid, audit-trail embossing.
+   171→   470→   470→  2. **Control Rooms** — Class A/B, antistatic surface (< 10⁹ Ω per IEC 61340), seamless coverage, cleanability.
+   172→   471→   471→  3. **Power Utilities** — generating stations + switchyards + distribution, all classes A/B/C, 10 m rolls, CEA 12-month inspection.
+   173→   472→   472→  4. **Railways / Metro** — 25 kV AC traction substations (Class C with margin), OHE maintenance vehicles, RDSO/IRS acceptance, hi-vis variants.
+   174→   473→   473→  5. **Manufacturing** — HT/LT MCCs, Class A/B, oil/chemical resistance, ≥3 mm at high-traffic panels, Factory Act compliance.
+   175→   474→   474→  6. **Tunnels / Water** — BharatMembrane HDPE 1.0–2.5 mm + BharatHydro PVC water-stop, IS 15401 / IS 15070 / ASTM D4437, hot-wedge double-track seams with air-channel test.
+   176→   475→   475→- Exported new types: `StandardCompliance`, `KeyConsideration`, `TypicalSpec`, and updated `Application`.
+   177→   476→   476→
+   178→   477→   477→**2. Created `src/components/applications/ApplicationDetailDialog.tsx`**
+   179→   478→   478→- `'use client'` component. Props: `application: Application | null`, `open: boolean`, `onOpenChange: (open) => void`. Returns null when application is null.
+   180→   479→   479→- Uses existing shadcn `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle` (sr-only), `DialogDescription` (sr-only), `DialogClose` (used `asChild` for the Back button and X close button), plus `Button`, `Badge`. Lucide icons: `ArrowLeft`, `ArrowRight`, `CheckCircle2`, `Phone`.
+   181→   480→   480→- `DialogContent`: `sm:max-w-4xl max-h-[90vh] overflow-y-auto bg-ivory-light p-0 gap-0` with `showCloseButton={false}` (we render our own Back + X on top of the hero image so they don't collide with the shadcn default).
+   182→   481→   481→- **Hero image (top)**: 16/9 aspect, full-width `next/image` with `priority`, navy gradient overlay (`from-navy-dark/90 via-navy/40 to-transparent`), orange safety-line accent (3 px rounded bar on the left), Back button (top-left pill with `ArrowLeft` + "Back"), X close button (top-right round button), title overlay at bottom-left (orange eyebrow `application.system` + large h2 `application.name`).
+   183→   482→   482→- **Header section**: eyebrow "APPLICATION" + small orange divider + secondary eyebrow (`systemShort · N related systems`), sr-only `DialogTitle`/`DialogDescription` for a11y, then overview paragraph in steel.
+   184→   483→   483→- **Two-column body** (`md:grid-cols-2 gap-6 md:gap-8`):
+   185→   484→   484→  - **Left column**: "Use cases" subsection (orange-dot bullet list) + "Key engineering considerations" subsection (cards with `CheckCircle2` icon + title + description, hover border-orange/30 + shadow).
+   186→   485→   485→  - **Right column**: "Typical specifications" subsection (alternating-row table with `text-spec`-styled labels and tabular-nums navy values, plus a small "indicative specifications" footnote) + "Standards compliance" subsection (cards with a `Badge` for the standard name on `bg-orange-soft` + scope description).
+   187→   486→   486→- **Footer CTAs** (border-top, ivory bg, rounded-b-lg): primary orange `Button` "Request quote for this application" (closes dialog + `setTimeout(() => openQuote({ productSystem: primaryRelatedId }), 200)` to wire into existing QuoteDialog with the related product system pre-selected), outline `Button` "Talk to technical sales" (renders as `<a href="tel:+911234567890">` via `asChild`), and one or more text-link buttons "View {ProductName} →" (one per related product system, closes dialog + `setTimeout(() => openProduct(p.id), 200)` to open the existing ProductDetailDialog).
+   188→   487→   487→- Brand styling: Manrope font via `style={{ fontFamily: "'Manrope', sans-serif" }}` (extracted as a `manropeStyle` const), navy `#1B2A4A` text, orange `#E8611A` accents, ivory `#F5F0E8` background, small orange left-border accents on each section header (3 px × 1rem rounded bar), hover transitions on cards, tabular numerals on spec values. Dark-mode aware via the existing `.dark` overrides in `globals.css` (tokens `bg-ivory-light`, `text-navy`, `text-steel`, `border-border` all remap correctly).
+   189→   488→   488→- Imports `useQuote` from `@/components/quote/QuoteProvider` and `useProductDetail` from `@/components/products/ProductDetailProvider`, and `productSystems` from `@/data/products` to resolve related-product names.
+   190→   489→   489→
+   191→   490→   490→**3. Created `src/components/applications/ApplicationDetailProvider.tsx`**
+   192→   491→   491→- `'use client'` React context with `useApplicationDetail()` hook returning `{ openApplication, closeApplication, selectedAppId }`.
+   193→   492→   492→- State: `selectedAppId: string | null`. `openApplication(appId)` validates the id against the `applications` array (defensive), then sets it; `closeApplication()` clears it.
+   194→   493→   493→- **Derived state pattern (lint-safe)**: instead of tracking `open` separately and syncing via `useEffect`, the active `Application` object is derived during render via `useMemo(() => applications.find(...), [selectedAppId])` and `open = Boolean(application)`. The `onOpenChange` callback only fires `closeApplication()` on close — no `setState` happens inside any effect, so the `react-hooks/set-state-in-effect` lint rule is satisfied. (Same pattern as the existing `ProductDetailProvider`/`QuoteProvider`.)
+   195→   494→   494→- Renders `<ApplicationDetailDialog application={application} open={Boolean(application)} onOpenChange={...} />` once, mounted at provider level — consumers just call `openApplication(id)`.
+   196→   495→   495→
+   197→   496→   496→**4. Integrated into `src/app/page.tsx`**
+   198→   497→   497→- Imported `ApplicationDetailProvider` from `@/components/applications/ApplicationDetailProvider`.
+   199→   498→   498→- Wrapped the existing main + scripts in `<ApplicationDetailProvider>` placed **inside** `<SearchProvider>` (which is itself inside `<ProductDetailProvider>` inside `<QuoteProvider>`), so the `ApplicationDetailDialog` can call `useQuote().openQuote(...)` and `useProductDetail().openProduct(...)` from its footer CTAs.
+   200→   499→   499→
+   201→   500→   500→**5. Modified `src/components/home/HomeApplications.tsx`**
+   202→   501→   501→- Imported `useApplicationDetail` from `@/components/applications/ApplicationDetailProvider` and `ArrowUpRight` from `lucide-react`.
+   203→   502→   502→- Replaced the application tile's `<Link href={#${app.id}}>` with a `<button type="button" onClick={() => openApplication(app.id)}>` — kept the identical visual styling (`group relative block w-full text-left rounded-2xl overflow-hidden bg-muted aspect-[4/3] md:aspect-[3/2] lg:aspect-square` + same image + same navy gradient overlay + same orange safety-line-on-hover + same index number top-left + same bottom-left name/system labels).
+   204→   503→   503→- Added `cursor-pointer` and a clearer `aria-label` (`"${app.name} — ${app.system}. Open application details."`).
+   205→   504→   504→- Added a small "View details" hint icon: a circular `ArrowUpRight` chip (`size-7 rounded-full bg-white/15 backdrop-blur-sm border border-white/25`) at top-right that fades in on hover (`opacity-0 group-hover:opacity-100`). Also added a tiny `ArrowUpRight` next to the system label that fades in on hover for extra affordance.
+   206→   505→   505→- Kept the existing `<div id={app.id} className="absolute -top-32" aria-hidden="true" />` anchor inside the button for backward compatibility with footer hash links and the SearchPalette's `scrollToAnchor('#substations')` etc.
+   207→   506→   506→- The "Explore applications" outline `Button` at the bottom of the section still uses `<Link href="#applications">` (unchanged).
+   208→   507→   507→
+   209→   508→   508→### Verification Results
+   210→   509→   509→
+   211→   510→   510→**Lint**: `bun run lint` — **0 errors, 1 pre-existing acceptable warning** (the `@next/next/no-page-custom-font` warning on `src/app/layout.tsx` from the Manrope `<link>` in `<head>`, present since Task 1).
+   212→   511→   511→
+   213→   512→   512→**Dev server**: stable, `GET / 200`, no compile errors, no runtime errors in `dev.log`.
+   214→   513→   513→
+   215→   514→   514→**agent-browser (desktop 1440×900)**:
+   216→   515→   515→- All 6 application tiles now render as `<button>` elements with the expected `aria-label`s.
+   217→   516→   516→- Click **Substations** tile → ApplicationDetailDialog opens. DOM verified: `h2="Substations"`, eyebrow `"ELECTRICAL INSULATION"`, 5 use-case bullets, 4 spec rows (`.text-spec`), 3 standard badges, 4 key-consideration cards (7 `.rounded-xl.border.bg-white` cards total = 4 considerations + 3 standards), 1 related-product link `"View Electrical Insulation"`. Hero image present.
+   218→   517→   517→- Click **"Request quote for this application"** (orange button) → ApplicationDetailDialog closes, QuoteDialog opens after 200 ms. QuoteDialog's product-system `<select>` has `value="electrical-insulation"` and the "Electrical Insulation" option is `selected:true`. ✓ Pre-selection wired correctly.
+   219→   518→   518→- Click **"View Electrical Insulation"** link → ApplicationDetailDialog closes, ProductDetailDialog opens after 200 ms with `heading="Insulating mats selected by operating voltage."` and a hero image. ✓ Cross-dialog navigation works.
+   220→   519→   519→- Click the **X close button** (top-right) on Control Rooms dialog → dialog closes. ✓
+   221→   520→   520→- Press **Esc** → dialog closes. ✓
+   222→   521→   521→- Click the **Back** button (top-left pill) → dialog closes. ✓
+   223→   522→   522→- Click **Tunnels / Water** tile → dialog opens with `h2="Tunnels / Water"`, eyebrow `"CIVIL PROTECTION"`, 5 use cases, 4 spec rows, 3 standards (IS 15401, IS 15070, ASTM D4437), 1 related link `"View Civil Protection"`. ✓
+   224→   523→   523→- **Dark mode**: toggled `.dark` on `<html>` and opened Power Utilities dialog → dialog `background-color: rgb(27, 42, 74)` (navy dark, remapped from `--color-ivory-light`), eyebrow `color: rgb(232, 97, 26)` (orange, unchanged). All brand tokens resolve correctly via the `.dark` overrides in `globals.css`.
+   225→   524→   524→
+   226→   525→   525→**agent-browser (mobile 390×844)**:
+   227→   526→   526→- Reloaded at 390×844. Applications grid shows 6 tiles (2-col layout).
+   228→   527→   527→- Clicked **Railways / Metro** tile → dialog opens. Dialog `rect: 358×760` (fits viewport with margin), `scrollHeight: 1820`, `clientHeight: 758`, `overflowY: auto` — internal scrolling works.
+   229→   528→   528→- Scrolled dialog to bottom (`scrollTop + clientHeight >= scrollHeight - 5` → `atBottom: true`), footer CTA button `.border-t.border-border.bg-ivory-light button.bg-orange` visible. ✓
+   230→   529→   529→- Press Esc → dialog closes. ✓
+   231→   530→   530→
+   232→   531→   531→**VLM (vision) verification**:
+   233→   532→   532→- `qa-app-detail-substations-body.png` (scrolled to body): VLM confirms all sections visible — Use cases / Key engineering considerations (left column with `Coverage area`, `Surface pattern`, `Audit trail` cards), Typical specifications + Standards compliance (right column with `IS 15652`, `IEC 61111`, `CBIP / CEA safety manual`), and all 3 footer CTAs (`Request quote for this application` [orange], `Talk to technical sales` [outline w/ phone icon], `View Electrical Insulation` [text link under RELATED PRODUCT SYSTEM]). Layout "high professional quality", "no visible clipping or overlap", brand palette consistent.
+   234→   533→   533→- `qa-app-detail-tunnels-body.png` (scrolled to body): VLM confirms Use cases / Key engineering considerations visible (Joint water-stop, Subgrade preparation, Welding and QA), Typical specifications table visible, Standards compliance badges (IS 15401, IS 15070, ASTM D4437) visible, all CTAs (Request quote, Talk to technical sales, View Civil Protection) visible. Layout "well-structured and free of major errors".
+   235→   534→   534→
+   236→   535→   535→### Screenshots saved
+   237→   536→   536→- `/home/z/my-project/download/qa-app-detail-substations.png` — Substations dialog at initial scroll (hero + header + top of body).
+   238→   537→   537→- `/home/z/my-project/download/qa-app-detail-substations-body.png` — Substations dialog scrolled to body (all sections + CTAs visible).
+   239→   538→   538→- `/home/z/my-project/download/qa-app-detail-tunnels.png` — Tunnels dialog at initial scroll (hero + title + back/close).
+   240→   539→   539→- `/home/z/my-project/download/qa-app-detail-tunnels-body.png` — Tunnels dialog scrolled to body (all sections + CTAs visible).
+   241→   540→   540→- `/home/z/my-project/download/qa-app-detail-mobile-railways.png` — Railways dialog on 390×844 mobile viewport, scrolled to footer.
+   242→   541→   541→- `/home/z/my-project/download/qa-app-detail-dark.png` — Power Utilities dialog in dark mode.
+   243→   542→   542→
+   244→   543→   543→### Files created
+   245→   544→   544→- `src/components/applications/ApplicationDetailDialog.tsx`
+   246→   545→   545→- `src/components/applications/ApplicationDetailProvider.tsx`
+   247→   546→   546→
+   248→   547→   547→### Files modified
+   249→   548→   548→- `src/data/applications.ts` (added 6 new fields per application + 3 new exported types; all 6 applications populated with technically accurate content)
+   250→   549→   549→- `src/app/page.tsx` (wrapped main + scripts in `<ApplicationDetailProvider>` inside `<SearchProvider>`)
+   251→   550→   550→- `src/components/home/HomeApplications.tsx` (changed `<Link>` tile to `<button>` calling `openApplication(app.id)`; added ArrowUpRight hover hint chip; kept anchor div for backward compat)
+   252→   551→   551→
+   253→   552→   552→## Unresolved issues or risks, and priority recommendations for the next phase
+   254→   553→   553→
+   255→   554→   554→### Known minor items (not blockers)
+   256→   555→   555→1. **Dialog initial viewport on desktop**: at 1440×900, the 16/9 hero image (≈504 px tall) + header (~80 px) consumes ~584 px of the 810 px (90 vh) dialog, leaving ~226 px for the body content before scrolling. The dialog scrolls (verified), but a user opening it for the first time sees mostly the hero. This is per-spec ("Top: large image (16/9 aspect) with title overlay + back button") and intentional — the hero image gives strong visual context. If a more compact first view is desired in a future cycle, the hero could be reduced to `aspect-[21/9]` or `aspect-[3/1]` (cinematic banner) without changing the rest of the layout.
+   257→   556→   556→2. **Radix `aria-describedby` warning**: a transient `Missing Description or aria-describedby for {DialogContent}` warning appears once on first mount — even though both `DialogTitle` (sr-only) and `DialogDescription` (sr-only) are rendered. This is the same known radix race-condition quirk already noted in Task 6 for the SearchPalette / QuoteDialog / CompareDialog; no functional or a11y impact.
+   258→   557→   557→3. **SearchPalette still uses `scrollToAnchor('#substations')`** for application results. Because the `#substations` anchor div is preserved inside the new tile button (with `-top-32` offset), the SearchPalette result still scrolls to the tile rather than opening the dialog. Could be enhanced in a future cycle to call `useApplicationDetail().openApplication(id)` instead — would require adding `useApplicationDetail` to `SearchPalette.tsx` (ApplicationDetailProvider is now a parent of SearchProvider, so this is wired correctly today).
+   259→   558→   558→4. **Footer hash links** (`#substations`, `#control-rooms`, etc.) still scroll rather than open the dialog — by design, since the anchor divs are preserved. Acceptable: hash-link users get scrolled to the tile, then can click it.
+   260→   559→   559→
+   261→   560→   560→### Priority recommendations for next cycle
+   262→   561→   561→- LOW: Wire `SearchPalette` application results to `openApplication(id)` (replaces `scrollToAnchor`).
+   263→   562→   562→- LOW: Consider a `cmd+K`-style "preview on hover" for application tiles (popover with the overview paragraph + first 2 use cases) before the user commits to clicking.
+   264→   563→   563→- LOW: Replace placeholder `tel:+911234567890` with the real Bharat Electrosafe sales number once confirmed.
+   265→   564→   564→
+   266→   565→   565→---
+   267→   566→   566→Task ID: 8
+   268→   567→   567→Agent: quote-admin-builder
+   269→   568→   568→Task: Build a polished Quote Admin dashboard dialog (opened from a discreet Admin button in the Header) showing all submitted quote requests in a clean table view with summary stats, filter, search, expand-row details, copy-email toast, and full mobile/dark-mode support.
+   270→   569→   569→
+   271→   570→   570→## Current project status description/assessment
+   272→   571→   571→
+   273→   572→   572→Prior cycles (Tasks 1–7) delivered the full Bharat Electrosafe homepage: Hero, StatsBar, ProductSystems, ProductSelection, ProofCentre, Applications, Testimonials, Resources, Contact, FinalCTA, plus Header (with scroll compression + SearchTrigger), Footer (sticky), QuoteDialog + QuoteProvider, ProductDetailDialog + ProductDetailProvider (incl. openCompare), CompareDialog, ApplicationDetailDialog + ApplicationDetailProvider, ThemeToggle (next-themes), CookieConsent, ScrollToTop, SearchPalette + SearchProvider (cmdk-style), full dark-mode CSS overrides, and JSON-LD structured data. The `/api/quote` endpoint already existed with POST (submit) and GET (list) methods and an in-memory store that generates IDs like `Q-MS26CT7U`. This task adds an admin-side dashboard to triage those submitted quotes.
+   274→   573→   573→
+   275→   574→   574→## Current goals / completed modifications / verification results
+   276→   575→   575→
+   277→   576→   576→### Work Log
+   278→   577→   577→
+   279→   578→   578→**1. Created `src/components/quote/QuoteAdminDialog.tsx`** (`'use client'`)
+   280→   579→   579→- Props: `open: boolean`, `onOpenChange: (open) => void`. Uses existing shadcn `Dialog`, `DialogContent` (`sm:max-w-5xl max-h-[85vh] overflow-hidden flex flex-col bg-ivory-light p-0 gap-0`), `DialogHeader`, `DialogTitle`, `DialogDescription`, plus `Button`, `Input`, `Badge`, `Skeleton`, `Select`, `Tooltip`. Lucide icons: `LayoutDashboard`, `RefreshCw`, `Search`, `Eye`, `Copy`, `Mail`, `Phone`, `MapPin`, `FileText`, `ChevronDown`, `Inbox`, `AlertCircle`.
+   281→   580→   580→- Header: orange-soft icon chip + `LayoutDashboard` + title "Quote requests dashboard" + subtitle `${counts.total} request(s) · last refreshed ${relative}`.
+   282→   581→   581→- Toolbar (white/40 bg, border-b): Refresh button (with spinning `RefreshCw` while loading), `Select` filter (All / Class A / Class B / Class C / Other systems), and `Input[type=search]` with leading `Search` icon. Stats row: 4 mini cards (Total / Class A / Class B / Class C) on `grid-cols-2 md:grid-cols-4 gap-2.5`.
+   283→   582→   582→- Table: columns Reference (mono, orange, tabular-nums), Submitted (relative time + `title=` absolute), Contact (name + company + email stacked), System + class, Voltage / Quantity, Status (orange NEW badge), Actions (View toggle + Copy email). Sticky thead. Row hover `bg-orange-soft`; even rows striped `bg-muted/40`.
+   284→   583→   583→- Expanded row: animated `slide-in-from-top-2 fade-in-0` reveal; renders 2-column grid of DetailField cards (Delivery location, Dimensions, Phone, Email, Additional requirements) with orange lucide icons + uppercase steel labels; "Not provided" placeholder for empty values.
+   285→   584→   584→- States: empty (`Inbox` icon + heading + description — differentiates "No quote requests yet" vs "No matching requests"), loading (6 skeleton rows), error (`AlertCircle` + retry button).
+   286→   585→   585→- Footer: "Showing X of Y requests" + "Data is in-memory and resets on server restart" notice.
+   287→   586→   586→- Helpers: `formatRelativeTime(iso)` returns `Xs ago` / `Xm ago` / `Xh ago` / `Xd ago`; `formatAbsoluteTime(iso)` for `title` attr; `resolveProductSystemName(id)` via `productSystems`; `classLabel(cls)` returns `Class X` or `—`.
+   288→   587→   587→- Data fetching: simple `fetch('/api/quote', { cache: 'no-store' })` inside `useEffect` triggered on `open`; manual `Refresh` re-calls `fetchQuotes`. Copy email uses `navigator.clipboard.writeText(email)` + `useToast` from `@/hooks/use-toast` for the "Email copied" toast feedback.
+   289→   588→   588→
+   290→   589→   589→**2. Created `src/components/quote/QuoteAdminProvider.tsx`** (`'use client'`)
+   291→   590→   590→- React context with `useQuoteAdmin()` hook returning `{ openAdmin, closeAdmin, isOpen }`.
+   292→   591→   591→- Single `useState<boolean>` for `isOpen` — same lint-safe derived-state pattern as the existing `SearchProvider` (state stored in context, child Dialog reads `open` + `onOpenChange`).
+   293→   592→   592→- Renders `<QuoteAdminDialog open={isOpen} onOpenChange={setIsOpen} />` once at provider level.
+   294→   593→   593→
+   295→   594→   594→**3. Created `src/components/quote/QuoteAdminTrigger.tsx`** (`'use client'`)
+   296→   595→   595→- Discreet ghost button wrapped in shadcn `Tooltip` with content "View submitted quote requests".
+   297→   596→   596→- `aria-label="Open admin dashboard"`, `LayoutDashboard` icon, "Admin" label (`hidden md:inline`).
+   298→   597→   597→- Uses `cn()` from `@/lib/utils` so consumer `className` (e.g. `hidden md:inline-flex`) is properly merged with the base classes via tailwind-merge — critical for the responsive hide-on-mobile behaviour to work correctly.
+   299→   598→   598→
+   300→   599→   599→**4. Integrated**
+   301→
+   302→[showing lines 300-599 of 1013; use offset=600 with limit to continue reading]

@@ -1,3 +1,85 @@
+total 23277
+drwxr-xr-x   1 z    z       4096 Jul 26 19:08 .
+drwxr-xr-x   1 z    z       4096 Jul 26 17:48 ..
+-rw-r--r--   1 z    z         50 Jul 26 17:04 .env
+drwxrwxr-x   8 z    z       4096 Jul 26 20:09 .git
+-rw-r--r--   1 z    z        586 May 12 10:06 .gitignore
+drwxrwxr-x   3 z    z       4096 Jul 26 17:24 .next
+drwxr-xr-x   2 z    z       4096 Jul 26 17:23 .zscripts
+-rw-r--r--   1 z    z        493 May 12 10:06 Caddyfile
+drwxrwxr-x   2 z    z       4096 Jul 26 19:54 agent-ctx
+-rw-r--r--   1 z    z     328127 May 12 10:06 bun.lock
+-rw-r--r--   1 z    z        430 May 12 10:06 components.json
+drwxrwxr-x   2 z    z       4096 Jul 26 17:24 db
+-rw-rw-r--   1 z    z      10752 Jul 26 20:09 dev.log
+drwxr-xr-x   2 z    z       4096 Jul 26 20:08 download
+-rw-r--r--   1 z    z       1632 May 12 10:06 eslint.config.mjs
+drwxr-xr-x   3 z    z       4096 Jul 21 06:49 examples
+drwxr-xr-x   2 z    z       4096 Jul 21 06:49 mini-services
+-rw-rw-r--   1 z    z        251 Jul 26 17:24 next-env.d.ts
+-rw-r--r--   1 z    z        504 Jul 26 19:33 next.config.ts
+drwxr-xr-x 567 z    z      20480 Jul 26 17:23 node_modules
+-rw-r--r--   1 z    z       3213 Jul 21 03:06 package.json
+-rw-r--r--   1 z    z         81 May 12 10:06 postcss.config.mjs
+drwxr-xr-x   2 z    z       4096 Jul 21 06:49 prisma
+drwxr-xr-x   3 z    z       4096 Jul 26 17:50 public
+-rw-rw-r--   1 z    z     149482 Jul 26 18:09 qa-desktop-applications.png
+-rw-rw-r--   1 z    z     469862 Jul 26 18:09 qa-desktop-contact.png
+-rw-rw-r--   1 z    z     936934 Jul 26 18:09 qa-desktop-finalcta.png
+-rw-rw-r--   1 z    z    1153903 Jul 26 18:09 qa-desktop-footer.png
+-rw-rw-r--   1 z    z     544711 Jul 26 18:08 qa-desktop-productsystems.png
+-rw-rw-r--   1 z    z     911000 Jul 26 18:08 qa-desktop-proof.png
+-rw-rw-r--   1 z    z     350559 Jul 26 18:08 qa-desktop-selection.png
+-rw-rw-r--   1 z    z     501252 Jul 26 18:08 qa-desktop-top.png
+-rw-rw-r--   1 z    z     438812 Jul 26 18:24 qa-final-footer.png
+-rw-rw-r--   1 z    z     545753 Jul 26 18:24 qa-final-hero.png
+-rw-rw-r--   1 z    z     153768 Jul 26 18:25 qa-final-mobile-mid.png
+-rw-rw-r--   1 z    z      64322 Jul 26 18:25 qa-final-mobile.png
+-rw-rw-r--   1 z    z     318071 Jul 26 18:24 qa-final-productsystems.png
+-rw-rw-r--   1 z    z     783136 Jul 26 18:24 qa-final-proof.png
+-rw-rw-r--   1 z    z     572196 Jul 26 18:24 qa-final-resources.png
+-rw-rw-r--   1 z    z     196462 Jul 26 18:24 qa-final-testimonials.png
+-rw-rw-r--   1 z    z     543100 Jul 26 18:10 qa-product-detail.png
+-rw-rw-r--   1 z    z     297782 Jul 26 18:09 qa-quote-dialog.png
+-rw-rw-r--   1 z    z     296932 Jul 26 18:10 qa-quote-filled.png
+-rw-rw-r--   1 z    z     319426 Jul 26 18:10 qa-quote-success.png
+-rw-rw-r--   1 z    z     355864 Jul 26 18:22 qa-v2-compare-fixed.png
+-rw-rw-r--   1 z    z     351325 Jul 26 18:23 qa-v2-compare-fixed2.png
+-rw-rw-r--   1 z    z     322209 Jul 26 18:24 qa-v2-compare-fixed3.png
+-rw-rw-r--   1 z    z     376145 Jul 26 18:21 qa-v2-compare.png
+-rw-rw-r--   1 z    z     545713 Jul 26 18:18 qa-v2-darkmode-fixed.png
+-rw-rw-r--   1 z    z     525511 Jul 26 18:17 qa-v2-darkmode-on.png
+-rw-rw-r--   1 z    z     546282 Jul 26 18:17 qa-v2-darkmode.png
+-rw-rw-r--   1 z    z      46143 Jul 26 18:17 qa-v2-footer.png
+-rw-rw-r--   1 z    z     375921 Jul 26 18:19 qa-v2-proof.png
+-rw-rw-r--   1 z    z     113656 Jul 26 18:19 qa-v2-resources.png
+-rw-rw-r--   1 z    z      90295 Jul 26 18:18 qa-v2-testimonials.png
+-rw-rw-r--   1 z    z     546282 Jul 26 18:16 qa-v2-top.png
+-rw-rw-r--   1 z    z     196445 Jul 26 18:06 screenshot-contact-section.png
+-rw-rw-r--   1 z    z     553412 Jul 26 17:51 screenshot-desktop-full.png
+-rw-rw-r--   1 z    z     418274 Jul 26 17:48 screenshot-desktop.png
+-rw-rw-r--   1 z    z     808695 Jul 26 17:56 screenshot-final-desktop.png
+-rw-rw-r--   1 z    z     407356 Jul 26 17:56 screenshot-final-mobile.png
+-rw-rw-r--   1 z    z     665866 Jul 26 17:56 screenshot-final-tablet.png
+-rw-rw-r--   1 z    z    2598759 Jul 26 18:06 screenshot-final-v2.png
+-rw-rw-r--   1 z    z     538591 Jul 26 17:51 screenshot-full.png
+-rw-rw-r--   1 z    z     450794 Jul 26 17:56 screenshot-header-scrolled.png
+-rw-rw-r--   1 z    z     244722 Jul 26 17:51 screenshot-mobile-full.png
+-rw-rw-r--   1 z    z      79072 Jul 26 17:49 screenshot-mobile.png
+-rw-rw-r--   1 z    z     514493 Jul 26 18:06 screenshot-product-detail.png
+-rw-rw-r--   1 z    z     624295 Jul 26 17:52 screenshot-product-selection.png
+-rw-rw-r--   1 z    z     196445 Jul 26 18:06 screenshot-scrolled-down.png
+-rw-rw-r--   1 z    z     551749 Jul 26 17:52 screenshot-scrolled.png
+-rw-rw-r--   1 z    z     560176 Jul 26 17:51 screenshot-tablet.png
+drwxr-xr-x   1 z    z       4096 Jul 26 17:04 skills
+drwxr-xr-x   7 z    z       4096 Jul 26 17:38 src
+-rw-r--r--   1 z    z       1696 May 12 10:06 tailwind.config.ts
+drwxr-xr-x   2 z    z       4096 Jul 21 06:49 tests
+drwxrwxr-x   2 z    z       4096 Jul 26 19:56 tool-results
+-rw-r--r--   1 z    z        730 Jul 26 17:24 tsconfig.json
+drwxrwxrwx   1 root root    4096 Jan  1  1970 upload
+-rw-rw-r--   1 z    z     100019 Jul 26 20:09 worklog.md
+---WORKLOG---
 ---
 Task ID: 1
 Agent: main-orchestrator
@@ -1010,399 +1092,3 @@ QA testing via agent-browser at 390×844 mobile and 1440×900 desktop viewports 
 - LOW: Add performance optimization (image lazy loading, prefetch links)
 - LOW: Add newsletter email validation and confirmation toast
 - LOW: Add quote admin dashboard improvements (status tracking, export)
-
----
-Task ID: 1-a
-Agent: section-builder
-Task: Create CaseStudies and Insights sections
-
-Work Log:
-- Read /home/z/my-project/worklog.md to understand prior work: homepage fully built across tasks 1-4 with Hero, StatsBar, ProductSystems, ProductSelection, ProofCentre, Applications, Testimonials, Resources, Contact, FinalCTA, plus Quote/ProductDetail/Compare dialogs, theme toggle, cookie consent, ScrollToTop, JSON-LD
-- Inspected existing patterns by reading TestimonialsSection.tsx, ResourcesSection.tsx, StatsBar.tsx, WhyChooseUs.tsx, FAQSection.tsx to confirm shared conventions: 'use client', Reveal from @/components/motion/Reveal, Manrope via style={{ fontFamily: "'Manrope', sans-serif" }}, text-eyebrow utility, max-w-[1440px] container with px-6 md:px-10 lg:px-16, py-20 md:py-28 section padding, scroll-mt-32, rounded-2xl border border-border bg-white cards with hover:-translate-y-1
-- Re-read globals.css to confirm dark mode token remapping (.dark .text-navy → foreground, .dark .bg-white → card, .dark .bg-ivory-light → card, .dark .text-steel → muted-foreground) so the new components stay legible in dark mode without code changes
-- Created /home/z/my-project/src/components/home/CaseStudiesSection.tsx:
-  - 'use client' directive, semantic <section id="case-studies"> with bg-background, py-20 md:py-28, scroll-mt-32, overflow-hidden, subtle dotted pattern background (radial-gradient navy dots at 4% opacity)
-  - Header: orange uppercase "CASE STUDIES" eyebrow, H2 "Project outcomes that engineered trust." (text-navy text-3xl md:text-4xl font-bold), text-steel subtitle (max-w-2xl leading-relaxed), right-aligned "All case studies →" link
-  - 3 case study cards in responsive grid (grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6)
-  - Each <article tabIndex={0}> with rounded-2xl border border-border/60 bg-white p-6, hover:border-orange/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-300, focus-visible:outline-2 focus-visible:outline-orange focus-visible:outline-offset-2
-  - Per-card header gradient strip (32 height, from-navy/from-orange/from-steel) with diagonal sheen overlay, watermark + centred lucide icon in white/15 backdrop-blur circle
-  - Project type badge: orange uppercase text-xs with leading orange dot
-  - Client name (text-steel text-xs), project title (<h3> text-base md:text-lg font-semibold text-navy)
-  - 3-column KPI grid inside a bg-ivory-light p-3 rounded-xl panel: each KPI has small lucide icon (Building2/Calendar/ShieldCheck etc.), orange tabular-nums value, text-[10px] steel label
-  - Outcome paragraph (text-sm text-steel leading-relaxed flex-1)
-  - "Read full case study →" Link (text-orange hover:underline, ArrowRight with translate-x-1 on hover)
-  - Reveal animations with delay={150 + i*80}, translateY={16}
-  - Lucide icons: Factory, Train, Building2, Zap, TrendingUp, Calendar, ShieldCheck, ArrowRight (all via type LucideIcon import)
-  - 3 case studies: Power Utility (Western Region Transmission Corp., 33 kV matting upgrade, 47 sites/12 weeks/0 incidents, IS 15652 Class C replacing IS 5424); Railway/Metro (South Indian Metro Rail Corporation, platform & traction substation safety, 18 stations/6.5 km/100% compliance, visible-safety bi-colour mats); Manufacturing (Bharat Heavy Electricals Limited, plant-wide insulation standardisation, 4 plants/3200 m²/35% downtime reduction, Class A switchgear rooms)
-  - Footer note with "Talk to a project engineer" link
-  - All text uses style={{ fontFamily: "'Manrope', sans-serif" }}
-  - All cards keyboard-focusable with rounded-2xl focus-visible ring
-- Created /home/z/my-project/src/components/home/InsightsSection.tsx:
-  - 'use client' directive, <section id="insights"> with bg-ivory-light, py-20 md:py-28, scroll-mt-32, decorative diagonal stripe pattern background at 3% opacity
-  - Header: orange uppercase "INSIGHTS" eyebrow, H2 "Technical insights from the production floor." (text-navy text-3xl md:text-4xl font-bold), text-steel subtitle (max-w-2xl leading-relaxed), right-aligned "All articles →" link
-  - Layout: lg:grid-cols-3 — featured card spans lg:col-span-2 on the left, 2 smaller cards stacked on the right (flex-col gap-6, flex-1 each so the two cards equalise height)
-  - Featured article <article tabIndex={0}> with rounded-2xl border bg-white p-6 md:p-8:
-    - Top-right "FEATURED" pill badge in bg-orange text-white with pulsing white dot
-    - Decorative gradient header strip (h-28, from-navy via-navy-light to-orange) with dotted overlay, watermark BookOpen icon, centred BookOpen icon in white/15 backdrop-blur circle, "From the engineering desk" label
-    - Orange uppercase category "Technical Brief"
-    - <h3> text-2xl font-bold text-navy: "Specifying insulating mat thickness for high-humidity environments"
-    - Excerpt (line-clamp-3, text-steel leading-relaxed) about IS 15652 thickness selection for coastal substations / hydro galleries
-    - Meta row (border-t pt-5): author (text-navy/80), date with Calendar icon, reading time with Clock icon, "Read article →" Link
-  - 2 smaller articles each <article tabIndex={0}> with rounded-xl border bg-white p-5, hover:border-orange/30 hover:shadow-md hover:-translate-y-1:
-    - Top row: orange-soft square icon (FileText / TrendingUp) + orange uppercase category
-    - Title (<h3> text-base font-semibold text-navy)
-    - Excerpt (line-clamp-2, text-steel)
-    - Meta footer: author (truncated max-w-140px), reading time, ArrowRight that translates-x-1 + opacity 70→100 on hover
-  - Articles: Featured (Rajesh Menon, Head of Engineering, 12 Mar 2025, 8 min read, IS 15652 thickness selection); "Why dielectric breakdown voltage isn't the only spec that matters" (Quality Assurance Team, 28 Feb 2025, 5 min read, testing); "Visible-safety colour standards: comparing IS and IEC approaches" (Compliance Desk, 09 Feb 2025, 6 min read, standards)
-  - Reveal animations: featured delay={150}, smaller cards delay={230 + i*80}, all translateY={16}
-  - Lucide icons: BookOpen, FileText, Clock, Calendar, ArrowRight, TrendingUp (via type LucideIcon)
-  - Footer note linking to #resources (existing ResourcesSection anchor)
-  - All text uses Manrope style prop, all cards keyboard-focusable with focus-visible:outline-2 outline-orange outline-offset-2 rounded-2xl/rounded-xl
-- Did NOT modify page.tsx or any existing file (per task instructions — only created 2 new files). The components are ready to be wired into page.tsx by a future task if desired.
-- Ran `cd /home/z/my-project && bun run lint` — result: 0 errors, 1 pre-existing warning (custom fonts in layout.tsx from a prior task; unrelated to this work)
-- Ran `bunx tsc --noEmit -p tsconfig.json` to confirm no TypeScript errors in the new files (existing pre-existing TS errors in Reveal.tsx, examples/, skills/, src/app/api/chat/route.ts are all from prior tasks and not touched by this work)
-
-Stage Summary:
-- Created 2 new homepage section components (NEW FILES ONLY — no existing files modified):
-  - /home/z/my-project/src/components/home/CaseStudiesSection.tsx — 3-card case studies grid with gradient header strips, KPI panels (orange tabular-nums), outcome summaries, read-full-case-study links, realistic Indian industrial content (Western Region Transmission Corp., South Indian Metro Rail Corporation, Bharat Heavy Electricals Limited)
-  - /home/z/my-project/src/components/home/InsightsSection.tsx — featured article (lg:col-span-2) + 2 smaller stacked articles, FEATURED pill badge, gradient header strips with BookOpen watermark, meta rows with date/reading time/author, realistic content (Rajesh Menon on IS 15652 thickness, QA Team on dielectric specs, Compliance Desk on IS vs IEC colour standards)
-- Both components: 'use client', Manrope font via style prop, Reveal animations (delay 150 + i*80, translateY 16), responsive (1 col mobile → 2 md → 3 lg for case studies; lg:col-span-2 + stacked column for insights), keyboard-focusable (tabIndex={0} on each <article> with focus-visible:outline-2 outline-orange outline-offset-2), semantic HTML (<article>, <h3>, <section id>), lucide-react icons, next/link with href="#" placeholders, dark-mode compatible via existing globals.css token remapping, prefers-reduced-motion respected by Reveal, subtle decorative elements (dotted patterns, gradient strips, watermark icons)
-- Lint: 0 errors, 1 pre-existing warning (unrelated). TypeScript: 0 errors in new files. Dev server: stable (GET / 200)
-- Components are ready for wiring into page.tsx by a future task (NOT done here to honour the "do NOT modify any existing file" constraint)
-
----
-Task ID: 1-b
-Agent: ui-utility-builder
-Task: Create StickyCTABar and ScrollProgressBar components
-
-Work Log:
-- Read `/home/z/my-project/worklog.md` (1012 lines) to understand prior work — homepage has 10+ sections, QuoteProvider wraps the page, QuoteButton from `@/components/quote/QuoteButton` is the canonical CTA, `#quote` is the FinalCTA section, `#contact` is the ContactSection.
-- Inspected existing `ScrollToTop` and `CookieConsent` components in `src/components/ui-custom/` to match patterns (useSyncExternalStore for mount + reduced-motion, brand color tokens, Manrope inline font).
-- Verified brand color tokens in `src/app/globals.css`: `bg-navy`, `text-orange`, `bg-orange`, `from-orange`, `via-orange-light`, `to-orange` all resolve via Tailwind 4 from `--color-*` CSS vars (with dark-mode overrides).
-- Verified `QuoteButton` API: accepts `className`, `children`, `productSystem?`, `productClass?`, `variant?`, `size?`, `showArrow?`. Used `className="bg-orange hover:bg-orange-hover text-white text-sm font-medium h-9 px-5 rounded-full"` and child text `Request a quote`.
-- Created `src/components/ui-custom/ScrollProgressBar.tsx`:
-  - `'use client'`, fixed `top-0 left-0 right-0 z-[60] h-[3px]` wrapper above the header (z-50).
-  - Inner div uses `bg-gradient-to-r from-orange via-orange-light to-orange`, width updated via ref (direct DOM mutation, no React re-render per scroll).
-  - `requestAnimationFrame`-throttled scroll + resize listeners (passive).
-  - Tracks `scrollY / (scrollHeight - innerHeight)`; opacity 0 until scrollY > 100.
-  - Inline `transition: 'width 80ms linear, opacity 200ms ease'`; reduced-motion mode swaps to `opacity 200ms ease` only (no width transition).
-  - `boxShadow: '0 0 8px rgba(232, 97, 26, 0.4)'` on inner bar for glow.
-  - Listens to `prefers-reduced-motion` changes via `matchMedia` and updates transition live.
-  - Named export `ScrollProgressBar` plus default export.
-- Created `src/components/ui-custom/StickyCTABar.tsx`:
-  - `'use client'`, fixed `bottom-2 left-2 right-2` on mobile, `sm:bottom-4 sm:left-1/2 sm:-translate-x-1/2 sm:max-w-3xl sm:w-[calc(100vw-2rem)]` on desktop.
-  - Pill: `rounded-full bg-navy/95 backdrop-blur-md border border-white/10 shadow-2xl text-white px-4 py-2.5`, flex justify-between.
-  - Left: `Phone` icon (lucide) in orange-soft chip + "Talk to technical sales" + subtitle "+91-123-456-7890 · Mon–Sat 9:30–18:30 IST" (`hidden sm:block text-[0.7rem] text-white/60`).
-  - Right: WhatsApp `<a>` (`bg-[#25D366] hover:bg-[#1DA851]`, `MessageCircle` icon, opens `https://wa.me/911234567890` new tab) + `QuoteButton` with the required className.
-  - Visibility: hidden initially; show when `scrollY > 600`; hide when `#quote` top < `innerHeight * 0.7`; hide for first 5s after mount if `be-cookie-consent` localStorage absent; also re-evaluate on custom `be:cookie-visible` event.
-  - Animation: `translateY(4rem) opacity-0` → `translateY(0) opacity-100`, 400ms ease-out; instant when `prefers-reduced-motion`.
-  - `role="region" aria-label="Quick contact"`, `aria-hidden` toggled with visibility, `inert` attribute applied via spread when hidden so keyboard users skip it.
-  - Used `useSyncExternalStore` for reduced-motion (avoids `setState` synchronously in effect, which lint forbids).
-  - Outer container `pointer-events-none`, inner pill `pointer-events-auto` so hidden state never blocks clicks.
-  - All listeners (scroll, resize, custom event, setTimeout) cleaned up on unmount.
-- Ran `bun run lint`. Initial pass had one error: `setState synchronously within an effect` for `setReducedMotion(mq.matches)`. Fixed by switching to `useSyncExternalStore` (same pattern as `Reveal.tsx`). Final lint: 0 errors, 1 pre-existing acceptable warning (Manrope font in `layout.tsx`).
-- Verified dev server log shows clean compiles, no errors.
-
-Stage Summary:
-- Produced two new files (no existing files modified):
-  - `/home/z/my-project/src/components/ui-custom/ScrollProgressBar.tsx`
-  - `/home/z/my-project/src/components/ui-custom/StickyCTABar.tsx`
-- Both components are SSR-safe, TypeScript-strict, clean up their listeners, respect `prefers-reduced-motion`, and use only brand color tokens that work in light + dark mode.
-- `ScrollProgressBar` mutates the DOM via ref (no per-scroll React render); `StickyCTABar` uses rAF-throttled scroll/resize + a custom `be:cookie-visible` event hook.
-- Both export a named export AND a default export to satisfy the spec wording.
-- Lint result: `0 errors, 1 warning` (warning is the pre-existing `no-page-custom-font` in `layout.tsx` — unrelated to this task).
-- Next step for the orchestrator: mount `<ScrollProgressBar />` and `<StickyCTABar />` somewhere inside the page tree (e.g. in `src/app/page.tsx` alongside `<ScrollToTop />` and `<CookieConsent />`). The `QuoteButton` inside `StickyCTABar` requires being inside the existing `QuoteProvider`, which already wraps the page.
-
----
-Task ID: 2-c
-Agent: cookie-header-polish
-Task: Slim down CookieConsent banner and improve Header search input border
-
-Work Log:
-- Read worklog.md, CookieConsent.tsx, Header.tsx, SearchTrigger.tsx, and StickyCTABar.tsx (confirmed StickyCTABar already listens for the `be:cookie-visible` event)
-- CookieConsent.tsx: imported `X` from lucide-react; narrowed banner (max-w-5xl → max-w-3xl), softened shadow (shadow-2xl → shadow-xl), thinned top accent (h-[3px] → h-[2px]), reduced padding (p-4 sm:p-5 md:p-6 → p-3 sm:p-4) plus pr-9 sm:pr-10 to clear the dismiss button
-- CookieConsent.tsx: shrank icon container (w-11 h-11 → w-9 h-9) + icon (size-5 → size-4); tightened title (text-sm sm:text-base), body (text-[0.8rem] leading-snug, mt-1), privacy link (text-xs)
-- CookieConsent.tsx: compacted buttons (h-10 → h-8, text-sm → text-xs, px-5/px-4 → px-3); action column md:w-56 lg:w-64 → md:w-44 lg:w-48; inner button group md:flex-col → md:flex-row (single row on md+)
-- CookieConsent.tsx: added top-right X dismiss button (size-6, hover:bg-white/10, rounded-full, aria-label="Dismiss cookie banner") wired to handleNecessaryOnly
-- CookieConsent.tsx: added useEffect dispatching `be:cookie-visible` CustomEvent with detail { visible } on isBannerVisible change; moved isBannerVisible declaration above the early return to fix a temporal-dead-zone ReferenceError (caught via dev.log)
-- CookieConsent.tsx: Preferences Dialog left untouched (only the banner was slimmed)
-- Header.tsx: replaced SearchTrigger className with a visibly bordered pill style (border border-border/60 bg-white/60 hover:bg-white hover:border-orange/40 text-navy text-xs font-medium h-9 px-3 rounded-lg transition-colors items-center gap-2) while keeping hidden md:inline-flex
-- Header.tsx: strengthened scrolled boxShadow (0 8px 28px rgba(27,42,74,0.12), 0 2px 6px rgba(27,42,74,0.06))
-- Header.tsx: added absolute 1px bottom gradient line (from-transparent via-orange/40 to-transparent) fading in on scroll
-- Ran `bun run lint`: no errors in the two modified files (pre-existing QuoteAdminDialog.tsx `Badge` error and layout.tsx font warning remain untouched per scope)
-
-Stage Summary:
-- Files modified: src/components/ui-custom/CookieConsent.tsx, src/components/layout/Header.tsx
-- Cookie banner is now meaningfully smaller (narrower width, tighter padding/type, compact h-8 buttons in a single md+ row) while preserving all functionality (accept all / necessary only / manage preferences dialog)
-- New X quick-dismiss button + `be:cookie-visible` window event allow faster dismissal and let StickyCTABar hide itself while the banner is on screen
-- Header search trigger now has a clear bordered pill that no longer blends into the white navbar; scrolled header gains a stronger shadow plus a subtle orange bottom accent line
-- All brand tokens work in light & dark; ARIA attributes preserved; no `any`; Manrope via style prop retained
-- Lint result: clean for the two modified files
-
----
-Task ID: 2-a
-Agent: lightbox-builder
-Task: Create ImageLightbox component and integrate into ProductDetailDialog
-
-Work Log:
-- Read /home/z/my-project/worklog.md to confirm prior context: Bharat Electrosafe homepage is fully built with Header, Hero, ProductSystems, QuoteProvider wrapping the page, ProductDetailDialog rendering a single next/image `<Image>` per product system, brand color tokens (bg-navy-dark, bg-orange, text-navy, text-steel) defined in globals.css with dark-mode overrides, Manrope typeface applied via inline `style={{ fontFamily: "'Manrope', sans-serif" }}`, tw-animate-css installed (provides `animate-in` / `fade-in-0` / `zoom-in-95` / `data-[state=open]:` variants), Reveal.tsx already establishes the `useSyncExternalStore` pattern for prefers-reduced-motion.
-- Inspected `src/components/ui/dialog.tsx` to confirm Radix Dialog primitives are re-exported (`Dialog`, `DialogOverlay`, `DialogContent`, `DialogClose`, `DialogTitle`, `DialogDescription`, `DialogPortal`) — but the shadcn `DialogContent` wrapper bakes in centered modal positioning and a built-in close button which conflict with the full-bleed lightbox layout, so decided to use `@radix-ui/react-dialog` primitives directly in the new component for full control.
-- Read existing `src/components/products/ProductDetailDialog.tsx` to understand the image block structure: a `relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-muted` div containing a decorative orange vertical bar (`absolute left-0 top-4 bottom-4 w-[3px] bg-orange rounded-full`) and a single `next/image` `<Image fill className="object-cover">`. The `if (!product) return null` early return sits below `const { openQuote } = useQuote()` so any new React hooks must also be placed above the early return.
-- Created NEW file `/home/z/my-project/src/components/ui-custom/ImageLightbox.tsx`:
-  - `'use client'` directive.
-  - Imports: `* as React`, `* as DialogPrimitive from '@radix-ui/react-dialog'`, `X` from `lucide-react`, `cn` from `@/lib/utils`.
-  - Props interface `ImageLightboxProps`: `open`, `onOpenChange`, `src`, `alt`, `caption?`, `spec?` — all strictly typed, no `any`.
-  - Reduced-motion handling: local `subscribeToReducedMotion` / `getReducedMotionSnapshot` / `getServerSnapshot` (server snapshot returns `false` for SSR safety) wired through `React.useSyncExternalStore`, mirroring the established pattern in `Reveal.tsx`. Live-updates if the user toggles the OS setting while the lightbox is open.
-  - 2-second "Click image to close" hint: `showHint` state set true on `open` transition via `useEffect`, cleared by a `window.setTimeout(…, 2000)` with cleanup; also reset to false when `open` is false so re-opening re-triggers the hint.
-  - Layout: `DialogPrimitive.Root` → `DialogPrimitive.Portal` → `DialogPrimitive.Overlay` (`fixed inset-0 z-[100] bg-navy-dark/95 backdrop-blur-sm` with fade animations) + `DialogPrimitive.Content` (`fixed inset-0 z-[101] flex items-center justify-center p-4 bg-transparent outline-none` with fade + zoom animations).
-  - `onClick` on `DialogPrimitive.Content` calls `onOpenChange(false)` — clicking anywhere in the full-bleed area (backdrop) closes the lightbox. Inner interactive elements (close button, image button, caption block) call `e.stopPropagation()` so their own handlers run without bubbling redundantly.
-  - Accessible title: `DialogPrimitive.Title` with `sr-only` containing `Enlarged image: {alt}` (Radix warns if a Title is missing inside Content). Added `DialogPrimitive.Description` sr-only with dismiss instructions and `aria-describedby={undefined}` on Content.
-  - Close button: `DialogPrimitive.Close` rendered as a white circle (`bg-white text-navy hover:bg-white/10 hover:text-white transition-colors`) with `X` icon, `aria-label="Close image lightbox"`, focus-visible orange ring with `ring-offset-navy-dark`.
-  - "Click image to close" hint: `pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`, subtle `bg-black/40 backdrop-blur-sm` pill for readability over the image, `text-white/60 text-xs uppercase tracking-wider`, fades in via `animate-in fade-in-0 duration-300` (instant when reduced motion). `aria-hidden="true"` because the Title already describes the dialog.
-  - Image button: native `<button type="button">` with `cursor-zoom-in`, `aria-label={`Close lightbox: ${alt}`}`, calls `onOpenChange(false)` on click. Inside, a plain `<img>` (not next/image — see comment in code) with `block max-h-[80vh] max-w-[90vw] object-contain rounded-lg shadow-2xl`, `draggable={false}`. The button wraps the image tightly so flex centering on Content keeps the image centered.
-  - Caption block (bottom-left): `absolute bottom-4 left-4 max-w-[80%] space-y-1.5` with `onClick stopPropagation`. Spec badge: `inline-block bg-orange text-white uppercase text-[0.65rem] font-semibold tracking-wider px-2 py-0.5 rounded`. Caption text: `text-white text-sm font-medium leading-snug`. Only rendered when `caption || spec` is truthy.
-  - Manrope font applied to every text node via a shared `MANROPE_STYLE` constant (`{ fontFamily: "'Manrope', sans-serif" }`).
-  - SSR safety: `DialogPrimitive.Portal` only mounts on the client; `getServerSnapshot` returns `false`; no direct `window` access at module top-level.
-  - Reduced-motion fallback for the open/close animations: a `animationClass` variable swaps `data-[state=open]:animate-in data-[state=closed]:animate-out … fade/zoom …` for `data-[state=open]:animate-none data-[state=closed]:animate-none` when reduced motion is set. Applied identically to both Overlay and Content.
-  - Both named export `ImageLightbox` and default export provided.
-- Modified `/home/z/my-project/src/components/products/ProductDetailDialog.tsx` (additive only — no existing features removed):
-  - Added `import { useState } from 'react';`
-  - Added `ZoomIn` to the existing `lucide-react` import list.
-  - Added `import { ImageLightbox } from '@/components/ui-custom/ImageLightbox';`
-  - Defined a local `LightboxData` interface (`{ src, alt, caption, spec }` all strings) for strict typing.
-  - Added `const [lightboxOpen, setLightboxOpen] = useState(false);` and `const [lightboxData, setLightboxData] = useState<LightboxData>({ src: '', alt: '', caption: '', spec: '' });` — placed BEFORE the `if (!product) return null;` early return so the hook order is stable across renders.
-  - Replaced the image wrapper `<div>` with a native `<button type="button">` keeping all original classes (`relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-muted`) plus `block cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-ivory-light`.
-  - `aria-label={`Enlarge image: ${product.name}`}` on the button per spec.
-  - `onClick` populates `lightboxData` with `{ src: product.image, alt: product.name, caption: product.description, spec: product.shortName }` and opens the lightbox.
-  - Kept the decorative orange vertical bar — added `z-10 pointer-events-none` so it doesn't intercept clicks.
-  - Kept the original `<Image fill className="object-cover">` exactly; added `transition-transform duration-500 group-hover:scale-[1.03]` for a subtle hover micro-interaction (matches the existing motion-system hover micro pattern).
-  - Added a hover/focus overlay: `absolute inset-0 flex items-center justify-center bg-navy/20 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300 pointer-events-none aria-hidden="true"`. Inside, a white pill (`bg-white/90 backdrop-blur-sm shadow-lg`) containing `<ZoomIn className="size-4 text-navy" />` and `<span className="text-xs font-medium text-navy">Click to enlarge</span>` with Manrope style.
-  - Rendered `<ImageLightbox open={lightboxOpen} onOpenChange={setLightboxOpen} src={lightboxData.src} alt={lightboxData.alt} caption={lightboxData.caption} spec={lightboxData.spec} />` as a sibling of `DialogContent` inside the outer `Dialog` (Radix handles nested dialog focus stacking, and the lightbox's own Portal places it on top via z-[100]/z-[101]).
-- Verified with `bun run lint`: my two files produce 0 errors / 0 warnings. Pre-existing errors in OTHER files (not touched by this task) remain: `QuoteAdminDialog.tsx:638 'Badge' is not defined` and `layout.tsx:58` custom-font warning. The transient `CookieConsent.tsx:181 isBannerVisible` error from the first lint pass did not reappear on the second run (likely a race in that file's earlier work, unrelated to this task).
-- Verified TypeScript via `bunx tsc --noEmit -p tsconfig.json`: no errors in `ImageLightbox.tsx` or `ProductDetailDialog.tsx`.
-- Verified dev server log: `✓ Compiled in …ms` repeated cleanly; the only runtime error in the log (`Cannot access 'isBannerVisible' before initialization` from `CookieConsent.tsx`) is pre-existing and unrelated.
-
-Stage Summary:
-- Produced artifacts:
-  - NEW: `/home/z/my-project/src/components/ui-custom/ImageLightbox.tsx` (≈190 lines) — reusable, SSR-safe, accessibility-complete (Radix Title + Description + focus trap + Escape), prefers-reduced-motion aware, Manrope-typed image lightbox. API: `open`, `onOpenChange`, `src`, `alt`, `caption?`, `spec?`. Click anywhere (backdrop or image) closes; close button top-right; spec badge + caption bottom-left; "Click image to close" hint pulses for 2s on open.
-  - MODIFIED: `/home/z/my-project/src/components/products/ProductDetailDialog.tsx` — additive only. Image is now a `cursor-zoom-in` button with `aria-label`, hover overlay (`ZoomIn` + "Click to enlarge" pill, shown on hover/focus-visible), and a sibling `<ImageLightbox>` rendered inside the outer `Dialog`. All existing functionality (variants grid, insulation class table, key features, standards badges, CTAs, quote hand-off) preserved unchanged.
-- Design decisions worth flagging for downstream agents:
-  - The lightbox deliberately uses a raw `<img>` instead of `next/image` because next/image's `fill` mode requires a sized parent (we need `max-h-[80vh] max-w-[90vw]` with intrinsic aspect-ratio scaling, which next/image's `fill` doesn't support). A code comment explains this.
-  - The lightbox is rendered as a SIBLING of `DialogContent` inside the same outer `Dialog` (not a nested Dialog). Radix's portal layering + our explicit z-[100]/z-[101] stack the lightbox above the product detail dialog. Focus moves to the lightbox when open and returns to the detail dialog when closed.
-  - Spec badge content for product images = `product.shortName` (e.g. "Insulating mats", uppercased by CSS). Caption = `product.description`. These can be tuned per future design feedback.
-  - `cursor-zoom-in` is applied both on the lightbox image button (per spec) and on the ProductDetailDialog image button (per spec).
-- Lint result for this task's files: 0 errors, 0 warnings. (Project-wide lint still reports 1 pre-existing error in `QuoteAdminDialog.tsx` and 1 pre-existing warning in `layout.tsx`, neither of which this task touched.)
-
----
-Task ID: 2-b
-Agent: quote-admin-enhancer
-Task: Add CSV export and status workflow to QuoteAdminDialog
-
-Work Log:
-- Read /home/z/my-project/worklog.md and /home/z/my-project/agent-ctx/8-quote-admin-builder.md to confirm prior task built QuoteAdminDialog + Provider + Trigger, wired into Header/MobileDrawer/page.tsx
-- Read existing QuoteAdminDialog.tsx (704 lines) — identified Refresh button, class filter Select, search input, 4-card stats grid, table with static orange "NEW" Badge in Status column, copy-email action, expandable rows
-- Read CookieConsent.tsx as reference for the useSyncExternalStore + localStorage pattern (cachedRaw/cachedParsed memoization to satisfy React's stable-snapshot requirement)
-- Confirmed QuoteRecord fields from /api/quote/route.ts (id, submittedAt, name, email, phone, company?, productSystem, productClass?, operatingVoltage?, dimensions?, quantity?, deliveryLocation?, message?)
-- Confirmed brand color tokens in globals.css: bg-orange, bg-steel (+dark override to muted-foreground for text-steel only), bg-muted (+dark override to navy-light), bg-emerald-600 (Tailwind built-in)
-- Created /home/z/my-project/src/lib/quote-status-store.ts:
-  - 'use client' module exporting QuoteStatus type ('new'|'reviewed'|'quoted'|'archived'), QuoteStatusMap, QUOTE_STATUS_ORDER, QUOTE_STATUS_LABELS
-  - Internal store: listeners Set, cachedRaw/cachedParsed memoization, subscribe() with storage event listener filtered by STORAGE_KEY='be-quote-status', getSnapshot() that re-parses only when raw string changes, getServerSnapshot() returns {}
-  - Public API: useQuoteStatuses() (reactive map), useQuoteStatus(id) (single), readQuoteStatus(id) (imperative), setQuoteStatus(id, status) (writes localStorage + updates cache + notifies listeners; no-op if unchanged)
-- Created /home/z/my-project/src/lib/csv-export.ts:
-  - CsvQuoteRow interface (14 fields), CSV_HEADERS + COLUMN_ORDER constants
-  - escapeCell() RFC 4180 helper (wraps in quotes, doubles internal quotes, normalizes newlines to spaces)
-  - buildCsv(rows) joins header+body with \r\n
-  - downloadCsv(rows) prepends UTF-8 BOM (\uFEFF), creates Blob, triggers <a download> click, revokes URL after 1s, returns filename bharat-electrosafe-quotes-YYYY-MM-DD.csv
-- Modified /home/z/my-project/src/components/quote/QuoteAdminDialog.tsx:
-  - Imports: removed Badge (no longer used); added DropdownMenu primitives, cn from @/lib/utils, Download + Check icons, QUOTE_STATUS_LABELS/QUOTE_STATUS_ORDER/setQuoteStatus/useQuoteStatuses/types from quote-status-store, downloadCsv + CsvQuoteRow from csv-export
-  - New types: StatusFilterValue = 'all' | QuoteStatus; STATUS_FILTER_OPTIONS array
-  - New helpers: statusBadgeClasses(status) returns Tailwind class string (new=bg-orange text-white, reviewed=bg-steel/20 text-navy border-steel/30, quoted=bg-emerald-600 text-white, archived=bg-muted text-steel); statusDotClasses(status) for menu dots
-  - StatCard: extended accent prop to 'navy'|'orange'|'steel'|'emerald'|'muted' with computed dotClass
-  - Main component: added statusFilter state (default 'all') + statusMap reactive read via useQuoteStatuses(); filteredQuotes now also filters by status; counts memo extended with newCount/reviewedCount/quotedCount/archivedCount
-  - New handleStatusChange(id, next) callback → setQuoteStatus() + toast "Marked as {status}" / "Quote {id} updated"
-  - New handleExportCsv() callback → maps filteredQuotes to CsvQuoteRow[] (resolves product system name, class label, absolute timestamp, status label), calls downloadCsv(), toast "Exported N quote(s) to CSV"; early-returns when filteredQuotes.length === 0
-  - handleOpenChange also resets statusFilter on close
-  - Toolbar row 1: added Export CSV outline button between Refresh and Class filter Select (Download icon, disabled when loading or no filtered quotes, aria-label)
-  - Stats grid split into two rows: Row 1 (Total/ClassA/ClassB/ClassC — unchanged), Row 2 (New/Reviewed/Quoted/Archived — new, dots colored to match badges: orange/steel/emerald/steel-light)
-  - Status filter chips row added inside toolbar: "Status" eyebrow + 5 pill buttons (All/New/Reviewed/Quoted/Archived), active=bg-navy text-white, inactive=white/70 with border, each shows live count in small pill, aria-pressed for a11y
-  - filteredQuotes.map() now computes currentStatus = statusMap[rec.id] ?? 'new' and passes it + onStatusChange callback to QuoteRow
-  - QuoteRow props extended: currentStatus + onStatusChange
-  - Status <td>: replaced static <Badge>NEW</Badge> with DropdownMenu — trigger is small pill button styled via statusBadgeClasses(currentStatus) with ChevronDown that rotates 180° on data-[state=open] and aria-haspopup="menu"; content has DropdownMenuLabel "Set status" + separator + 4 DropdownMenuItems (one per status) each with colored dot + label + Check icon if active; onSelect calls onStatusChange(s); Radix dropdown is keyboard accessible by default
-- Ran `cd /home/z/my-project && bun run lint` → 0 errors, 1 pre-existing warning (@next/next/no-page-custom-font on layout.tsx from Manrope link, unrelated)
-- Ran `bunx tsc --noEmit` filtered for the 3 touched files → no errors reported
-- Verified dev server: GET / → 200, POST /api/quote → 200 (test submission still works), dev.log shows clean "✓ Compiled in XXXms" entries with no runtime errors attributed to my files
-- Verified colSpan={7} on expanded row still correct (7 columns: Reference/Submitted/Contact/System/V/Qty/Status/Actions)
-- Wrote agent-ctx record at /home/z/my-project/agent-ctx/2-b-quote-admin-enhancer.md
-
-Stage Summary:
-- 3 files touched:
-  - CREATED /home/z/my-project/src/lib/quote-status-store.ts (localStorage-backed status store using useSyncExternalStore with cached snapshot memoization; exports useQuoteStatuses/useQuoteStatus/setQuoteStatus + QuoteStatus type + QUOTE_STATUS_ORDER/LABELS)
-  - CREATED /home/z/my-project/src/lib/csv-export.ts (RFC 4180 CSV builder with proper escaping, UTF-8 BOM prefix for Excel ₹ support, browser download helper with date-stamped filename)
-  - MODIFIED /home/z/my-project/src/components/quote/QuoteAdminDialog.tsx (added Export CSV button next to Refresh, second stats row with status counts, status filter chips above table, replaced static NEW badge with keyboard-accessible DropdownMenu status selector, wired status persistence to localStorage)
-- All 4 features from the spec implemented: CSV export (filtered-only, BOM, escaped, toast), status workflow (4 states, localStorage, dropdown badge trigger, toast on change), status filter (chips with live counts), stats updates (New/Reviewed/Quoted/Archived row added; existing 4 stats preserved)
-- TypeScript strict, no `any`, Manrope font via style prop on all new UI, brand color tokens (text-navy/text-steel/bg-orange/bg-muted + bg-emerald-600) used throughout, dropdown keyboard accessible via Radix
-- Lint: 0 errors, 1 pre-existing warning (Manrope font in layout.tsx — unrelated to this task)
-- Dev server: stable, GET / 200, POST /api/quote 200, no compile/runtime errors
-
----
-Task ID: 9 (cycle 9)
-Agent: main-orchestrator
-Task: QA testing, add new sections/features (CaseStudies, Insights, StickyCTABar, ScrollProgressBar, ImageLightbox, QuoteAdmin CSV+status), deep styling polish, and fix VLM-identified issues
-
-## Current project status description/assessment
-
-Prior cycles (Tasks 1-8) delivered a comprehensive Bharat Electrosafe homepage with 10+ sections, full interactive features (QuoteDialog, ProductDetailDialog, CompareDialog, ApplicationDetailDialog, SearchPalette, ThemeToggle, CookieConsent, ScrollToTop, NewsletterSubscribe, QuoteAdmin, ChatWidget), AI-powered chat, deep styling polish with glassmorphism, animated borders, shimmer effects.
-
-This cycle (Task 9) added new sections and features, then fixed critical issues found via VLM analysis.
-
-## Current goals/completed modifications/verification results
-
-### Work Log:
-
-**1. QA Testing via agent-browser (desktop 1440×900 + mobile 390×844)**
-- Verified dev server stable, GET / 200, no runtime errors
-- Verified all 11 sections render (after this cycle's additions)
-- Verified all interactive features (QuoteDialog, ProductDetailDialog, SearchPalette, ThemeToggle, ChatWidget)
-- Verified all API endpoints (/api/quote POST/GET, /api/chat POST)
-- All images load correctly after lazy-load trigger
-- VLM analysis identified critical issues (cookie banner truncation, sticky CTA overlap, NEW chip contrast, admin modal z-index conflict)
-
-**2. New Section: CaseStudiesSection** (Task 1-a, parallel agent)
-- Created `/home/z/my-project/src/components/home/CaseStudiesSection.tsx`
-- 3 customer project stories: Power Utility (47 sites, 12 weeks, 0 incidents), Railway/Metro (18 stations, 6.5 km, 100% compliance), Manufacturing (4 plants, 3200 m², 35% downtime reduction)
-- Each card: gradient header strip with watermark icon, project type badge, client name, title, 3-column KPI panel, outcome paragraph, "Read full case study →" link
-- Hover: border-orange/30, shadow-lg, translate-y-1; keyboard-focusable with focus-visible:outline-orange
-- Reveal stagger animation, Manrope font, dark mode compatible
-
-**3. New Section: InsightsSection** (Task 1-a, parallel agent)
-- Created `/home/z/my-project/src/components/home/InsightsSection.tsx`
-- Featured layout: large featured article (lg:col-span-2) + 2 smaller stacked article cards
-- Featured: "FEATURED" pill badge, gradient header strip, 2xl title, line-clamp excerpt, meta (author · date · reading time), "Read article →" link
-- 3 articles: "Specifying insulating mat thickness for high-humidity environments" (8 min), "Why dielectric breakdown voltage isn't the only spec that matters" (5 min), "Visible-safety colour standards: comparing IS and IEC approaches" (6 min)
-
-**4. New UI Utility: ScrollProgressBar** (Task 1-b, parallel agent)
-- Created `/home/z/my-project/src/components/ui-custom/ScrollProgressBar.tsx`
-- Fixed top-0 z-[60] h-[3px], orange gradient with glow shadow
-- Tracks scroll percentage via requestAnimationFrame
-- Hidden until scrollY > 100, opacity transition
-- Respects prefers-reduced-motion (drops width transition)
-
-**5. New UI Utility: StickyCTABar** (Task 1-b, parallel agent, then refined by main)
-- Created `/home/z/my-project/src/components/ui-custom/StickyCTABar.tsx`
-- Pill-shaped bottom CTA: "Talk to technical sales" + WhatsApp button + Request a Quote button
-- Visibility logic: hidden until scrollY > 600; hides when #quote (FinalCTA) in view; hides when cookie banner visible (via be:cookie-visible event + useSyncExternalStore)
-- Slide-up + fade animation (400ms ease-out), reduced-motion: instant
-- aria-hidden + inert when hidden for keyboard accessibility
-- **Refinement by main orchestrator**: Replaced 5-second timer-based cookie detection with proper external store subscription (useSyncExternalStore) — listens to be:cookie-visible event, falls back to localStorage check, fixes "Avoid calling setState() directly within an effect" lint error
-
-**6. New Feature: ImageLightbox** (Task 2-a, parallel agent)
-- Created `/home/z/my-project/src/components/ui-custom/ImageLightbox.tsx`
-- Built on @radix-ui/react-dialog primitives (not shadcn wrapper — needed full-bleed layout)
-- Full-bleed dark backdrop (bg-navy-dark/95 backdrop-blur-sm)
-- Image centered with max-h-[80vh] max-w-[90vw] object-contain
-- Close button (top-right white circle), caption block (bottom-left with spec badge + caption)
-- "Click image to close" hint pulses for 2s on open
-- Respects prefers-reduced-motion via useSyncExternalStore
-- Modified ProductDetailDialog.tsx to integrate lightbox: product image now wrapped in clickable button with cursor-zoom-in, "Click to enlarge" hint with ZoomIn icon on hover
-
-**7. QuoteAdmin Enhancements** (Task 2-b, parallel agent, then refined by main)
-- Created `/home/z/my-project/src/lib/quote-status-store.ts` — useSyncExternalStore-based localStorage status store (key be-quote-status), QuoteStatus type ('new'|'reviewed'|'quoted'|'archived')
-- Created `/home/z/my-project/src/lib/csv-export.ts` — RFC-4180 CSV builder with UTF-8 BOM for Excel compatibility, downloadCsv() triggers browser download with filename bharat-electrosafe-quotes-YYYY-MM-DD.csv
-- Modified QuoteAdminDialog.tsx:
-  - Added Export CSV button (now styled as filled navy bg-navy hover:bg-navy-light text-white — promoted from ghost/outline)
-  - Added 5 status filter chips (All / New / Reviewed / Quoted / Archived) with live counts
-  - Replaced static NEW badge with status dropdown menu (Radix DropdownMenu) — trigger shows colored chip + chevron, menu lists all 4 statuses with colored dot + Check icon on active
-  - Added 2nd stats row showing New/Reviewed/Quoted/Archived counts with colored dots (orange/steel/emerald/muted)
-  - Status persists to localStorage per quote ID; toast on change "Marked as {status}"
-  - **Refinement by main orchestrator**: Fixed NEW status chip accessibility — changed text-white → text-amber-950 (dark amber on orange) for WCAG AA 4.5:1 contrast compliance
-
-**8. CookieConsent Polish** (Task 2-c, parallel agent, then refined by main)
-- Slimmed banner: max-w-3xl (was 5xl), p-3 sm:p-4 (was p-6), icon w-9 h-9 (was w-11)
-- Tightened typography: title text-sm sm:text-base (was text-lg), body text-[0.8rem] (was text-sm)
-- Compact buttons: h-8 (was h-10), text-xs (was text-sm), action column md:w-44 lg:w-48
-- Added X dismiss button top-right (handleNecessaryOnly on click, aria-label="Dismiss cookie banner")
-- Added useSyncExternalStore-based external store for cookie banner visibility — dispatches be:cookie-visible CustomEvent with {visible: boolean} detail
-- **Refinement by main orchestrator**:
-  - Fixed button truncation: changed from flex-row on md+ to grid-cols-2 layout for the two secondary buttons ("Necessary only" + "Manage prefs"), shorter labels (was "Manage preferences")
-  - Lowered z-index from z-50 → z-40 so the cookie banner no longer overlaps admin/quote modals (Radix Dialogs are z-50)
-
-**9. Header Polish** (Task 2-c, parallel agent)
-- SearchTrigger now visibly bordered pill: border border-border/60 bg-white/60 hover:border-orange/40
-- Stronger scrolled shadow: 0 8px 28px rgba(27,42,74,0.12)
-- Added 1px gradient bottom line (via-orange/40) that fades in when scrolled
-
-**10. Cross-component z-index coordination** (main orchestrator)
-- Created shared external store pattern (useSyncExternalStore) for cookie banner visibility, replicated in StickyCTABar, ScrollToTop, ChatWidget — each subscribes to be:cookie-visible event with localStorage fallback for initial state
-- ScrollToTop shifts up to bottom: 7.5rem when cookie banner visible (was bottom-6)
-- ChatWidget (button + panel) shifts up to bottom: 7.5rem when cookie banner visible (was bottom-6)
-- StickyCTABar hides entirely when cookie banner visible
-- All three components re-evaluate visibility when be:cookie-visible event fires
-
-**11. Page integration**
-- Modified `/home/z/my-project/src/app/page.tsx`:
-  - Added imports for CaseStudiesSection, InsightsSection, ScrollProgressBar, StickyCTABar
-  - Inserted CaseStudiesSection after HomeApplications (with SectionDivider accent)
-  - Inserted InsightsSection after TestimonialsSection (with SectionDivider accent)
-  - Added ScrollProgressBar (above Header in z-order, z-60)
-  - Added StickyCTABar after ScrollToTop (z-40, hides on cookie visible)
-
-**12. Global CSS additions**
-- Added scroll-padding-bottom: 96px to html so anchored section jumps don't hide content behind sticky CTA
-
-**13. CaseStudies gradient consistency fix**
-- Changed Railway card header gradient from `from-orange via-orange-light to-navy` (orange-dominant) → `from-orange-light via-orange to-navy` (more balanced with the other two cards)
-
-### Verification Results:
-- **Lint**: 0 errors, 1 pre-existing warning (Manrope font in layout.tsx)
-- **Dev server**: stable, GET / 200, no runtime errors, no hydration warnings
-- **All 11 sections render correctly** (products, product-selection, proof, applications, case-studies, testimonials, insights, resources, contact, faq, quote)
-- **All new utility components present**: ScrollProgressBar (top, z-60), StickyCTABar (bottom, z-40), ChatWidget (bottom-left, z-50), ScrollToTop (bottom-right, z-40)
-- **Cookie banner behavior**:
-  - Initially hidden, appears after 1.5s if no consent
-  - Slimmer, more compact (max-w-3xl, h-8 buttons)
-  - Action buttons no longer truncate (2-col grid layout)
-  - z-40 (below modals which are z-50)
-  - "Accept all" persists consent, banner slides away
-  - X dismiss button works (treats as Necessary only)
-- **StickyCTABar behavior**:
-  - Hidden on initial render
-  - Hidden when cookie banner visible (proper external store subscription)
-  - Appears after scrollY > 600 AND cookie banner dismissed
-  - Hides when FinalCTA (#quote) section in view
-  - All 3 fixed-position elements (StickyCTA, ScrollToTop, ChatWidget) shift/hide correctly when cookie banner is visible
-- **QuoteAdmin enhancements**:
-  - Export CSV button visible (filled navy style)
-  - 5 status filter chips with live counts
-  - Status dropdown per row (Radix DropdownMenu) — chip shows current status with colored dot
-  - NEW chip now text-amber-950 on orange bg (WCAG AA compliant, ~4.65:1 contrast)
-  - Status changes persist to localStorage
-  - CSV export generates file with UTF-8 BOM, triggers browser download
-- **ImageLightbox**:
-  - Opens from ProductDetailDialog image click
-  - z-101 (above all other elements)
-  - Image centered with max-h-[80vh], caption block bottom-left with spec badge
-  - Close on backdrop click, image click, or Escape
-  - "Click image to close" hint pulses for 2s on open
-- **Dark mode**: All new sections (CaseStudies, Insights) and components (StickyCTABar, ScrollProgressBar) render correctly in dark mode
-- **Mobile (390×844)**: All new sections responsive, sticky CTA pill becomes full-width edge-to-edge
-
-## Unresolved issues or risks, and priority recommendations for the next phase
-
-### Known minor items:
-1. **Sticky CTA covers ~72px of bottom content** when visible — added `scroll-padding-bottom: 96px` to html for anchor links, but regular scroll still has the bar covering the last bit of section content. This is industry-standard behavior for sticky CTAs and acceptable. LOW priority.
-2. **Lightbox missing prev/next navigation** — currently single-image only. Could add gallery navigation if product detail ever shows multiple images. LOW priority.
-3. **InsightsSection uses placeholder `#` links** — articles don't actually exist. Could create a `/insights/[slug]` route with real article content. LOW priority.
-4. **CaseStudiesSection "Read full case study →" links to `#`** — same as above. LOW priority.
-5. **Image optimization disabled** — `images: { unoptimized: true }` still set in next.config.ts (sandbox CSP workaround). Should be removed for production. LOW priority.
-6. **Real PDF assets** — document downloads still generate mock PDFs client-side. LOW priority.
-7. **Admin dashboard seed data** — on fresh sessions, no quotes exist until submitted. Could pre-populate demo data. LOW priority.
-
-### Priority recommendations for next cycle:
-- LOW: Add real article pages for InsightsSection links
-- LOW: Add real case study pages for CaseStudiesSection links
-- LOW: Implement lightbox prev/next navigation for multi-image products
-- LOW: Add analytics event tracking (quote_submit, search_open, app_detail_open, admin_open, cookie_consent_choice, csv_export, status_change, lightbox_open)
-- LOW: Add a "Back to top" smooth scroll progress indicator enhancement
-- LOW: Add ARIA live regions for status changes in admin dashboard
-- LOW: Consider adding a "Project Gallery" section with actual product installation photos
-
