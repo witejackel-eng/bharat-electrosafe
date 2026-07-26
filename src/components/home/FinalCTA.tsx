@@ -1,8 +1,7 @@
 'use client';
 
 import { Reveal } from '@/components/motion/Reveal';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { QuoteButton } from '@/components/quote/QuoteButton';
 import { ArrowRight, Phone, MessageCircle } from 'lucide-react';
 
 export function FinalCTA() {
@@ -32,35 +31,30 @@ export function FinalCTA() {
 
           <Reveal delay={200}>
             <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
-              <Button
+              <QuoteButton
                 className="bg-orange hover:bg-orange-hover text-white font-medium px-7 h-12 rounded-lg text-base"
-                asChild
+                showArrow
               >
-                <Link href="#quote">
-                  Request a Quote
-                  <ArrowRight className="size-4 ml-1" />
-                </Link>
-              </Button>
-              <Button
-                variant="outline"
-                className="border-navy text-navy hover:bg-navy hover:text-white font-medium px-6 h-12 rounded-lg transition-all"
-                asChild
+                Request a Quote
+              </QuoteButton>
+              <a
+                href="tel:+911234567890"
+                className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-lg border border-navy text-navy hover:bg-navy hover:text-white font-medium transition-all"
+                style={{ fontFamily: "'Manrope', sans-serif" }}
               >
-                <a href="tel:+911234567890">
-                  <Phone className="size-4 mr-2" />
-                  Call technical sales
-                </a>
-              </Button>
-              <Button
-                variant="outline"
-                className="border-border text-steel hover:bg-white hover:text-navy hover:border-navy/30 font-medium px-6 h-12 rounded-lg transition-all"
-                asChild
+                <Phone className="size-4" />
+                Call technical sales
+              </a>
+              <a
+                href="https://wa.me/911234567890"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-lg border border-border text-steel hover:bg-white hover:text-navy hover:border-navy/30 font-medium transition-all"
+                style={{ fontFamily: "'Manrope', sans-serif" }}
               >
-                <a href="https://wa.me/911234567890" target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="size-4 mr-2" />
-                  WhatsApp
-                </a>
-              </Button>
+                <MessageCircle className="size-4" />
+                WhatsApp
+              </a>
             </div>
           </Reveal>
         </div>

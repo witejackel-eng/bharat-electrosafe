@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { insulationClasses } from '@/data/products';
 import { Reveal } from '@/components/motion/Reveal';
 import { Button } from '@/components/ui/button';
+import { QuoteButton } from '@/components/quote/QuoteButton';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
@@ -11,7 +12,7 @@ export function ProductSelection() {
   const [activeClass, setActiveClass] = useState<string | null>(null);
 
   return (
-    <section className="bg-navy py-20 md:py-28 relative overflow-hidden">
+    <section id="product-selection" className="bg-navy py-20 md:py-28 relative overflow-hidden">
       {/* Subtle background pattern */}
       <div
         className="absolute inset-0 opacity-[0.03]"
@@ -40,27 +41,15 @@ export function ProductSelection() {
         <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           {insulationClasses.map((cls, i) => (
             <Reveal key={cls.className} delay={i * 100} translateY={18}>
-              <div
-                className="relative bg-navy-dark border border-white/10 rounded-2xl p-6 md:p-8 cursor-pointer group transition-all duration-300"
-                onMouseEnter={() => setActiveClass(cls.className)}
-                onMouseLeave={() => setActiveClass(null)}
-                style={{
-                  opacity: activeClass !== null && activeClass !== cls.className ? 0.5 : 1,
-                  borderColor: activeClass === cls.className ? 'rgba(232, 97, 26, 0.5)' : 'rgba(255, 255, 255, 0.1)',
-                  background: activeClass === cls.className
-                    ? 'linear-gradient(135deg, rgba(232, 97, 26, 0.06), rgba(15, 29, 53, 1))'
-                    : 'rgba(15, 29, 53, 1)',
-                }}
+              <QuoteButton
+                productSystem="electrical-insulation"
+                productClass={cls.className}
+                variant="ghost"
+                className="w-full !bg-navy-dark hover:!bg-navy-light/30 !border !border-white/10 hover:!border-orange/40 !rounded-2xl !p-6 md:!p-8 !h-auto !flex !flex-col !items-start !text-left transition-all duration-300"
               >
-                {/* Orange accent line */}
-                <div className="absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-orange/0 via-orange/30 to-orange/0 group-hover:via-orange/60 transition-all duration-300" />
-
-                {/* Class label */}
                 <span className="text-eyebrow mb-4 block" style={{ color: '#F07830', fontFamily: "'Manrope', sans-serif" }}>
                   CLASS {cls.className}
                 </span>
-
-                {/* Voltage - large tabular numeral */}
                 <div className="flex items-baseline gap-2 mb-1">
                   <span
                     className="text-4xl md:text-5xl font-bold text-white"
@@ -70,8 +59,6 @@ export function ProductSelection() {
                   </span>
                   <span className="text-spec text-white/60" style={{ fontFamily: "'Manrope', sans-serif" }}>{cls.voltageUnit}</span>
                 </div>
-
-                {/* Thickness */}
                 <div className="flex items-baseline gap-2 mb-4">
                   <span
                     className="text-xl md:text-2xl font-semibold text-white"
@@ -81,15 +68,15 @@ export function ProductSelection() {
                   </span>
                   <span className="text-spec text-white/60" style={{ fontFamily: "'Manrope', sans-serif" }}>{cls.thicknessUnit}</span>
                 </div>
-
-                {/* Separator line */}
                 <div className="w-full h-[2px] bg-orange/30 mb-4 rounded-full" />
-
-                {/* Description */}
                 <p className="text-sm text-white/50 leading-relaxed" style={{ fontFamily: "'Manrope', sans-serif" }}>
                   {cls.description}
                 </p>
-              </div>
+                <span className="mt-4 text-xs text-orange/80 inline-flex items-center gap-1">
+                  Request quote for Class {cls.className}
+                  <ArrowRight className="size-3" />
+                </span>
+              </QuoteButton>
             </Reveal>
           ))}
         </div>
@@ -101,18 +88,17 @@ export function ProductSelection() {
               className="bg-orange hover:bg-orange-hover text-white font-medium px-6 h-11 rounded-lg"
               asChild
             >
-              <Link href="#products">
+              <Link href="#electrical-insulation">
                 Compare full specifications
                 <ArrowRight className="size-4 ml-1" />
               </Link>
             </Button>
-            <Button
+            <QuoteButton
               variant="outline"
               className="border-white/20 text-white/80 hover:bg-white/10 hover:text-white hover:border-white/30 font-medium px-6 h-11 rounded-lg"
-              asChild
             >
-              <Link href="#quote">Ask technical sales</Link>
-            </Button>
+              Ask technical sales
+            </QuoteButton>
           </div>
 
           {/* Alternative path */}
