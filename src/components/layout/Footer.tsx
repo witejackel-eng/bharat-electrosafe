@@ -95,7 +95,7 @@ export function Footer() {
           {/* Link Columns */}
           {Object.entries(footerLinks).map(([key, section]) => (
             <div key={key}>
-              <h3 className="text-sm font-semibold text-white mb-4 uppercase tracking-wider" style={{ fontFamily: "'Manrope', sans-serif" }}>
+              <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-white mb-4" style={{ fontFamily: "'Manrope', sans-serif" }}>
                 {section.title}
               </h3>
               <ul className="flex flex-col gap-2">
@@ -103,7 +103,7 @@ export function Footer() {
                   <li key={i}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/75 hover:text-white hover:translate-x-0.5 transition-all inline-flex items-center gap-1.5 group"
+                      className="text-sm text-white/80 hover:text-orange hover:translate-x-0.5 transition-all inline-flex items-center gap-1.5 group"
                     >
                       <span
                         className="w-0 group-hover:w-2 h-px bg-orange transition-all duration-200"
@@ -125,7 +125,7 @@ export function Footer() {
               Stay ahead of specification changes.
             </h3>
             <p
-              className="text-sm text-white/70 leading-relaxed"
+              className="text-sm text-white/80 leading-relaxed"
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
               Standard updates, new datasheets and case studies — sent quarterly.
@@ -139,7 +139,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p
-            className="text-xs text-white/60"
+            className="text-xs text-white/75"
             style={{ fontFamily: "'Manrope', sans-serif" }}
           >
             © {new Date().getFullYear()} Bharat Electrosafe. All rights reserved.
@@ -147,20 +147,20 @@ export function Footer() {
           <div className="flex items-center gap-6">
             <Link
               href="#"
-              className="text-xs text-white/60 hover:text-white transition-colors"
+              className="text-xs text-white/75 hover:text-orange transition-colors"
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
               Privacy Policy
             </Link>
             <Link
               href="#"
-              className="text-xs text-white/60 hover:text-white transition-colors"
+              className="text-xs text-white/75 hover:text-orange transition-colors"
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
               Terms of Use
             </Link>
             <span
-              className="text-xs text-white/60 inline-flex items-center gap-1.5"
+              className="text-xs text-white/75 inline-flex items-center gap-1.5"
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange" aria-hidden="true" />

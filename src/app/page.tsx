@@ -14,6 +14,7 @@ import { FAQSection } from '@/components/home/FAQSection';
 import { WhyChooseUs } from '@/components/home/WhyChooseUs';
 import { CaseStudiesSection } from '@/components/home/CaseStudiesSection';
 import { InsightsSection } from '@/components/home/InsightsSection';
+import { ProjectGallery } from '@/components/home/ProjectGallery';
 import { QuoteProvider } from '@/components/quote/QuoteProvider';
 import { QuoteAdminProvider } from '@/components/quote/QuoteAdminProvider';
 import { ProductDetailProvider } from '@/components/products/ProductDetailProvider';
@@ -24,6 +25,7 @@ import { CookieConsent } from '@/components/ui-custom/CookieConsent';
 import { ChatWidget } from '@/components/chat/ChatWidget';
 import { ScrollProgressBar } from '@/components/ui-custom/ScrollProgressBar';
 import { StickyCTABar } from '@/components/ui-custom/StickyCTABar';
+import { QuickNav } from '@/components/ui-custom/QuickNav';
 
 function SectionDivider({ variant = 'default' }: { variant?: 'default' | 'dark' | 'accent' }) {
   if (variant === 'dark') {
@@ -148,6 +150,8 @@ export default function Home() {
                   <SectionDivider variant="default" />
                   <CaseStudiesSection />
                   <SectionDivider variant="accent" />
+                  <ProjectGallery />
+                  <SectionDivider variant="default" />
                   <TestimonialsSection />
                   <SectionDivider variant="default" />
                   <InsightsSection />
@@ -162,6 +166,7 @@ export default function Home() {
                 </div>
                 <Footer />
                 <ScrollProgressBar />
+                <QuickNav />
                 <ScrollToTop />
                 <StickyCTABar />
                 <CookieConsent />

@@ -1,7 +1,15 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback, useSyncExternalStore } from 'react';
-import { MessageCircle, X, ArrowUp, ShieldCheck, Clock } from 'lucide-react';
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useSyncExternalStore,
+  type ChangeEvent,
+  type KeyboardEvent,
+} from 'react';
+import { MessageCircle, X, ArrowUp, RotateCcw } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -17,6 +25,33 @@ const INITIAL_GREETING: Message = {
     "Welcome to Bharat Electrosafe! 👋 I can help you with product specifications, insulation classes, IS 15652 standards, or guide you to the right solution for your project. What would you like to know?",
   timestamp: new Date(),
 };
+
+const SUGGESTIONS: readonly string[] = [
+  'Class A vs B vs C',
+  'IS 15652 specs',
+  'Request a quote',
+  'Talk to human',
+] as const;
+
+const MAX_INPUT_LENGTH = 500;
+const TEXTAREA_MAX_HEIGHT = 120;
+
+/** Format a Date as HH:MM 24-hour IST. */
+function formatTime(date: Date): string {
+  try {
+    return date.toLocaleTimeString('en-IN', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      timeZone: 'Asia/Kolkata',
+    });
+  } catch {
+    // Fallback if Intl timeZone unsupported
+    const h = String(date.getHours()).padStart(2, '0');
+    const m = String(date.getMinutes()).padStart(2, '0');
+    return `${h}:${m}`;
+  }
+}
 
 // Shared external store for cookie banner visibility.
 const COOKIE_STORAGE_KEY = 'be-cookie-consent';
@@ -68,7 +103,7 @@ export function ChatWidget() {
     getCookieServer
   );
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -84,11 +119,27 @@ export function ChatWidget() {
     }
   }, [open]);
 
+  // Auto-resize the textarea: reset to auto, then clamp scrollHeight to cap.
+  const adjustTextareaHeight = useCallback(() => {
+    const el = inputRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, TEXTAREA_MAX_HEIGHT)}px`;
+  }, []);
+
+  // Re-measure whenever the input value changes (typing, clearing, chip send).
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [input, adjustTextareaHeight]);
+
   // Shift up when the cookie banner is visible (banner is ~6rem tall with padding).
   const bottomOffset = cookieVisible ? '7.5rem' : '1.5rem';
 
-  const sendMessage = async () => {
-    const trimmed = input.trim();
+  // Quick-reply chips are visible only when no user message has been sent yet.
+  const hasUserMessage = messages.some((m) => m.role === 'user');
+
+  const sendMessage = async (overrideMessage?: string) => {
+    const trimmed = (overrideMessage ?? input).trim();
     if (!trimmed || loading) return;
 
     const userMessage: Message = {
@@ -140,6 +191,29 @@ export function ChatWidget() {
     }
   };
 
+  const resetConversation = () => {
+    // Fresh greeting with a new timestamp so the chip row reappears.
+    setMessages([{ ...INITIAL_GREETING, id: 'greeting', timestamp: new Date() }]);
+    setInput('');
+    setLoading(false);
+    // Reset textarea height immediately.
+    if (inputRef.current) inputRef.current.style.height = 'auto';
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    // Enter sends, Shift+Enter inserts a newline (default behavior).
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      void sendMessage();
+    }
+  };
+
+  const showCharCounter = input.length > 100;
+
   return (
     <>
       {/* Floating chat bubble button */}
@@ -188,14 +262,25 @@ export function ChatWidget() {
                 </span>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="Close chat"
-              className="w-7 h-7 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors"
-            >
-              <X className="size-4" />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={resetConversation}
+                aria-label="Start new conversation"
+                title="New conversation"
+                className="size-7 h-7 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors"
+              >
+                <RotateCcw className="size-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Close chat"
+                className="w-7 h-7 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
           </div>
 
           {/* Messages area */}
@@ -216,28 +301,50 @@ export function ChatWidget() {
                   </div>
                 )}
                 <div
-                  className={`max-w-[80%] px-3 py-2 text-sm leading-relaxed ${
-                    msg.role === 'assistant'
-                      ? 'bg-white dark:bg-card rounded-xl rounded-bl-sm text-navy dark:text-foreground'
-                      : 'bg-orange text-white rounded-xl rounded-br-sm'
+                  className={`flex flex-col max-w-[80%] ${
+                    msg.role === 'user' ? 'items-end' : 'items-start'
                   }`}
                 >
-                  {msg.content}
+                  <div
+                    className={`px-3 py-2 text-sm leading-relaxed ${
+                      msg.role === 'assistant'
+                        ? 'bg-white dark:bg-card rounded-xl rounded-bl-sm text-navy dark:text-foreground'
+                        : 'bg-orange text-white rounded-xl rounded-br-sm'
+                    }`}
+                  >
+                    {msg.content}
+                  </div>
+                  <span
+                    className={`text-[0.6rem] text-steel-light mt-1 ${
+                      msg.role === 'user' ? 'text-right' : 'text-left'
+                    }`}
+                    aria-label={`Sent at ${formatTime(msg.timestamp)}`}
+                  >
+                    {formatTime(msg.timestamp)}
+                  </span>
                 </div>
               </div>
             ))}
 
-            {/* Loading indicator */}
+            {/* Loading / typing indicator */}
             {loading && (
-              <div className="flex items-end gap-2 justify-start" style={{ animation: 'chatMsgIn 0.25s ease-out forwards' }}>
+              <div
+                className="flex items-end gap-2 justify-start"
+                style={{ animation: 'chatMsgIn 0.25s ease-out forwards' }}
+              >
                 <div className="w-6 h-6 rounded-full bg-orange/20 flex items-center justify-center shrink-0 text-[0.55rem] font-bold text-orange">
                   BE
                 </div>
-                <div className="bg-white dark:bg-card rounded-xl rounded-bl-sm px-4 py-3">
-                  <div className="flex gap-1.5 items-center">
-                    <span className="w-2 h-2 rounded-full bg-orange/60" style={{ animation: 'chatBounce 1.4s ease-in-out infinite', animationDelay: '0ms' }} />
-                    <span className="w-2 h-2 rounded-full bg-orange/60" style={{ animation: 'chatBounce 1.4s ease-in-out infinite', animationDelay: '200ms' }} />
-                    <span className="w-2 h-2 rounded-full bg-orange/60" style={{ animation: 'chatBounce 1.4s ease-in-out infinite', animationDelay: '400ms' }} />
+                <div className="flex flex-col items-start">
+                  <span className="text-[0.65rem] text-steel-light italic mb-1">
+                    Bharat Electrosafe Assistant is typing…
+                  </span>
+                  <div className="bg-orange-soft/30 dark:bg-orange-soft/40 rounded-xl rounded-bl-sm px-4 py-3">
+                    <div className="flex gap-1.5 items-center">
+                      <span className="w-2 h-2 rounded-full bg-orange/60" style={{ animation: 'chatBounce 1.4s ease-in-out infinite', animationDelay: '0ms' }} />
+                      <span className="w-2 h-2 rounded-full bg-orange/60" style={{ animation: 'chatBounce 1.4s ease-in-out infinite', animationDelay: '200ms' }} />
+                      <span className="w-2 h-2 rounded-full bg-orange/60" style={{ animation: 'chatBounce 1.4s ease-in-out infinite', animationDelay: '400ms' }} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -246,33 +353,59 @@ export function ChatWidget() {
             <div ref={messagesEndRef} />
           </div>
 
+          {/* Quick-reply suggestion chips (only before first user message) */}
+          {!hasUserMessage && (
+            <div className="flex flex-wrap gap-2 px-3 py-2 bg-white dark:bg-card border-t border-border/60 shrink-0">
+              {SUGGESTIONS.map((suggestion) => (
+                <button
+                  key={suggestion}
+                  type="button"
+                  onClick={() => void sendMessage(suggestion)}
+                  disabled={loading}
+                  aria-label={`Suggested question: ${suggestion}`}
+                  className="text-xs font-medium px-3 py-1.5 rounded-full bg-orange-soft text-orange border border-orange/20 hover:bg-orange hover:text-white transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {suggestion}
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Input area */}
           <div className="bg-white dark:bg-card border-t border-border/60 px-3 py-3 shrink-0">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                sendMessage();
+                void sendMessage();
               }}
-              className="flex items-center gap-2"
+              className="flex items-end gap-2"
             >
-              <input
+              <textarea
                 ref={inputRef}
-                type="text"
+                rows={1}
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
                 placeholder="Ask about products, standards, specifications..."
                 disabled={loading}
-                className="flex-1 h-10 rounded-lg border border-border/80 bg-background px-3 text-sm text-foreground placeholder:text-steel-light focus:outline-none focus:border-orange focus:ring-1 focus:ring-orange/30 disabled:opacity-50"
+                maxLength={MAX_INPUT_LENGTH}
+                aria-label="Type your message"
+                className="flex-1 rounded-lg border border-border/80 bg-background px-3 py-2 text-sm text-foreground placeholder:text-steel-light focus:outline-none focus:border-orange focus:ring-1 focus:ring-orange/30 disabled:opacity-50 resize-none max-h-[120px] min-h-[2.5rem] leading-relaxed"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || loading}
                 aria-label="Send message"
-                className="w-10 h-10 rounded-lg bg-orange hover:bg-orange-hover text-white flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                className="w-10 h-10 rounded-lg bg-orange hover:bg-orange-hover text-white flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0 self-end"
               >
                 <ArrowUp className="size-5" />
               </button>
             </form>
+            {showCharCounter && (
+              <p className="text-[0.6rem] text-steel-light text-right mt-1">
+                {input.length} / {MAX_INPUT_LENGTH}
+              </p>
+            )}
             <p className="text-xs text-steel mt-1.5 text-center">
               AI assistant · responses are informational
             </p>
@@ -320,6 +453,14 @@ export function ChatWidget() {
           40% {
             transform: scale(1);
             opacity: 1;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          :global([style*='chatPulseRing']),
+          :global([style*='chatPanelIn']),
+          :global([style*='chatMsgIn']),
+          :global([style*='chatBounce']) {
+            animation: none !important;
           }
         }
       `}</style>
