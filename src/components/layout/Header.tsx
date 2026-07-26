@@ -6,6 +6,7 @@ import { MobileDrawer } from '@/components/navigation/MobileDrawer';
 import { QuoteButton } from '@/components/quote/QuoteButton';
 import { QuoteAdminTrigger } from '@/components/quote/QuoteAdminTrigger';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { LocaleToggle } from '@/components/i18n/LocaleToggle';
 import { SearchTrigger } from '@/components/search/SearchTrigger';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -207,6 +208,7 @@ export function Header() {
           >
             Request a Quote
           </QuoteButton>
+          <LocaleToggle className="hidden md:inline-flex" />
           <ThemeToggle className="hidden md:inline-flex" />
           <MobileDrawer />
         </div>

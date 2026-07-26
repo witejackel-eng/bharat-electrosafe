@@ -15,6 +15,9 @@ import { WhyChooseUs } from '@/components/home/WhyChooseUs';
 import { CaseStudiesSection } from '@/components/home/CaseStudiesSection';
 import { InsightsSection } from '@/components/home/InsightsSection';
 import { ProjectGallery } from '@/components/home/ProjectGallery';
+import { SustainabilitySection } from '@/components/home/SustainabilitySection';
+import { ManufacturingProcessSection } from '@/components/home/ManufacturingProcessSection';
+import { DistributorSection } from '@/components/home/DistributorSection';
 import { QuoteProvider } from '@/components/quote/QuoteProvider';
 import { QuoteAdminProvider } from '@/components/quote/QuoteAdminProvider';
 import { ProductDetailProvider } from '@/components/products/ProductDetailProvider';
@@ -27,7 +30,7 @@ import { ScrollProgressBar } from '@/components/ui-custom/ScrollProgressBar';
 import { StickyCTABar } from '@/components/ui-custom/StickyCTABar';
 import { QuickNav } from '@/components/ui-custom/QuickNav';
 
-function SectionDivider({ variant = 'default' }: { variant?: 'default' | 'dark' | 'accent' }) {
+function SectionDivider({ variant = 'default' }: { variant?: 'default' | 'dark' | 'accent' | 'dotted' }) {
   if (variant === 'dark') {
     return (
       <div className="relative h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
@@ -46,6 +49,19 @@ function SectionDivider({ variant = 'default' }: { variant?: 'default' | 'dark' 
             backgroundRepeat: 'repeat-x',
           }}
         />
+      </div>
+    );
+  }
+  if (variant === 'dotted') {
+    return (
+      <div className="relative flex items-center justify-center py-2">
+        <div className="flex items-center gap-2" aria-hidden="true">
+          <span className="h-1 w-1 rounded-full bg-orange/50" />
+          <span className="h-1.5 w-1.5 rounded-full bg-orange/70" />
+          <span className="h-2 w-2 rounded-full bg-orange" />
+          <span className="h-1.5 w-1.5 rounded-full bg-orange/70" />
+          <span className="h-1 w-1 rounded-full bg-orange/50" />
+        </div>
       </div>
     );
   }
@@ -96,6 +112,15 @@ const jsonLd = {
     'Geomembrane lining systems',
     'PVC water-stop profiles',
     'Visible safety matting',
+    'Sustainable rubber manufacturing',
+    'Solar-assisted production',
+  ],
+  award: [
+    'BIS Licence — IS 15652',
+    'ISO 9001:2015',
+    'ISO 14001:2015',
+    'RoHS Compliant',
+    'REACH Compliant',
   ],
 };
 
@@ -117,6 +142,46 @@ const productLd = {
   ],
 };
 
+// FAQ structured data for rich results in search engines
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is IS 15652 and why does it matter?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'IS 15652 is the Bureau of Indian Standards specification for insulating mats for electrical purposes. It replaced IS 5424 and covers Class A (3.3 kV), Class B (11 kV) and Class C (33 kV) mats. All Bharat Electrosafe mats carry a valid BIS licence against this standard.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How do I select the correct insulation class?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Select the class whose rated voltage exceeds the highest operating voltage at your installation. For example, a 6.6 kV panel requires Class B (rated 11 kV). Never use Class A mats above 3.3 kV installations.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What thickness do I need for each class?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Class A requires >= 2.0 mm, Class B >= 2.5 mm, and Class C >= 3.0 mm as per IS 15652. Bharat Electrosafe manufactures each class at or above the minimum specified thickness.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Are the mats tested by an independent lab?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. Every batch is tested by an NABL-accredited independent laboratory for dielectric strength, leakage current, tensile properties and flame resistance. Test reports are available for download from our Proof Centre.',
+      },
+    },
+  ],
+};
+
 export default function Home() {
   return (
     <QuoteProvider>
@@ -132,6 +197,10 @@ export default function Home() {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }}
               />
+              <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+              />
               <main className="min-h-screen flex flex-col bg-background">
                 <Header />
                 <div className="flex-1">
@@ -144,6 +213,8 @@ export default function Home() {
                   <SectionDivider variant="default" />
                   <ProductSelection />
                   <SectionDivider variant="dark" />
+                  <ManufacturingProcessSection />
+                  <SectionDivider variant="accent" />
                   <HomeProofCentre />
                   <SectionDivider variant="accent" />
                   <HomeApplications />
@@ -152,11 +223,15 @@ export default function Home() {
                   <SectionDivider variant="accent" />
                   <ProjectGallery />
                   <SectionDivider variant="default" />
+                  <SustainabilitySection />
+                  <SectionDivider variant="default" />
                   <TestimonialsSection />
                   <SectionDivider variant="default" />
                   <InsightsSection />
                   <SectionDivider variant="accent" />
                   <ResourcesSection />
+                  <SectionDivider variant="default" />
+                  <DistributorSection />
                   <SectionDivider variant="default" />
                   <ContactSection />
                   <SectionDivider variant="accent" />

@@ -1694,3 +1694,288 @@ This cycle (Task 10) focused on: fixing a critical infinite loop bug, locking th
 - LOW: Consider adding multi-language support (English/Hindi toggle)
 - LOW: Add a "Find a Distributor" section with map
 
+
+---
+Task ID: 3-c
+Agent: distributor-section-builder
+Task: Build Find a Distributor section with regional cards
+
+Work Log:
+- Read /home/z/my-project/worklog.md (latest Task 10/10-c cycles) to absorb brand tokens (bg-ivory-light, bg-orange, text-navy, text-steel, text-eyebrow, .card-default, .btn-ghost, dark-mode overrides) and prior motion/Reveal conventions used across home sections
+- Inspected reference files: src/components/home/ContactSection.tsx (card + map placeholder patterns), src/components/home/HomeApplications.tsx (grid + Reveal stagger + max-w-[1440px] container), src/components/motion/Reveal.tsx (delay + translateY + prefers-reduced-motion support), src/app/globals.css (brand color tokens + dark-mode remap of text-navy/bg-white/bg-ivory-light/text-steel), src/app/page.tsx (composition; did NOT modify per task instructions)
+- Created /home/z/my-project/src/components/home/DistributorSection.tsx:
+  - 'use client' directive; named export DistributorSection
+  - Root <section id="distributors" className="bg-background py-20 md:py-28 scroll-mt-32"> with inline Manrope style on section root per spec
+  - Header block (max-w-2xl): eyebrow ("Find a Distributor"), h2 ("Stocked where you build."), subtitle paragraph — each wrapped in <Reveal> with staggered 0/60/120ms delays
+  - Two-column layout: md:grid-cols-5; left md:col-span-2 holds coverage-map card (heading, stylised India map placeholder with 8 absolutely-positioned pulsing bg-orange dots + animate-ping overlay spans, centered "16 / States covered" stat, plus 3-column mini-stats row: 28 Partner outlets / 72h Avg dispatch / 4 Warehouses); right md:col-span-3 holds "Regional partners" eyebrow + sm:grid-cols-2 grid of 6 distributor cards
+  - Distributor data array typed via Distributor interface (region, cities, partner, phone, email) — no `any`
+  - Each card: article with hover:shadow-md hover:-translate-y-0.5 hover:border-orange/30 transition-all, flex flex-col; top row has region h3 + cities caption on left and 9x9 bg-orange-soft/40 tinted MapPin badge on right; middle block has "Authorised partner" caption + partner name; bottom block has tel: and mailto: links with Phone and Mail icons (text-[#4B5563] dark:text-white/70 hover:text-orange); email row uses truncate with shrink-0 icon
+  - Footer CTA: centered ghost link to #contact with Building2 icon + "Become a distributor" + ArrowRight, classes per spec (text-navy dark:text-white hover:text-orange)
+  - Map dots aria-hidden="true" via wrapper div (decorative); each card article has clear h3 heading hierarchy
+  - Reduced-motion handled automatically by Reveal primitive (no custom animation besides animate-ping on dots — Tailwind utility that globals.css disables under prefers-reduced-motion via the universal animation-duration: 0.01ms !important rule)
+  - lucide-react icons only: MapPin, Phone, Mail, Building2, ArrowRight
+- Verified: bun run lint → 0 errors, 1 pre-existing warning (@next/next/no-page-custom-font in layout.tsx — unrelated to this task)
+- Verified: bunx tsc --noEmit filtered for DistributorSection → no type errors
+- Verified dev server log: stable, GET / 200, no compile/runtime errors after file creation
+- Did NOT modify src/app/page.tsx — orchestrator will wire DistributorSection into the page composition
+
+Stage Summary:
+- 1 file CREATED: /home/z/my-project/src/components/home/DistributorSection.tsx (~210 lines, TypeScript strict, no `any`, named export)
+- Layout: 2-column desktop (md:grid-cols-5; left col-span-2 coverage map + mini-stats, right col-span-3 with 6 regional distributor cards in sm:grid-cols-2); single-column stacked on mobile
+- Coverage map: stylised aspect-[4/5] placeholder with 8 pulsing orange dots at spec-defined % positions (Delhi/Gujarat/MP/Maharashtra/Hyderabad/Karnataka/Tamil Nadu/Kolkata), each with animate-ping overlay span; centered "16 / States covered" stat with tabular-nums; 3-cell mini-stats row (28/72h/4) below
+- Distributor cards: 6 cards with full contact info (region h3 + cities caption + authorised partner name + tel: + mailto: links); hover lift + orange border; tinted MapPin badge
+- Footer CTA: ghost-style "Become a distributor" link to #contact with Building2 + ArrowRight icons
+- Brand tokens used throughout (bg-orange, text-orange, text-navy, dark:text-white, bg-ivory-light, dark:bg-card, text-steel, dark:text-white/60, border-border/60) — verified dark-mode contrast via the .dark overrides already in globals.css
+- Manrope applied via inline style on section root as specified (not via globals.css body font)
+- Lint: 0 errors, 1 pre-existing unrelated warning; tsc: clean for DistributorSection.tsx
+- Dev server stable; component ready to be wired into page.tsx by orchestrator (suggested placement: after ContactSection or alongside it as a regional-partner companion, plus an entry in QuickNav SECTIONS array keyed to "distributors")
+
+---
+Task ID: 3-a
+Agent: sustainability-builder
+Task: Build Sustainability/Environmental section
+
+Work Log:
+- Read worklog.md (focused on Task 1 brand tokens, Task 3 StatsBar/WhyChooseUs patterns, Task 10-c design-system lock — esp. WCAG text tokens `text-[#374151] dark:text-white/75`, `.card-default`/`.card-dark` utilities, `bg-orange-soft`, hover lift `-translate-y-0.5`).
+- Read 6 reference files: WhyChooseUs.tsx (card hover pattern, Manrope inline style, eyebrow→h2→subtitle layout), StatsBar.tsx (IntersectionObserver count-up + ease-out cubic, 1.5s duration, threshold 0.4, tabular-nums), CaseStudiesSection.tsx (Reveal stagger conventions, `id` + `scroll-mt-32` + `bg-background py-20 md:py-28` section shell), Reveal.tsx (props: delay/translateY/once, prefers-reduced-motion handled internally), globals.css (brand tokens: `--color-orange-soft` rgba 0.08, `--color-orange` #E8611A, `.text-eyebrow` utility, dark-mode `.dark .bg-navy` → #0A1424, `.dark .bg-card` → #1B2A4A), page.tsx (section composition — Sustainability NOT yet wired, orchestrator will add).
+- Created `/home/z/my-project/src/components/home/SustainabilitySection.tsx`:
+  - `'use client'` directive
+  - `<section id="sustainability" className="bg-background py-20 md:py-28 scroll-mt-32">` with Manrope inline style on root (matches WhyChooseUs/CaseStudiesSection).
+  - Header: eyebrow "Our Commitment" (60ms) → h2 "Engineered for safety. Designed for the planet." (120ms) → subtitle explaining lifecycle responsibility (180ms). Each wrapped in `<Reveal>`. Subtitle uses `text-[#374151] dark:text-white/75 max-w-2xl leading-relaxed` (WCAG-AA per Task 10-c).
+  - Block 1 — 4 animated metric cards in `grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-10 md:mt-12`:
+    * `100%` "Recyclable rubber content" (Leaf)
+    * `42%` "Energy from solar (Manesar plant)" (SunMedium)
+    * `1.2M kg` "CO₂e avoided annually" (TrendingDown) — animated as decimal 0.0 → 1.2 (decimals=1)
+    * `0` "Restricted substances (RoHS/REACH)" (ShieldCheck)
+    * Replicated the `useCountUp` hook from StatsBar (IntersectionObserver threshold 0.4, ease-out cubic, 1.5s, rAF, hasAnimated ref guard, disconnect on first trigger). Returns `{ref, display}`. Supports decimals via `toFixed(n)` for the 1.2M kg case; floor for integer cases.
+    * Card spec: `bg-white dark:bg-card border border-border/60 rounded-2xl p-5` + hover `border-orange/30 shadow-md -translate-y-0.5`. Icon square `w-11 h-11 rounded-xl bg-orange-soft/40 text-orange`. Number `text-3xl md:text-4xl font-bold text-navy dark:text-white tabular-nums` with orange suffix. Label `text-xs md:text-sm text-[#4B5563] dark:text-white/70 mt-2 leading-snug`. Each card wrapped in `<Reveal delay={240 + i*60} translateY={12}>`.
+  - Block 2 — Three pillars subheading block:
+    * Subheading eyebrow "Three pillars" (420ms) + h3 "How we reduce impact at every stage." (460ms), both in their own Reveal wrappers.
+    * `grid md:grid-cols-3 gap-6 mt-8` with 3 pillar cards (480ms + i*80):
+      - Material Stewardship (Recycle) — IS 15652 compounds, post-industrial recycled content, recoverable trim.
+      - Process Efficiency (Factory) — closed-loop water cooling, low-temp curing presses, solar-assisted lighting, scrap-recovery program.
+      - End-of-life Recovery (Leaf) — take-back program, re-granulation for traffic management products, partner recyclers in 4 states.
+    * Each card: `bg-white dark:bg-card border border-border/60 rounded-2xl p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all` with `w-10 h-1 bg-orange rounded-full mb-4` accent bar + tinted icon square + h4 title + 3-line body (`text-sm text-[#374151] dark:text-white/75 leading-relaxed`).
+  - Block 3 — Certifications strip (Reveal delay 720ms): `mt-12 bg-navy dark:bg-card rounded-2xl px-6 py-5 flex flex-wrap items-center justify-between gap-4`.
+    * Left: `ShieldCheck` (text-orange) + "Verified by" (`text-white/80 text-sm font-medium`) + 4 pill badges (`bg-white/10 text-white text-xs px-3 py-1.5 rounded-full whitespace-nowrap`): "ISO 14001:2015", "RoHS Compliant", "REACH Compliant", "Zero-Waste-to-Landfill (2026 target)".
+    * Right: ghost Link to `#contact` "Request ESG datasheet" + ArrowRight icon (`text-orange hover:text-orange-hover` with `group-hover/cta:translate-x-1` micro-interaction).
+- Ran `bun run lint` → 0 errors, 1 pre-existing warning (`@next/next/no-page-custom-font` in layout.tsx — unrelated).
+- Ran `bunx tsc --noEmit` filtered for "Sustainability" → no type errors.
+- Did NOT modify page.tsx — orchestrator will wire `<SustainabilitySection />` into the section composition.
+
+Stage Summary:
+- 1 file CREATED: `/home/z/my-project/src/components/home/SustainabilitySection.tsx` (~270 lines, self-contained — no shared hooks file extracted; `useCountUp` replicated inline per spec note "extract or replicate").
+- 3 content blocks delivered: animated metrics row (4 cards with count-up), 3 commitment pillars (Material Stewardship / Process Efficiency / End-of-life Recovery), navy certifications strip (4 cert badges + ESG datasheet ghost link).
+- TypeScript strict, no `any`; lucide-react icons only (Leaf, Recycle, Factory, SunMedium, TrendingDown, ShieldCheck, ArrowRight). Manrope font applied via inline `style` on the section root + metric cards.
+- Reveal stagger: header (60/120/180ms) → metrics (240 + i*60ms) → pillar subheading (420/460ms) → pillars (480 + i*80ms) → cert strip (720ms). translateY 12–14px on cards.
+- Dark-mode contrast: all body text uses `text-[#374151] dark:text-white/75` pattern (WCAG-AA per Task 10-c lock); numbers `text-navy dark:text-white`; cert strip text on navy uses `text-white/80` + `text-white` for badges.
+- Lint: 0 errors, 1 pre-existing unrelated warning (layout.tsx custom font). tsc: clean.
+- Dev server: stable (recent log shows `GET / 200` runs, no compile errors).
+- NOTE: Section is NOT yet wired into page.tsx — orchestrator should add `<SustainabilitySection />` (e.g., after ProjectGallery or InsightsSection) and optionally add `sustainability` to the QuickNav SECTIONS array.
+
+---
+Task ID: 3-b
+Agent: manufacturing-timeline-builder
+Task: Build Manufacturing Process timeline section
+
+Work Log:
+- Read worklog.md for full project context (brand tokens, motion system, Task 10-c design-system lock, dark-mode overrides, Reveal stagger conventions) and reviewed reference files: CaseStudiesSection.tsx (Reveal stagger + max-w-2xl header pattern), WhyChooseUs.tsx (feature card layout + .text-eyebrow), ProductSelection.tsx (dark navy section pattern), Reveal.tsx (props: delay, translateY, default as='div', prefers-reduced-motion safe), globals.css (brand tokens), and page.tsx (confirmed section is NOT yet wired — orchestrator will add it).
+- Created /home/z/my-project/src/components/home/ManufacturingProcessSection.tsx (≈210 lines) with:
+  - 'use client' directive
+  - `<section id="manufacturing" className="bg-navy text-white py-20 md:py-28 scroll-mt-32 relative overflow-hidden">` with Manrope via inline style on section root
+  - Subtle radial gradient backdrop rendered as a separate absolute div (avoids Tailwind bg-navy/bg-[gradient] stacking conflict): `bg-[radial-gradient(ellipse_at_top_right,rgba(255,107,0,0.08),transparent_60%)]`
+  - Header: eyebrow ("Inside the Manesar Plant") + h2 ("From raw rubber to certified mat — six stages.") + subtitle, each wrapped in `<Reveal>` with staggered delays 0/60/120ms
+  - Timeline: `<ol aria-label="Manufacturing process stages">` with desktop vertical center line (`hidden md:block absolute left-1/2 ... bg-gradient-to-b from-transparent via-orange/40 to-transparent`) and mobile left line (`md:hidden absolute left-4 ... bg-white/15`); container `relative mt-16 max-w-5xl mx-auto`
+  - 6 stages mapped from typed `Stage[]` data array, each wrapped in `<li>` → `<Reveal delay={i*120}>` → `<article>` with `grid md:grid-cols-2 gap-8 items-start`. Content column alternating: even index `md:order-1 md:pr-12`, odd index `md:order-2 md:pl-12`. Spacer column takes the opposite order.
+  - Stage node: `absolute left-4 md:left-1/2 -translate-x-1/2 top-1.5 w-3 h-3 rounded-full bg-orange ring-4 ring-orange/20 z-10`
+  - Stage content per spec: number badge (`text-xs font-bold text-orange uppercase tracking-wider`), title (`text-xl md:text-2xl font-bold text-white mt-2`), description (`text-white/75 leading-relaxed mt-3`), tag pills (`bg-white/5 text-white/70 text-xs px-2.5 py-1 rounded-full`), 3-icon strip (`w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-orange/80` with strokeWidth 1.75)
+  - 6 stages: Compound Mixing, Calendering & Sheeting, Moulding & Curing, In-process Testing, Marking & Traceability, Packing & Dispatch — each with 3 lucide-react icons cycled from FlaskConical/Layers/Flame/Microscope/QrCode/Truck
+  - Footer CTA: `mt-12 text-center` with small caption `text-white/60 text-sm` and orange pill button `bg-orange hover:bg-orange-hover text-white font-semibold px-6 py-3 rounded-full transition-colors` linking to #contact with Video + "Book a tour" + ArrowRight icons
+  - Accessibility: `<ol aria-label>`, decorative nodes/spacer/icons/overlay all `aria-hidden="true"`, `last:mb-0` on final `<li>`, TypeScript strict with `Stage` interface and `LucideIcon[]` typing (no `any`)
+- Ran `cd /home/z/my-project && bun run lint` → 0 errors, 1 pre-existing warning (@next/next/no-page-custom-font in layout.tsx — unrelated, present in all prior cycles)
+- Ran `bunx tsc --noEmit` filtered for ManufacturingProcess → no TypeScript errors
+- Wrote detailed agent-ctx record at /home/z/my-project/agent-ctx/3-b-manufacturing-timeline-builder.md
+- Did NOT modify page.tsx — orchestrator will wire the new section (recommended placement: between ProductSelection and HomeProofCentre, or after CaseStudiesSection, with an appropriate SectionDivider variant)
+
+Stage Summary:
+- 1 file CREATED: /home/z/my-project/src/components/home/ManufacturingProcessSection.tsx (~210 lines)
+- Dark navy (`bg-navy`) zig-zag timeline section with 6 manufacturing stages, alternating left/right on desktop and single-column left-aligned on mobile
+- All spec classes applied verbatim (eyebrow tracking-[0.2em], node ring-orange/20, icon strip bg-white/5 border border-white/10 text-orange/80, CTA pill rounded-full bg-orange)
+- Brand tokens used throughout (bg-navy, text-orange, bg-orange, hover:bg-orange-hover); dark-mode compatible (section already dark)
+- Reveal stagger: header 0/60/120ms, stages i*120ms, CTA 120ms
+- Manrope font via inline style on section root (consistent with CaseStudiesSection pattern)
+- TypeScript strict, no `any` types; `Stage` interface with `LucideIcon[]` for icons
+- Semantic HTML: `<section>` → `<ol aria-label>` → `<li>` → `<article>`; decorative elements marked `aria-hidden`
+- Lint: 0 errors, 1 pre-existing warning (unrelated); tsc: clean
+- Component ready for orchestrator to wire into src/app/page.tsx
+
+---
+Task ID: 3-d
+Agent: language-toggle-builder
+Task: Add EN/HI language toggle (i18n-lite) with translation dictionary
+
+Work Log:
+- Read /home/z/my-project/worklog.md (focus: Task 1 brand tokens, Task 4 ThemeToggle mount-guard pattern, Task 10-c design-system lock, CookieConsent `useSyncExternalStore` + cached-raw/cached-parsed pattern that avoids the "getSnapshot should be cached" runtime error)
+- Read 7 reference files: ThemeToggle.tsx, ThemeProvider.tsx, CookieConsent.tsx, Header.tsx, MobileDrawer.tsx, Hero.tsx, FinalCTA.tsx, layout.tsx, globals.css (brand tokens + dark-mode remaps)
+- Created /home/z/my-project/src/lib/i18n.ts: locale store with `cachedLocale`/`cachedRaw` module-level state, `subscribeLocale` (listens to both `storage` cross-tab + `be:locale-change` custom in-tab event), `getLocaleSnapshot` (client), `getLocaleServerSnapshot` (SSR → DEFAULT_LOCALE 'en'), `setLocale` (writes localStorage + updates caches + dispatches custom event + sets `<html lang>`), `t()` translator with 13-key EN/HI dictionary across `nav.*`/`hero.*`/`cta.*`/`footer.*` namespaces
+- Created /home/z/my-project/src/components/i18n/LocaleToggle.tsx: `'use client'` pill button with Globe icon + current locale label (EN / हिं) + muted next-locale label; brand tokens (bg-white dark:bg-card, text-navy dark:text-white, hover:border-orange/40 hover:text-orange); aria-label + title announce switch intent
+- Created /home/z/my-project/src/components/i18n/useLocale.ts: `'use client'` thin wrapper hook over `useSyncExternalStore` so any client component can subscribe to locale changes
+- Created /home/z/my-project/src/components/i18n/LanguageInitScript.tsx: tiny inline `<script>` that sets `<html lang>` from localStorage before hydration (prevents flash for screen readers / crawlers)
+- Modified /home/z/my-project/src/components/layout/Header.tsx: imported LocaleToggle; inserted `<LocaleToggle className="hidden md:inline-flex" />` immediately before `<ThemeToggle>` in the desktop CTA cluster
+- Modified /home/z/my-project/src/components/navigation/MobileDrawer.tsx: imported LocaleToggle; inserted `<LocaleToggle />` next to existing ThemeToggle in the row with the "Theme" label
+- Modified /home/z/my-project/src/components/home/Hero.tsx: imported `useLocale` + `t`; added `const locale = useLocale()`; replaced 5 string literals (eyebrow, h1 title, subtitle, secondary CTA "Explore our products", primary CTA "Request a technical quote") with `t('hero.eyebrow', locale)` etc. — all surrounding JSX/props/Reveal wrappers untouched
+- Modified /home/z/my-project/src/components/home/FinalCTA.tsx: imported `useLocale` + `t`; added `const locale = useLocale()`; replaced 3 CTA labels with `t('cta.quote', locale)`, `t('cta.call', locale)`, `t('cta.whatsapp', locale)`
+- Modified /home/z/my-project/src/app/layout.tsx: imported LanguageInitScript; placed `<LanguageInitScript />` in `<head>` immediately after the existing theme-init script
+- Ran `bun run lint` → 0 errors, 1 pre-existing warning (`@next/next/no-page-custom-font` in layout.tsx — Manrope link, unrelated, present since Task 1)
+- Ran `bunx tsc --noEmit` filtered for all created/modified files → 0 TS errors in i18n.ts, LocaleToggle.tsx, useLocale.ts, LanguageInitScript.tsx, Header.tsx, MobileDrawer.tsx, Hero.tsx, FinalCTA.tsx, layout.tsx (pre-existing TS errors in unrelated files `examples/websocket/*`, `skills/*`, `src/app/api/chat/route.ts:12`, `src/components/motion/Reveal.tsx:84` are from prior tasks and not touched here)
+- Verified dev server log: stable — multiple `✓ Compiled` + `GET / 200` entries after edits, no compile/runtime errors
+- Wrote detailed agent-ctx record at /home/z/my-project/agent-ctx/3-d-language-toggle-builder.md
+
+Stage Summary:
+- 4 files CREATED: src/lib/i18n.ts (~150 lines), src/components/i18n/LocaleToggle.tsx (~50 lines), src/components/i18n/useLocale.ts (~22 lines), src/components/i18n/LanguageInitScript.tsx (~16 lines)
+- 5 files MODIFIED: src/components/layout/Header.tsx (+2 lines: import + toggle), src/components/navigation/MobileDrawer.tsx (+2 lines: import + toggle), src/components/home/Hero.tsx (+3 lines / 5 literals swapped), src/components/home/FinalCTA.tsx (+3 lines / 3 literals swapped), src/app/layout.tsx (+2 lines: import + script tag)
+- Reactive store follows the CookieConsent cached-raw + cached-parsed pattern (MANDATORY to avoid the `useSyncExternalStore` "getSnapshot should be cached" infinite-loop warning). SSR snapshot returns DEFAULT_LOCALE so server + first client render both produce EN strings → no hydration mismatch; React then re-renders with the saved locale once the subscription is established
+- Cross-tab updates arrive as `storage` events; in-tab updates are announced via the `be:locale-change` custom event (storage event does NOT fire in the writing tab). `setLocale` also keeps `<html lang>` in sync for accessibility / SEO
+- Translation dictionary is intentionally small and inlined (13 curated keys across nav/hero/cta/footer namespaces) — this is NOT a full app rewrite, only the visible toggle + the strings a Hindi visitor needs to understand the page's primary actions and headline
+- Desktop: toggle sits between QuoteButton and ThemeToggle in the floating header. Mobile: toggle sits inside the drawer next to the existing ThemeToggle. Brand tokens (bg-white dark:bg-card, text-navy dark:text-white, hover:border-orange/40 hover:text-orange) ensure the pill reads correctly in both light and dark themes via the existing `.dark` overrides in globals.css
+- Pre-hydration `<LanguageInitScript />` sets `<html lang>` from localStorage before React mounts, preventing a flash where screen readers see `lang="en"` while the page renders Hindi
+- Lint: 0 errors, 1 pre-existing warning (unrelated). tsc: clean for all touched files. Dev server stable
+- Did NOT touch page.tsx — orchestrator does final QA; no new sections were added, only the toggle + curated string swaps
+
+---
+Task ID: 11 (cycle 11)
+Agent: main-orchestrator
+Task: QA assessment + add 3 new sections (Sustainability, Manufacturing Process, Distributors) + EN/HI language toggle + styling polish
+
+## Current project status description/assessment
+
+Started cycle 11 by reviewing `/home/z/my-project/worklog.md` (10 prior cycles, 1696 lines). Project was already at a sophisticated state: 12 homepage sections, comprehensive interactive features (QuoteDialog, ProductDetailDialog, CompareDialog, ApplicationDetailDialog, SearchPalette, ThemeToggle, CookieConsent, ScrollToTop, NewsletterSubscribe, QuoteAdmin w/ CSV export + status workflow, ChatWidget, StickyCTABar, ScrollProgressBar, ImageLightbox, CaseStudiesSection, InsightsSection, QuickNav, ProjectGallery), design-system lock from Task 10-c, WCAG AA contrast fixes, Manrope typography.
+
+Initial QA via agent-browser (1440×900 desktop + 390×844 mobile) confirmed stable state:
+- 12 sections rendered, body height 17119px, 0 lint errors, 0 runtime errors
+- All key UI components present (cookie banner, chat widget, quick nav, theme toggle)
+- Locale toggle absent (no i18n), no sustainability/manufacturing/distributor content
+
+Decision: Project was stable → propose and implement new feature work per requirements #3 (independent new requirements), #4 (mandatory styling polish), #5 (mandatory more features).
+
+## Current goals/completed modifications/verification results
+
+### Work Log:
+
+**1. QA testing (desktop + mobile + dark mode)**
+- Verified lint: 0 errors, 1 pre-existing warning (Manrope font in layout.tsx)
+- Verified dev server stable: GET / 200, no runtime errors
+- Captured baseline screenshots at desktop/mobile viewports
+- Confirmed all 12 existing sections render with no console errors
+
+**2. NEW: SustainabilitySection** (Task 3-a, parallel agent)
+- Created `/home/z/my-project/src/components/home/SustainabilitySection.tsx`
+- 4 animated metric cards (100% recyclable, 42% solar, 1.2M kg CO₂e avoided, 0 restricted substances) with IntersectionObserver-driven count-up animation replicating StatsBar pattern
+- 3 commitment pillars (Material Stewardship, Process Efficiency, End-of-life Recovery)
+- Certifications strip (ISO 14001:2015, RoHS, REACH, Zero-Waste-to-Landfill 2026 target)
+- All WCAG AA contrast compliant (text-body #374151, dark mode text-white/75)
+
+**3. NEW: ManufacturingProcessSection** (Task 3-b, parallel agent)
+- Created `/home/z/my-project/src/components/home/ManufacturingProcessSection.tsx`
+- Dark navy section with radial gradient backdrop
+- 6-stage vertical timeline with alternating left/right zig-zag layout on desktop, single column on mobile
+- Each stage: number badge, title, description, 3 inline tags, 3-icon equipment strip
+- Stages: Compound Mixing → Calendering → Moulding/Curing → In-process Testing → Marking/Traceability → Packing/Dispatch
+- Footer CTA "Book a tour" with Video icon
+- Semantic `<ol>` + `<li>` + `<article>` structure
+
+**4. NEW: DistributorSection** (Task 3-c, parallel agent)
+- Created `/home/z/my-project/src/components/home/DistributorSection.tsx`
+- 2-column layout: stylised India map placeholder (8 pulsing orange dots at state positions, "16 States covered" centered) + 6 regional distributor cards
+- 6 cards: Northern/Western/Southern/Eastern/Central/North-Eastern regions
+- Each card: region h3 + cities + tinted MapPin badge + partner name + tel: + mailto: links
+- 3 mini-stats below map: 28 Partner outlets / 72h Avg dispatch / 4 Warehouses
+- "Become a distributor" ghost CTA at bottom
+
+**5. NEW: EN/HI Language Toggle** (Task 3-d, parallel agent + orchestrator bug fix)
+- Created 4 files:
+  - `src/lib/i18n.ts` — Locale store with cached-raw useSyncExternalStore pattern, 13-key EN/HI dictionary (nav.*, hero.*, cta.*, footer.*)
+  - `src/components/i18n/LocaleToggle.tsx` — Globe icon + EN/हिं pill button
+  - `src/components/i18n/useLocale.ts` — React hook wrapper
+  - `src/components/i18n/LanguageInitScript.tsx` — Pre-hydration script for `<html lang>`
+- Modified 5 files: Header (toggle in desktop nav), MobileDrawer (toggle in drawer), Hero (locale-aware strings), FinalCTA (locale-aware CTA labels), layout.tsx (LanguageInitScript in head)
+- **CRITICAL BUG FIX (orchestrator)**: After initial implementation, clicking the toggle updated `<html lang>` but did NOT re-render subscribed components. Root cause: `setLocale()` updated `cachedRaw` BEFORE dispatching the custom event, so the `refresh()` handler's `raw !== cachedRaw` check returned false → no listeners notified. Fix: invoke `listeners.forEach(l => l())` directly inside `setLocale()` BEFORE dispatching the event. Verified: H1 text now switches between "Electrical insulating mats..." (EN) and "इलेक्ट्रिकल इंसुलेटिंग मैट्स..." (HI) on click.
+
+**6. Page composition (orchestrator)**
+- Modified `src/app/page.tsx` to insert the 3 new sections in proper narrative order:
+  - ProductSelection → SectionDivider dark → **ManufacturingProcessSection** → SectionDivider accent → HomeProofCentre
+  - ProjectGallery → SectionDivider default → **SustainabilitySection** → SectionDivider default → TestimonialsSection
+  - ResourcesSection → SectionDivider default → **DistributorSection** → SectionDivider default → ContactSection
+- Added new `dotted` SectionDivider variant (5-dot centered decorative pattern with growing dot sizes)
+- Updated JSON-LD Organization schema: added sustainability + solar manufacturing to `knowsAbout`, added `award` array (ISO 14001, RoHS, REACH)
+- Added new JSON-LD `FAQPage` schema (4 Q&As about IS 15652, class selection, thickness, lab testing) for rich search results
+- Page now has 15 sections (was 12)
+
+**7. QuickNav update (orchestrator)**
+- Modified `src/components/ui-custom/QuickNav.tsx` SECTIONS array:
+  - Added `manufacturing` (label "Manufacturing") after `product-selection`
+  - Added `sustainability` (label "Sustainability") after `case-studies`
+  - Added `distributors` (label "Distributors") after `resources`
+  - Total: 14 nav pills (was 11)
+
+**8. Styling polish (orchestrator)**
+- Modified `src/app/globals.css` — added 8 new utility classes in `@layer utilities`:
+  - `.text-balance` / `.text-pretty` — modern text-wrap for cleaner heading line breaks
+  - `.hover-lift` — consistent card hover translateY(-2px) + soft shadow
+  - `.accent-bar` — reusable 2.5rem decorative orange line under eyebrows
+  - `.scrollbar-hide` — hide scrollbars while keeping scroll (for QuickNav)
+  - `.glass-panel` — frosted glass effect for cards on dark sections
+  - `.corner-accent` — L-shaped bracket in top-right that animates on hover
+  - `.section-number` — large faded number watermark (8rem, opacity 0.06)
+  - `.btn-primary-glow` — primary button with orange glow shadow + hover lift
+  - `.link-underline` — animated underline-on-hover for inline links
+  - `.card-focus` — keyboard focus ring for cards
+- Added `dotted` variant to `SectionDivider` component
+
+**9. FAQSection polish (orchestrator)**
+- Refactored `/home/z/my-project/src/components/home/FAQSection.tsx` from single-column to 2-column layout:
+  - Left: sticky eyebrow + h2 + new "Can't find what you're looking for?" CTA card with link to #contact
+  - Right: accordion (was below the heading in original)
+- Fixed contrast: AccordionContent `text-steel` → `text-[#374151] dark:text-white/75` (AA compliant)
+- Added `text-balance` to h2 for cleaner line wrapping
+- Added `dark:bg-card` to section background
+- Added `text-left` to AccordionTrigger for explicit alignment
+
+### Verification Results:
+- **Lint**: 0 errors, 1 pre-existing warning (Manrope font in layout.tsx)
+- **Dev server**: stable, GET / 200, no runtime errors
+- **Page structure**: 15 sections render correctly (was 12)
+  - products, product-selection, manufacturing, proof, applications, case-studies, gallery, sustainability, testimonials, insights, resources, distributors, contact, faq, quote
+- **Body height**: 22003px (was 17119px — added ~4900px of new content)
+- **QuickNav**: 14 section pills (was 11), active pill tracking works
+- **JSON-LD**: 3 structured-data scripts present (Organization, Product, FAQPage)
+- **Locale toggle**:
+  - Click toggles between EN ↔ HI
+  - H1 text changes: "Electrical insulating mats..." → "इलेक्ट्रिकल इंसुलेटिंग मैट्स..."
+  - `<html lang>` attribute syncs (en ↔ hi)
+  - Toggle button label updates: "EN/हिं" ↔ "हिं/EN"
+  - Persists to localStorage, applies on reload via LanguageInitScript
+- **Dark mode**: All 3 new sections (Manufacturing, Sustainability, Distributors) render correctly in dark mode (verified via `agent-browser set media dark` + screenshots)
+- **Mobile (390×844)**: All 3 new sections responsive — Manufacturing collapses to single-column left-aligned timeline, Sustainability metrics stack 2-col, Distributor cards stack 1-col
+- **No console errors** during any interaction
+
+## Unresolved issues or risks, and priority recommendations for the next phase
+
+### Known minor items:
+1. **Locale toggle covers curated subset only** — only 13 keys (nav, hero, cta, footer.rights). Body content of new sections (Sustainability, Manufacturing, Distributors) remains English-only. To extend, add keys to `src/lib/i18n.ts` dictionaries and call `t()` in each section component. MEDIUM effort, LOW priority (visible signal already achieved).
+2. **DistributorSection India map is a stylised placeholder** — uses 8 pulsing dots positioned by % to approximate state locations. Could be replaced with a real SVG India map for visual accuracy. LOW priority.
+3. **ManufacturingProcessSection uses no real plant photos** — stages are illustrated with lucide icons only. Could add real factory floor photos if available. LOW priority.
+4. **ProjectGallery still uses gradient cards** — Task 10 noted this; still applies. Could be replaced with real installation photos. LOW priority.
+5. **InsightsSection / CaseStudiesSection links still use `#` placeholder** — no actual article/case study pages exist. LOW priority.
+6. **Real PDF assets for downloads** — current document downloads generate mock PDFs via Blob. LOW priority.
+7. **Analytics event tracking** — could add event tracking for locale_toggle, sustainability_pillar_click, distributor_card_click, manufacturing_stage_click. LOW priority.
+8. **Performance** — page is now 22K px tall with many sections; could benefit from `loading="lazy"` on below-the-fold images and `next/image` priority hints. Image optimization is disabled in next.config.ts (sandbox CSP workaround). LOW priority.
+
+### Priority recommendations for next cycle:
+- LOW: Extend i18n dictionary to cover section eyebrows and CTAs in new sections (Sustainability, Manufacturing, Distributors)
+- LOW: Replace distributor map placeholder with a real SVG India map
+- LOW: Add real plant photos to ManufacturingProcessSection stages
+- LOW: Add analytics event tracking for new interactive elements
+- LOW: Consider adding a "Careers" section (job openings at the Manesar plant)
+- LOW: Consider adding a "Newsroom" section with press releases
+- LOW: Add a virtual plant tour video modal triggered by the "Book a tour" CTA in Manufacturing section

@@ -53,56 +53,76 @@ const faqItems = [
 
 export function FAQSection() {
   return (
-    <section id="faq" className="bg-ivory-light py-20 md:py-28 scroll-mt-32">
+    <section id="faq" className="bg-ivory-light dark:bg-card py-20 md:py-28 scroll-mt-32">
       {/* Orange safety-line accent */}
       <div className="h-1 bg-gradient-to-r from-orange via-orange/30 to-transparent" />
 
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 pt-10 md:pt-14">
-        <Reveal delay={0}>
-          <span className="text-eyebrow" style={{ fontFamily: "'Manrope', sans-serif" }}>
-            Common questions
-          </span>
-        </Reveal>
-        <Reveal delay={80}>
-          <h2
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy mt-3 max-w-[600px]"
-            style={{ fontFamily: "'Manrope', sans-serif" }}
-          >
-            Frequently asked questions about our products and standards.
-          </h2>
-        </Reveal>
-
-        <Reveal delay={160} translateY={16}>
-          <Accordion type="single" collapsible className="mt-10 md:mt-14">
-            {faqItems.map((item, i) => (
-              <AccordionItem
-                key={`faq-${i + 1}`}
-                value={`faq-${i + 1}`}
-                className="border-b border-border/60 last:border-b-0"
+        <div className="grid lg:grid-cols-[1fr_2fr] gap-10 lg:gap-16">
+          {/* Left column: heading + contact CTA */}
+          <div className="lg:sticky lg:top-32 lg:self-start">
+            <Reveal delay={0}>
+              <span className="text-eyebrow" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                Common questions
+              </span>
+            </Reveal>
+            <Reveal delay={80}>
+              <h2
+                className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy dark:text-white mt-3 text-balance"
+                style={{ fontFamily: "'Manrope', sans-serif" }}
               >
-                <AccordionTrigger
-                  className="text-navy text-sm md:text-base hover:text-orange hover:no-underline py-5 group"
-                  style={{ fontFamily: "'Manrope', sans-serif" }}
+                Frequently asked questions about our products and standards.
+              </h2>
+            </Reveal>
+            <Reveal delay={160}>
+              <div className="mt-6 p-5 rounded-2xl bg-white dark:bg-navy border border-border/60">
+                <p className="text-sm text-[#374151] dark:text-white/75 leading-relaxed">
+                  Can&apos;t find what you&apos;re looking for? Our technical sales team is here to help.
+                </p>
+                <a
+                  href="#contact"
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-orange hover:text-orange-hover transition-colors link-underline"
                 >
-                  <span className="relative pl-4">
-                    {/* Orange left border accent bar */}
-                    <span
-                      className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-[60%] rounded-sm bg-orange/40 group-hover:bg-orange transition-colors duration-200"
-                      aria-hidden="true"
-                    />
-                    {item.question}
-                  </span>
-                </AccordionTrigger>
-                <AccordionContent
-                  className="text-steel text-sm leading-relaxed"
-                  style={{ fontFamily: "'Manrope', sans-serif" }}
+                  Contact technical sales
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Right column: accordion */}
+          <Reveal delay={200} translateY={16}>
+            <Accordion type="single" collapsible className="w-full">
+              {faqItems.map((item, i) => (
+                <AccordionItem
+                  key={`faq-${i + 1}`}
+                  value={`faq-${i + 1}`}
+                  className="border-b border-border/60 last:border-b-0"
                 >
-                  {item.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </Reveal>
+                  <AccordionTrigger
+                    className="text-navy dark:text-white text-sm md:text-base hover:text-orange hover:no-underline py-5 group text-left"
+                    style={{ fontFamily: "'Manrope', sans-serif" }}
+                  >
+                    <span className="relative pl-4">
+                      {/* Orange left border accent bar */}
+                      <span
+                        className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-[60%] rounded-sm bg-orange/40 group-hover:bg-orange transition-colors duration-200"
+                        aria-hidden="true"
+                      />
+                      {item.question}
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent
+                    className="text-[#374151] dark:text-white/75 text-sm leading-relaxed"
+                    style={{ fontFamily: "'Manrope', sans-serif" }}
+                  >
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

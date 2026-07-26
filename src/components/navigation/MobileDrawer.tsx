@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { QuoteButton } from '@/components/quote/QuoteButton';
 import { QuoteAdminTrigger } from '@/components/quote/QuoteAdminTrigger';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { LocaleToggle } from '@/components/i18n/LocaleToggle';
 import { SearchTrigger } from '@/components/search/SearchTrigger';
 import { useProductDetail } from '@/components/products/ProductDetailProvider';
 import { Menu } from 'lucide-react';
@@ -112,6 +113,7 @@ export function MobileDrawer() {
               </a>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-steel" style={{ fontFamily: "'Manrope', sans-serif" }}>Theme</span>
+                <LocaleToggle />
                 <ThemeToggle />
               </div>
             </div>
