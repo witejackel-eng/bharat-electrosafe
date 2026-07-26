@@ -195,3 +195,86 @@ QA pass via agent-browser identified several critical functionality gaps despite
 - MEDIUM: Add dark mode toggle (theme already defined in CSS)
 - LOW: Add JSON-LD structured data for SEO
 - LOW: Add product comparison view
+
+---
+Task ID: 4
+Agent: cron-review-cycle-2
+Task: QA via agent-browser, fix bugs, add new features (testimonials, dark mode, JSON-LD, newsletter, document downloads, compare dialog), polish styling
+
+## Current project status description/assessment
+
+Prior cycles built a complete Bharat Electrosafe homepage with Hero, StatsBar, ProductSystems, ProductSelection, ProofCentre, Applications, Contact, FinalCTA, plus working Quote dialog, ProductDetail dialog, and ScrollToTop. QA pass with agent-browser found:
+
+**Bugs identified:**
+- 8 broken anchor links: `#about`, `#resources`, `#substations`, `#control-rooms`, `#power-utilities`, `#railways-metro`, `#manufacturing`, `#tunnels-water` referenced by footer/proof centre but no matching IDs in DOM
+- Document thumbnails in ProofCentre all identical (same `mat-texture.png` placeholder)
+- L&T client name truncated in marquee
+- Document Preview/Download buttons were non-functional
+- DialogContent default `sm:max-w-lg` (512px) was overriding intended `max-w-3xl` / `max-w-6xl` on dialogs, making them render too narrow
+
+**Missing features:** testimonials, dark mode toggle, JSON-LD SEO, newsletter subscribe, technical resources section, product comparison.
+
+## Current goals/completed modifications/verification results
+
+### Work Log:
+
+**1. Bug fixes**
+- Added `id="about"` and `id="resources"` anchors (About lives inside Company credibility strip; Resources is its own new section)
+- Added per-application anchor IDs (`#substations`, `#control-rooms`, etc.) inside the applications mosaic tiles (positioned `-top-32` for clean scroll-mt)
+- Updated Footer to point Applications column at `#applications-grid` (the mosaic container) and added Testimonials / Resources / Applications entries under Company column
+- Fixed DialogContent max-width override: changed `max-w-2xl/3xl/6xl` → `sm:max-w-2xl/3xl/6xl` on ProductDetailDialog, QuoteDialog, CompareDialog (the shadcn dialog default `sm:max-w-lg` was winning the cascade)
+- Fixed L&T marquee truncation: increased `min-width` 160→200px, added `whitespace-nowrap` + `truncate` on the name span and `min-w-0` on the wrapper
+- Fixed testimonials decorative quote icon (was `rotate-180 size-48` looking like "66" — repositioned to `top-8 right-8 size-32`)
+- Bumped document-card reference text contrast from `text-white/70` to `text-white/90 font-medium`
+
+**2. New features added**
+- **ThemeToggle + ThemeProvider** (`src/components/theme/`): next-themes integration with inline FOUC-prevention script in `<head>`. Mounted via `useSyncExternalStore` (avoids setState-in-effect lint error). Toggle in header (desktop) + mobile drawer.
+- **Dark mode CSS overrides** in `globals.css`: comprehensive `.dark` rules that remap brand tokens (`text-navy` → foreground, `bg-white` → card, `bg-ivory-light` → card, `bg-navy` → darker surface), header translucent dark surface, dark inputs, dark borders.
+- **TestimonialsSection** (`src/components/home/TestimonialsSection.tsx`): rotating carousel with 5 testimonials (author, role, organisation, sector, project context, 4–5 star rating). Auto-advances every 8s (pauses on hidden tab). Arrow buttons + dot indicators + progress bar. Left column = avatar/organisation/project; right column = stars + quote + counter.
+- **ResourcesSection** (`src/components/home/ResourcesSection.tsx`): 6 downloadable resources with category filters (All/Electrical/Civil/Quality). Each card: type accent, page count + file size, title, description, file tag, download button (client-side mock PDF generation via Blob). Decorative corner accent + watermark icon on hover.
+- **CompareDialog** (`src/components/products/CompareDialog.tsx`): 3-column comparison table with sticky first column, product card headers (image + name), 6 spec rows (function, variants, standards, voltage, applications, traceability), 4 capability checkmarks. Triggered via `openCompare()` from ProductDetailProvider context. Wired into HomeProductSystems header ("Compare systems" button) and ProductSelection ("Compare full specifications" CTA).
+- **NewsletterSubscribe** (`src/components/ui-custom/NewsletterSubscribe.tsx`): footer subscribe form with email input + arrow submit button. Loading/success/error states. On success, shows confirmation with "Subscribe another email" link. Validates email format.
+- **Subscribe API** (`src/app/api/subscribe/route.ts`): POST endpoint with Zod-style email validation, dedup logic, in-memory store. GET returns masked subscriber list. Tested: 201 response with `{ok:true, count:1}` and 200 duplicate detection.
+- **JSON-LD structured data**: Organization + Product schemas injected via `<script type="application/ld+json">` in page.tsx. Includes address, contactPoint, knowsAbout, certifies.
+- **Document download/preview** in ProofCentre: each document card now has wired Preview (opens Blob URL in new tab) and Download (saves `<doc-id>.pdf` to disk) buttons. Mock PDF content includes doc name, issuer, standard, reference.
+- **Document card visuals** in ProofCentre: replaced identical image thumbnails with stylised "document" UI — accent gradient background (navy/orange/steel), texture overlay, faux window-chrome top bar with traffic-light dots + file size, centered FileText icon + pill stamp ("BIS LICENSED" / "TESTED" / "CERTIFIED"), reference number at bottom.
+- **QualityDocument data** extended with `accent`, `stamp`, `reference` fields.
+- **Resources data** (`src/data/resources.ts`): 6 resources across 4 categories with type, description, fileType, fileSize, pages.
+- **Testimonials data** (`src/data/testimonials.ts`): 5 testimonials with quote, author, role, organization, abbreviation, sector, projectContext, rating.
+
+**3. Page composition**
+Updated `src/app/page.tsx`: inserted TestimonialsSection + ResourcesSection between HomeApplications and ContactSection. Added 2 JSON-LD scripts. Wrapped main in `bg-background` for theme consistency.
+
+### Verification Results:
+- Lint: 0 errors, 1 acceptable warning (custom font in head)
+- Dev server: stable, GET / 200, no errors
+- All anchor links resolve: about, resources, testimonials, contact, company, proof, products, applications, product-selection, electrical-insulation, visible-safety, civil-protection
+- Quote dialog: opens, fills, submits, success state with reference ID (Q-MS24558K)
+- Product detail dialog: opens via Hero indicators, ProductSystemPanel, HomeProductSystems
+- Compare dialog: opens via "Compare systems" button; 1152px wide; all text visible (no clipping); sticky first column works
+- Dark mode: toggle works, persists to localStorage, FOUC-free on reload, all sections readable
+- Newsletter API: POST returns 201, GET returns masked list
+- Mobile (390x844): no overflow, no clipping, layout intact
+- Desktop (1440x900): all 6 section screenshots rated "Good" by VLM
+- VLM confirms: hero clean, product systems strong hierarchy, proof centre professional, testimonials/resources clean, footer effective
+
+## Unresolved issues or risks, and priority recommendations for the next phase
+
+### Remaining items for next cycle:
+1. **Cron job review** — there is an existing 15-min recurring webDevReview cron; ensure it doesn't conflict with future edits
+2. **Test with real PDF assets** — current document downloads generate mock PDFs; could add real PDFs in `/public/documents/`
+3. **Search functionality** — could add a search bar in header that opens a command palette (cmdk) to find products/applications/resources
+4. **Cookie consent banner** — required for EU/UK traffic; not yet implemented
+5. **Analytics** — could add Plausible/Umami event tracking for quote submissions, downloads, compare opens
+6. **Image optimization** — could add `loading="lazy"` to below-the-fold images and use `next/image` priority only for hero
+7. **A11y audit** — verify keyboard nav through testimonials carousel, compare dialog table semantics, focus trap in dialogs
+8. **More application detail** — application tile clicks currently just scroll; could open an ApplicationDetailDialog with use cases + relevant product systems
+9. **Quote list/admin view** — `/api/quote` GET endpoint exists but no UI; could add a basic admin page
+10. **Theme toggle on dark navy sections** — ProductSelection section already uses light text on navy bg in light mode; verify it doesn't look weird in dark mode
+
+### Priority recommendations:
+- HIGH: Add cookie consent banner (compliance)
+- MEDIUM: Add search / command palette (UX)
+- MEDIUM: Add ApplicationDetailDialog (deeper content per tile)
+- LOW: Real PDF assets for downloads
+- LOW: Analytics event tracking

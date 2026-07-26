@@ -8,23 +8,42 @@ import { useProductDetail } from '@/components/products/ProductDetailProvider';
 
 export function HomeProductSystems() {
   const [hovered, setHovered] = useState<string | null>(null);
-  const { openProduct } = useProductDetail();
+  const { openProduct, openCompare } = useProductDetail();
 
   return (
     <section id="products" className="bg-background py-20 md:py-28">
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
         {/* Section header */}
-        <Reveal delay={0}>
-          <span className="text-eyebrow">What we make</span>
-        </Reveal>
-        <Reveal delay={80}>
-          <h2
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy mt-3 max-w-[600px]"
-            style={{ fontFamily: "'Manrope', sans-serif" }}
-          >
-            Three product systems covering electrical insulation, visible safety and civil protection.
-          </h2>
-        </Reveal>
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div>
+            <Reveal delay={0}>
+              <span className="text-eyebrow">What we make</span>
+            </Reveal>
+            <Reveal delay={80}>
+              <h2
+                className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy mt-3 max-w-[600px]"
+                style={{ fontFamily: "'Manrope', sans-serif" }}
+              >
+                Three product systems covering electrical insulation, visible safety and civil protection.
+              </h2>
+            </Reveal>
+          </div>
+          {/* Compare CTA */}
+          <Reveal delay={140}>
+            <button
+              type="button"
+              onClick={openCompare}
+              className="group inline-flex items-center gap-2 px-5 h-10 rounded-lg border border-border bg-white text-navy hover:border-orange/50 hover:text-orange transition-colors text-sm font-medium"
+              style={{ fontFamily: "'Manrope', sans-serif" }}
+            >
+              <span className="inline-flex items-center justify-center w-5 h-5 rounded-md bg-orange-soft text-orange text-[0.65rem] font-bold tabular-nums">
+                vs
+              </span>
+              Compare systems
+              <span className="text-orange transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+            </button>
+          </Reveal>
+        </div>
 
         {/* Product panels */}
         <div className="mt-12 md:mt-16 flex flex-col gap-8 md:gap-16">

@@ -120,7 +120,7 @@ export function QuoteDialog({ open, onOpenChange, defaultProductSystem, defaultP
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-ivory-light">
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-ivory-light">
         {status === 'success' ? (
           <div className="flex flex-col items-center text-center py-8 px-4">
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">

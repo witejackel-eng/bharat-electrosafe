@@ -6,6 +6,12 @@ export interface QualityDocument {
   fileType: string;
   fileSize: string;
   thumbnail: string;
+  /** Color accent for the document card thumbnail background. */
+  accent: 'navy' | 'orange' | 'steel';
+  /** Short label shown as a "stamp" on the document thumbnail. */
+  stamp: string;
+  /** Reference number shown on the document thumbnail. */
+  reference: string;
 }
 
 export const qualityDocuments: QualityDocument[] = [
@@ -17,6 +23,9 @@ export const qualityDocuments: QualityDocument[] = [
     fileType: "PDF",
     fileSize: "2.4 MB",
     thumbnail: "/images/mat-texture.png",
+    accent: "navy",
+    stamp: "BIS LICENSED",
+    reference: "Lic. No. BIS-15652-IND",
   },
   {
     id: "test-report",
@@ -26,6 +35,9 @@ export const qualityDocuments: QualityDocument[] = [
     fileType: "PDF",
     fileSize: "1.8 MB",
     thumbnail: "/images/mat-texture.png",
+    accent: "orange",
+    stamp: "TESTED",
+    reference: "Report No. CPRI-2024-118",
   },
   {
     id: "iso-certificate",
@@ -35,6 +47,9 @@ export const qualityDocuments: QualityDocument[] = [
     fileType: "PDF",
     fileSize: "1.2 MB",
     thumbnail: "/images/mat-texture.png",
+    accent: "steel",
+    stamp: "CERTIFIED",
+    reference: "Reg. No. TUV-9001-IND",
   },
   {
     id: "is-15652",
@@ -44,6 +59,9 @@ export const qualityDocuments: QualityDocument[] = [
     fileType: "PDF",
     fileSize: "3.1 MB",
     thumbnail: "/images/mat-texture.png",
+    accent: "navy",
+    stamp: "STANDARD REF",
+    reference: "IS 15652:2006",
   },
 ];
 

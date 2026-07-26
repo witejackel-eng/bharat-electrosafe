@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { ProductSystemPanel } from '@/components/navigation/ProductSystemPanel';
 import { MobileDrawer } from '@/components/navigation/MobileDrawer';
 import { QuoteButton } from '@/components/quote/QuoteButton';
+import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -196,6 +197,7 @@ export function Header() {
           >
             Request a Quote
           </QuoteButton>
+          <ThemeToggle className="hidden md:inline-flex" />
           <MobileDrawer />
         </div>
       </div>

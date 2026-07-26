@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { QuoteButton } from '@/components/quote/QuoteButton';
+import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { useProductDetail } from '@/components/products/ProductDetailProvider';
 import { Menu } from 'lucide-react';
 import Link from 'next/link';
@@ -97,12 +98,18 @@ export function MobileDrawer() {
             <QuoteButton className="w-full bg-orange hover:bg-orange-hover text-white font-medium h-11">
               Request a Quote
             </QuoteButton>
-            <a
-              href="tel:+911234567890"
-              className="text-center text-sm text-steel hover:text-navy transition-colors"
-            >
-              Call technical sales
-            </a>
+            <div className="flex items-center justify-between">
+              <a
+                href="tel:+911234567890"
+                className="text-sm text-steel hover:text-navy transition-colors"
+              >
+                Call technical sales
+              </a>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-steel" style={{ fontFamily: "'Manrope', sans-serif" }}>Theme</span>
+                <ThemeToggle />
+              </div>
+            </div>
           </div>
         </nav>
       </SheetContent>

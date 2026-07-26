@@ -25,11 +25,12 @@ export function HomeApplications() {
         </Reveal>
 
         {/* Application mosaic */}
-        <div className="mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
+        <div id="applications-grid" className="mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
           {applications.map((app, i) => (
             <Reveal key={app.id} delay={i * 80} translateY={16}>
               <Link
                 href={`#${app.id}`}
+                aria-label={`${app.name} — ${app.system}`}
                 className="group relative block rounded-2xl overflow-hidden bg-muted aspect-[4/3] md:aspect-[3/2] lg:aspect-square"
               >
                 <Image
@@ -42,6 +43,11 @@ export function HomeApplications() {
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/30 to-transparent" />
                 {/* Orange safety line on hover */}
                 <div className="absolute bottom-0 left-0 w-0 group-hover:w-full h-[3px] bg-orange transition-all duration-300" />
+                {/* Index number top-left */}
+                <div className="absolute top-3 left-3 text-xs font-semibold text-white/70 tabular-nums" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                  0{i + 1}
+                </div>
+                <div id={app.id} className="absolute -top-32" aria-hidden="true" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
                   <span className="text-sm md:text-base font-semibold text-white block" style={{ fontFamily: "'Manrope', sans-serif" }}>
                     {app.name}
@@ -72,7 +78,7 @@ export function HomeApplications() {
         </Reveal>
 
         {/* Company credibility strip */}
-        <div id="company" className="mt-20 md:mt-28 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-center">
+        <div id="company" className="mt-20 md:mt-28 scroll-mt-32 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-center">
           {/* Factory image */}
           <div className="md:col-span-5">
             <Reveal delay={0} translateY={20}>
@@ -91,7 +97,7 @@ export function HomeApplications() {
           </div>
 
           {/* Company info */}
-          <div className="md:col-span-7 flex flex-col gap-4">
+          <div id="about" className="md:col-span-7 flex flex-col gap-4 scroll-mt-32">
             <Reveal delay={80}>
               <span className="text-eyebrow">Company</span>
             </Reveal>

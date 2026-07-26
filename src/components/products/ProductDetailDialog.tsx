@@ -35,7 +35,7 @@ export function ProductDetailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-ivory-light">
+      <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto bg-ivory-light">
         <DialogHeader>
           <div className="flex items-center gap-3 mb-2">
             <span className="text-eyebrow">{product.index}</span>

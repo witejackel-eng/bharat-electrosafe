@@ -1,12 +1,95 @@
 'use client';
 
 import { clients } from '@/data/clients';
-import { qualityDocuments, traceabilityFields } from '@/data/quality';
+import { qualityDocuments, traceabilityFields, type QualityDocument } from '@/data/quality';
 import { Reveal } from '@/components/motion/Reveal';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FileText, Download, Eye } from 'lucide-react';
+
+const accentBg: Record<QualityDocument['accent'], string> = {
+  navy: 'from-navy to-navy-dark',
+  orange: 'from-orange to-orange-hover',
+  steel: 'from-steel to-navy/80',
+};
+
+const accentText: Record<QualityDocument['accent'], string> = {
+  navy: 'text-white',
+  orange: 'text-white',
+  steel: 'text-white',
+};
+
+function downloadDoc(doc: QualityDocument) {
+  // Generate a small mock PDF on the client so the download feels real.
+  const content = `%PDF-1.4
+% Bharat Electrosafe — ${doc.name}
+% Issuer: ${doc.issuer} | Standard: ${doc.standard} | Reference: ${doc.reference}
+1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+2 0 obj << /Type /Pages /Count 1 /Kids [3 0 R] >> endobj
+3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R >> endobj
+4 0 obj << /Length 200 >>
+stream
+BT /F1 18 Tf 72 720 Td (${doc.name}) Tj ET
+BT /F1 12 Tf 72 690 Td (Issuer: ${doc.issuer}) Tj ET
+BT /F1 12 Tf 72 670 Td (Standard: ${doc.standard}) Tj ET
+BT /F1 12 Tf 72 650 Td (Reference: ${doc.reference}) Tj ET
+endstream
+endobj
+xref
+0 5
+0000000000 65535 f
+0000000010 00000 n
+0000000055 00000 n
+0000000100 00000 n
+0000000155 00000 n
+trailer << /Size 5 /Root 1 0 R >>
+startxref
+420
+%%EOF`;
+  const blob = new Blob([content], { type: 'application/pdf' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${doc.id}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function previewDoc(doc: QualityDocument) {
+  // Open the same generated PDF in a new tab for "preview".
+  const content = `%PDF-1.4
+% Bharat Electrosafe — ${doc.name} (Preview)
+1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+2 0 obj << /Type /Pages /Count 1 /Kids [3 0 R] >> endobj
+3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R >> endobj
+4 0 obj << /Length 200 >>
+stream
+BT /F1 18 Tf 72 720 Td (${doc.name}) Tj ET
+BT /F1 12 Tf 72 690 Td (Issuer: ${doc.issuer}) Tj ET
+BT /F1 12 Tf 72 670 Td (Standard: ${doc.standard}) Tj ET
+BT /F1 12 Tf 72 650 Td (Reference: ${doc.reference}) Tj ET
+endstream
+endobj
+xref
+0 5
+0000000000 65535 f
+0000000010 00000 n
+0000000055 00000 n
+0000000100 00000 n
+0000000155 00000 n
+trailer << /Size 5 /Root 1 0 R >>
+startxref
+420
+%%EOF`;
+  const blob = new Blob([content], { type: 'application/pdf' });
+  const url = URL.createObjectURL(blob);
+  window.open(url, '_blank', 'noopener,noreferrer');
+  // Revoke after a short delay so the browser can load it.
+  setTimeout(() => URL.revokeObjectURL(url), 30_000);
+}
 
 export function HomeProofCentre() {
   // Duplicate clients for seamless marquee loop
@@ -50,14 +133,14 @@ export function HomeProofCentre() {
               {doubledClients.map((client, i) => (
                 <div
                   key={`${client.id}-${i}`}
-                  className="flex items-center gap-3 group px-4 py-3 rounded-xl border border-border/40 bg-white/50 hover:bg-white hover:border-orange/20 transition-all duration-200 hover:-translate-y-1"
-                  style={{ minWidth: '160px' }}
+                  className="flex items-center gap-3 group px-4 py-3 rounded-xl border border-border/40 bg-white/50 hover:bg-white hover:border-orange/20 transition-all duration-200 hover:-translate-y-1 whitespace-nowrap"
+                  style={{ minWidth: '200px' }}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-navy text-white font-bold text-sm shrink-0 group-hover:bg-navy-light transition-colors">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-navy text-white font-bold text-xs shrink-0 group-hover:bg-navy-light transition-colors">
                     {client.abbreviation}
                   </div>
-                  <div>
-                    <span className="text-sm font-medium text-navy group-hover:text-navy/80">{client.name}</span>
+                  <div className="min-w-0">
+                    <span className="text-sm font-medium text-navy group-hover:text-navy/80 block truncate">{client.name}</span>
                     <span className="text-xs text-steel block">{client.sector}</span>
                   </div>
                 </div>
@@ -77,25 +160,61 @@ export function HomeProofCentre() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {qualityDocuments.slice(0, 3).map((doc, i) => (
               <Reveal key={doc.id} delay={i * 80} translateY={16}>
-                <div className="border border-border rounded-2xl p-5 bg-white hover:shadow-md hover:-translate-y-1 transition-all duration-200 group/card">
-                  {/* Thumbnail */}
-                  <div className="relative w-full aspect-[3/2] rounded-xl overflow-hidden bg-muted mb-4">
-                    <Image
-                      src={doc.thumbnail}
-                      alt={doc.name}
-                      fill
-                      className="object-cover group-hover/card:scale-[1.02] transition-transform duration-300"
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                <div className="border border-border rounded-2xl p-5 bg-white hover:shadow-md hover:-translate-y-1 transition-all duration-200 group/card relative overflow-hidden">
+                  {/* Thumbnail — stylised "document" with accent gradient + stamp */}
+                  <div
+                    className={`relative w-full aspect-[3/2] rounded-xl overflow-hidden mb-4 bg-gradient-to-br ${accentBg[doc.accent]}`}
+                  >
+                    {/* Texture overlay */}
+                    <div
+                      className="absolute inset-0 opacity-[0.08] mix-blend-overlay"
+                      style={{
+                        backgroundImage: `url(${doc.thumbnail})`,
+                        backgroundSize: '120px',
+                        backgroundRepeat: 'repeat',
+                      }}
                     />
-                    <div className="absolute inset-0 bg-navy/20 flex items-center justify-center group-hover/card:bg-navy/10 transition-colors">
-                      <FileText className="size-8 text-white/80" />
+                    {/* Faux document header bar */}
+                    <div className="absolute top-0 left-0 right-0 h-7 bg-black/15 backdrop-blur-[1px] flex items-center px-3">
+                      <div className="flex gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-white/70" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-white/50" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                      </div>
+                      <span
+                        className="ml-auto text-[0.6rem] uppercase tracking-wider text-white/70 tabular-nums"
+                        style={{ fontFamily: "'Manrope', sans-serif" }}
+                      >
+                        {doc.fileType} · {doc.fileSize}
+                      </span>
                     </div>
+                    {/* Centered stamp + icon */}
+                    <div className={`absolute inset-0 flex flex-col items-center justify-center gap-2 ${accentText[doc.accent]}`}>
+                      <FileText className="size-10 opacity-90" strokeWidth={1.4} />
+                      <span
+                        className="text-[0.7rem] font-semibold tracking-[0.18em] uppercase px-2.5 py-1 rounded-full border border-white/40 bg-white/10 backdrop-blur-sm"
+                        style={{ fontFamily: "'Manrope', sans-serif" }}
+                      >
+                        {doc.stamp}
+                      </span>
+                    </div>
+                    {/* Reference number bottom */}
+                    <div className="absolute bottom-2 left-3 right-3">
+                      <span
+                        className="text-[0.65rem] text-white/90 tabular-nums block truncate font-medium"
+                        style={{ fontFamily: "'Manrope', sans-serif" }}
+                      >
+                        {doc.reference}
+                      </span>
+                    </div>
+                    {/* Hover scale overlay */}
+                    <div className="absolute inset-0 bg-white/0 group-hover/card:bg-white/5 transition-colors duration-300" />
                   </div>
 
                   <h4 className="text-sm font-semibold text-navy mb-1" style={{ fontFamily: "'Manrope', sans-serif" }}>{doc.name}</h4>
-                  <p className="text-xs text-steel mb-1">{doc.issuer}</p>
-                  <div className="flex items-center gap-2 text-xs text-steel mb-4">
-                    <span className="text-spec" style={{ fontFamily: "'Manrope', sans-serif" }}>{doc.standard}</span>
+                  <p className="text-xs text-steel mb-1" style={{ fontFamily: "'Manrope', sans-serif" }}>{doc.issuer}</p>
+                  <div className="flex items-center gap-2 text-xs text-steel mb-4" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                    <span className="text-spec">{doc.standard}</span>
                     <span>·</span>
                     <span>{doc.fileType}</span>
                     <span>·</span>
@@ -103,11 +222,21 @@ export function HomeProofCentre() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="text-xs h-8 gap-1 border-border text-navy/70 hover:text-navy hover:border-navy/30 transition-colors">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => previewDoc(doc)}
+                      className="text-xs h-8 gap-1.5 border-border text-navy/70 hover:text-navy hover:border-navy/30 transition-colors"
+                    >
                       <Eye className="size-3" />
                       Preview
                     </Button>
-                    <Button variant="outline" size="sm" className="text-xs h-8 gap-1 border-border text-navy/70 hover:text-navy hover:border-navy/30 transition-colors">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => downloadDoc(doc)}
+                      className="text-xs h-8 gap-1.5 border-border text-navy/70 hover:text-orange hover:border-orange/40 transition-colors"
+                    >
                       <Download className="size-3" />
                       Download
                     </Button>
