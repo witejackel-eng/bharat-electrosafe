@@ -53,7 +53,7 @@ const faqItems = [
 
 export function FAQSection() {
   return (
-    <section id="faq" className="bg-ivory-light dark:bg-card py-20 md:py-28 scroll-mt-32">
+    <section id="faq" className="bg-ivory-light dark:bg-card py-20 md:py-28 scroll-mt-32 relative overflow-hidden grain-overlay">
       {/* Orange safety-line accent */}
       <div className="h-1 bg-gradient-to-r from-orange via-orange/30 to-transparent" />
 
@@ -62,7 +62,8 @@ export function FAQSection() {
           {/* Left column: heading + contact CTA */}
           <div className="lg:sticky lg:top-32 lg:self-start">
             <Reveal delay={0}>
-              <span className="text-eyebrow" style={{ fontFamily: "'Manrope', sans-serif" }}>
+              <div className="w-16 h-1 rounded-full bg-orange animate-underline-reveal mt-2" aria-hidden="true" />
+              <span className="text-eyebrow gradient-text" style={{ fontFamily: "'Manrope', sans-serif" }}>
                 Common questions
               </span>
             </Reveal>
@@ -75,7 +76,7 @@ export function FAQSection() {
               </h2>
             </Reveal>
             <Reveal delay={160}>
-              <div className="mt-6 p-5 rounded-2xl bg-white dark:bg-navy border border-border/60">
+              <div className="mt-6 p-5 rounded-2xl bg-white dark:bg-navy border border-border/60 diagonal-line animate-breathing-glow relative overflow-hidden">
                 <p className="text-sm text-[#374151] dark:text-white/75 leading-relaxed">
                   Can&apos;t find what you&apos;re looking for? Our technical sales team is here to help.
                 </p>

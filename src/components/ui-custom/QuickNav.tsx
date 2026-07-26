@@ -40,6 +40,7 @@ const SECTIONS: NavSection[] = [
   { id: 'products', label: 'Products' },
   { id: 'voltage-calculator', label: 'Voltage' },
   { id: 'product-selection', label: 'Selection' },
+  { id: 'thickness-comparator', label: 'Thickness' },
   { id: 'manufacturing', label: 'Manufacturing' },
   { id: 'proof', label: 'Proof' },
   { id: 'applications', label: 'Applications' },

@@ -92,15 +92,20 @@ export function HomeProofCentre() {
   const doubledClients = [...clients, ...clients];
 
   return (
-    <section id="proof" className="bg-background py-20 md:py-28">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+    <section id="proof" className="bg-background py-20 md:py-28 relative overflow-hidden grain-overlay">
+      {/* Floating decorative shapes */}
+      <div className="floating-shape w-40 h-40 rounded-full bg-navy top-8 right-[10%]" aria-hidden="true" />
+      <div className="floating-shape w-24 h-24 bg-orange rotate-45 bottom-12 left-[8%]" aria-hidden="true" />
+
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
         {/* Section header */}
         <Reveal delay={0}>
-          <span className="text-eyebrow">Proof Centre</span>
+          <span className="text-eyebrow gradient-text">Proof Centre</span>
         </Reveal>
         <Reveal delay={80}>
+          <div className="w-16 h-1 rounded-full bg-orange animate-underline-reveal mt-2" aria-hidden="true" />
           <h2
-            className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy mt-3 max-w-[640px]"
+            className="text-2xl md:text-3xl lg:text-4xl font-bold gradient-text mt-3 max-w-[640px]"
             style={{ fontFamily: "'Manrope', sans-serif" }}
           >
             Proof that supports procurement.
@@ -129,7 +134,7 @@ export function HomeProofCentre() {
               {doubledClients.map((client, i) => (
                 <div
                   key={`${client.id}-${i}`}
-                  className="flex items-center gap-3 group px-4 py-3 rounded-xl border border-border/40 bg-white/50 hover:bg-white hover:border-orange/20 transition-all duration-200 hover:-translate-y-1 whitespace-nowrap"
+                  className="flex items-center gap-3 group px-4 py-3 rounded-xl border border-border/40 bg-white/50 hover:bg-white hover:border-orange/20 transition-all duration-200 hover-lift whitespace-nowrap"
                   style={{ minWidth: '200px' }}
                 >
                   <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-navy text-white font-bold text-xs shrink-0 group-hover:bg-navy-light transition-colors">
@@ -161,7 +166,7 @@ export function HomeProofCentre() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {qualityDocuments.slice(0, 3).map((doc, i) => (
               <Reveal key={doc.id} delay={i * 80} translateY={16}>
-                <div className="border border-border rounded-2xl p-5 bg-white hover:shadow-lg hover:-translate-y-2 transition-all duration-300 group/card relative overflow-hidden">
+                <div className="border border-border rounded-2xl p-5 bg-white hover:shadow-lg transition-all duration-300 group/card relative overflow-hidden card-tilt diagonal-line corner-accent">
                   {/* VERIFIED watermark behind card */}
                   <span
                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[5rem] font-bold text-navy/[0.03] rotate-[-15deg] pointer-events-none select-none whitespace-nowrap"
@@ -261,7 +266,7 @@ export function HomeProofCentre() {
           {/* Product marking image */}
           <div className="md:col-span-5">
             <Reveal delay={0} translateY={16}>
-              <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-muted animate-pulse-glow">
+              <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-muted animate-breathing-glow">
                 {/* Orange safety line */}
                 <div className="absolute top-4 left-0 w-[3px] h-[60%] bg-orange rounded-full" />
                 <Image

@@ -5,6 +5,7 @@ const subscribers: Array<{
   email: string;
   createdAt: string;
   source: string;
+  categories: string;
 }> = [];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -20,7 +21,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const { email, source } = (body ?? {}) as { email?: string; source?: string };
+  const { email, source, categories } = (body ?? {}) as {
+    email?: string;
+    source?: string;
+    categories?: string;
+  };
 
   if (!email || typeof email !== 'string' || !EMAIL_RE.test(email.trim())) {
     return NextResponse.json(
@@ -43,10 +48,16 @@ export async function POST(request: Request) {
     );
   }
 
+  const cleanCategories =
+    typeof categories === 'string' && categories.trim().length > 0
+      ? categories.trim()
+      : 'product-updates';
+
   subscribers.push({
     email: cleanEmail,
     createdAt: new Date().toISOString(),
     source: typeof source === 'string' ? source : 'footer',
+    categories: cleanCategories,
   });
 
   return NextResponse.json(
@@ -56,6 +67,7 @@ export async function POST(request: Request) {
         'Thank you for subscribing. We will send product updates and technical resources to your inbox.',
       email: cleanEmail,
       count: subscribers.length,
+      categories: cleanCategories,
     },
     { status: 201 }
   );
@@ -67,6 +79,7 @@ export async function GET() {
     email: s.email.replace(/^(.{2}).*(@.*)$/, '$1***$2'),
     createdAt: s.createdAt,
     source: s.source,
+    categories: s.categories,
   }));
   return NextResponse.json({ ok: true, count: subscribers.length, subscribers: masked });
 }

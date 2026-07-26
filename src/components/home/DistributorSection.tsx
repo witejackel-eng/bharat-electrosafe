@@ -78,19 +78,24 @@ export function DistributorSection() {
   return (
     <section
       id="distributors"
-      className="bg-background py-20 md:py-28 scroll-mt-32"
+      className="bg-background py-20 md:py-28 scroll-mt-32 relative overflow-hidden grain-overlay"
       style={{ fontFamily: 'Manrope, ui-sans-serif, system-ui, sans-serif' }}
     >
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+      {/* Floating decorative shapes */}
+      <div className="floating-shape w-32 h-32 rounded-full bg-navy top-20 right-[15%]" aria-hidden="true" />
+      <div className="floating-shape w-24 h-24 bg-orange rotate-45 bottom-16 left-[8%]" aria-hidden="true" />
+
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
         {/* Section header */}
         <div className="max-w-2xl">
           <Reveal delay={0}>
-            <span className="text-eyebrow text-orange text-xs font-semibold uppercase tracking-[0.2em]">
+            <span className="text-eyebrow gradient-text text-orange text-xs font-semibold uppercase tracking-[0.2em]">
               Find a Distributor
             </span>
           </Reveal>
           <Reveal delay={60}>
-            <h2 className="text-3xl md:text-4xl font-bold text-navy dark:text-white mt-3">
+            <div className="w-16 h-1 rounded-full bg-orange animate-underline-reveal mt-2" aria-hidden="true" />
+            <h2 className="text-3xl md:text-4xl font-bold gradient-text mt-3">
               Stocked where you build.
             </h2>
           </Reveal>
@@ -132,7 +137,7 @@ export function DistributorSection() {
                         className="absolute w-3 h-3 rounded-full bg-orange"
                         style={{ top: dot.top, left: dot.left }}
                       >
-                        <span className="absolute inset-0 rounded-full bg-orange/40 animate-ping" />
+                        <span className="absolute inset-0 rounded-full bg-orange/40 animate-breathing-glow" />
                       </div>
                     ))}
                   </div>
@@ -178,7 +183,7 @@ export function DistributorSection() {
             <div className="grid sm:grid-cols-2 gap-4">
               {distributors.map((d, i) => (
                 <Reveal key={d.region} delay={i * 80}>
-                  <article className="bg-white dark:bg-card border border-border/60 rounded-2xl p-5 hover:shadow-md hover:-translate-y-0.5 hover:border-orange/30 transition-all h-full flex flex-col">
+                  <article className="bg-white dark:bg-card border border-border/60 rounded-2xl p-5 hover:shadow-md hover:-translate-y-0.5 hover:border-orange/30 transition-all h-full flex flex-col card-tilt diagonal-line relative overflow-hidden">
                     <div className="flex items-start justify-between">
                       <div>
                         <h3 className="text-base font-bold text-navy dark:text-white">

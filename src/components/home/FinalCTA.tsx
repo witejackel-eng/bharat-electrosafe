@@ -9,7 +9,7 @@ import { t } from '@/lib/i18n';
 export function FinalCTA() {
   const locale = useLocale();
   return (
-    <section id="quote" className="bg-ivory-light py-20 md:py-28 border-t border-border/40 relative overflow-hidden">
+    <section id="quote" className="bg-ivory-light py-20 md:py-28 border-t border-border/40 relative overflow-hidden grain-overlay">
       {/* Subtle accent line */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-[2px] bg-orange/40 rounded-full" />
       {/* Decorative concentric circles with slow rotation */}
@@ -20,14 +20,15 @@ export function FinalCTA() {
         <div className="w-[320px] h-[320px] md:w-[440px] md:h-[440px] rounded-full border border-orange/[0.06]" />
       </div>
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
         <div className="max-w-[720px] mx-auto text-center">
           <Reveal delay={0}>
-            <span className="text-eyebrow">Get in touch</span>
+            <span className="text-eyebrow gradient-text">Get in touch</span>
           </Reveal>
           <Reveal delay={80}>
+            <div className="w-16 h-1 rounded-full bg-orange animate-underline-reveal mx-auto mt-2" aria-hidden="true" />
             <h2
-              className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy mt-3"
+              className="text-2xl md:text-3xl lg:text-4xl font-bold gradient-text mt-3"
               style={{ fontFamily: "'Manrope', sans-serif" }}
             >
               Tell us what your site requires.
@@ -82,7 +83,7 @@ export function FinalCTA() {
           <Reveal delay={280}>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-steel" style={{ fontFamily: "'Manrope', sans-serif" }}>
               {/* ShieldCheck safety icon */}
-              <ShieldCheck className="size-4 text-orange/60 mr-1 inline-block" aria-hidden="true" />
+              <ShieldCheck className="size-4 text-orange/60 mr-1 inline-block animate-breathing-glow" aria-hidden="true" />
               <span className="inline-flex items-center gap-1.5">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange animate-dot-pulse-1" aria-hidden="true" />
                 Response within 1 working day

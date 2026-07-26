@@ -710,6 +710,67 @@ nextjs-portal,
   animation: stat-progress-fill 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
+/* Voltage Calculator result fade-in animation */
+@keyframes resultFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animated underline reveal — for section heading accent */
+@keyframes underline-reveal {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.animate-underline-reveal {
+  transform-origin: left;
+  animation: underline-reveal 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Morphing border — for interactive card outlines */
+@keyframes morph-border {
+  0%, 100% { border-radius: 16px; }
+  50% { border-radius: 20px 12px 20px 12px; }
+}
+.animate-morph-border {
+  animation: morph-border 6s ease-in-out infinite;
+}
+
+/* Breathing glow — soft pulsing glow effect for badges */
+@keyframes breathing-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(232, 97, 26, 0.1); }
+  50% { box-shadow: 0 0 16px rgba(232, 97, 26, 0.25); }
+}
+.animate-breathing-glow {
+  animation: breathing-glow 3s ease-in-out infinite;
+}
+.dark .animate-breathing-glow {
+  animation: breathing-glow 3s ease-in-out infinite;
+}
+
+/* Diagonal line decoration — animated diagonal slash for card edges */
+.diagonal-line::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, transparent 50%, rgba(232, 97, 26, 0.05) 50%);
+  transition: width 300ms ease, height 300ms ease, background 300ms ease;
+  pointer-events: none;
+}
+.diagonal-line:hover::before {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, transparent 50%, rgba(232, 97, 26, 0.08) 50%);
+}
+
 /* Gradient separator animation */
 @keyframes gradient-separator {
   0% { background-position: 0% 50%; }
@@ -769,6 +830,15 @@ nextjs-portal,
   animation: text-shimmer 2s linear 1;
 }
 
+/* Bar fill animation — for Thickness Comparator bars */
+@keyframes bar-fill {
+  from { width: 0%; }
+  to { width: var(--bar-fill-width, 100%); }
+}
+.animate-bar-fill {
+  animation: bar-fill 800ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
 /* Add reduced-motion overrides for new animations */
 @media (prefers-reduced-motion: reduce) {
   .animate-shimmer,
@@ -784,6 +854,10 @@ nextjs-portal,
   .animate-dot-pulse-1,
   .animate-dot-pulse-2,
   .animate-dot-pulse-3,
+  .animate-underline-reveal,
+  .animate-bar-fill,
+  .animate-morph-border,
+  .animate-breathing-glow,
   .floating-shape,
   .card-tilt,
   .border-glow::before,
@@ -797,5 +871,8 @@ nextjs-portal,
   .stagger-fade > * {
     opacity: 1 !important;
     transform: none !important;
+  }
+  .diagonal-line::before {
+    transition: none !important;
   }
 }

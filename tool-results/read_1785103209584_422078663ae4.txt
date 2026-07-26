@@ -1,0 +1,869 @@
+     1→     1→@import "tailwindcss";
+     2→     2→@import "tw-animate-css";
+     3→     3→
+     4→     4→@custom-variant dark (&:is(.dark *));
+     5→     5→
+     6→     6→@theme inline {
+     7→     7→  --color-background: var(--background);
+     8→     8→  --color-foreground: var(--foreground);
+     9→     9→  --font-sans: var(--font-geist-sans);
+    10→    10→  --font-mono: var(--font-geist-mono);
+    11→    11→  --color-sidebar-ring: var(--sidebar-ring);
+    12→    12→  --color-sidebar-border: var(--sidebar-border);
+    13→    13→  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    14→    14→  --color-sidebar-accent: var(--sidebar-accent);
+    15→    15→  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    16→    16→  --color-sidebar-primary: var(--sidebar-primary);
+    17→    17→  --color-sidebar-foreground: var(--sidebar-foreground);
+    18→    18→  --color-sidebar: var(--sidebar);
+    19→    19→  --color-chart-5: var(--chart-5);
+    20→    20→  --color-chart-4: var(--chart-4);
+    21→    21→  --color-chart-3: var(--chart-3);
+    22→    22→  --color-chart-2: var(--chart-2);
+    23→    23→  --color-chart-1: var(--chart-1);
+    24→    24→  --color-ring: var(--ring);
+    25→    25→  --color-input: var(--input);
+    26→    26→  --color-border: var(--border);
+    27→    27→  --color-destructive: var(--destructive);
+    28→    28→  --color-accent-foreground: var(--accent-foreground);
+    29→    29→  --color-accent: var(--accent);
+    30→    30→  --color-muted-foreground: var(--muted-foreground);
+    31→    31→  --color-muted: var(--muted);
+    32→    32→  --color-secondary-foreground: var(--secondary-foreground);
+    33→    33→  --color-secondary: var(--secondary);
+    34→    34→  --color-primary-foreground: var(--primary-foreground);
+    35→    35→  --color-primary: var(--primary);
+    36→    36→  --color-popover-foreground: var(--popover-foreground);
+    37→    37→  --color-popover: var(--popover);
+    38→    38→  --color-card-foreground: var(--card-foreground);
+    39→    39→  --color-card: var(--card);
+    40→    40→  --radius-sm: calc(var(--radius) - 4px);
+    41→    41→  --radius-md: calc(var(--radius) - 2px);
+    42→    42→  --radius-lg: var(--radius);
+    43→    43→  --radius-xl: calc(var(--radius) + 4px);
+    44→    44→
+    45→    45→  /* Bharat Electrosafe Brand Colors */
+    46→    46→  --color-ivory: #F5F0E8;
+    47→    47→  --color-ivory-light: #FAF7F0;
+    48→    48→  --color-navy: #1B2A4A;
+    49→    49→  --color-navy-light: #2D3E5C;
+    50→    50→  --color-navy-dark: #0F1D35;
+    51→    51→  --color-ink: #1A1A2E;
+    52→    52→  --color-orange: #E8611A;
+    53→    53→  --color-orange-light: #F07830;
+    54→    54→  --color-orange-hover: #D45510;
+    55→    55→  --color-orange-soft: rgba(232, 97, 26, 0.08);
+    56→    56→  --color-steel: #6B7280;
+    57→    57→  --color-steel-light: #9CA3AF;
+    58→    58→}
+    59→    59→
+    60→    60→:root {
+    61→    61→  --radius: 0.625rem;
+    62→    62→  /* Bharat Electrosafe: Warm Ivory Background */
+    63→    63→  --background: #F5F0E8;
+    64→    64→  --foreground: #1B2A4A;
+    65→    65→  --card: #FFFFFF;
+    66→    66→  --card-foreground: #1B2A4A;
+    67→    67→  --popover: #FFFFFF;
+    68→    68→  --popover-foreground: #1B2A4A;
+    69→    69→  /* Deep Navy Primary */
+    70→    70→  --primary: #1B2A4A;
+    71→    71→  --primary-foreground: #F5F0E8;
+    72→    72→  /* Soft Ivory Secondary */
+    73→    73→  --secondary: #FAF7F0;
+    74→    74→  --secondary-foreground: #1B2A4A;
+    75→    75→  --muted: #E8E3D7;
+    76→    76→  --muted-foreground: #6B7280;
+    77→    77→  /* Safety Orange Accent */
+    78→    78→  --accent: #E8611A;
+    79→    79→  --accent-foreground: #FFFFFF;
+    80→    80→  --destructive: #DC2626;
+    81→    81→  --border: #D4CFC2;
+    82→    82→  --input: #D4CFC2;
+    83→    83→  --ring: #E8611A;
+    84→    84→  --chart-1: #1B2A4A;
+    85→    85→  --chart-2: #E8611A;
+    86→    86→  --chart-3: #6B7280;
+    87→    87→  --chart-4: #2D3E5C;
+    88→    88→  --chart-5: #9CA3AF;
+    89→    89→
+    90→    90→  /* ===== Standardized border radius tokens ===== */
+    91→    91→  --radius-card: 16px;
+    92→    92→  --radius-button: 8px;
+    93→    93→  --radius-pill: 9999px;
+    94→    94→  --radius-input: 8px;
+    95→    95→
+    96→    96→  /* ===== Standardized typography scale (font sizes) =====
+    97→    97→     NOTE: --text-body and --text-meta are reserved for WCAG color
+    98→    98→     tokens below, so the matching font-size tokens use a -size suffix. */
+    99→    99→  --text-h1: 2.75rem;        /* 44px */
+   100→   100→  --text-h2: 2.25rem;        /* 36px */
+   101→   101→  --text-h3: 1.5rem;         /* 24px */
+   102→   102→  --text-body-size: 1rem;    /* 16px */
+   103→   103→  --text-caption: 0.875rem;  /* 14px */
+   104→   104→  --text-meta-size: 0.75rem; /* 12px */
+   105→   105→
+   106→   106→  /* ===== WCAG-compliant text color tokens ===== */
+   107→   107→  --text-body: #374151;            /* AA on ivory bg (was steel #6B7280) */
+   108→   108→  --text-meta: #4B5563;            /* AA medium grey */
+   109→   109→  --text-on-dark: #FFFFFF;         /* pure white for dark sections */
+   110→   110→  --text-on-dark-muted: rgba(255, 255, 255, 0.85); /* was /75 — bump to /85 for AA */
+   111→   111→}
+   112→   112→
+   113→   113→.dark {
+   114→   114→  --background: #0F1D35;
+   115→   115→  --foreground: #F5F0E8;
+   116→   116→  --card: #1B2A4A;
+   117→   117→  --card-foreground: #F5F0E8;
+   118→   118→  --popover: #1B2A4A;
+   119→   119→  --popover-foreground: #F5F0E8;
+   120→   120→  --primary: #F5F0E8;
+   121→   121→  --primary-foreground: #1B2A4A;
+   122→   122→  --secondary: #2D3E5C;
+   123→   123→  --secondary-foreground: #F5F0E8;
+   124→   124→  --muted: #2D3E5C;
+   125→   125→  --muted-foreground: #9CA3AF;
+   126→   126→  --accent: #E8611A;
+   127→   127→  --accent-foreground: #FFFFFF;
+   128→   128→  --destructive: #DC2626;
+   129→   129→  --border: rgba(255, 255, 255, 0.1);
+   130→   130→  --input: rgba(255, 255, 255, 0.15);
+   131→   131→  --ring: #E8611A;
+   132→   132→  --chart-1: #F5F0E8;
+   133→   133→  --chart-2: #E8611A;
+   134→   134→  --chart-3: #9CA3AF;
+   135→   135→  --chart-4: #2D3E5C;
+   136→   136→  --chart-5: #6B7280;
+   137→   137→
+   138→   138→  /* Dark-mode overrides for WCAG text color tokens */
+   139→   139→  --text-body: #D1D5DB;
+   140→   140→  --text-meta: #9CA3AF;
+   141→   141→  --text-on-dark: #1B2A4A;             /* navy text on light bg in dark mode */
+   142→   142→  --text-on-dark-muted: rgba(27, 42, 74, 0.85);
+   143→   143→}
+   144→   144→
+   145→   145→@layer base {
+   146→   146→  * {
+   147→   147→    @apply border-border outline-ring/50;
+   148→   148→  }
+   149→   149→  body {
+   150→   150→    @apply bg-background text-foreground;
+   151→   151→    font-family: 'Manrope', var(--font-geist-sans), system-ui, sans-serif;
+   152→   152→  }
+   153→   153→  h1, h2, h3, h4, h5, h6 {
+   154→   154→    font-family: 'Manrope', var(--font-geist-sans), system-ui, sans-serif;
+   155→   155→    font-weight: 600;
+   156→   156→    letter-spacing: -0.02em;
+   157→   157→  }
+   158→   158→}
+   159→   159→
+   160→   160→/* Custom utility classes for Bharat Electrosafe */
+   161→   161→@layer utilities {
+   162→   162→  /* ===== Standardized button utility classes ===== */
+   163→   163→  .btn-primary {
+   164→   164→    @apply inline-flex items-center justify-center gap-2 h-10 px-5 rounded-lg bg-orange hover:bg-orange-hover text-white text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2;
+   165→   165→  }
+   166→   166→  .btn-secondary {
+   167→   167→    @apply inline-flex items-center justify-center gap-2 h-10 px-5 rounded-lg border border-navy/30 hover:border-navy/50 hover:bg-navy/5 text-navy text-sm font-medium transition-colors;
+   168→   168→  }
+   169→   169→  .btn-ghost {
+   170→   170→    @apply inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg text-navy/70 hover:text-navy hover:bg-navy/5 text-sm font-medium transition-colors;
+   171→   171→  }
+   172→   172→
+   173→   173→  /* ===== Standardized card utility classes ===== */
+   174→   174→  .card-default {
+   175→   175→    @apply rounded-2xl border border-border/60 bg-white p-6 transition-all duration-200;
+   176→   176→  }
+   177→   177→  .card-default:hover {
+   178→   178→    @apply border-orange/30 shadow-md -translate-y-0.5;
+   179→   179→  }
+   180→   180→  .card-dark {
+   181→   181→    @apply rounded-2xl border border-white/10 bg-navy p-6 text-white;
+   182→   182→  }
+   183→   183→
+   184→   184→  .text-eyebrow {
+   185→   185→    font-size: 0.75rem;
+   186→   186→    font-weight: 500;
+   187→   187→    letter-spacing: 0.12em;
+   188→   188→    text-transform: uppercase;
+   189→   189→    color: var(--accent);
+   190→   190→  }
+   191→   191→  .text-index {
+   192→   192→    font-size: 3.5rem;
+   193→   193→    font-weight: 700;
+   194→   194→    font-variant-numeric: tabular-nums;
+   195→   195→    color: var(--muted);
+   196→   196→    line-height: 1;
+   197→   197→  }
+   198→   198→  .text-spec {
+   199→   199→    font-size: 0.8rem;
+   200→   200→    font-weight: 500;
+   201→   201→    letter-spacing: 0.06em;
+   202→   202→    text-transform: uppercase;
+   203→   203→    font-variant-numeric: tabular-nums;
+   204→   204→  }
+   205→   205→  .safety-line {
+   206→   206→    position: relative;
+   207→   207→  }
+   208→   208→  .safety-line::before {
+   209→   209→    content: '';
+   210→   210→    position: absolute;
+   211→   211→    left: 0;
+   212→   212→    top: 50%;
+   213→   213→    width: 2px;
+   214→   214→    height: 100%;
+   215→   215→    background: var(--accent);
+   216→   216→    transform: translateY(-50%);
+   217→   217→  }
+   218→   218→
+   219→   219→  /* ===== Cycle 11 polish utilities ===== */
+   220→   220→
+   221→   221→  /* Balanced text wrapping for headings (cleaner line breaks on multi-line h2/h3) */
+   222→   222→  .text-balance {
+   223→   223→    text-wrap: balance;
+   224→   224→  }
+   225→   225→  .text-pretty {
+   226→   226→    text-wrap: pretty;
+   227→   227→  }
+   228→   228→
+   229→   229→  /* Consistent card hover lift — usable on any card element */
+   230→   230→  .hover-lift {
+   231→   231→    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+   232→   232→  }
+   233→   233→  .hover-lift:hover {
+   234→   234→    transform: translateY(-2px);
+   235→   235→    box-shadow: 0 8px 24px -8px rgba(15, 29, 53, 0.12);
+   236→   236→  }
+   237→   237→  .dark .hover-lift:hover {
+   238→   238→    box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.4);
+   239→   239→  }
+   240→   240→
+   241→   241→  /* Small accent bar — reusable decorative element under section eyebrows */
+   242→   242→  .accent-bar {
+   243→   243→    width: 2.5rem;
+   244→   244→    height: 0.125rem;
+   245→   245→    border-radius: 9999px;
+   246→   246→    background: var(--accent);
+   247→   247→    margin-top: 0.75rem;
+   248→   248→    margin-bottom: 1.25rem;
+   249→   249→  }
+   250→   250→
+   251→   251→  /* Hide horizontal scrollbar (used by QuickNav pill bar) but keep scrollable */
+   252→   252→  .scrollbar-hide {
+   253→   253→    scrollbar-width: none;
+   254→   254→    -ms-overflow-style: none;
+   255→   255→  }
+   256→   256→  .scrollbar-hide::-webkit-scrollbar {
+   257→   257→    display: none;
+   258→   258→  }
+   259→   259→
+   260→   260→  /* Frosted glass panel — for cards/overlays on dark sections */
+   261→   261→  .glass-panel {
+   262→   262→    background: rgba(255, 255, 255, 0.06);
+   263→   263→    backdrop-filter: blur(12px);
+   264→   264→    -webkit-backdrop-filter: blur(12px);
+   265→   265→    border: 1px solid rgba(255, 255, 255, 0.1);
+   266→   266→  }
+   267→   267→
+   268→   268→  /* Decorative corner accent — small L-shaped bracket in top-right */
+   269→   269→  .corner-accent {
+   270→   270→    position: relative;
+   271→   271→  }
+   272→   272→  .corner-accent::after {
+   273→   273→    content: '';
+   274→   274→    position: absolute;
+   275→   275→    top: 0.75rem;
+   276→   276→    right: 0.75rem;
+   277→   277→    width: 0.75rem;
+   278→   278→    height: 0.75rem;
+   279→   279→    border-top: 2px solid var(--accent);
+   280→   280→    border-right: 2px solid var(--accent);
+   281→   281→    opacity: 0.6;
+   282→   282→    transition: opacity 200ms ease, transform 200ms ease;
+   283→   283→  }
+   284→   284→  .corner-accent:hover::after {
+   285→   285→    opacity: 1;
+   286→   286→    transform: translate(2px, -2px);
+   287→   287→  }
+   288→   288→
+   289→   289→  /* Section number badge — large faded number watermark */
+   290→   290→  .section-number {
+   291→   291→    font-size: 8rem;
+   292→   292→    font-weight: 800;
+   293→   293→    line-height: 1;
+   294→   294→    color: var(--accent);
+   295→   295→    opacity: 0.06;
+   296→   296→    font-variant-numeric: tabular-nums;
+   297→   297→    pointer-events: none;
+   298→   298→    user-select: none;
+   299→   299→  }
+   300→   300→
+   301→   301→  /* Primary button with subtle glow shadow */
+   302→   302→  .btn-primary-glow {
+   303→   303→    @apply inline-flex items-center justify-center gap-2 h-11 px-6 rounded-lg bg-orange hover:bg-orange-hover text-white text-sm font-semibold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2;
+   304→   304→    box-shadow: 0 4px 14px -4px rgba(232, 97, 26, 0.4);
+   305→   305→  }
+   306→   306→  .btn-primary-glow:hover {
+   307→   307→    box-shadow: 0 6px 20px -4px rgba(232, 97, 26, 0.5);
+   308→   308→    transform: translateY(-1px);
+   309→   309→  }
+   310→   310→  .btn-primary-glow:active {
+   311→   311→    transform: translateY(0);
+   312→   312→  }
+   313→   313→
+   314→   314→  /* Underline-on-hover for inline links */
+   315→   315→  .link-underline {
+   316→   316→    position: relative;
+   317→   317→    transition: color 200ms ease;
+   318→   318→  }
+   319→   319→  .link-underline::after {
+   320→   320→    content: '';
+   321→   321→    position: absolute;
+   322→   322→    left: 0;
+   323→   323→    bottom: -2px;
+   324→   324→    width: 100%;
+   325→   325→    height: 1px;
+   326→   326→    background: currentColor;
+   327→   327→    transform: scaleX(0);
+   328→   328→    transform-origin: right;
+   329→   329→    transition: transform 250ms ease;
+   330→   330→  }
+   331→   331→  .link-underline:hover::after {
+   332→   332→    transform: scaleX(1);
+   333→   333→    transform-origin: left;
+   334→   334→  }
+   335→   335→
+   336→   336→  /* Focus ring for keyboard navigation on cards */
+   337→   337→  .card-focus:focus-visible {
+   338→   338→    outline: 2px solid var(--accent);
+   339→   339→    outline-offset: 4px;
+   340→   340→    border-radius: 16px;
+   341→   341→  }
+   342→   342→
+   343→   343→  /* ===== Cycle 12 styling polish utilities ===== */
+   344→   344→
+   345→   345→  /* Animated gradient text — navy → navy-light → orange */
+   346→   346→  .gradient-text {
+   347→   347→    background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 50%, var(--color-orange) 100%);
+   348→   348→    -webkit-background-clip: text;
+   349→   349→    -webkit-text-fill-color: transparent;
+   350→   350→    background-clip: text;
+   351→   351→  }
+   352→   352→  .dark .gradient-text {
+   353→   353→    background: linear-gradient(135deg, #F5F0E8 0%, #9CA3AF 50%, #E8611A 100%);
+   354→   354→    -webkit-background-clip: text;
+   355→   355→    -webkit-text-fill-color: transparent;
+   356→   356→    background-clip: text;
+   357→   357→  }
+   358→   358→
+   359→   359→  /* Noise/grain texture overlay — adds subtle film grain */
+   360→   360→  .grain-overlay::before {
+   361→   361→    content: '';
+   362→   362→    position: absolute;
+   363→   363→    inset: 0;
+   364→   364→    opacity: 0.03;
+   365→   365→    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+   366→   366→    pointer-events: none;
+   367→   367→    z-index: 0;
+   368→   368→  }
+   369→   369→
+   370→   370→  /* Animated dot-grid background pattern */
+   371→   371→  .dot-grid-bg {
+   372→   372→    background-image: radial-gradient(circle, var(--color-navy) 0.5px, transparent 0.5px);
+   373→   373→    background-size: 24px 24px;
+   374→   374→    opacity: 0.04;
+   375→   375→  }
+   376→   376→  .dark .dot-grid-bg {
+   377→   377→    background-image: radial-gradient(circle, rgba(255,255,255,0.15) 0.5px, transparent 0.5px);
+   378→   378→  }
+   379→   379→
+   380→   380→  /* Animated border glow for cards — subtle orange glow on hover */
+   381→   381→  .border-glow {
+   382→   382→    position: relative;
+   383→   383→  }
+   384→   384→  .border-glow::before {
+   385→   385→    content: '';
+   386→   386→    position: absolute;
+   387→   387→    inset: -1px;
+   388→   388→    border-radius: inherit;
+   389→   389→    background: linear-gradient(135deg, transparent, var(--color-orange), transparent);
+   390→   390→    opacity: 0;
+   391→   391→    transition: opacity 300ms ease;
+   392→   392→    z-index: -1;
+   393→   393→  }
+   394→   394→  .border-glow:hover::before {
+   395→   395→    opacity: 0.15;
+   396→   396→  }
+   397→   397→
+   398→   398→  /* Card tilt micro-animation — subtle perspective shift on hover */
+   399→   399→  .card-tilt {
+   400→   400→    transition: transform 200ms ease;
+   401→   401→    transform-style: preserve-3d;
+   402→   402→  }
+   403→   403→  .card-tilt:hover {
+   404→   404→    transform: perspective(800px) rotateY(-1deg) rotateX(1deg) translateY(-2px);
+   405→   405→  }
+   406→   406→
+   407→   407→  /* Staggered fade-in utility for lists */
+   408→   408→  .stagger-fade > * {
+   409→   409→    opacity: 0;
+   410→   410→    transform: translateY(8px);
+   411→   411→    animation: stagger-item 400ms ease forwards;
+   412→   412→  }
+   413→   413→  .stagger-fade > *:nth-child(1) { animation-delay: 0ms; }
+   414→   414→  .stagger-fade > *:nth-child(2) { animation-delay: 80ms; }
+   415→   415→  .stagger-fade > *:nth-child(3) { animation-delay: 160ms; }
+   416→   416→  .stagger-fade > *:nth-child(4) { animation-delay: 240ms; }
+   417→   417→  .stagger-fade > *:nth-child(5) { animation-delay: 320ms; }
+   418→   418→  .stagger-fade > *:nth-child(6) { animation-delay: 400ms; }
+   419→   419→}
+   420→   420→
+   421→   421→/* Floating geometric shapes animation */
+   422→   422→@keyframes float-shape {
+   423→   423→  0%, 100% { transform: translateY(0) rotate(0deg); }
+   424→   424→  25% { transform: translateY(-20px) rotate(5deg); }
+   425→   425→  75% { transform: translateY(10px) rotate(-3deg); }
+   426→   426→}
+   427→   427→.floating-shape {
+   428→   428→  position: absolute;
+   429→   429→  opacity: 0.06;
+   430→   430→  pointer-events: none;
+   431→   431→  animation: float-shape 15s ease-in-out infinite;
+   432→   432→}
+   433→   433→
+   434→   434→/* Stagger item fade-in keyframe */
+   435→   435→@keyframes stagger-item {
+   436→   436→  to { opacity: 1; transform: translateY(0); }
+   437→   437→}
+   438→   438→
+   439→   439→/* Marquee animation */
+   440→   440→@keyframes marquee {
+   441→   441→  0% { transform: translateX(0); }
+   442→   442→  100% { transform: translateX(-50%); }
+   443→   443→}
+   444→   444→
+   445→   445→.animate-marquee {
+   446→   446→  animation: marquee 40s linear infinite;
+   447→   447→}
+   448→   448→
+   449→   449→.animate-marquee:hover {
+   450→   450→  animation-play-state: paused;
+   451→   451→}
+   452→   452→
+   453→   453→/* Reduced motion support */
+   454→   454→@media (prefers-reduced-motion: reduce) {
+   455→   455→  .animate-marquee {
+   456→   456→    animation: none;
+   457→   457→  }
+   458→   458→  *, *::before, *::after {
+   459→   459→    animation-duration: 0.01ms !important;
+   460→   460→    animation-iteration-count: 1 !important;
+   461→   461→    transition-duration: 0.01ms !important;
+   462→   462→    scroll-behavior: auto !important;
+   463→   463→  }
+   464→   464→}
+   465→   465→
+   466→   466→/* Custom scrollbar */
+   467→   467→::-webkit-scrollbar {
+   468→   468→  width: 6px;
+   469→   469→  height: 6px;
+   470→   470→}
+   471→   471→
+   472→   472→::-webkit-scrollbar-track {
+   473→   473→  background: var(--muted);
+   474→   474→  border-radius: 3px;
+   475→   475→}
+   476→   476→
+   477→   477→::-webkit-scrollbar-thumb {
+   478→   478→  background: var(--border);
+   479→   479→  border-radius: 3px;
+   480→   480→}
+   481→   481→
+   482→   482→::-webkit-scrollbar-thumb:hover {
+   483→   483→  background: var(--steel);
+   484→   484→}
+   485→   485→
+   486→   486→/* Selection styling */
+   487→   487→::selection {
+   488→   488→  background: var(--accent);
+   489→   489→  color: white;
+   490→   490→}
+   491→   491→
+   492→   492→/* Smooth scrolling */
+   493→   493→html {
+   494→   494→  scroll-behavior: smooth;
+   495→   495→  /* Reserve space at the bottom for the sticky CTA bar so anchored sections
+   496→   496→     don't get hidden behind it. The bar is ~72px tall + 16px bottom offset. */
+   497→   497→  scroll-padding-bottom: 96px;
+   498→   498→}
+   499→   499→
+   500→   500→@media (prefers-reduced-motion: reduce) {
+   501→   501→  html {
+   502→   502→    scroll-behavior: auto;
+   503→   503→  }
+   504→   504→}
+   505→   505→
+   506→   506→/* Focus visible styles */
+   507→   507→*:focus-visible {
+   508→   508→  outline: 2px solid var(--accent);
+   509→   509→  outline-offset: 2px;
+   510→   510→  border-radius: 4px;
+   511→   511→}
+   512→   512→
+   513→   513→/* Hide the Next.js dev indicator (the floating "N" badge in bottom-left) */
+   514→   514→nextjs-portal,
+   515→   515→[data-nextjs-router-dev-tools],
+   516→   516→[data-nextjs-dialog-overlay],
+   517→   517→[data-nextjs-dialog] {
+   518→   518→  display: none !important;
+   519→   519→  visibility: hidden !important;
+   520→   520→  pointer-events: none !important;
+   521→   521→}
+   522→   522→
+   523→   523→/* ============================================================
+   524→   524→   Dark mode overrides
+   525→   525→   Many Bharat components use brand tokens (text-navy, bg-white,
+   526→   526→   bg-ivory-light, text-steel) directly. In dark mode we remap
+   527→   527→   these to theme-aware values so the same markup reads correctly.
+   528→   528→   ============================================================ */
+   529→   529→.dark {
+   530→   530→  --color-ivory: #0F1D35;
+   531→   531→  --color-ivory-light: #1B2A4A;
+   532→   532→  --color-navy: #F5F0E8;       /* swap: navy text → ivory in dark */
+   533→   533→  --color-navy-light: #2D3E5C;
+   534→   534→  --color-navy-dark: #0A1424;
+   535→   535→  --color-steel: #9CA3AF;       /* brighter steel for dark bg */
+   536→   536→  --color-steel-light: #6B7280;
+   537→   537→  --color-orange-soft: rgba(232, 97, 26, 0.16);
+   538→   538→  --color-border: #2D3E5C;
+   539→   539→}
+   540→   540→
+   541→   541→/* Map brand utility classes to dark-mode-appropriate values */
+   542→   542→.dark .text-navy { color: var(--foreground); }
+   543→   543→.dark .text-navy\/80 { color: rgba(245, 240, 232, 0.8); }
+   544→   544→.dark .text-navy\/70 { color: rgba(245, 240, 232, 0.7); }
+   545→   545→.dark .text-navy\/60 { color: rgba(245, 240, 232, 0.6); }
+   546→   546→.dark .text-steel { color: var(--muted-foreground); }
+   547→   547→
+   548→   548→.dark .bg-white { background-color: var(--card); }
+   549→   549→.dark .bg-white\/50 { background-color: rgba(27, 42, 74, 0.5); }
+   550→   550→.dark .bg-white\/80 { background-color: rgba(27, 42, 74, 0.8); }
+   551→   551→.dark .bg-white\/90 { background-color: rgba(27, 42, 74, 0.9); }
+   552→   552→.dark .bg-white\/95 { background-color: rgba(27, 42, 74, 0.95); }
+   553→   553→.dark .bg-ivory { background-color: var(--background); }
+   554→   554→.dark .bg-ivory-light { background-color: var(--card); }
+   555→   555→.dark .bg-background { background-color: var(--background); }
+   556→   556→
+   557→   557→.dark .border-border { border-color: var(--border); }
+   558→   558→.dark .border-border\/40 { border-color: rgba(255, 255, 255, 0.08); }
+   559→   559→.dark .border-border\/60 { border-color: rgba(255, 255, 255, 0.1); }
+   560→   560→
+   561→   561→/* Header: translucent dark surface in dark mode */
+   562→   562→.dark header .bg-white\/80,
+   563→   563→.dark header [class*="bg-white"] {
+   564→   564→  background-color: rgba(15, 29, 53, 0.85) !important;
+   565→   565→  border-color: rgba(255, 255, 255, 0.08) !important;
+   566→   566→}
+   567→   567→
+   568→   568→/* White text on navy stays the same; but navy-bg sections need a slightly
+   569→   569→   lighter surface in dark mode for separation. */
+   570→   570→.dark .bg-navy { background-color: #0A1424; }
+   571→   571→.dark .bg-navy-dark { background-color: #060D1A; }
+   572→   572→.dark .bg-navy-light { background-color: #1B2A4A; }
+   573→   573→
+   574→   574→/* Subtle backgrounds that were "bg-muted" need a dark equivalent */
+   575→   575→.dark .bg-muted { background-color: #1B2A4A; }
+   576→   576→
+   577→   577→/* Subtle "shadow-sm" cards in dark mode need a stronger border instead */
+   578→   578→.dark .shadow-sm { box-shadow: none; }
+   579→   579→.dark .hover\:shadow-md:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); }
+   580→   580→
+   581→   581→/* Outline buttons: border + text colors should adapt */
+   582→   582→.dark .border-navy { border-color: var(--foreground); }
+   583→   583→.dark .border-navy\/30 { border-color: rgba(245, 240, 232, 0.3); }
+   584→   584→.dark .text-navy\/70 { color: rgba(245, 240, 232, 0.7); }
+   585→   585→
+   586→   586→/* Gradient from-navy utility used in product selection cards */
+   587→   587→.dark .from-navy { --tw-gradient-from: #1B2A4A var(--tw-gradient-from-position); }
+   588→   588→.dark .to-navy-dark { --tw-gradient-to: #060D1A var(--tw-gradient-to-position); }
+   589→   589→
+   590→   590→/* Dialog / sheet content uses bg-white by default — override to card */
+   591→   591→.dark [role="dialog"][data-state="open"] > *:first-child,
+   592→   592→.dark [data-state="open"] .bg-white {
+   593→   593→  background-color: var(--card) !important;
+   594→   594→}
+   595→   595→
+   596→   596→/* Inputs in dark mode */
+   597→   597→.dark input,
+   598→   598→.dark textarea,
+   599→   599→.dark select {
+   600→   600→  background-color: rgba(255, 255, 255, 0.04);
+   601→   601→  color: var(--foreground);
+   602→   602→}
+   603→   603→.dark input::placeholder,
+   604→   604→.dark textarea::placeholder {
+   605→   605→  color: rgba(245, 240, 232, 0.4);
+   606→   606→}
+   607→   607→.dark input:focus,
+   608→   608→.dark textarea:focus {
+   609→   609→  border-color: var(--accent);
+   610→   610→}
+   611→   611→
+   612→   612→/* Hero mesh background animation */
+   613→   613→@keyframes hero-mesh-1 {
+   614→   614→  0%, 100% { transform: translate(0, 0) scale(1); }
+   615→   615→  33% { transform: translate(30px, -20px) scale(1.1); }
+   616→   616→  66% { transform: translate(-20px, 15px) scale(0.9); }
+   617→   617→}
+   618→   618→@keyframes hero-mesh-2 {
+   619→   619→  0%, 100% { transform: translate(0, 0) scale(1); }
+   620→   620→  33% { transform: translate(-25px, 30px) scale(1.15); }
+   621→   621→  66% { transform: translate(20px, -10px) scale(0.85); }
+   622→   622→}
+   623→   623→
+   624→   624→.animate-hero-mesh-1 {
+   625→   625→  animation: hero-mesh-1 20s ease-in-out infinite;
+   626→   626→}
+   627→   627→.animate-hero-mesh-2 {
+   628→   628→  animation: hero-mesh-2 25s ease-in-out infinite;
+   629→   629→}
+   630→   630→
+   631→   631→/* Safety pulse animation */
+   632→   632→@keyframes safety-pulse {
+   633→   633→  0% { background-position: 0% 50%; }
+   634→   634→  100% { background-position: 200% 50%; }
+   635→   635→}
+   636→   636→
+   637→   637→.animate-safety-pulse {
+   638→   638→  background-size: 200% 100%;
+   639→   639→  animation: safety-pulse 3s linear infinite;
+   640→   640→}
+   641→   641→
+   642→   642→/* Shimmer sweep effect */
+   643→   643→@keyframes shimmer {
+   644→   644→  0% { background-position: -200% center; }
+   645→   645→  100% { background-position: 200% center; }
+   646→   646→}
+   647→   647→.animate-shimmer {
+   648→   648→  background-size: 200% auto;
+   649→   649→  animation: shimmer 3s linear infinite;
+   650→   650→}
+   651→   651→
+   652→   652→/* Gentle pulse (not as aggressive as animate-ping) */
+   653→   653→@keyframes gentle-pulse {
+   654→   654→  0%, 100% { transform: scale(1); opacity: 0.3; }
+   655→   655→  50% { transform: scale(1.5); opacity: 0; }
+   656→   656→}
+   657→   657→.animate-gentle-pulse {
+   658→   658→  animation: gentle-pulse 3s ease-in-out infinite;
+   659→   659→}
+   660→   660→
+   661→   661→/* Subtle sonar-style pulse ring for the "Recommended" badge — pulses the
+   662→   662→   box-shadow ring only so the label text contrast is never affected. */
+   663→   663→@keyframes badge-pulse {
+   664→   664→  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 97, 26, 0.55); }
+   665→   665→  50% { box-shadow: 0 0 0 6px rgba(232, 97, 26, 0); }
+   666→   666→}
+   667→   667→.animate-badge-pulse {
+   668→   668→  animation: badge-pulse 2.2s ease-in-out infinite;
+   669→   669→}
+   670→   670→
+   671→   671→/* Gradient border sweep */
+   672→   672→@keyframes border-sweep {
+   673→   673→  0% { background-position: 0% 50%; }
+   674→   674→  100% { background-position: 200% 50%; }
+   675→   675→}
+   676→   676→
+   677→   677→/* Slow rotation for decorative elements */
+   678→   678→@keyframes slow-rotate {
+   679→   679→  from { transform: rotate(0deg); }
+   680→   680→  to { transform: rotate(360deg); }
+   681→   681→}
+   682→   682→.animate-slow-rotate {
+   683→   683→  animation: slow-rotate 60s linear infinite;
+   684→   684→}
+   685→   685→
+   686→   686→/* Sequential pulse for trust dots */
+   687→   687→@keyframes dot-pulse-1 { 0%, 100% { opacity: 1; } 25% { opacity: 0.5; } }
+   688→   688→@keyframes dot-pulse-2 { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+   689→   689→@keyframes dot-pulse-3 { 0%, 100% { opacity: 1; } 75% { opacity: 0.5; } }
+   690→   690→
+   691→   691→.animate-dot-pulse-1 { animation: dot-pulse-1 3s ease-in-out infinite; }
+   692→   692→.animate-dot-pulse-2 { animation: dot-pulse-2 3s ease-in-out infinite; }
+   693→   693→.animate-dot-pulse-3 { animation: dot-pulse-3 3s ease-in-out infinite; }
+   694→   694→
+   695→   695→/* Counter glow effect */
+   696→   696→.counter-glow {
+   697→   697→  text-shadow: 0 0 30px rgba(232, 97, 26, 0.15);
+   698→   698→}
+   699→   699→.dark .counter-glow {
+   700→   700→  text-shadow: 0 0 30px rgba(232, 97, 26, 0.25);
+   701→   701→}
+   702→   702→
+   703→   703→/* Stat progress fill animation */
+   704→   704→@keyframes stat-progress-fill {
+   705→   705→  from { transform: scaleX(0); }
+   706→   706→  to { transform: scaleX(1); }
+   707→   707→}
+   708→   708→.stat-progress-bar {
+   709→   709→  transform-origin: left;
+   710→   710→  animation: stat-progress-fill 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+   711→   711→}
+   712→   712→
+   713→   713→/* Voltage Calculator result fade-in animation */
+   714→   714→@keyframes resultFadeIn {
+   715→   715→  0% {
+   716→   716→    opacity: 0;
+   717→   717→    transform: translateY(12px);
+   718→   718→  }
+   719→   719→  100% {
+   720→   720→    opacity: 1;
+   721→   721→    transform: translateY(0);
+   722→   722→  }
+   723→   723→}
+   724→   724→
+   725→   725→/* Animated underline reveal — for section heading accent */
+   726→   726→@keyframes underline-reveal {
+   727→   727→  from { transform: scaleX(0); }
+   728→   728→  to { transform: scaleX(1); }
+   729→   729→}
+   730→   730→.animate-underline-reveal {
+   731→   731→  transform-origin: left;
+   732→   732→  animation: underline-reveal 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+   733→   733→}
+   734→   734→
+   735→   735→/* Morphing border — for interactive card outlines */
+   736→   736→@keyframes morph-border {
+   737→   737→  0%, 100% { border-radius: 16px; }
+   738→   738→  50% { border-radius: 20px 12px 20px 12px; }
+   739→   739→}
+   740→   740→.animate-morph-border {
+   741→   741→  animation: morph-border 6s ease-in-out infinite;
+   742→   742→}
+   743→   743→
+   744→   744→/* Breathing glow — soft pulsing glow effect for badges */
+   745→   745→@keyframes breathing-glow {
+   746→   746→  0%, 100% { box-shadow: 0 0 8px rgba(232, 97, 26, 0.1); }
+   747→   747→  50% { box-shadow: 0 0 16px rgba(232, 97, 26, 0.25); }
+   748→   748→}
+   749→   749→.animate-breathing-glow {
+   750→   750→  animation: breathing-glow 3s ease-in-out infinite;
+   751→   751→}
+   752→   752→.dark .animate-breathing-glow {
+   753→   753→  animation: breathing-glow 3s ease-in-out infinite;
+   754→   754→}
+   755→   755→
+   756→   756→/* Diagonal line decoration — animated diagonal slash for card edges */
+   757→   757→.diagonal-line::before {
+   758→   758→  content: '';
+   759→   759→  position: absolute;
+   760→   760→  top: 0;
+   761→   761→  right: 0;
+   762→   762→  width: 60px;
+   763→   763→  height: 60px;
+   764→   764→  background: linear-gradient(135deg, transparent 50%, rgba(232, 97, 26, 0.05) 50%);
+   765→   765→  transition: width 300ms ease, height 300ms ease, background 300ms ease;
+   766→   766→  pointer-events: none;
+   767→   767→}
+   768→   768→.diagonal-line:hover::before {
+   769→   769→  width: 80px;
+   770→   770→  height: 80px;
+   771→   771→  background: linear-gradient(135deg, transparent 50%, rgba(232, 97, 26, 0.08) 50%);
+   772→   772→}
+   773→   773→
+   774→   774→/* Gradient separator animation */
+   775→   775→@keyframes gradient-separator {
+   776→   776→  0% { background-position: 0% 50%; }
+   777→   777→  50% { background-position: 100% 50%; }
+   778→   778→  100% { background-position: 0% 50%; }
+   779→   779→}
+   780→   780→.animate-gradient-separator {
+   781→   781→  background-size: 200% 100%;
+   782→   782→  animation: gradient-separator 4s ease-in-out infinite;
+   783→   783→}
+   784→   784→
+   785→   785→/* Conic gradient rotating border for avatar */
+   786→   786→@keyframes conic-rotate {
+   787→   787→  from { --conic-angle: 0deg; }
+   788→   788→  to { --conic-angle: 360deg; }
+   789→   789→}
+   790→   790→
+   791→   791→/* Floating particles */
+   792→   792→@keyframes float-particle-1 {
+   793→   793→  0%, 100% { transform: translate(0, 0); }
+   794→   794→  25% { transform: translate(30px, -20px); }
+   795→   795→  50% { transform: translate(-10px, -40px); }
+   796→   796→  75% { transform: translate(-30px, -15px); }
+   797→   797→}
+   798→   798→@keyframes float-particle-2 {
+   799→   799→  0%, 100% { transform: translate(0, 0); }
+   800→   800→  25% { transform: translate(-25px, 30px); }
+   801→   801→  50% { transform: translate(20px, 10px); }
+   802→   802→  75% { transform: translate(35px, -25px); }
+   803→   803→}
+   804→   804→@keyframes float-particle-3 {
+   805→   805→  0%, 100% { transform: translate(0, 0); }
+   806→   806→  25% { transform: translate(15px, 25px); }
+   807→   807→  50% { transform: translate(-30px, -10px); }
+   808→   808→  75% { transform: translate(-15px, 30px); }
+   809→   809→}
+   810→   810→.animate-float-particle-1 { animation: float-particle-1 20s ease-in-out infinite; }
+   811→   811→.animate-float-particle-2 { animation: float-particle-2 25s ease-in-out infinite; }
+   812→   812→.animate-float-particle-3 { animation: float-particle-3 30s ease-in-out infinite; }
+   813→   813→
+   814→   814→/* Pulse glow for traceability image */
+   815→   815→@keyframes pulse-glow {
+   816→   816→  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 97, 26, 0); }
+   817→   817→  50% { box-shadow: 0 0 30px 10px rgba(232, 97, 26, 0.08); }
+   818→   818→}
+   819→   819→.animate-pulse-glow {
+   820→   820→  animation: pulse-glow 4s ease-in-out infinite;
+   821→   821→}
+   822→   822→
+   823→   823→/* Shimmer sweep for text */
+   824→   824→@keyframes text-shimmer {
+   825→   825→  0% { background-position: -200% center; }
+   826→   826→  100% { background-position: 200% center; }
+   827→   827→}
+   828→   828→.animate-text-shimmer {
+   829→   829→  background-size: 200% auto;
+   830→   830→  animation: text-shimmer 2s linear 1;
+   831→   831→}
+   832→   832→
+   833→   833→/* Add reduced-motion overrides for new animations */
+   834→   834→@media (prefers-reduced-motion: reduce) {
+   835→   835→  .animate-shimmer,
+   836→   836→  .animate-gentle-pulse,
+   837→   837→  .animate-badge-pulse,
+   838→   838→  .animate-slow-rotate,
+   839→   839→  .animate-gradient-separator,
+   840→   840→  .animate-float-particle-1,
+   841→   841→  .animate-float-particle-2,
+   842→   842→  .animate-float-particle-3,
+   843→   843→  .animate-pulse-glow,
+   844→   844→  .animate-text-shimmer,
+   845→   845→  .animate-dot-pulse-1,
+   846→   846→  .animate-dot-pulse-2,
+   847→   847→  .animate-dot-pulse-3,
+   848→   848→  .animate-underline-reveal,
+   849→   849→  .animate-morph-border,
+   850→   850→  .animate-breathing-glow,
+   851→   851→  .floating-shape,
+   852→   852→  .card-tilt,
+   853→   853→  .border-glow::before,
+   854→   854→  .stagger-fade > * {
+   855→   855→    animation: none !important;
+   856→   856→    transition: none !important;
+   857→   857→  }
+   858→   858→  .card-tilt:hover {
+   859→   859→    transform: none !important;
+   860→   860→  }
+   861→   861→  .stagger-fade > * {
+   862→   862→    opacity: 1 !important;
+   863→   863→    transform: none !important;
+   864→   864→  }
+   865→   865→  .diagonal-line::before {
+   866→   866→    transition: none !important;
+   867→   867→  }
+   868→   868→}
+   869→   869→
