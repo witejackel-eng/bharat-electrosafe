@@ -9,6 +9,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, ShieldCheck, Clock } from 'lucide-react';
 import { productSystems } from '@/data/products';
+import { useLocale } from '@/components/i18n/useLocale';
+import { t } from '@/lib/i18n';
 
 const systemIndicators = [
   {
@@ -32,6 +34,7 @@ const systemIndicators = [
 ];
 
 export function Hero() {
+  const locale = useLocale();
   const [activeSystem, setActiveSystem] = useState<number | null>(null);
   const { openProduct } = useProductDetail();
   const sectionRef = useRef<HTMLElement>(null);
@@ -94,18 +97,18 @@ export function Hero() {
           {/* Left column: Copy */}
           <div className="lg:col-span-5 flex flex-col gap-5 lg:gap-6 lg:pt-8">
             <Reveal delay={0} as="p">
-              <span className="text-eyebrow">Electrical and infrastructure protection</span>
+              <span className="text-eyebrow">{t('hero.eyebrow', locale)}</span>
             </Reveal>
 
             <Reveal delay={80} as="div">
               <h1 className="text-3xl md:text-4xl lg:text-[2.75rem] xl:text-[3.2rem] font-bold text-navy leading-[1.1] tracking-tight" style={{ fontFamily: "'Manrope', sans-serif" }}>
-                Protection systems for environments that cannot afford failure.
+                {t('hero.title', locale)}
               </h1>
             </Reveal>
 
             <Reveal delay={160} as="div">
               <p className="text-base md:text-lg text-steel leading-relaxed max-w-[520px]" style={{ fontFamily: "'Manrope', sans-serif" }}>
-                Electrical insulating mats, visible-safety variants, geomembranes and water-stop solutions for industrial, utility and infrastructure projects.
+                {t('hero.subtitle', locale)}
               </p>
             </Reveal>
 
@@ -144,7 +147,7 @@ export function Hero() {
                   asChild
                 >
                   <Link href="#products">
-                    Explore our products
+                    {t('hero.cta.secondary', locale)}
                     <ArrowRight className="size-4 ml-1" />
                   </Link>
                 </Button>
@@ -152,7 +155,7 @@ export function Hero() {
                   variant="outline"
                   className="border-navy text-navy hover:bg-navy hover:text-white font-medium px-6 h-11 rounded-lg"
                 >
-                  Request a technical quote
+                  {t('hero.cta.primary', locale)}
                 </QuoteButton>
               </div>
               <Link

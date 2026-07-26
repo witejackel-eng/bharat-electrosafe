@@ -1,0 +1,282 @@
+  1415→Work Log:
+  1416→- Read existing worklog + 5 target files (globals.css, WhyChooseUs.tsx, StatsBar.tsx, Footer.tsx, ProductSelection.tsx) and the dev server log to understand current state.
+  1417→- Updated `/home/z/my-project/src/app/globals.css`:
+  1418→  - Added standardized radius tokens to `:root`: `--radius-card` (16px), `--radius-button` (8px), `--radius-pill` (9999px), `--radius-input` (8px).
+  1419→  - Added typography scale tokens to `:root`: `--text-h1` (2.75rem), `--text-h2` (2.25rem), `--text-h3` (1.5rem), `--text-caption` (0.875rem). Used `--text-body-size` / `--text-meta-size` (with `-size` suffix) for body/meta font sizes because `--text-body` / `--text-meta` are reserved for the WCAG color tokens (the task spec listed both with the same name — resolved the conflict in favour of the WCAG colors, which is the explicit goal of this task).
+  1420→  - Added WCAG-compliant color tokens to `:root`: `--text-body: #374151` (was steel #6B7280 — fails AA on ivory), `--text-meta: #4B5563`, `--text-on-dark: #FFFFFF`, `--text-on-dark-muted: rgba(255,255,255,0.85)` (was /75 — bumped to /85 for AA).
+  1421→  - Added 3 standardized button utility classes in `@layer utilities`: `.btn-primary`, `.btn-secondary`, `.btn-ghost` (orange/navy brand tokens + focus-visible ring on primary).
+  1422→  - Added 2 standardized card utility classes in `@layer utilities`: `.card-default` (light, hover lifts -translate-y-0.5 + orange border + shadow), `.card-dark` (navy bg, white text).
+  1423→  - Added dark-mode overrides in the existing `.dark` block: `--text-body: #D1D5DB`, `--text-meta: #9CA3AF`, `--text-on-dark: #1B2A4A`, `--text-on-dark-muted: rgba(27,42,74,0.85)`.
+  1424→  - Added new `animate-badge-pulse` keyframe + class (subtle sonar-style box-shadow ring pulse; text contrast never affected because only box-shadow animates) and added it to the reduced-motion override list.
+  1425→- Updated `/home/z/my-project/src/components/home/WhyChooseUs.tsx`:
+  1426→  - Card description: `text-steel text-xs md:text-sm` → `text-[#374151] dark:text-white/75 text-sm md:text-[0.95rem] leading-relaxed` (AA fix + readability bump).
+  1427→  - Card hover: `hover:-translate-y-1` → `hover:-translate-y-0.5` (subtler, matches design system).
+  1428→  - Added `focus-within:border-orange/30 focus-within:shadow-md` to cards for keyboard accessibility.
+  1429→- Updated `/home/z/my-project/src/components/home/StatsBar.tsx`:
+  1430→  - Stat label: `text-steel` → `text-[#4B5563] dark:text-white/70` (AA fix).
+  1431→  - Stat number: `text-navy` → `text-navy dark:text-white` (explicit dark-mode high contrast).
+  1432→  - Label font size already at `text-xs md:text-sm` (≥0.75rem mobile — meets AA minimum), no bump required.
+  1433→- Updated `/home/z/my-project/src/components/layout/Footer.tsx`:
+  1434→  - Column headers: `text-sm font-semibold ... tracking-wider` → `text-xs font-bold uppercase tracking-[0.15em] text-white` (stronger hierarchy).
+  1435→  - Column body links: `text-white/75 hover:text-white` → `text-white/80 hover:text-orange` (better contrast + on-brand hover).
+  1436→  - Newsletter description: `text-white/70` → `text-white/80`.
+  1437→  - Copyright text: `text-white/60` → `text-white/75`.
+  1438→  - Bottom-bar legal links (Privacy/Terms) + "Made in India": `text-white/60 hover:text-white` → `text-white/75 hover:text-orange`.
+  1439→- Updated `/home/z/my-project/src/components/home/ProductSelection.tsx` (dark navy "Voltage Selection" section):
+  1440→  - Card description: `text-white/75` → `text-white/85` (AA on dark navy).
+  1441→  - "Not selecting an electrical mat?" alternative path link: `text-white/70` → `text-white/80`.
+  1442→  - Recommended badge: added `animate-badge-pulse` (already had `bg-orange text-white font-bold`).
+  1443→- Ran `bun run lint`: 0 errors, 1 pre-existing warning (Manrope font in layout.tsx — not introduced by this task).
+  1444→- Verified dev server stability: multiple successful compiles, `GET / 200`, no runtime errors.
+  1445→
+  1446→Stage Summary:
+  1447→- Design system tokens locked: 4 radius tokens, 6 typography-scale tokens (with body/meta `-size` suffix to avoid conflict with WCAG color tokens), 4 WCAG color tokens, 2 dark-mode color overrides.
+  1448→- 3 standardized button utilities (`.btn-primary` / `.btn-secondary` / `.btn-ghost`) and 2 card utilities (`.card-default` / `.card-dark`) now available for reuse across components.
+  1449→- WCAG AA contrast failures fixed in 4 components: WhyChooseUs (text-steel → #374151), StatsBar (text-steel → #4B5563), Footer (white/60 → white/75 across bottom bar), ProductSelection (white/75 → white/85 on dark navy).
+  1450→- Footer typography hierarchy strengthened: column headers now `text-xs font-bold uppercase tracking-[0.15em]` (was `text-sm font-semibold tracking-wider`); on-brand orange hover applied to all footer links.
+  1451→- Recommended badge on ProductSelection Class B card now has a subtle sonar-style box-shadow pulse (`animate-badge-pulse`) — label text contrast never compromised (only box-shadow animates); reduced-motion respected.
+  1452→- Naming-conflict resolution: task spec listed `--text-body` and `--text-meta` as both typography (font-size) and WCAG color tokens. Resolved by giving the font-size variants a `-size` suffix (`--text-body-size`, `--text-meta-size`) so both intents coexist; the WCAG colors take the canonical name because they are referenced in dark-mode overrides.
+  1453→- Artifact: `/home/z/my-project/agent-ctx/10-c-design-system-polish.md` (detailed work record).
+  1454→
+  1455→---
+  1456→Task ID: 10-b
+  1457→Agent: chat-enhancer
+  1458→Task: Enhance ChatWidget with quick-reply suggestion chips and typing indicator
+  1459→
+  1460→Work Log:
+  1461→- Read /home/z/my-project/worklog.md (full project context) and the existing /home/z/my-project/src/components/chat/ChatWidget.tsx (328 lines) to understand structure: floating bubble + panel, navy header, /api/chat POST, cookie-banner-aware bottomOffset via useSyncExternalStore, 4 CSS keyframes (chatPulseRing/chatPanelIn/chatMsgIn/chatBounce) in <style jsx>
+  1462→- Confirmed brand tokens exist in globals.css: --color-orange-soft (rgba 0.08 light / 0.16 dark), --color-steel-light (#9CA3AF light / #6B7280 dark), --color-orange (#E8611A), --color-orange-hover (#D45510)
+  1463→- Imported RotateCcw from lucide-react and added type-only imports (ChangeEvent, KeyboardEvent) from react for the textarea handlers
+  1464→- Added module-level constants: SUGGESTIONS (4 readonly strings: 'Class A vs B vs C', 'IS 15652 specs', 'Request a quote', 'Talk to human'), MAX_INPUT_LENGTH=500, TEXTAREA_MAX_HEIGHT=120
+  1465→- Added formatTime(date: Date): string helper using toLocaleTimeString('en-IN', { hour12:false, timeZone:'Asia/Kolkata' }) with try/catch fallback to getHours/getMinutes for environments without Intl timeZone support
+  1466→- Refactored sendMessage signature to sendMessage(overrideMessage?: string) — when chip is clicked, overrideMessage replaces input value; existing input-driven path unchanged. The trimmed variable now uses (overrideMessage ?? input).trim(). History collection, fetch, error handling all unchanged.
+  1467→- Added resetConversation() — replaces messages with a fresh INITIAL_GREETING (new timestamp so chips reappear), clears input, sets loading false, resets textarea height. Silent (no toast) per spec.
+  1468→- Added adjustTextareaHeight() useCallback — sets el.style.height='auto' then to Math.min(scrollHeight, 120). Wired to a useEffect on [input, adjustTextareaHeight] so it re-measures on every keystroke AND after the input is cleared post-send (fixes the "textarea stays tall after send" bug).
+  1469→- Added handleInputChange (sets input state) and handleKeyDown (Enter sends, Shift+Enter inserts newline via default behavior)
+  1470→- Computed hasUserMessage = messages.some(m => m.role === 'user') to gate the chip row
+  1471→- HEADER: wrapped the two header buttons in a flex gap-1 container; inserted a new RotateCcw button BEFORE the close button with classes "size-7 h-7 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors", aria-label="Start new conversation", title="New conversation", icon size-3.5
+  1472→- MESSAGE BUBBLES: restructured each message into a flex-col wrapper (items-end for user, items-start for assistant) with the bubble + a timestamp span below. Timestamp classes: "text-[0.6rem] text-steel-light mt-1" with text-right/text-left per role. Added aria-label="Sent at HH:MM" for SR users.
+  1473→- TYPING INDICATOR: wrapped the dots bubble in a flex-col items-start container; added "Bharat Electrosafe Assistant is typing…" italic label above (text-[0.65rem] text-steel-light italic mb-1). Replaced bg-white dark:bg-card on the dots bubble with bg-orange-soft/30 dark:bg-orange-soft/40 for the subtle pulsing-tinted background. Verified the three dot animationDelays remain 0ms/200ms/400ms.
+  1474→- QUICK-REPLY CHIPS: rendered a row (only when !hasUserMessage) ABOVE the input area, BELOW messages, with classes "flex flex-wrap gap-2 px-3 py-2 bg-white dark:bg-card border-t border-border/60 shrink-0". Each chip button uses exactly the spec classes "text-xs font-medium px-3 py-1.5 rounded-full bg-orange-soft text-orange border border-orange/20 hover:bg-orange hover:text-white transition-colors cursor-pointer" plus disabled:opacity-50 disabled:cursor-not-allowed. onClick fires sendMessage(suggestion). aria-label="Suggested question: {chip text}".
+  1475→- INPUT AREA: replaced <input> with <textarea rows={1}> — same visual height (min-h-[2.5rem] = 40px to match old h-10), resize-none, max-h-[120px], maxLength={500}, aria-label="Type your message". Changed form layout from items-center to items-end so the send button stays bottom-aligned as the textarea grows. Send button gets self-end to anchor at the bottom of the flex row.
+  1476→- CHARACTER COUNTER: added showCharCounter = input.length > 100. When visible, renders <p className="text-[0.6rem] text-steel-light text-right mt-1">{input.length} / 500</p> between the form and the existing "AI assistant · responses are informational" footer.
+  1477→- REDUCED MOTION: appended a @media (prefers-reduced-motion: reduce) block to the existing <style jsx> using :global([style*='chatPulseRing']), :global([style*='chatPanelIn']), :global([style*='chatMsgIn']), :global([style*='chatBounce']) selectors — sets animation: none !important so users with reduced-motion preference see instant panel/message appearances and no pulsing ring/bouncing dots.
+  1478→- Ran cd /home/z/my-project && bun run lint → 0 errors, 1 pre-existing warning (@next/next/no-page-custom-font in layout.tsx — unrelated, was there before this task)
+  1479→- Ran bunx tsc --noEmit filtered for chat/ files → no errors in ChatWidget.tsx (one pre-existing TS error in src/app/api/chat/route.ts:12 is from a prior task and not touched here)
+  1480→- Verified dev.log: server stable, GET / 200, no runtime errors, clean compiles ("✓ Compiled in XXXms") after the edit
+  1481→- Wrote agent-ctx record at /home/z/my-project/agent-ctx/10-b-chat-enhancer.md
+  1482→
+  1483→Stage Summary:
+  1484→- 1 file modified: /home/z/my-project/src/components/chat/ChatWidget.tsx (328 → ~340 lines, all 6 features integrated)
+  1485→- Feature 1 (Quick-reply chips): 4 chips rendered above input when no user message exists; clicking sends immediately via refactored sendMessage(overrideMessage); reappear after reset; exact spec classes + aria-labels
+  1486→- Feature 2 (Typing indicator): italic "Bharat Electrosafe Assistant is typing…" label above dots; bg-orange-soft/30 tinted bubble (dark:bg-orange-soft/40 for dark mode visibility); verified 0/200/400ms staggered delays preserved
+  1487→- Feature 3 (Timestamps): HH:MM 24-hour IST via Intl timeZone 'Asia/Kolkata' with manual fallback; right-aligned for user, left-aligned for bot; text-[0.6rem] text-steel-light mt-1; aria-label for SR
+  1488→- Feature 4 (Reset button): RotateCcw icon next to close button in header; size-7 h-7 rounded-full hover:bg-white/10; resets messages to fresh INITIAL_GREETING + new timestamp (so chips reappear), clears input, sets loading false; silent (no toast) per spec
+  1489→- Feature 5 (Char counter): maxLength={500} on textarea; counter "{n} / 500" appears only when input.length > 100; text-[0.6rem] text-steel-light text-right mt-1
+  1490→- Feature 6 (Auto-resize textarea): <input> → <textarea rows={1}>; auto-resize via adjustTextareaHeight() (auto then Math.min(scrollHeight, 120)) wired to useEffect on [input]; resize-none; Enter sends, Shift+Enter newline; same min-height (2.5rem) as old input for visual parity; send button anchored bottom via items-end + self-end
+  1491→- Reduced-motion: @media (prefers-reduced-motion: reduce) disables all 4 keyframe animations via :global attribute selectors on inline-styled elements
+  1492→- All new UI uses brand tokens (text-orange, bg-orange-soft, text-steel-light, bg-navy, bg-white dark:bg-card) — works in both light and dark modes
+  1493→- TypeScript strict, no `any`; Manrope font via style prop on root containers (preserved from original)
+  1494→- Lint: 0 errors, 1 pre-existing warning (Manrope font in layout.tsx — unrelated)
+  1495→- Dev server: stable, GET / 200, no runtime errors
+  1496→
+  1497→---
+  1498→Task ID: 10-a
+  1499→Agent: quicknav-builder
+  1500→Task: Create QuickNav sticky section navigator and ProjectGallery section
+  1501→
+  1502→Work Log:
+  1503→- Read worklog.md (esp. cycle 9 StickyCTABar/ScrollProgressBar/CaseStudiesSection additions) for the cookie-banner external store pattern, prefers-reduced-motion store, visibility rules, and Reveal stagger conventions
+  1504→- Read StickyCTABar.tsx, Reveal.tsx, CaseStudiesSection.tsx, globals.css, tailwind.config.ts, and page.tsx to confirm brand tokens, `.text-eyebrow` utility, `bg-gradient-to-br` support, and the 11 existing section IDs
+  1505→- Created /home/z/my-project/src/components/ui-custom/QuickNav.tsx:
+  1506→  - 'use client' directive; `SECTIONS` array mapping all 11 section ids (products, product-selection, proof, applications, case-studies, testimonials, insights, resources, contact, faq, quote) to short labels
+  1507→  - Replicated the cookie-banner external store from StickyCTABar (listeners Set, `be:cookie-visible` CustomEvent subscription, localStorage `be-cookie-consent` fallback, SSR server snapshot false) + prefers-reduced-motion external store
+  1508→  - Main effect (dep `[cookieBannerVisible]`): rAF-throttled `evaluate()` applying 3 visibility rules (scrollY>600, #quote top < 70% viewport, cookie banner visible / 5s fallback); `IntersectionObserver` with `rootMargin: '-40% 0px -55% 0px'` + thresholds [0,0.1,0.25,0.5,1] tracking per-section ratios in a `useRef<Map>` to pick the best active candidate
+  1509→  - `handleJump`: `window.scrollTo({ top: max(0, targetY - 90), behavior: reducedMotion ? 'auto' : 'smooth' })`; proactively sets activeId
+  1510→  - Outer `<nav aria-label="On this page navigation" aria-hidden={!visible}>` with `hidden md:flex fixed bottom-24 left-1/2 -translate-x-1/2 z-30 max-w-[calc(100vw-2rem)]` + `inert` spread when hidden; middle div holds Manrope style + opacity/translateY transition; inner pill `rounded-full bg-navy/90 backdrop-blur-md border border-white/10 shadow-lg px-2 py-1.5` with hidden-scrollbar `overflow-x-auto`
+  1511→  - "On this page" label: `sr-only lg:not-sr-only text-[0.6rem] uppercase tracking-wider text-white/40 px-2`; pills active = `bg-orange text-white font-semibold` + `aria-current="location"`, inactive = `text-white/60 font-medium hover:bg-white/10 hover:text-white`; `transition-colors` disabled under reduced motion
+  1512→- Created /home/z/my-project/src/components/home/ProjectGallery.tsx:
+  1513→  - 'use client' directive; `<section id="gallery" className="bg-background py-20 md:py-28 scroll-mt-32">`
+  1514→  - Header: `.text-eyebrow` "Project Gallery", h2 `text-3xl md:text-4xl font-bold text-navy` "From our production floor to your substation.", subtitle `text-steel max-w-2xl leading-relaxed` — each wrapped in Reveal with Manrope style
+  1515→  - Grid: `grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[200px]`; 6 gallery items with per-card `{ from, to, span, minHeight }`:
+  1516→    1. "33 kV Substation Matting" / Western Region Transmission · 2024 / Zap / from-navy to-orange / col-span-2 row-span-2 / min-h-[400px]
+  1517→    2. "Platform Edge Safety" / South Indian Metro · 2024 / Train / from-orange to-steel / min-h-[200px]
+  1518→    3. "Control Room Flooring" / BHEL Bhopal Plant · 2023 / Building2 / from-steel to-navy / min-h-[200px]
+  1519→    4. "Tunnel Lining Project" / Mumbai Coastal Project · 2023 / Waves / from-navy-dark to-navy-light / min-h-[200px]
+  1520→    5. "Power Plant Installation" / NTPC Korba · 2024 / Factory / from-orange-light to-orange / row-span-2 / min-h-[400px]
+  1521→    6. "Railway Workshop Mats" / Indian Railways Jhansi · 2023 / Wrench / from-navy to-steel / min-h-[200px]
+  1522→  - Each card: `<Reveal delay={150 + i*80} className="h-full {span}">` wrapping `<article tabIndex={0} aria-labelledby>` with `bg-gradient-to-br {from} {to} {minHeight}`; diagonal sheen (repeating-linear-gradient 45deg white/15 1px transparent 10px @ opacity-20); watermark icon `absolute -bottom-3 -right-3 size-24 text-white/10`; center icon `size-8 text-white` in `w-16 h-16 rounded-full bg-white/15 backdrop-blur-sm ring-1 ring-white/20`; bottom caption `absolute bottom-0 inset-x-0 p-4` with `from-black/60 to-transparent` overlay, title `text-white font-semibold text-sm`, subtitle `text-white/70 text-xs`
+  1523→  - Hover: `scale-105 brightness-110 shadow-2xl transition-all duration-300` (disabled under reduced motion); focus-visible:outline-2 outline-orange outline-offset-2; Manrope via style prop on the article (Reveal overrides its own style)
+  1524→- Ran `cd /home/z/my-project && bun run lint` → 0 errors, 1 pre-existing warning (`@next/next/no-page-custom-font` in layout.tsx — unrelated)
+  1525→- Ran `bunx tsc --noEmit` filtered for QuickNav/ProjectGallery → no errors
+  1526→- Verified dev server stable (GET / 200, no compile/runtime errors in dev.log)
+  1527→- Wrote agent-ctx record at /home/z/my-project/agent-ctx/10-a-quicknav-builder.md
+  1528→- NOTE: Per task spec ("ONLY these new files"), components are NOT yet wired into page.tsx — orchestrator should add `<QuickNav />` (with the other fixed-position utilities) and `<ProjectGallery />` (e.g. after CaseStudiesSection or InsightsSection) plus optionally a `gallery` entry to the QuickNav SECTIONS array
+  1529→
+  1530→Stage Summary:
+  1531→- 2 files CREATED (no existing files modified):
+  1532→  - /home/z/my-project/src/components/ui-custom/QuickNav.tsx — sticky bottom-center section navigator pill bar (z-30, bottom-24, hidden on mobile, IntersectionObserver-driven active section with -40%/-55% rootMargin band, cookie-banner-aware visibility via shared external store, prefers-reduced-motion support, smooth-scroll with 90px header offset, 11 section pills)
+  1533→  - /home/z/my-project/src/components/home/ProjectGallery.tsx — masonry grid of 6 stylized gradient installation cards (2-col mobile / 3-col desktop, auto-rows-200px, card 1 = 2×2 hero, card 5 = 1×2 tall) with diagonal sheen, watermark + center icons, bottom caption strips, hover lift, keyboard-focusable
+  1534→- Both files: TypeScript strict, no `any`, SSR-safe (window/document guarded in effects + useSyncExternalStore server snapshots), brand color tokens work in light/dark, Manrope via style prop, semantic HTML (`<nav aria-label>` / `<section>` / `<article aria-labelledby>`), lucide-react icons, Reveal stagger animation (delay 150 + i*80)
+  1535→- Lint: 0 errors, 1 pre-existing unrelated warning; tsc: clean for both files
+  1536→- Components ready to be integrated into src/app/page.tsx by the orchestrator
+  1537→
+  1538→---
+  1539→Task ID: 10 (cycle 10)
+  1540→Agent: main-orchestrator
+  1541→Task: QA testing, fix useSyncExternalStore infinite loop, add QuickNav + ProjectGallery + ChatWidget enhancements, lock design system, fix WCAG contrast issues
+  1542→
+  1543→## Current project status description/assessment
+  1544→
+  1545→Prior cycles (1-9) delivered a comprehensive Bharat Electrosafe homepage with 11 sections, full interactive features (QuoteDialog, ProductDetailDialog, CompareDialog, ApplicationDetailDialog, SearchPalette, ThemeToggle, CookieConsent, ScrollToTop, NewsletterSubscribe, QuoteAdmin with CSV export + status workflow, ChatWidget, StickyCTABar, ScrollProgressBar, ImageLightbox, CaseStudiesSection, InsightsSection), AI-powered chat, deep styling polish.
+  1546→
+  1547→This cycle (Task 10) focused on: fixing a critical infinite loop bug, locking the design system, improving WCAG contrast, adding new wayfinding features (QuickNav, ProjectGallery), and enhancing the ChatWidget with quick-reply chips.
+  1548→
+  1549→## Current goals/completed modifications/verification results
+  1550→
+  1551→### Work Log:
+  1552→
+  1553→**1. QA Testing via agent-browser (desktop 1440×900 + mobile 390×844)**
+  1554→- Discovered CRITICAL bug: `useSyncExternalStore` infinite loop warning in console — "The result of getServerSnapshot should be cached to avoid an infinite loop"
+  1555→- VLM analysis of full page identified systemic issues: design system drift (inconsistent radius, button variants, colors), WCAG contrast failures (light grey body text on ivory bg, low contrast on dark sections), missing wayfinding for long page
+  1556→- All 11 sections rendered, all interactive features functional
+  1557→
+  1558→**2. CRITICAL BUG FIX: useSyncExternalStore infinite loop** (main orchestrator)
+  1559→- Root cause: `/home/z/my-project/src/lib/quote-status-store.ts` `getServerSnapshot()` returned a new `{}` object literal on every call — React detected this as a change, triggering infinite re-renders on the server
+  1560→- Fix: Created a module-level `EMPTY_STATUS_MAP` constant (Object.freeze({})) and returned that stable reference from both `getServerSnapshot()` and `parseMap()` when the map is empty
+  1561→- Also updated `cachedParsed` initial value to use `EMPTY_STATUS_MAP` instead of `{}`
+  1562→- After fix: console error gone, no more infinite loop warning
+  1563→
+  1564→**3. Design System Lock** (Task 10-c, parallel agent)
+  1565→- Updated `/home/z/my-project/src/app/globals.css`:
+  1566→  - Added 4 radius tokens: `--radius-card: 16px`, `--radius-button: 8px`, `--radius-pill: 9999px`, `--radius-input: 8px`
+  1567→  - Added 6 typography scale tokens: `--text-h1` through `--text-meta`
+  1568→  - Added 4 WCAG color tokens: `--text-body: #374151`, `--text-meta: #4B5563`, `--text-on-dark: #FFFFFF`, `--text-on-dark-muted: rgba(255,255,255,0.85)`
+  1569→  - Added 3 button utility classes: `.btn-primary`, `.btn-secondary`, `.btn-ghost`
+  1570→  - Added 2 card utility classes: `.card-default`, `.card-dark`
+  1571→  - Added `animate-badge-pulse` keyframe for Recommended badge
+  1572→  - Updated dark mode color overrides for text-body, text-meta, text-on-dark
+  1573→
+  1574→**4. WCAG Contrast Fixes** (Task 10-c, parallel agent)
+  1575→- `/home/z/my-project/src/components/home/WhyChooseUs.tsx`:
+  1576→  - Body text `text-steel` (#6B7280, fails AA) → `text-[#374151] dark:text-white/75` (now rgb(55,65,81) — AA compliant)
+  1577→  - Font size bumped from `text-xs md:text-sm` to `text-sm md:text-[0.95rem]`
+  1578→  - Added `leading-relaxed`, `focus-within:border-orange/30 focus-within:shadow-md`
+  1579→  - Hover lift reduced from `-translate-y-1` to `-translate-y-0.5` (more subtle)
+  1580→- `/home/z/my-project/src/components/home/StatsBar.tsx`:
+  1581→  - Stat labels `text-steel` → `text-[#4B5563] dark:text-white/70`
+  1582→  - Stat numbers `text-navy` → `text-navy dark:text-white`
+  1583→- `/home/z/my-project/src/components/home/ProductSelection.tsx` (dark section):
+  1584→  - Card descriptions `text-white/75` → `text-white/85` (AA compliant on dark navy)
+  1585→  - Alt-path link `text-white/70` → `text-white/80`
+  1586→  - Recommended badge gets `animate-badge-pulse` (sonar-style ring)
+  1587→
+  1588→**5. Footer Typography Strengthening** (Task 10-c, parallel agent)
+  1589→- `/home/z/my-project/src/components/layout/Footer.tsx`:
+  1590→  - Column headers: `text-sm font-semibold` → `text-xs font-bold uppercase tracking-[0.15em] text-white` (font-weight 700, letter-spacing 1.8px — much stronger hierarchy)
+  1591→  - Column links: `text-white/75` → `text-white/80`, hover `hover:text-white` → `hover:text-orange` (on-brand)
+  1592→  - Newsletter section: `text-white/70` → `text-white/80`
+  1593→  - Legal links: `text-white/60` → `text-white/75`, hover → `hover:text-orange`
+  1594→  - Copyright: `text-white/60` → `text-white/75`
+  1595→
+  1596→**6. NEW: QuickNav Sticky Section Navigator** (Task 10-a, parallel agent)
+  1597→- Created `/home/z/my-project/src/components/ui-custom/QuickNav.tsx`
+  1598→- Fixed bottom-center pill bar (`bottom-28 left-1/2 -translate-x-1/2 z-30`)
+  1599→- 11 section pills with active state tracking via IntersectionObserver (rootMargin: '-40% 0px -55% 0px')
+  1600→- Active pill: `bg-orange text-white font-semibold` + `aria-current="location"`
+  1601→- Inactive pill: `text-white/60 font-medium hover:bg-white/10 hover:text-white`
+  1602→- "On this page" label (sr-only + visible-on-lg)
+  1603→- Visibility: hidden until scrollY > 600, hides when #quote in view, hides when cookie banner visible (subscribes to be:cookie-visible event)
+  1604→- Smooth scroll on click with 90px header offset
+  1605→- Hidden on mobile (`hidden md:flex`)
+  1606→- Horizontal scrollbar hidden for clean pill look
+  1607→
+  1608→**7. NEW: ProjectGallery Section** (Task 10-a, parallel agent)
+  1609→- Created `/home/z/my-project/src/components/home/ProjectGallery.tsx`
+  1610→- `<section id="gallery">` with masonry-style grid
+  1611→- 6 gradient cards with varying row spans:
+  1612→  - Card 1 (large, col-span-2 row-span-2): "33 kV Substation Matting" / "Western Region Transmission · 2024" / Zap icon
+  1613→  - Card 2: "Platform Edge Safety" / "South Indian Metro · 2024" / Train icon
+  1614→  - Card 3: "Control Room Flooring" / "BHEL Bhopal Plant · 2023" / Building2 icon
+  1615→  - Card 4: "Tunnel Lining Project" / "Mumbai Coastal Project · 2023" / Waves icon
+  1616→  - Card 5 (tall, row-span-2): "Power Plant Installation" / "NTPC Korba · 2024" / Factory icon
+  1617→  - Card 6: "Railway Workshop Mats" / "Indian Railways Jhansi · 2023" / Wrench icon
+  1618→- Each card: gradient background, diagonal sheen overlay (opacity-20), watermark icon (size-24, white/10), center icon badge (white/15 backdrop-blur circle), bottom caption with from-black/60 overlay
+  1619→- Hover: scale-105, brightness-110, shadow-2xl
+  1620→- Keyboard accessible: tabIndex=0, focus-visible:outline-orange
+  1621→- Reveal stagger animation
+  1622→
+  1623→**8. ChatWidget Enhancements** (Task 10-b, parallel agent)
+  1624→- Modified `/home/z/my-project/src/components/chat/ChatWidget.tsx`:
+  1625→  - **Quick-reply chips**: 4 suggestion chips ("Class A vs B vs C", "IS 15652 specs", "Request a quote", "Talk to human") shown above input when no user message yet; clicking sends the message; chips disappear after first user message; reappear after reset
+  1626→  - **Enhanced typing indicator**: "Bharat Electrosafe Assistant is typing…" label above bouncing dots; bubble bg `bg-orange-soft/30`
+  1627→  - **Message timestamps**: HH:MM format (24-hour IST) below each message, right-aligned for user, left-aligned for bot
+  1628→  - **Reset button**: RotateCcw icon in header next to close button; resets messages to INITIAL_GREETING
+  1629→  - **Character counter**: "{n} / 500" shown when input > 100 chars; maxLength=500 on textarea
+  1630→  - **Auto-resize textarea**: replaced `<input>` with `<textarea rows={1}>`; auto-resizes up to 120px; Enter sends, Shift+Enter for newline
+  1631→  - All existing functionality preserved (API calls, cookie banner coordination, animations)
+  1632→
+  1633→**9. Page Integration** (main orchestrator)
+  1634→- Modified `/home/z/my-project/src/app/page.tsx`:
+  1635→  - Added imports for ProjectGallery and QuickNav
+  1636→  - Inserted ProjectGallery after CaseStudiesSection (with SectionDivider accent)
+  1637→  - Added `<QuickNav />` alongside other fixed utilities (after ScrollProgressBar, before ScrollToTop)
+  1638→  - Page now has 12 sections: products, product-selection, proof, applications, case-studies, gallery, testimonials, insights, resources, contact, faq, quote
+  1639→
+  1640→**10. QuickNav vs StickyCTABar z-index collision fix** (main orchestrator)
+  1641→- VLM identified overlap between QuickNav (bottom-24) and StickyCTABar (bottom-4)
+  1642→- Changed QuickNav from `bottom-24` (6rem) to `bottom-28` (7rem) — now 38px gap between the two bars
+  1643→- Verified: QuickNav bottom at 788px, StickyCTABar top at 826px — no overlap
+  1644→
+  1645→### Verification Results:
+  1646→- **Lint**: 0 errors, 1 pre-existing warning (Manrope font in layout.tsx)
+  1647→- **Dev server**: stable, GET / 200, no runtime errors, NO MORE infinite loop warning
+  1648→- **Console**: clean — no errors, no warnings, no infinite loop messages
+  1649→- **All 12 sections render correctly** (added gallery)
+  1650→- **QuickNav**: 
+  1651→  - 11 section pills, active pill tracking works (verified "Products" active when in products section)
+  1652→  - Hidden on mobile (display: none)
+  1653→  - Appears after scrollY > 600 with cookie banner dismissed
+  1654→  - No overlap with StickyCTABar (38px gap)
+  1655→- **ProjectGallery**: 
+  1656→  - 6 gradient cards render in masonry layout
+  1657→  - Icons, captions, hover effects all working
+  1658→  - Dark mode renders correctly
+  1659→- **ChatWidget enhancements**:
+  1660→  - 4 quick-reply chips visible before first user message
+  1661→  - Chips disappear after sending message
+  1662→  - Reset button (RotateCcw icon) works — resets to greeting
+  1663→  - Character counter "136 / 500" appears when input > 100 chars
+  1664→  - Textarea auto-resizes, Enter sends, Shift+Enter for newline
+  1665→  - Message timestamps show HH:MM IST format
+  1666→  - Typing indicator with "is typing…" label
+  1667→- **Design system contrast fixes**:
+  1668→  - WhyChooseUs body text: now rgb(55, 65, 81) = #374151 (AA compliant, verified via getComputedStyle)
+  1669→  - StatsBar labels: darker grey
+  1670→  - ProductSelection dark section: text-white/85 (was /75)
+  1671→  - Footer headers: font-weight 700, letter-spacing 1.8px, uppercase (verified via getComputedStyle)
+  1672→  - Footer links: hover:text-orange applied to column + legal links
+  1673→- **Dark mode**: All new sections (ProjectGallery, QuickNav) and enhanced components render correctly
+  1674→- **Mobile (390×844)**: ProjectGallery responsive, QuickNav hidden (correct), all other features functional
+  1675→
+  1676→## Unresolved issues or risks, and priority recommendations for the next phase
+  1677→
+  1678→### Known minor items:
+  1679→1. **VLM noted body text still "light grey"** in WhyChooseUs — but getComputedStyle confirms it's now #374151 (AA compliant). VLM may be imprecise on color perception. Verified programmatically.
+  1680→2. **ProjectGallery uses gradient cards** (no real photos) — could be enhanced with actual installation photos if available. LOW priority.
+  1681→3. **QuickNav pills horizontal scroll** on narrow desktop viewports — could add scroll buttons or truncate. LOW priority.
+  1682→4. **ChatWidget send button alignment** — VLM noted slight misalignment with textarea right border; minor visual issue. LOW priority.
+  1683→5. **Image optimization disabled** — `images: { unoptimized: true }` still set in next.config.ts (sandbox CSP workaround). LOW priority.
+  1684→6. **Real article/case study pages** — InsightsSection and CaseStudiesSection still use placeholder `#` links. LOW priority.
+  1685→
+  1686→### Priority recommendations for next cycle:
+  1687→- LOW: Add real installation photos to ProjectGallery (replace gradient cards)
+  1688→- LOW: Create actual article pages for InsightsSection links
+  1689→- LOW: Create actual case study pages for CaseStudiesSection links
+  1690→- LOW: Add scroll buttons to QuickNav for narrow viewports
+  1691→- LOW: Add analytics event tracking (quicknav_click, gallery_card_click, chat_chip_click, chat_reset, lightbox_open, csv_export, status_change)
+  1692→- LOW: Consider adding a "Sustainability/Environmental" section
+  1693→- LOW: Add a "Manufacturing Process" timeline section
+  1694→- LOW: Consider adding multi-language support (English/Hindi toggle)
+
+[showing lines 1415-1694 of 1697; use offset=1695 with limit to continue reading]

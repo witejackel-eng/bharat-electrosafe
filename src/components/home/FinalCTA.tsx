@@ -3,8 +3,11 @@
 import { Reveal } from '@/components/motion/Reveal';
 import { QuoteButton } from '@/components/quote/QuoteButton';
 import { ArrowRight, Phone, MessageCircle, ShieldCheck } from 'lucide-react';
+import { useLocale } from '@/components/i18n/useLocale';
+import { t } from '@/lib/i18n';
 
 export function FinalCTA() {
+  const locale = useLocale();
   return (
     <section id="quote" className="bg-ivory-light py-20 md:py-28 border-t border-border/40 relative overflow-hidden">
       {/* Subtle accent line */}
@@ -52,7 +55,7 @@ export function FinalCTA() {
                   }}
                   aria-hidden="true"
                 />
-                <span className="relative">Request a Quote</span>
+                <span className="relative">{t('cta.quote', locale)}</span>
               </QuoteButton>
               <a
                 href="tel:+911234567890"
@@ -60,7 +63,7 @@ export function FinalCTA() {
                 style={{ fontFamily: "'Manrope', sans-serif" }}
               >
                 <Phone className="size-4 transition-transform group-hover:scale-110" />
-                Call technical sales
+                {t('cta.call', locale)}
               </a>
               <a
                 href="https://wa.me/911234567890"
@@ -70,7 +73,7 @@ export function FinalCTA() {
                 style={{ fontFamily: "'Manrope', sans-serif" }}
               >
                 <MessageCircle className="size-4 transition-transform group-hover:scale-110" />
-                WhatsApp
+                {t('cta.whatsapp', locale)}
               </a>
             </div>
           </Reveal>
