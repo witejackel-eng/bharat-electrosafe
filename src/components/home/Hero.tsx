@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { Reveal } from '@/components/motion/Reveal';
 import { Button } from '@/components/ui/button';
 import { QuoteButton } from '@/components/quote/QuoteButton';
 import { useProductDetail } from '@/components/products/ProductDetailProvider';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Clock } from 'lucide-react';
 import { productSystems } from '@/data/products';
 
 const systemIndicators = [
@@ -34,11 +34,60 @@ const systemIndicators = [
 export function Hero() {
   const [activeSystem, setActiveSystem] = useState<number | null>(null);
   const { openProduct } = useProductDetail();
+  const sectionRef = useRef<HTMLElement>(null);
+  const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    if (!sectionRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    // Calculate offset: max 3px shift
+    const dx = (e.clientX - centerX) / rect.width;
+    const dy = (e.clientY - centerY) / rect.height;
+    setImageOffset({
+      x: dx * 3,
+      y: dy * 3,
+    });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setImageOffset({ x: 0, y: 0 });
+  }, []);
 
   return (
-    <section className="relative overflow-hidden bg-background pt-24 md:pt-28 lg:pt-32 pb-16 md:pb-24">
-      {/* Subtle material texture band at top */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-orange/20" />
+    <section
+      ref={sectionRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative overflow-hidden bg-background pt-24 md:pt-28 lg:pt-32 pb-16 md:pb-24"
+    >
+      {/* Animated gradient mesh background */}
+      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+        <div
+          className="absolute -top-20 -right-20 w-[400px] h-[400px] rounded-full opacity-[0.05] animate-hero-mesh-1"
+          style={{
+            background: 'radial-gradient(circle, var(--color-navy) 0%, transparent 70%)',
+          }}
+        />
+        <div
+          className="absolute top-10 -left-20 w-[300px] h-[300px] rounded-full opacity-[0.05] animate-hero-mesh-2"
+          style={{
+            background: 'radial-gradient(circle, var(--color-orange) 0%, transparent 70%)',
+          }}
+        />
+        <div
+          className="absolute bottom-0 right-[30%] w-[350px] h-[350px] rounded-full opacity-[0.04] animate-hero-mesh-1"
+          style={{
+            background: 'radial-gradient(circle, var(--color-navy) 0%, transparent 70%)',
+            animationDelay: '-7s',
+          }}
+        />
+      </div>
+
+      {/* Animated safety-pulse line at top */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-orange/40 to-transparent animate-safety-pulse" />
+
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
         {/* Desktop: Two-column layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
@@ -126,15 +175,40 @@ export function Hero() {
                   alt="Bharat Electrosafe product systems — insulating mats, visible-safety variants, geomembranes and water-stop solutions"
                   fill
                   className="object-cover transition-transform duration-[1200ms] ease-out hover:scale-[1.04]"
-                  style={{ transform: 'scale(1.035)' }}
+                  style={{
+                    transform: `scale(1.035) translate(${imageOffset.x}px, ${imageOffset.y}px)`,
+                  }}
                   priority
                   sizes="(max-width: 1024px) 100vw, 58vw"
                 />
-                {/* Decorative corner accent */}
-                <div className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-sm border border-white/40 text-[0.65rem] font-semibold text-navy tabular-nums shadow-sm" style={{ fontFamily: "'Manrope', sans-serif" }}>
+
+                {/* Trust badge: ENGINEERED IN INDIA — top-right (existing) */}
+                <div
+                  className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-sm border border-white/40 text-[0.65rem] font-semibold text-navy tabular-nums shadow-sm"
+                  style={{ fontFamily: "'Manrope', sans-serif", animation: 'badgeFadeIn 0.6s ease-out 1.5s both' }}
+                >
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange animate-pulse" aria-hidden="true" />
                   ENGINEERED IN INDIA
                 </div>
+
+                {/* Trust badge: BIS LICENCED — bottom-right */}
+                <div
+                  className="absolute bottom-14 right-3 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-sm border border-white/40 text-[0.65rem] font-semibold text-navy tabular-nums shadow-sm"
+                  style={{ fontFamily: "'Manrope', sans-serif", animation: 'badgeFadeIn 0.6s ease-out 2s both' }}
+                >
+                  <ShieldCheck className="size-3 text-orange" aria-hidden="true" />
+                  BIS LICENCED
+                </div>
+
+                {/* Trust badge: 35+ YEARS — mid-left (lg+ only) */}
+                <div
+                  className="hidden lg:flex absolute top-[50%] -left-1 z-10 translate-y-[-50%] items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-sm border border-white/40 text-[0.65rem] font-semibold text-navy tabular-nums shadow-sm"
+                  style={{ fontFamily: "'Manrope', sans-serif", animation: 'badgeFadeIn 0.6s ease-out 2.5s both' }}
+                >
+                  <Clock className="size-3 text-orange" aria-hidden="true" />
+                  35+ YEARS
+                </div>
+
                 {/* Floating label overlays */}
                 <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
                   {productSystems.map((s) => (
@@ -161,6 +235,20 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      {/* Inline animations for badge fade-in */}
+      <style jsx>{`
+        @keyframes badgeFadeIn {
+          0% {
+            opacity: 0;
+            transform: translateY(8px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </section>
   );
 }

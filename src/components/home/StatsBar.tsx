@@ -57,7 +57,7 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   return (
     <span
       ref={ref}
-      className="text-4xl md:text-5xl font-bold text-navy"
+      className="text-4xl md:text-5xl font-bold text-navy counter-glow"
       style={{ fontVariantNumeric: 'tabular-nums', fontFamily: "'Manrope', sans-serif" }}
     >
       {count}
@@ -82,20 +82,45 @@ export function StatsBar() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
           {stats.map((stat, i) => (
             <Reveal key={stat.label} delay={i * 80} translateY={12}>
-              <div className="text-center md:text-left group/stat">
+              <div className="text-center md:text-left group/stat transition-transform duration-300 hover:scale-[1.02]">
+                {/* Animated gradient separator before each stat on md+ (except first) */}
+                {i > 0 && (
+                  <div
+                    className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-[60%] animate-gradient-separator opacity-20"
+                    style={{
+                      background: 'linear-gradient(180deg, transparent, var(--color-orange), transparent)',
+                    }}
+                    aria-hidden="true"
+                  />
+                )}
                 <div className="flex items-baseline justify-center md:justify-start gap-1 mb-2">
                   <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                 </div>
                 <span
-                  className="text-xs md:text-sm text-steel font-medium uppercase tracking-wider block"
+                  className="text-xs md:text-sm text-steel font-medium uppercase tracking-wider flex items-center justify-center md:justify-start"
                   style={{ fontFamily: "'Manrope', sans-serif" }}
                 >
+                  {/* Orange dot bullet before label */}
+                  <span className="inline-block w-1 h-1 rounded-full bg-orange mr-1.5" aria-hidden="true" />
                   {stat.label}
                 </span>
-                {/* Orange safety line under each stat */}
-                <div className="hidden md:block h-px bg-gradient-to-r from-orange/60 via-orange/20 to-transparent mt-3 max-w-[80px] group-hover/stat:max-w-[120px] transition-all duration-500" />
+                {/* Orange safety line under each stat - smoother animation */}
+                <div className="hidden md:block h-px bg-gradient-to-r from-orange/60 via-orange/20 to-transparent mt-3 max-w-[80px] group-hover/stat:max-w-[120px] transition-all duration-700 ease-out" />
               </div>
             </Reveal>
+          ))}
+        </div>
+        {/* Animated gradient line separators between columns on md+ */}
+        <div className="hidden md:flex absolute inset-0 pointer-events-none" aria-hidden="true">
+          {[1, 2, 3].map((col) => (
+            <div
+              key={col}
+              className="absolute top-[15%] bottom-[15%] w-px animate-gradient-separator opacity-20"
+              style={{
+                left: `${(col / 4) * 100}%`,
+                background: 'linear-gradient(180deg, transparent, var(--color-orange), transparent)',
+              }}
+            />
           ))}
         </div>
       </div>

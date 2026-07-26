@@ -21,7 +21,6 @@ const accentText: Record<QualityDocument['accent'], string> = {
 };
 
 function downloadDoc(doc: QualityDocument) {
-  // Generate a small mock PDF on the client so the download feels real.
   const content = `%PDF-1.4
 % Bharat Electrosafe — ${doc.name}
 % Issuer: ${doc.issuer} | Standard: ${doc.standard} | Reference: ${doc.reference}
@@ -59,7 +58,6 @@ startxref
 }
 
 function previewDoc(doc: QualityDocument) {
-  // Open the same generated PDF in a new tab for "preview".
   const content = `%PDF-1.4
 % Bharat Electrosafe — ${doc.name} (Preview)
 1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
@@ -87,12 +85,10 @@ startxref
   const blob = new Blob([content], { type: 'application/pdf' });
   const url = URL.createObjectURL(blob);
   window.open(url, '_blank', 'noopener,noreferrer');
-  // Revoke after a short delay so the browser can load it.
   setTimeout(() => URL.revokeObjectURL(url), 30_000);
 }
 
 export function HomeProofCentre() {
-  // Duplicate clients for seamless marquee loop
   const doubledClients = [...clients, ...clients];
 
   return (
@@ -149,6 +145,11 @@ export function HomeProofCentre() {
           </div>
         </div>
 
+        {/* Animated gradient line separator between Part A and Part B */}
+        <div className="mt-10 md:mt-14 relative h-px" aria-hidden="true">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-orange/20 to-transparent animate-gradient-separator" style={{ backgroundSize: '200% 100%' }} />
+        </div>
+
         {/* Part B: Featured documents */}
         <div className="mt-14 md:mt-20">
           <Reveal delay={100}>
@@ -160,7 +161,15 @@ export function HomeProofCentre() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {qualityDocuments.slice(0, 3).map((doc, i) => (
               <Reveal key={doc.id} delay={i * 80} translateY={16}>
-                <div className="border border-border rounded-2xl p-5 bg-white hover:shadow-md hover:-translate-y-1 transition-all duration-200 group/card relative overflow-hidden">
+                <div className="border border-border rounded-2xl p-5 bg-white hover:shadow-lg hover:-translate-y-2 transition-all duration-300 group/card relative overflow-hidden">
+                  {/* VERIFIED watermark behind card */}
+                  <span
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[5rem] font-bold text-navy/[0.03] rotate-[-15deg] pointer-events-none select-none whitespace-nowrap"
+                    aria-hidden="true"
+                    style={{ fontFamily: "'Manrope', sans-serif" }}
+                  >
+                    VERIFIED
+                  </span>
                   {/* Thumbnail — stylised "document" with accent gradient + stamp */}
                   <div
                     className={`relative w-full aspect-[3/2] rounded-xl overflow-hidden mb-4 bg-gradient-to-br ${accentBg[doc.accent]}`}
@@ -252,7 +261,7 @@ export function HomeProofCentre() {
           {/* Product marking image */}
           <div className="md:col-span-5">
             <Reveal delay={0} translateY={16}>
-              <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-muted">
+              <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-muted animate-pulse-glow">
                 {/* Orange safety line */}
                 <div className="absolute top-4 left-0 w-[3px] h-[60%] bg-orange rounded-full" />
                 <Image

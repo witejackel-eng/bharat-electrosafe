@@ -10,6 +10,8 @@ import { TestimonialsSection } from '@/components/home/TestimonialsSection';
 import { ResourcesSection } from '@/components/home/ResourcesSection';
 import { ContactSection } from '@/components/home/ContactSection';
 import { FinalCTA } from '@/components/home/FinalCTA';
+import { FAQSection } from '@/components/home/FAQSection';
+import { WhyChooseUs } from '@/components/home/WhyChooseUs';
 import { QuoteProvider } from '@/components/quote/QuoteProvider';
 import { QuoteAdminProvider } from '@/components/quote/QuoteAdminProvider';
 import { ProductDetailProvider } from '@/components/products/ProductDetailProvider';
@@ -17,6 +19,7 @@ import { SearchProvider } from '@/components/search/SearchProvider';
 import { ApplicationDetailProvider } from '@/components/applications/ApplicationDetailProvider';
 import { ScrollToTop } from '@/components/ui-custom/ScrollToTop';
 import { CookieConsent } from '@/components/ui-custom/CookieConsent';
+import { ChatWidget } from '@/components/chat/ChatWidget';
 
 function SectionDivider({ variant = 'default' }: { variant?: 'default' | 'dark' | 'accent' }) {
   if (variant === 'dark') {
@@ -129,6 +132,8 @@ export default function Home() {
                   <Hero />
                   <StatsBar />
                   <SectionDivider variant="accent" />
+                  <WhyChooseUs />
+                  <SectionDivider variant="default" />
                   <HomeProductSystems />
                   <SectionDivider variant="default" />
                   <ProductSelection />
@@ -142,12 +147,15 @@ export default function Home() {
                   <ResourcesSection />
                   <SectionDivider variant="default" />
                   <ContactSection />
+                  <SectionDivider variant="accent" />
+                  <FAQSection />
                   <SectionDivider variant="default" />
                   <FinalCTA />
                 </div>
                 <Footer />
                 <ScrollToTop />
                 <CookieConsent />
+                <ChatWidget />
               </main>
             </ApplicationDetailProvider>
           </SearchProvider>
