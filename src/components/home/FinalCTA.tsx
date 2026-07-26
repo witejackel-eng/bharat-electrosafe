@@ -2,18 +2,18 @@
 
 import { Reveal } from '@/components/motion/Reveal';
 import { QuoteButton } from '@/components/quote/QuoteButton';
-import { ArrowRight, Phone, MessageCircle } from 'lucide-react';
+import { ArrowRight, Phone, MessageCircle, ShieldCheck } from 'lucide-react';
 
 export function FinalCTA() {
   return (
     <section id="quote" className="bg-ivory-light py-20 md:py-28 border-t border-border/40 relative overflow-hidden">
       {/* Subtle accent line */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-[2px] bg-orange/40 rounded-full" />
-      {/* Decorative concentric circles */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" aria-hidden="true">
+      {/* Decorative concentric circles with slow rotation */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none animate-slow-rotate" aria-hidden="true">
         <div className="w-[480px] h-[480px] md:w-[640px] md:h-[640px] rounded-full border border-navy/[0.04]" />
       </div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" aria-hidden="true">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none animate-slow-rotate" style={{ animationDirection: 'reverse' }} aria-hidden="true">
         <div className="w-[320px] h-[320px] md:w-[440px] md:h-[440px] rounded-full border border-orange/[0.06]" />
       </div>
 
@@ -38,11 +38,21 @@ export function FinalCTA() {
 
           <Reveal delay={200}>
             <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
+              {/* Request a Quote button with shimmer */}
               <QuoteButton
-                className="bg-orange hover:bg-orange-hover text-white font-medium px-7 h-12 rounded-lg text-base shadow-md hover:shadow-lg transition-all"
+                className="bg-orange hover:bg-orange-hover text-white font-medium px-7 h-12 rounded-lg text-base shadow-md hover:shadow-lg transition-all relative overflow-hidden group/cta"
                 showArrow
               >
-                Request a Quote
+                {/* Shimmer overlay on the button */}
+                <span
+                  className="absolute inset-0 pointer-events-none animate-shimmer opacity-0 group-hover/cta:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%)',
+                    backgroundSize: '200% auto',
+                  }}
+                  aria-hidden="true"
+                />
+                <span className="relative">Request a Quote</span>
               </QuoteButton>
               <a
                 href="tel:+911234567890"
@@ -65,19 +75,21 @@ export function FinalCTA() {
             </div>
           </Reveal>
 
-          {/* Trust indicators */}
+          {/* Trust indicators with ShieldCheck icon and sequential pulse dots */}
           <Reveal delay={280}>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-steel" style={{ fontFamily: "'Manrope', sans-serif" }}>
+              {/* ShieldCheck safety icon */}
+              <ShieldCheck className="size-4 text-orange/60 mr-1 inline-block" aria-hidden="true" />
               <span className="inline-flex items-center gap-1.5">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange" aria-hidden="true" />
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange animate-dot-pulse-1" aria-hidden="true" />
                 Response within 1 working day
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange" aria-hidden="true" />
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange animate-dot-pulse-2" aria-hidden="true" />
                 BIS licensed manufacturer
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange" aria-hidden="true" />
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange animate-dot-pulse-3" aria-hidden="true" />
                 35+ years in production
               </span>
             </div>

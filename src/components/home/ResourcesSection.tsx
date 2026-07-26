@@ -21,7 +21,6 @@ const typeAccent: Record<Resource['type'], string> = {
 };
 
 function downloadResource(res: Resource) {
-  // Generate a small mock PDF on the client so downloads "feel" real without a server asset.
   const header = `%PDF-1.4
 % Bharat Electrosafe — ${res.title}
 % Type: ${res.type} | Category: ${res.category}
@@ -122,14 +121,44 @@ export function ResourcesSection() {
         <div className="mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {filtered.map((res, i) => (
             <Reveal key={res.id} delay={i * 70} translateY={16}>
-              <article className="group relative h-full flex flex-col p-6 rounded-2xl border border-border bg-white hover:border-orange/30 hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+              <article className="group relative h-full flex flex-col p-6 rounded-2xl border border-border bg-white hover:shadow-md hover:-translate-y-1 transition-all duration-200 overflow-hidden">
+                {/* Animated gradient border on hover */}
+                <div
+                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(135deg, var(--color-orange)/30, transparent 40%, var(--color-orange)/30)',
+                    backgroundSize: '200% 200%',
+                  }}
+                  aria-hidden="true"
+                />
+                {/* Inner bg to create border effect */}
+                <div className="absolute inset-[2px] rounded-[14px] bg-white pointer-events-none group-hover:bg-white transition-colors" aria-hidden="true" />
+
+                {/* Subtle floating FileText watermark */}
+                <FileText
+                  className="absolute -bottom-4 -right-4 size-28 text-navy/[0.02] pointer-events-none rotate-[-8deg]"
+                  aria-hidden="true"
+                />
+
                 {/* Top row: type + pages */}
-                <div className="flex items-center justify-between mb-4">
-                  <span
-                    className={`text-spec ${typeAccent[res.type]}`}
-                    style={{ fontFamily: "'Manrope', sans-serif" }}
-                  >
-                    {res.type}
+                <div className="flex items-center justify-between mb-4 relative">
+                  {/* Type badge with animated underline */}
+                  <span className="relative">
+                    <span
+                      className={`text-spec ${typeAccent[res.type]}`}
+                      style={{ fontFamily: "'Manrope', sans-serif" }}
+                    >
+                      {res.type}
+                    </span>
+                    {/* Animated underline that expands on hover */}
+                    <span
+                      className="absolute -bottom-1 left-0 h-[2px] bg-orange/0 group-hover:bg-orange/40 rounded-full transition-all duration-300"
+                      style={{ width: '0%' }}
+                    />
+                    <span
+                      className="absolute -bottom-1 left-0 h-[2px] bg-orange/40 rounded-full group-hover:w-full transition-all duration-300"
+                      style={{ width: '0%', maxWidth: '100%' }}
+                    />
                   </span>
                   <span
                     className="text-xs text-steel tabular-nums"
@@ -141,7 +170,7 @@ export function ResourcesSection() {
 
                 {/* Title */}
                 <h3
-                  className="text-base font-semibold text-navy leading-snug mb-2"
+                  className="text-base font-semibold text-navy leading-snug mb-2 relative"
                   style={{ fontFamily: "'Manrope', sans-serif" }}
                 >
                   {res.title}
@@ -149,14 +178,14 @@ export function ResourcesSection() {
 
                 {/* Description */}
                 <p
-                  className="text-sm text-steel leading-relaxed flex-1"
+                  className="text-sm text-steel leading-relaxed flex-1 relative"
                   style={{ fontFamily: "'Manrope', sans-serif" }}
                 >
                   {res.description}
                 </p>
 
                 {/* Footer: file tag + download button */}
-                <div className="mt-5 pt-4 border-t border-border/60 flex items-center justify-between">
+                <div className="mt-5 pt-4 border-t border-border/60 flex items-center justify-between relative">
                   <span
                     className="inline-flex items-center gap-1.5 text-xs text-steel"
                     style={{ fontFamily: "'Manrope', sans-serif" }}
@@ -167,7 +196,7 @@ export function ResourcesSection() {
                   <button
                     type="button"
                     onClick={() => downloadResource(res)}
-                    className="group/dl inline-flex items-center gap-1.5 text-xs font-medium text-navy hover:text-orange transition-colors px-2.5 py-1.5 rounded-md hover:bg-orange-soft"
+                    className="group/dl inline-flex items-center gap-1.5 text-xs font-medium text-navy hover:text-orange transition-all px-2.5 py-1.5 rounded-md hover:bg-orange-soft hover:scale-[1.05] duration-200"
                     style={{ fontFamily: "'Manrope', sans-serif" }}
                     aria-label={`Download ${res.title}`}
                   >
@@ -181,12 +210,6 @@ export function ResourcesSection() {
                   <div className="absolute top-0 right-0 w-px h-8 bg-orange" />
                   <div className="absolute top-0 right-0 h-px w-8 bg-orange" />
                 </div>
-
-                {/* Document icon watermark */}
-                <FileText
-                  className="absolute -bottom-2 -right-2 size-20 text-navy/[0.04] pointer-events-none"
-                  aria-hidden="true"
-                />
               </article>
             </Reveal>
           ))}

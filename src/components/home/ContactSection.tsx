@@ -57,7 +57,12 @@ export function ContactSection() {
               {contactItems.map((item, i) => {
                 const Icon = item.icon;
                 const content = (
-                  <div className="flex items-start gap-4 p-4 rounded-xl border border-border bg-white hover:border-orange/30 hover:shadow-sm transition-all duration-200">
+                  <div className="flex items-start gap-4 p-4 rounded-xl bg-white/90 backdrop-blur-[4px] border border-white/60 shadow-sm hover:border-orange/30 hover:shadow-md transition-all duration-200 relative overflow-hidden group/card">
+                    {/* Animated gradient line inside card on hover */}
+                    <div
+                      className="absolute top-0 left-0 w-[3px] h-full bg-border/40 group-hover/card:bg-gradient-to-b group-hover/card:from-orange group-hover/card:to-orange/20 transition-all duration-500 rounded-full"
+                      aria-hidden="true"
+                    />
                     <div className="w-10 h-10 rounded-lg bg-orange-soft flex items-center justify-center shrink-0">
                       <Icon className="size-5 text-orange" />
                     </div>
@@ -99,6 +104,20 @@ export function ContactSection() {
               >
                 {/* Decorative orange line */}
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange via-orange/60 to-transparent" />
+                {/* Subtle animated gradient overlay */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none animate-gradient-separator"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(232, 97, 26, 0.08), transparent 40%, rgba(232, 97, 26, 0.04))',
+                    backgroundSize: '200% 200%',
+                  }}
+                  aria-hidden="true"
+                />
+                {/* Response time badge */}
+                <div className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-400" aria-hidden="true" />
+                  <span className="text-[0.65rem] font-medium text-white/80">Typically responds within 2 hours</span>
+                </div>
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                     <MessageCircle className="size-6 text-white" />
@@ -124,7 +143,7 @@ export function ContactSection() {
 
             {/* Map / location card */}
             <Reveal delay={300} translateY={20}>
-              <div className="rounded-2xl overflow-hidden border border-border bg-white">
+              <div className="rounded-2xl overflow-hidden border border-border bg-white/90 backdrop-blur-[4px] shadow-sm">
                 <div className="relative h-64 bg-ivory-light">
                   {/* Stylized map placeholder using gradient and pattern */}
                   <div
@@ -137,10 +156,11 @@ export function ContactSection() {
                       backgroundSize: '40px 40px',
                     }}
                   />
-                  {/* Location pin */}
+                  {/* Location pin with gentle pulse */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="relative">
-                      <div className="absolute inset-0 w-12 h-12 bg-orange/30 rounded-full animate-ping" />
+                      {/* Gentle pulse (replaces aggressive animate-ping) */}
+                      <div className="absolute inset-0 w-12 h-12 bg-orange/30 rounded-full animate-gentle-pulse" />
                       <div className="relative w-12 h-12 rounded-full bg-orange flex items-center justify-center shadow-lg">
                         <MapPin className="size-6 text-white" />
                       </div>

@@ -78,15 +78,25 @@ export function TestimonialsSection() {
         <Reveal delay={120} translateY={20}>
           <div
             key={t.id}
-            className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 p-6 md:p-10 rounded-2xl bg-white border border-border shadow-sm"
+            className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 p-6 md:p-10 rounded-2xl bg-white border border-border hover:border-orange/40 transition-colors duration-500 shadow-sm group/testimonial relative overflow-hidden"
           >
             {/* Left: avatar + organization */}
             <div className="md:col-span-4 flex flex-col gap-4">
               <div className="flex items-center gap-3">
-                <div className="relative w-14 h-14 rounded-full bg-navy text-white font-bold flex items-center justify-center shrink-0">
-                  {t.abbreviation}
-                  {/* small orange ring */}
-                  <div className="absolute -inset-1 rounded-full border border-orange/40 pointer-events-none" />
+                {/* Avatar with rotating gradient border */}
+                <div className="relative shrink-0">
+                  {/* Gradient border ring — conic-gradient that rotates */}
+                  <div
+                    className="absolute -inset-[3px] rounded-full animate-slow-rotate pointer-events-none"
+                    style={{
+                      background: 'conic-gradient(from 0deg, var(--color-orange), var(--color-navy), var(--color-orange), var(--color-navy), var(--color-orange))',
+                      animationDuration: '8s',
+                    }}
+                    aria-hidden="true"
+                  />
+                  <div className="relative w-14 h-14 rounded-full bg-navy text-white font-bold flex items-center justify-center">
+                    {t.abbreviation}
+                  </div>
                 </div>
                 <div>
                   <p
@@ -152,17 +162,26 @@ export function TestimonialsSection() {
                 </span>
               </div>
 
-              {/* Quote */}
-              <blockquote className="relative">
+              {/* Quote with shimmer effect on hover */}
+              <blockquote className="relative group/quote">
                 <Quote
                   className="size-6 text-orange/40 mb-3"
                   aria-hidden="true"
                 />
                 <p
-                  className="text-lg md:text-xl text-navy font-medium leading-relaxed"
+                  className="text-lg md:text-xl text-navy font-medium leading-relaxed relative"
                   style={{ fontFamily: "'Manrope', sans-serif" }}
                 >
                   &ldquo;{t.quote}&rdquo;
+                  {/* Shimmer overlay that sweeps on hover */}
+                  <span
+                    className="absolute inset-0 pointer-events-none opacity-0 group-hover/quote:opacity-100 transition-opacity duration-300 animate-text-shimmer"
+                    style={{
+                      background: 'linear-gradient(90deg, transparent 0%, rgba(232, 97, 26, 0.06) 50%, transparent 100%)',
+                      backgroundSize: '200% auto',
+                    }}
+                    aria-hidden="true"
+                  />
                 </p>
               </blockquote>
 
@@ -174,9 +193,10 @@ export function TestimonialsSection() {
                 >
                   {String(active + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
                 </span>
-                <div className="flex-1 h-px bg-border/60 relative overflow-hidden">
+                {/* Progress bar with smoother transition */}
+                <div className="flex-1 h-px bg-border/60 relative overflow-hidden rounded-full">
                   <div
-                    className="absolute top-0 left-0 h-full bg-orange transition-all duration-500"
+                    className="absolute top-0 left-0 h-full bg-orange rounded-full transition-all duration-700 ease-out"
                     style={{ width: `${((active + 1) / count) * 100}%` }}
                   />
                 </div>
