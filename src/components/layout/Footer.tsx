@@ -1,171 +1,148 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { productSystems } from '@/data/products';
-import { applications } from '@/data/applications';
-import { NewsletterSubscribe } from '@/components/ui-custom/NewsletterSubscribe';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { products } from '@/data/products';
+import { company, contactWhatsApp } from '@/data/company';
+import { Phone, Mail, MapPin, MessageCircle } from 'lucide-react';
 
-const footerLinks = {
-  products: {
-    title: 'Products',
-    links: [
-      ...productSystems.flatMap((s) => [
-        { name: s.name, href: s.exploreLink },
-        ...s.variants.map((v) => ({ name: v, href: s.exploreLink })),
-      ]),
-    ],
-  },
-  applications: {
-    title: 'Applications',
-    links: applications.map((a) => ({ name: a.name, href: `#applications-grid` })),
-  },
-  quality: {
-    title: 'Quality',
-    links: [
-      { name: 'BIS Licence', href: '#proof' },
-      { name: 'Test Reports', href: '#proof' },
-      { name: 'ISO Certificate', href: '#proof' },
-      { name: 'IS 15652', href: '#proof' },
-      { name: 'Product Traceability', href: '#proof' },
-    ],
-  },
-  company: {
-    title: 'Company',
-    links: [
-      { name: 'About', href: '#about' },
-      { name: 'Applications', href: '#applications' },
-      { name: 'Testimonials', href: '#testimonials' },
-      { name: 'Resources', href: '#resources' },
-      { name: 'Contact', href: '#contact' },
-    ],
-  },
-};
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'About Us', href: '/about-us' },
+  { label: 'Contact Us', href: '/contact-us' },
+];
+
+const legalLinks = [
+  { label: 'Privacy Policy', href: '/privacy-policy' },
+  { label: 'Terms', href: '/terms' },
+];
 
 export function Footer() {
   return (
-    <footer className="mt-auto bg-navy text-white/90">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-16">
-        {/* Top section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 lg:gap-8">
-          {/* Brand Column */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="relative w-8 h-8">
+    <footer className="mt-auto border-t-2 border-yellow-500 bg-warm-white">
+      <div className="container-site py-10 md:py-14">
+        {/* ── Main Grid ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+          {/* Column 1: Brand + Intro */}
+          <div className="sm:col-span-2 lg:col-span-1">
+            <div className="flex items-center gap-2.5 mb-4">
+              <div className="relative w-[32px] h-[32px]">
                 <Image
                   src="/logo-bharat.png"
-                  alt="Bharat Electrosafe"
+                  alt="Bharat Electrosafe logo"
                   fill
                   sizes="32px"
-                  className="object-contain brightness-0 invert"
+                  className="object-contain"
+                  priority
                 />
               </div>
-              <span className="font-semibold text-white text-base">Bharat Electrosafe</span>
-            </div>
-            <p
-              className="text-sm text-white/75 leading-relaxed mb-4 max-w-[320px]"
-              style={{ fontFamily: "'Manrope', sans-serif" }}
-            >
-              Electrical insulating mats, visible-safety variants, geomembranes and water-stop solutions.
-            </p>
-            <div className="flex flex-col gap-2 text-sm text-white/80">
-              <span className="inline-flex items-center gap-2">
-                <MapPin className="size-3.5 text-orange" />
-                Plot No. 12, Sector 7, IMT Manesar
+              <span className="font-semibold text-charcoal-950 text-[0.95rem] tracking-tight">
+                Bharat Electrosafe
               </span>
-              <span className="pl-5 text-white/70">Gurugram, Haryana 122050, India</span>
-              <a
-                href="tel:+911234567890"
-                className="inline-flex items-center gap-2 hover:text-white transition-colors"
-              >
-                <Phone className="size-3.5 text-orange" />
-                +91 123 456 7890
-              </a>
-              <a
-                href="mailto:info@bharatelectrosafe.com"
-                className="inline-flex items-center gap-2 hover:text-white transition-colors"
-              >
-                <Mail className="size-3.5 text-orange" />
-                info@bharatelectrosafe.com
-              </a>
             </div>
-          </div>
-
-          {/* Link Columns */}
-          {Object.entries(footerLinks).map(([key, section]) => (
-            <div key={key}>
-              <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-white mb-4" style={{ fontFamily: "'Manrope', sans-serif" }}>
-                {section.title}
-              </h3>
-              <ul className="flex flex-col gap-2">
-                {section.links.map((link, i) => (
-                  <li key={i}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-white/80 hover:text-orange hover:translate-x-0.5 transition-all inline-flex items-center gap-1.5 group"
-                    >
-                      <span
-                        className="w-0 group-hover:w-2 h-px bg-orange transition-all duration-200"
-                        aria-hidden="true"
-                      />
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        {/* Newsletter band */}
-        <div className="mt-12 pt-8 border-t border-white/10 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-          <div className="md:col-span-5">
-            <h3 className="text-base font-semibold text-white mb-1" style={{ fontFamily: "'Manrope', sans-serif" }}>
-              Stay ahead of specification changes.
-            </h3>
-            <p
-              className="text-sm text-white/80 leading-relaxed"
-              style={{ fontFamily: "'Manrope', sans-serif" }}
-            >
-              Standard updates, new datasheets and case studies — sent quarterly.
+            <p className="text-small-meta text-grey-600 leading-relaxed max-w-[280px]">
+              {company.tagline}
             </p>
           </div>
-          <div className="md:col-span-7 lg:col-span-5 lg:col-start-8">
-            <NewsletterSubscribe />
+
+          {/* Column 2: Navigation */}
+          <div>
+            <h3 className="text-[0.75rem] font-bold uppercase tracking-[0.12em] text-charcoal-950 mb-4">
+              Navigation
+            </h3>
+            <ul className="flex flex-col gap-2.5">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-[0.875rem] text-charcoal-800 hover:text-yellow-600 transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 3: Products */}
+          <div>
+            <h3 className="text-[0.75rem] font-bold uppercase tracking-[0.12em] text-charcoal-950 mb-4">
+              Products
+            </h3>
+            <ul className="flex flex-col gap-2.5">
+              {products.map((p) => (
+                <li key={p.slug}>
+                  <Link
+                    href={`/products/${p.slug}`}
+                    className="text-[0.875rem] text-charcoal-800 hover:text-yellow-600 transition-colors"
+                  >
+                    {p.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 4: Contact */}
+          <div>
+            <h3 className="text-[0.75rem] font-bold uppercase tracking-[0.12em] text-charcoal-950 mb-4">
+              Contact
+            </h3>
+            <ul className="flex flex-col gap-3">
+              <li>
+                <a
+                  href={`tel:${company.phone.replace(/\s/g, '')}`}
+                  className="inline-flex items-center gap-2 text-[0.875rem] text-charcoal-800 hover:text-yellow-600 transition-colors"
+                >
+                  <Phone className="size-4 text-yellow-500" />
+                  {company.phone}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${company.email}`}
+                  className="inline-flex items-center gap-2 text-[0.875rem] text-charcoal-800 hover:text-yellow-600 transition-colors"
+                >
+                  <Mail className="size-4 text-yellow-500" />
+                  {company.email}
+                </a>
+              </li>
+              <li>
+                <span className="inline-flex items-start gap-2 text-[0.875rem] text-charcoal-800">
+                  <MapPin className="size-4 text-yellow-500 shrink-0 mt-0.5" />
+                  <span>
+                    {company.address.line1}, {company.address.line2}, {company.address.city}-{company.address.pincode}, {company.address.state}, {company.address.country}
+                  </span>
+                </span>
+              </li>
+              <li>
+                <a
+                  href={contactWhatsApp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-[0.875rem] text-charcoal-800 hover:text-yellow-600 transition-colors"
+                >
+                  <MessageCircle className="size-4 text-yellow-500" />
+                  WhatsApp
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p
-            className="text-xs text-white/75"
-            style={{ fontFamily: "'Manrope', sans-serif" }}
-          >
-            © {new Date().getFullYear()} Bharat Electrosafe. All rights reserved.
+        {/* ── Bottom Bar ── */}
+        <div className="mt-10 pt-6 border-t border-grey-300/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-grey-600">
+            &copy; 2024 Bharat Electrosafe. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <Link
-              href="#"
-              className="text-xs text-white/75 hover:text-orange transition-colors"
-              style={{ fontFamily: "'Manrope', sans-serif" }}
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="#"
-              className="text-xs text-white/75 hover:text-orange transition-colors"
-              style={{ fontFamily: "'Manrope', sans-serif" }}
-            >
-              Terms of Use
-            </Link>
-            <span
-              className="text-xs text-white/75 inline-flex items-center gap-1.5"
-              style={{ fontFamily: "'Manrope', sans-serif" }}
-            >
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-orange" aria-hidden="true" />
-              Made in India
-            </span>
+            {legalLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-xs text-grey-600 hover:text-yellow-600 transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

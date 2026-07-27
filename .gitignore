@@ -62,3 +62,7 @@ screenshot-*.png
 agent-ctx/
 mini-services/
 *.db
+
+# Uploads & VLM analysis
+upload/
+vlm-*-analysis.json

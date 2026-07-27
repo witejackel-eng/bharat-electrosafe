@@ -1,80 +1,106 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Manrope } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "@/components/theme/ThemeProvider";
-import { LanguageInitScript } from "@/components/i18n/LanguageInitScript";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#FFFEFA",
+};
 
 export const metadata: Metadata = {
-  title: "Bharat Electrosafe — Electrical & Infrastructure Protection",
-  description: "Electrical insulating mats, visible-safety variants, geomembranes and water-stop solutions for industrial, utility and infrastructure projects.",
-  keywords: ["Bharat Electrosafe", "electrical insulating mats", "Class A B C", "3.3kV 11kV 33kV", "geomembrane", "water stop", "BharatMembrane", "BharatHydro", "visible safety", "coloured strip", "reflective mat"],
+  metadataBase: new URL("https://bharatelectrosafe.com"),
+  title: "Bharat Electrosafe | Electrical Insulating Mats Manufacturer",
+  description:
+    "Manufacturer of electrical insulating mats (IS 15652), coloured strip and bi-colour safety mats, auto-glow reflective mats, and BharatMembrane HDPE geomembranes. Trusted by Indian Railways, NTPC, PGCIL, BHEL and utilities nationwide.",
+  keywords: [
+    "Bharat Electrosafe",
+    "electrical insulating mats",
+    "IS 15652",
+    "Class A B C",
+    "3.3kV 11kV 33kV",
+    "coloured strip mat",
+    "bi-colour mat",
+    "auto-glow mat",
+    "reflective mat",
+    "BharatMembrane",
+    "geomembrane",
+    "HDPE membrane",
+  ],
   authors: [{ name: "Bharat Electrosafe" }],
+  creator: "Bharat Electrosafe",
+  publisher: "Bharat Electrosafe",
+  robots: {
+    index: process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true",
+    follow: process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true",
+    googleBot: {
+      index: process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true",
+      follow: process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true",
+    },
+  },
+  alternates: {
+    canonical: "https://bharatelectrosafe.com",
+  },
   icons: {
-    icon: "/logo.svg",
+    icon: "/favicon.ico",
   },
   openGraph: {
-    title: "Bharat Electrosafe — Protection systems for environments that cannot afford failure.",
-    description: "Electrical insulating mats, visible-safety variants, geomembranes and water-stop solutions for industrial, utility and infrastructure projects.",
+    title: "Bharat Electrosafe | Electrical Insulating Mats Manufacturer",
+    description:
+      "Manufacturer of electrical insulating mats, visible-safety variants, and BharatMembrane geomembranes for industrial, utility and infrastructure projects.",
     type: "website",
+    siteName: "Bharat Electrosafe",
+    url: "https://bharatelectrosafe.com",
+    locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bharat Electrosafe — Electrical & Infrastructure Protection",
-    description: "Protection systems for environments that cannot afford failure.",
+    title: "Bharat Electrosafe | Electrical Insulating Mats Manufacturer",
+    description:
+      "Electrical insulating mats, visible-safety variants and BharatMembrane geomembranes. Trusted by Indian Railways, NTPC, PGCIL, BHEL.",
+  },
+  contact: {
+    email: "info@bharatelectrosafe.com",
+    telephone: "+91-7617494968",
+  },
+  address: {
+    streetAddress: "704, 7th Floor, I-thum, Tower A, Plot No. A-40, Sector-62",
+    addressLocality: "Noida",
+    addressRegion: "Uttar Pradesh",
+    postalCode: "201309",
+    addressCountry: "IN",
   },
 };
-
-// Inline script to prevent theme flash (FOUC) — sets the .dark class before paint.
-const themeInitScript = `
-(function() {
-  try {
-    var stored = localStorage.getItem('theme');
-    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (stored === 'dark' || (!stored && prefersDark)) {
-      document.documentElement.classList.add('dark');
-    }
-  } catch (e) {}
-})();
-`;
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const allowIndexing = process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true";
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-        <LanguageInitScript />
+        {/* Additional robots meta tag for noindex when not allowed */}
+        {!allowIndexing && (
+          <meta name="robots" content="noindex, nofollow" />
+        )}
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <Toaster />
-        </ThemeProvider>
+      <body className={`${manrope.variable} font-sans antialiased`}>
+        {/* Accessibility: skip-to-content link */}
+        <a href="#main-content" className="skip-to-content">
+          Skip to main content
+        </a>
+        {children}
       </body>
     </html>
   );
