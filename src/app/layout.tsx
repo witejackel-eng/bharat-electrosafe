@@ -61,11 +61,20 @@ export const metadata: Metadata = {
     title: `${company.name} — Electrical Insulating Mats & Engineered Membranes`,
     description: company.description,
     url: siteUrl,
+    images: [
+      {
+        url: '/brand/og-bharat-electrosafe.png',
+        width: 1200,
+        height: 630,
+        alt: `${company.name} — Certified electrical insulating mats and engineered protection`,
+      },
+    ],
   },
   twitter: {
-    card: 'summary',
-    title: company.name,
+    card: 'summary_large_image',
+    title: `${company.name} — Electrical Insulating Mats & Engineered Membranes`,
     description: company.description,
+    images: ['/brand/twitter-card-bharat-electrosafe.png'],
   },
   category: 'manufacturing',
 };
