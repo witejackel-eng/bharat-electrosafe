@@ -6,6 +6,7 @@
  *
  * The allow-list is built from:
  *   - NEXT_PUBLIC_SITE_URL
+ *   - VERCEL_PROJECT_PRODUCTION_URL (production alias, e.g. project.vercel.app)
  *   - VERCEL_URL (current deployment, https prepended if no protocol)
  *   - http://localhost:3000 (only when NODE_ENV !== 'production')
  *
@@ -46,6 +47,18 @@ export function getAllowedOrigins(): string[] {
     const withProtocol = /^https?:\/\//i.test(vercelUrl)
       ? vercelUrl
       : `https://${vercelUrl}`;
+    const parsed = parseOrigin(withProtocol);
+    if (parsed) allowed.add(parsed);
+  }
+
+  // Production alias (e.g. "bharat-electrosafe.vercel.app") — distinct from
+  // the per-deployment VERCEL_URL. Without this, form submissions from the
+  // production alias are rejected even though they are legitimate.
+  const vercelProdUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (vercelProdUrl) {
+    const withProtocol = /^https?:\/\//i.test(vercelProdUrl)
+      ? vercelProdUrl
+      : `https://${vercelProdUrl}`;
     const parsed = parseOrigin(withProtocol);
     if (parsed) allowed.add(parsed);
   }
