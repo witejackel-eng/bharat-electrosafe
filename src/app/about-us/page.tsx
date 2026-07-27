@@ -5,8 +5,10 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
 import AboutIntro from '@/components/about/AboutIntro';
+import AboutStats from '@/components/about/AboutStats';
 import ProductOverview from '@/components/about/ProductOverview';
 import CompanyLeadership from '@/components/about/CompanyLeadership';
+import CompanyTimeline from '@/components/about/CompanyTimeline';
 import ManufacturingQuality from '@/components/about/ManufacturingQuality';
 import CertificatesAwardsMedia from '@/components/about/CertificatesAwardsMedia';
 import IndustriesClientsCTA from '@/components/about/IndustriesClientsCTA';
@@ -44,8 +46,10 @@ export default function AboutUsPage() {
       <Header />
       <main className="flex-1">
         <AboutIntro />
+        <AboutStats />
         <ProductOverview />
         <CompanyLeadership />
+        <CompanyTimeline />
         <ManufacturingQuality />
         <CertificatesAwardsMedia />
         <IndustriesClientsCTA />

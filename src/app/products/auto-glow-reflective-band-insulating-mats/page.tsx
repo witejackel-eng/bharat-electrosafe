@@ -5,11 +5,13 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
 import { ProductHero } from '@/components/products/ProductHero';
+import { ProductTrustIndicators } from '@/components/products/ProductTrustIndicators';
 import { ProductOverview } from '@/components/products/ProductOverview';
 import { ProductSpecifications } from '@/components/products/ProductSpecifications';
 import { ProductMaterialDimensions } from '@/components/products/ProductMaterialDimensions';
 import { ProductApplications } from '@/components/products/ProductApplications';
 import { ProductDocuments } from '@/components/products/ProductDocuments';
+import { ProductFAQ } from '@/components/products/ProductFAQ';
 import { RelatedProducts } from '@/components/products/RelatedProducts';
 import { ProductCTA } from '@/components/products/ProductCTA';
 import { getProductBySlug } from '@/data/products';
@@ -44,11 +46,13 @@ export default function AutoGlowReflectiveBandMatsPage() {
       <Header />
       <main className="flex-1">
         <ProductHero product={product} />
+        <ProductTrustIndicators />
         <ProductOverview product={product} />
         <ProductSpecifications product={product} stickyFirstColumn />
         <ProductMaterialDimensions product={product} />
         <ProductApplications product={product} />
         <ProductDocuments product={product} />
+        <ProductFAQ product={product} />
         <RelatedProducts product={product} />
         <ProductCTA product={product} />
       </main>
