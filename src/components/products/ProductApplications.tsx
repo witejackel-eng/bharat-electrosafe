@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import {
   PanelTop,
   Factory,
@@ -23,7 +24,6 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { ImageFrame } from '@/components/ui/ImageFrame';
 import type { ProductData, Application } from '@/data/products';
 
 /* ── Icon mapping ── */
@@ -63,11 +63,27 @@ export function ProductApplications({ product }: ProductApplicationsProps) {
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Left: installed-use image */}
           <div className="lg:w-[45%]">
-            <ImageFrame
-              slotId={`${product.heroSlotId}-APPLICATION`}
-              alt={`${product.name} — installed application`}
-              aspectRatio="landscape"
-            />
+            {product.images.application ? (
+              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg border border-be-grey-250">
+                <Image
+                  src={product.images.application}
+                  alt={`${product.name} — installed application`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 45vw"
+                />
+              </div>
+            ) : product.images.details.length > 0 ? (
+              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg border border-be-grey-250">
+                <Image
+                  src={product.images.details[0]}
+                  alt={`${product.name} — application`}
+                  fill
+                  className="object-contain p-2"
+                  sizes="(max-width: 768px) 100vw, 45vw"
+                />
+              </div>
+            ) : null}
           </div>
 
           {/* Right: applications list */}

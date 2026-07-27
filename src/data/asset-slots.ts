@@ -183,24 +183,6 @@ export const assetSlots: AssetSlot[] = [
     objectPosition: 'top center',
     replacementCategory: 'product-hero',
   },
-  {
-    slotId: 'PRODUCT-BHS-HERO-01',
-    currentFallbackPath: '',
-    altText: 'BharatHydro Seal hero — water stop application',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'top center',
-    replacementCategory: 'product-hero',
-  },
-  {
-    slotId: 'HOME-PRODUCT-BHS-01',
-    currentFallbackPath: '',
-    altText: 'BharatHydro Seal — product showcase',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'center',
-    replacementCategory: 'product-hero',
-  },
 
   /* ── Contact page ── */
   {

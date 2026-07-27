@@ -80,14 +80,17 @@ const nextConfig: NextConfig = {
       { source: '/bi-color-insulating-mats.php', destination: '/products/bi-color-insulating-mats' },
       { source: '/auto-glow-reflective-band-insulating-mat.php', destination: '/products/auto-glow-reflective-band-insulating-mats' },
       { source: '/bharat-membrane.php', destination: '/products/bharat-membrane' },
-      { source: '/BharatHydro-Seal.php', destination: '/products/bharat-hydro-seal' },
+      { source: '/BharatHydro-Seal.php', destination: '/contact-us' },
     ];
 
-    return phpRedirects.map((r) => ({
-      source: r.source,
-      destination: r.destination,
-      permanent: true,
-    }));
+    return [
+      ...phpRedirects.map((r) => ({
+        source: r.source,
+        destination: r.destination,
+        permanent: true,
+      })),
+      { source: '/products/bharat-hydro-seal', destination: '/contact-us', permanent: true },
+    ];
   },
 };
 

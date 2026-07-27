@@ -7,7 +7,7 @@ import { BackToTop } from '@/components/ui/BackToTop';
 import ContactIntro from '@/components/contact/ContactIntro';
 import EnquiryQuoteLayout from '@/components/contact/EnquiryQuoteLayout';
 import OfficeLocation from '@/components/contact/OfficeLocation';
-import DirectContactCTA from '@/components/contact/DirectContactCTA';
+import OfficeHours from '@/components/contact/OfficeHours';
 
 export default function ContactUsPage() {
   const revealRef = useRef<boolean>(false);
@@ -41,10 +41,12 @@ export default function ContactUsPage() {
     <div className="min-h-screen flex flex-col bg-be-warm-white">
       <Header />
       <main className="flex-1">
+        {/* 1. Contact intro + form */}
         <ContactIntro />
         <EnquiryQuoteLayout />
+        {/* 2. Office address + map + hours */}
         <OfficeLocation />
-        <DirectContactCTA />
+        <OfficeHours />
       </main>
       <Footer />
       <BackToTop />

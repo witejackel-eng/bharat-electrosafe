@@ -32,13 +32,11 @@ export const metadata: Metadata = {
     'electrical safety mats',
     'PVC geo-membrane',
     'BharatMembrane',
-    'BharatHydro Seal',
-    'water stop solutions',
     'Noida',
   ],
   icons: {
-    icon: "/logo.svg",
-    apple: "/logo.svg",
+    icon: "/images/brand/bharat-electrosafe-logo.webp",
+    apple: "/images/brand/bharat-electrosafe-logo.webp",
   },
   alternates: {
     canonical: '/',

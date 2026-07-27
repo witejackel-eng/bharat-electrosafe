@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import {
   Shield,
   Layers,
@@ -23,7 +24,6 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { ImageFrame } from '@/components/ui/ImageFrame';
 import { FeatureList } from '@/components/ui/FeatureList';
 import type { ProductData, KeyBenefit } from '@/data/products';
 
@@ -69,11 +69,27 @@ export function ProductOverview({ product }: ProductOverviewProps) {
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
           {/* Left: Application image */}
           <div className="lg:w-[45%] order-first lg:order-last">
-            <ImageFrame
-              slotId={`${product.heroSlotId}-OVERVIEW`}
-              alt={`${product.name} — application overview`}
-              aspectRatio="landscape"
-            />
+            {product.images.overview ? (
+              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg border border-be-grey-250">
+                <Image
+                  src={product.images.overview}
+                  alt={`${product.name} — application overview`}
+                  fill
+                  className="object-contain p-2"
+                  sizes="(max-width: 768px) 100vw, 45vw"
+                />
+              </div>
+            ) : product.images.hero ? (
+              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg border border-be-grey-250">
+                <Image
+                  src={product.images.hero}
+                  alt={`${product.name} — overview`}
+                  fill
+                  className="object-contain p-2"
+                  sizes="(max-width: 768px) 100vw, 45vw"
+                />
+              </div>
+            ) : null}
           </div>
 
           {/* Right: Overview text + key benefits */}

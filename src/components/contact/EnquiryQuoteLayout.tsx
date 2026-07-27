@@ -8,7 +8,7 @@ import { company } from '@/data/company';
 import { Phone, MessageCircle, Loader2, CheckCircle2 } from 'lucide-react';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
-import { DataTable } from '@/components/ui/DataTable';
+import { cn } from '@/lib/utils';
 import {
   Select,
   SelectContent,
@@ -16,7 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { cn } from '@/lib/utils';
 
 /* ────────────────────────────────────────────
    Zod schema
@@ -42,16 +41,8 @@ const contactSchema = z.object({
 type ContactFormData = z.infer<typeof contactSchema>;
 
 /* ────────────────────────────────────────────
-   Class comparison data
+   Enquiry types
    ──────────────────────────────────────────── */
-
-const classHeaders = ['Class', 'Working Voltage', 'Application'];
-const classRows = [
-  ['Class A', 'Up to 650V', 'Low voltage applications'],
-  ['Class B', 'Up to 1100V', 'Medium voltage applications'],
-  ['Class C', 'Up to 3300V', 'High voltage applications'],
-];
-
 const enquiryTypes = [
   { value: 'general', label: 'General Enquiry' },
   { value: 'product-info', label: 'Product Information' },
@@ -454,15 +445,8 @@ export default function EnquiryQuoteLayout() {
             </form>
           </div>
 
-          {/* Right — Product Selection Guidance (5/12) */}
+          {/* Right — Contact assistance (5/12) */}
           <div className="reveal-up lg:w-5/12 flex flex-col gap-6">
-            <div>
-              <h3 className="text-card-title text-be-charcoal-950 mb-4">
-                Insulating Mat Class Comparison
-              </h3>
-              <DataTable headers={classHeaders} rows={classRows} stickyFirstColumn />
-            </div>
-
             <div className="p-5 rounded-lg border border-be-grey-250 bg-be-cream flex flex-col gap-4">
               <p className="text-body-large font-semibold text-be-charcoal-950">
                 Need immediate assistance?

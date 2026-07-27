@@ -71,12 +71,6 @@ const products: ProductNavItem[] = [
     href: '/products/bharat-membrane',
     color: 'bg-be-charcoal-800',
   },
-  {
-    name: 'BharatHydro Seal',
-    description: 'Water stop solutions for construction joints',
-    href: '/products/bharat-hydro-seal',
-    color: 'bg-be-grey-400',
-  },
 ];
 
 const navLinks = [
@@ -213,12 +207,12 @@ export function Header() {
             aria-label="Bharat Electrosafe — Home"
           >
             <Image
-              src="/logo.svg"
-              alt="Bharat Electrosafe logo"
+              src="/images/brand/bharat-electrosafe-logo.webp"
+              alt="Bharat Electrosafe"
               width={36}
               height={36}
               className={cn(
-                'transition-all duration-300',
+                'object-contain transition-all duration-300',
                 compact ? 'size-8' : 'size-9'
               )}
               priority
@@ -363,10 +357,11 @@ export function Header() {
                 <SheetHeader className="px-5 pt-5 pb-3 border-b border-be-grey-250">
                   <SheetTitle className="flex items-center gap-2.5">
                     <Image
-                      src="/logo.svg"
-                      alt="Bharat Electrosafe logo"
+                      src="/images/brand/bharat-electrosafe-logo.webp"
+                      alt="Bharat Electrosafe"
                       width={28}
                       height={28}
+                      className="object-contain"
                     />
                     <span className="font-bold text-be-charcoal-950">
                       Bharat Electrosafe

@@ -8,9 +8,9 @@
   "theme_color": "#F5C518",
   "icons": [
     {
-      "src": "/logo.svg",
+      "src": "/images/brand/bharat-electrosafe-logo.webp",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/webp"
     }
   ]
 }

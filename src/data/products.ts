@@ -1,7 +1,7 @@
 /**
  * Product Data — Bharat Electrosafe
  *
- * Comprehensive data definitions for all 6 products.
+ * Comprehensive data definitions for all 5 products.
  * Electrical insulating mat data verified against IS 15652:2006.
  * Engineered-product content corrected — no unsupported numeric claims.
  */
@@ -65,8 +65,15 @@ export interface ProductData {
   applications: Application[];
   documents: Document[];
   relatedProducts: string[];
-  classType?: 'A' | 'B' | 'C' | 'all' | 'membrane' | 'hydro';
+  classType?: 'A' | 'B' | 'C' | 'all' | 'membrane';
   hasDatasheet?: boolean;
+  images: {
+    thumbnail: string;
+    hero: string;
+    details: string[];
+    overview?: string;
+    application?: string;
+  };
 }
 
 /* ────────────────────────────────────────────
@@ -153,6 +160,13 @@ const electricalInsulatingMats: ProductData = {
   relatedProducts: ['coloured-strip-insulating-mats', 'bi-color-insulating-mats', 'auto-glow-reflective-band-insulating-mats'],
   classType: 'all',
   hasDatasheet: false,
+  images: {
+    thumbnail: '/media/products/electrical-insulating-mats/gallery-01.webp',
+    hero: '/media/products/electrical-insulating-mats/hero.webp',
+    details: ['/media/products/electrical-insulating-mats/gallery-02.webp', '/media/products/electrical-insulating-mats/gallery-03.webp'],
+    overview: '/media/products/electrical-insulating-mats/gallery-04.webp',
+    application: '/media/products/electrical-insulating-mats/gallery-05.webp',
+  },
 };
 
 /* ────────────────────────────────────────────
@@ -237,6 +251,12 @@ const colouredStripInsulatingMats: ProductData = {
   relatedProducts: ['electrical-insulating-mats', 'bi-color-insulating-mats', 'auto-glow-reflective-band-insulating-mats'],
   classType: 'all',
   hasDatasheet: false,
+  images: {
+    thumbnail: '/media/products/coloured-strip-insulating-mats/gallery-01.webp',
+    hero: '/media/products/coloured-strip-insulating-mats/hero.webp',
+    details: ['/media/products/coloured-strip-insulating-mats/gallery-02.webp'],
+    overview: '/media/products/coloured-strip-insulating-mats/gallery-03.webp',
+  },
 };
 
 /* ────────────────────────────────────────────
@@ -322,6 +342,11 @@ const biColorInsulatingMats: ProductData = {
   relatedProducts: ['electrical-insulating-mats', 'coloured-strip-insulating-mats', 'auto-glow-reflective-band-insulating-mats'],
   classType: 'all',
   hasDatasheet: false,
+  images: {
+    thumbnail: '/media/products/bi-color-insulating-mats/gallery-01.webp',
+    hero: '/media/products/bi-color-insulating-mats/hero.webp',
+    details: ['/media/products/bi-color-insulating-mats/gallery-02.webp'],
+  },
 };
 
 /* ────────────────────────────────────────────
@@ -406,6 +431,11 @@ const autoGlowReflectiveBandMats: ProductData = {
   relatedProducts: ['electrical-insulating-mats', 'coloured-strip-insulating-mats', 'bi-color-insulating-mats'],
   classType: 'all',
   hasDatasheet: false,
+  images: {
+    thumbnail: '/media/products/auto-glow-reflective-band/gallery-01.webp',
+    hero: '/media/products/auto-glow-reflective-band/low-light.webp',
+    details: ['/media/products/auto-glow-reflective-band/gallery-02.webp'],
+  },
 };
 
 /* ────────────────────────────────────────────
@@ -489,94 +519,15 @@ const bharatMembrane: ProductData = {
     { type: 'Installation Guide', name: 'Installation & Joining Guide', issuer: 'Bharat Electrosafe', available: false },
     { type: 'Certificate', name: 'BIS Certification — IS 15909:2020', issuer: 'Bureau of Indian Standards', available: false },
   ],
-  relatedProducts: ['electrical-insulating-mats', 'bharat-hydro-seal', 'auto-glow-reflective-band-insulating-mats'],
+  relatedProducts: ['electrical-insulating-mats', 'auto-glow-reflective-band-insulating-mats'],
   classType: 'membrane',
   hasDatasheet: false,
-};
-
-/* ────────────────────────────────────────────
-   Product 6: BharatHydro Seal
-   ──────────────────────────────────────────── */
-
-const bharatHydroSeal: ProductData = {
-  slug: 'bharat-hydro-seal',
-  name: 'BharatHydro Seal',
-  shortName: 'BHS',
-  heroSlotId: 'PRODUCT-BHS-HERO-01',
-  description:
-    'Premium water stop solutions for construction and expansion joints — IS 15058-2002 certified PVC and rubber compound water stop profiles.',
-  introduction:
-    'BharatHydro Seal provides premium water stop solutions for construction and expansion joints. Formulated from PVC and rubber compounds to prevent water leakage while offering water-pressure, chemical and environmental resistance, flexibility and long service life. Designed for use in water-retaining structures, underground construction and civil engineering applications.',
-  badges: ['IS 15058-2002', 'PVC & Rubber', 'Construction Joints', 'Water Stop'],
-  quickFacts: [
-    { icon: 'droplets', label: 'Function', value: 'Water stop sealing' },
-    { icon: 'ruler', label: 'Standard', value: 'IS 15058-2002' },
-    { icon: 'building', label: 'Application', value: 'Construction joints' },
-  ],
-  overviewText:
-    'In water-retaining structures and underground construction, preventing water leakage through joints is critical. BharatHydro Seal water stop profiles are embedded in concrete at construction and expansion joints, creating a continuous waterproof barrier. The PVC and rubber compound formulation provides flexibility to accommodate joint movement, chemical resistance for aggressive environments, and long service life for permanent installations.',
-  keyBenefits: [
-    { icon: 'shield', text: 'Construction and expansion joint sealing — prevents water leakage at critical joint locations' },
-    { icon: 'droplets', text: 'Water leakage prevention — continuous barrier embedded in concrete joints' },
-    { icon: 'layers', text: 'PVC and rubber compound formulation — flexibility, durability and chemical resistance' },
-    { icon: 'gauge', text: 'Water pressure resistance — maintains seal under hydrostatic pressure' },
-    { icon: 'flask-conical', text: 'Chemical and environmental resistance — suitable for aggressive soil and water conditions' },
-    { icon: 'move', text: 'Flexibility — accommodates structural movement without losing seal integrity' },
-    { icon: 'timer', text: 'Long service life — designed for permanent installation in critical infrastructure' },
-  ],
-  specifications: {
-    headers: ['Property', 'BHS-PVC', 'BHS-Rubber'],
-    rows: [
-      ['Product Code', 'BES2001', 'BES2002'],
-      ['Standard', 'IS 15058-2002', 'IS 15058-2002'],
-      ['Material', 'PVC Compound', 'Rubber Compound'],
-      ['Water Pressure Resistance', 'Rated per standard', 'Rated per standard'],
-      ['Chemical Resistance', 'High', 'High'],
-      ['Flexibility', 'Good', 'Excellent'],
-      ['Operating Temperature', 'Standard range', 'Standard range'],
-    ],
+  images: {
+    thumbnail: '/media/products/bharat-membrane/gallery-01.webp',
+    hero: '/media/products/bharat-membrane/hero.webp',
+    details: ['/media/products/bharat-membrane/gallery-02.webp', '/media/products/bharat-membrane/gallery-03.webp'],
+    overview: '/media/products/bharat-membrane/gallery-04.webp',
   },
-  materialProperties: [
-    { label: 'Base Material', value: 'PVC compound / Rubber compound' },
-    { label: 'Standard', value: 'IS 15058-2002' },
-    { label: 'Water Pressure Resistance', value: 'Rated per IS 15058-2002' },
-    { label: 'Chemical Resistance', value: 'Resistant to common construction chemicals' },
-    { label: 'Flexibility', value: 'Accommodates joint movement' },
-    { label: 'Service Life', value: 'Designed for permanent installation' },
-  ],
-  dimensions: [
-    { label: 'Standard Profiles', value: 'Available per IS 15058-2002 specifications' },
-    { label: 'Custom Dimensions', value: 'Available on request where supported' },
-    { label: 'Width Range', value: 'Per standard profile specifications' },
-    { label: 'Length', value: 'Standard roll lengths' },
-  ],
-  colors: ['Black (PVC)', 'Grey (Rubber)'],
-  surfacePatterns: ['Smooth', 'Ribbed'],
-  installation: [
-    'Position water stop profile at the centre of the construction joint',
-    'Ensure the profile extends continuously across the full joint width',
-    'Secure the profile with tie wires or clips before concrete placement',
-    'Overlap and weld/join profile ends for continuous coverage',
-    'Avoid displacement during concrete vibration and placement',
-    'Inspect joint seal after concrete curing for proper embedment',
-  ],
-  applications: [
-    { icon: 'droplets', name: 'Water Tanks', description: 'Joint sealing in water storage tanks and reservoirs' },
-    { icon: 'waves', name: 'Reservoirs & Dams', description: 'Water stop profiles in dam and reservoir construction joints' },
-    { icon: 'route', name: 'Canals', description: 'Sealing joints in canal and aqueduct construction' },
-    { icon: 'factory', name: 'Sewage Treatment', description: 'Water stop installation in sewage treatment plant construction' },
-    { icon: 'building-2', name: 'Basements', description: 'Underground basement joint waterproofing' },
-    { icon: 'mountain', name: 'Tunnels', description: 'Water stop profiles in tunnel segment joints' },
-  ],
-  documents: [
-    { type: 'Datasheet', name: 'BharatHydro Seal — Product Datasheet', issuer: 'Bharat Electrosafe', available: false },
-    { type: 'Certificate', name: 'BIS Certification — IS 15058-2002', issuer: 'Bureau of Indian Standards', available: false },
-    { type: 'Test Report', name: 'Water Pressure Resistance Test Report', issuer: 'NABL Accredited Lab', available: false },
-    { type: 'Installation Guide', name: 'Installation Guide — Water Stop Profile Embedment', issuer: 'Bharat Electrosafe', available: false },
-  ],
-  relatedProducts: ['bharat-membrane', 'electrical-insulating-mats'],
-  classType: 'hydro',
-  hasDatasheet: false,
 };
 
 /* ────────────────────────────────────────────
@@ -589,7 +540,6 @@ export const products: ProductData[] = [
   biColorInsulatingMats,
   autoGlowReflectiveBandMats,
   bharatMembrane,
-  bharatHydroSeal,
 ];
 
 export function getProductBySlug(slug: string): ProductData | undefined {
@@ -600,7 +550,7 @@ export function getProductNames(): string[] {
   return products.map((p) => p.name);
 }
 
-/** Labels for the contact-form product selector — all six families. */
+/** Labels for the contact-form product selector — all five families. */
 export const contactProductOptions = products.map((p) => ({
   value: p.slug,
   label: p.name,

@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import Image from 'next/image';
 import {
   Zap,
   Ruler,
@@ -15,13 +16,16 @@ import {
   Building,
   Shield,
   Download,
+  ShieldCheck,
+  FileText,
+  Truck,
+  Headphones,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { TechnicalBadge } from '@/components/ui/TechnicalBadge';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
-import { ImageFrame } from '@/components/ui/ImageFrame';
 import type { ProductData } from '@/data/products';
 import { cn } from '@/lib/utils';
 
@@ -42,6 +46,13 @@ const iconMap: Record<string, LucideIcon> = {
   shield: Shield,
 };
 
+const trustIndicators = [
+  { icon: ShieldCheck, label: 'IS 15652:2006 Certified' },
+  { icon: FileText, label: 'Full documentation provided' },
+  { icon: Truck, label: 'Pan-India delivery' },
+  { icon: Headphones, label: 'Technical support available' },
+];
+
 /* ── Component ── */
 
 interface ProductHeroProps {
@@ -59,89 +70,124 @@ export function ProductHero({ product }: ProductHeroProps) {
   );
 
   return (
-    <section className="section-padding-major bg-be-warm-white">
-      <div className="container-site page-horizontal-padding">
-        {/* Breadcrumb */}
-        <Breadcrumb items={breadcrumbItems} className="mb-6" />
+    <>
+      <section className="section-padding-major bg-be-warm-white">
+        <div className="container-site page-horizontal-padding">
+          {/* Breadcrumb */}
+          <Breadcrumb items={breadcrumbItems} className="mb-6" />
 
-        {/* Desktop: 46/54 split */}
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
-          {/* ── Content side (46%) ── */}
-          <div className="lg:w-[46%] flex flex-col gap-6">
-            {/* Technical badges */}
-            <div className="flex flex-wrap gap-2">
-              {product.badges.map((badge) => (
-                <TechnicalBadge key={badge} label={badge} />
-              ))}
-            </div>
+          {/* Desktop: 46/54 split */}
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
+            {/* ── Content side (46%) ── */}
+            <div className="lg:w-[46%] flex flex-col gap-6">
+              {/* Technical badges */}
+              <div className="flex flex-wrap gap-2">
+                {product.badges.map((badge) => (
+                  <TechnicalBadge key={badge} label={badge} />
+                ))}
+              </div>
 
-            {/* H1 */}
-            <h1 className="text-product-h1 text-be-charcoal-950">{product.name}</h1>
+              {/* H1 */}
+              <h1 className="text-product-h1 text-be-charcoal-950">{product.name}</h1>
 
-            {/* Introduction */}
-            <p className="text-body-large text-be-grey-650 leading-relaxed">
-              {product.introduction}
-            </p>
+              {/* Introduction */}
+              <p className="text-body-large text-be-grey-650 leading-relaxed">
+                {product.introduction}
+              </p>
 
-            {/* Quick facts */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-              {product.quickFacts.map((fact) => {
-                const Icon = iconMap[fact.icon] ?? Shield;
-                return (
-                  <div key={fact.label} className="flex items-center gap-3">
-                    <span className="flex items-center justify-center size-9 rounded-md bg-be-yellow-50 shrink-0">
-                      <Icon className="size-4 text-be-yellow-600" />
-                    </span>
-                    <div>
-                      <div className="text-metadata text-be-grey-650 font-medium">{fact.label}</div>
-                      <div className="text-body font-semibold text-be-charcoal-950">{fact.value}</div>
+              {/* Quick facts */}
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                {product.quickFacts.map((fact) => {
+                  const Icon = iconMap[fact.icon] ?? Shield;
+                  return (
+                    <div key={fact.label} className="flex items-center gap-3">
+                      <span className="flex items-center justify-center size-9 rounded-md bg-be-yellow-50 shrink-0">
+                        <Icon className="size-4 text-be-yellow-600" />
+                      </span>
+                      <div>
+                        <div className="text-metadata text-be-grey-650 font-medium">{fact.label}</div>
+                        <div className="text-body font-semibold text-be-charcoal-950">{fact.value}</div>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+
+              {/* CTA buttons */}
+              <div className="flex flex-wrap gap-3 pt-2">
+                <PrimaryButton href="/contact-us" size="lg">
+                  Request a Quote
+                </PrimaryButton>
+                {product.hasDatasheet && (
+                  <SecondaryButton href="#documents">
+                    <Download className="size-4 mr-1.5" />
+                    Download Datasheet
+                  </SecondaryButton>
+                )}
+              </div>
             </div>
 
-            {/* CTA buttons */}
-            <div className="flex flex-wrap gap-3 pt-2">
-              <PrimaryButton href="/contact-us" size="lg">
-                Request a Quote
-              </PrimaryButton>
-              {product.hasDatasheet && (
-                <SecondaryButton href="#documents">
-                  <Download className="size-4 mr-1.5" />
-                  Download Datasheet
-                </SecondaryButton>
+            {/* ── Media side (54%) ── */}
+            <div className="lg:w-[54%] flex flex-col gap-4 order-first lg:order-last">
+              {/* Main hero image */}
+              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg">
+                <Image
+                  src={product.images.hero}
+                  alt={`${product.name} — hero image`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 54vw"
+                  priority
+                />
+              </div>
+
+              {/* Supporting thumbnails */}
+              {product.images.details.length > 0 && (
+                <div className="flex flex-row gap-4">
+                  {product.images.details.map((detailSrc, idx) => (
+                    <div key={idx} className="relative w-1/2 aspect-[16/10] overflow-hidden rounded-lg">
+                      <Image
+                        src={detailSrc}
+                        alt={`${product.name} — detail view ${idx + 1}`}
+                        fill
+                        className="object-contain p-2"
+                        sizes="(max-width: 768px) 50vw, 27vw"
+                      />
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           </div>
-
-          {/* ── Media side (54%) ── */}
-          <div className="lg:w-[54%] flex flex-col gap-4 order-first lg:order-last">
-            {/* Main hero image */}
-            <ImageFrame
-              slotId={product.heroSlotId}
-              alt={`${product.name} — hero image`}
-              aspectRatio="landscape"
-            />
-
-            {/* Supporting thumbnails */}
-            <div className="flex flex-row gap-4">
-              <ImageFrame
-                slotId={`${product.heroSlotId}-THUMB-1`}
-                alt={`${product.name} — detail view 1`}
-                aspectRatio="landscape"
-                className="w-1/2"
-              />
-              <ImageFrame
-                slotId={`${product.heroSlotId}-THUMB-2`}
-                alt={`${product.name} — detail view 2`}
-                aspectRatio="landscape"
-                className="w-1/2"
-              />
-            </div>
-          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Trust indicators strip (merged from ProductTrustIndicators) */}
+      <section
+        aria-label="Product trust indicators"
+        className="bg-be-yellow-50 border-y border-be-yellow-100 py-6"
+      >
+        <div className="container-site page-horizontal-padding">
+          <ul className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5">
+            {trustIndicators.map((item) => {
+              const Icon = item.icon;
+              return (
+                <li
+                  key={item.label}
+                  className="flex items-center gap-3 justify-center md:justify-start"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-be-white border border-be-yellow-100">
+                    <Icon className="h-4 w-4 text-be-yellow-600" />
+                  </span>
+                  <span className="text-metadata font-semibold text-be-charcoal-950 uppercase tracking-wide">
+                    {item.label}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+    </>
   );
 }
