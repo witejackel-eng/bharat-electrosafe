@@ -67,17 +67,6 @@ export const metadata: Metadata = {
     description:
       "Electrical insulating mats, visible-safety variants and BharatMembrane geomembranes. Trusted by Indian Railways, NTPC, PGCIL, BHEL.",
   },
-  contact: {
-    email: "info@bharatelectrosafe.com",
-    telephone: "+91-7617494968",
-  },
-  address: {
-    streetAddress: "704, 7th Floor, I-thum, Tower A, Plot No. A-40, Sector-62",
-    addressLocality: "Noida",
-    addressRegion: "Uttar Pradesh",
-    postalCode: "201309",
-    addressCountry: "IN",
-  },
 };
 
 export default function RootLayout({
@@ -94,6 +83,31 @@ export default function RootLayout({
         {!allowIndexing && (
           <meta name="robots" content="noindex, nofollow" />
         )}
+        {/* Schema.org LocalBusiness structured data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              name: "Bharat Electrosafe",
+              description:
+                "Manufacturer of electrical insulating mats, visible-safety variants, and BharatMembrane HDPE geomembranes.",
+              url: "https://bharatelectrosafe.com",
+              email: "info@bharatelectrosafe.com",
+              telephone: "+91-7617494968",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress:
+                  "704, 7th Floor, I-thum, Tower A, Plot No. A-40, Sector-62",
+                addressLocality: "Noida",
+                addressRegion: "Uttar Pradesh",
+                postalCode: "201309",
+                addressCountry: "IN",
+              },
+            }),
+          }}
+        />
       </head>
       <body className={`${manrope.variable} font-sans antialiased`}>
         {/* Accessibility: skip-to-content link */}
