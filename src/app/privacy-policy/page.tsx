@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { BackToTop } from '@/components/ui/BackToTop';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 
@@ -212,6 +213,7 @@ export default function PrivacyPolicyPage() {
         </section>
       </main>
       <Footer />
+      <BackToTop />
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { BackToTop } from '@/components/ui/BackToTop';
 import { ProductHero } from '@/components/products/ProductHero';
 import { ProductOverview } from '@/components/products/ProductOverview';
 import { ProductSpecifications } from '@/components/products/ProductSpecifications';
@@ -52,6 +53,7 @@ export default function ElectricalInsulatingMatsPage() {
         <ProductCTA product={product} />
       </main>
       <Footer />
+      <BackToTop />
     </div>
   );
 }

@@ -10,6 +10,7 @@ interface Product {
   href: string;
   slotId: string;
   imageAlt: string;
+  index: string;
 }
 
 const products: Product[] = [
@@ -19,6 +20,7 @@ const products: Product[] = [
     href: '/products/electrical-insulating-mats',
     slotId: 'HOME-PRODUCT-EIM-01',
     imageAlt: 'Electrical insulating mat roll',
+    index: '01',
   },
   {
     name: 'Coloured Strip Insulating Mats',
@@ -26,6 +28,7 @@ const products: Product[] = [
     href: '/products/coloured-strip-insulating-mats',
     slotId: 'HOME-PRODUCT-CS-01',
     imageAlt: 'Coloured strip insulating mat',
+    index: '02',
   },
   {
     name: 'Bi-Color Insulating Mats',
@@ -33,6 +36,7 @@ const products: Product[] = [
     href: '/products/bi-color-insulating-mats',
     slotId: 'HOME-PRODUCT-BC-01',
     imageAlt: 'Bi-color insulating mat',
+    index: '03',
   },
   {
     name: 'Auto-Glow / Reflective Band Mats',
@@ -40,6 +44,7 @@ const products: Product[] = [
     href: '/products/auto-glow-reflective-band-insulating-mats',
     slotId: 'HOME-PRODUCT-AG-01',
     imageAlt: 'Auto-glow reflective band mat',
+    index: '04',
   },
   {
     name: 'BharatMembrane',
@@ -47,14 +52,20 @@ const products: Product[] = [
     href: '/products/bharat-membrane',
     slotId: 'HOME-PRODUCT-BM-01',
     imageAlt: 'BharatMembrane waterproofing product',
+    index: '05',
   },
 ];
 
 function ProductCard({ product }: { product: Product }) {
   return (
-    <div className="hover-card-lift group flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden">
-      {/* Yellow accent line */}
-      <div className="h-1 bg-be-yellow-500" />
+    <div className="hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+      {/* Yellow accent line — animates wider on hover */}
+      <div className="h-1 bg-be-yellow-500 group-hover:h-1.5 transition-all duration-300" />
+
+      {/* Index badge */}
+      <div className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md bg-be-yellow-500/90 text-be-charcoal-950 text-[0.65rem] font-bold tracking-wide shadow-sm">
+        {product.index}
+      </div>
 
       {/* Image area — 58-65% of card height */}
       <div className="relative w-full aspect-[16/10] overflow-hidden">
@@ -64,6 +75,8 @@ function ProductCard({ product }: { product: Product }) {
           aspectRatio="landscape"
           className="w-full h-full"
         />
+        {/* Dark overlay on hover */}
+        <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/10 transition-colors duration-300" />
       </div>
 
       {/* Text content */}
@@ -75,7 +88,12 @@ function ProductCard({ product }: { product: Product }) {
           {product.description}
         </p>
         <div className="mt-2">
-          <TextLink href={product.href}>View Product</TextLink>
+          <TextLink
+            href={product.href}
+            className="text-be-grey-650 group-hover:text-be-yellow-600 transition-colors duration-200"
+          >
+            View Product
+          </TextLink>
         </div>
       </div>
     </div>
@@ -94,8 +112,8 @@ export default function ProductRange() {
           />
         </div>
 
-        {/* Desktop: 3+2 layout */}
-        <div className="reveal-up">
+        {/* Desktop: 3+2 layout with stagger animation */}
+        <div className="stagger-reveal" data-stagger="true">
           {/* First row: 3 cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
             {products.slice(0, 3).map((product) => (

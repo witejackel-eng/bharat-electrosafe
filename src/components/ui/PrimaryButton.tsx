@@ -24,7 +24,7 @@ export function PrimaryButton({
       : 'px-6 py-3 text-base';
 
   const baseClasses =
-    'inline-flex items-center justify-center min-h-[44px] rounded-lg bg-be-yellow-500 text-be-charcoal-950 font-semibold transition-colors duration-200 hover:bg-be-yellow-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2';
+    'inline-flex items-center justify-center min-h-[44px] rounded-lg bg-be-yellow-500 text-be-charcoal-950 font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm transition-all duration-200 hover:bg-be-yellow-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2';
 
   if (href) {
     return (

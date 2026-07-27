@@ -57,9 +57,12 @@ const navLinks = [
 export function Footer() {
   return (
     <footer className="bg-be-warm-white">
+      {/* ── Yellow accent top border ── */}
+      <div className="h-[3px] bg-be-yellow-500" />
+
       {/* ── Main footer content ── */}
       <div className="container-site page-horizontal-padding section-padding-supporting">
-        {/* Desktop: four-column grid */}
+        {/* Desktop: four-column grid with separators */}
         <div className="hidden md:grid md:grid-cols-4 gap-8">
           {/* Column 1 — Brand */}
           <div className="flex flex-col gap-4">
@@ -81,14 +84,14 @@ export function Footer() {
             <div className="flex items-center gap-3 pt-1">
               <a
                 href="mailto:info@bharatelectrosafe.com"
-                className="size-9 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
+                className="size-11 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
                 aria-label="Email"
               >
                 <Mail className="size-4" />
               </a>
               <a
                 href="tel:+91XXXXXXXXXX"
-                className="size-9 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
+                className="size-11 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
                 aria-label="Phone"
               >
                 <Phone className="size-4" />
@@ -97,13 +100,16 @@ export function Footer() {
                 href="https://wa.me/91XXXXXXXXXX"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="size-9 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
+                className="size-11 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
                 aria-label="WhatsApp"
               >
                 <MessageCircle className="size-4" />
               </a>
             </div>
           </div>
+
+          {/* Separator */}
+          <div className="hidden lg:block border-l border-be-grey-250/60 mx-1" />
 
           {/* Column 2 — Navigation */}
           <div className="flex flex-col gap-3">
@@ -124,6 +130,9 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Separator */}
+          <div className="hidden lg:block border-l border-be-grey-250/60 mx-1" />
+
           {/* Column 3 — Products */}
           <div className="flex flex-col gap-3">
             <h3 className="text-sm font-semibold text-be-charcoal-950 uppercase tracking-wide">
@@ -142,6 +151,9 @@ export function Footer() {
               ))}
             </ul>
           </div>
+
+          {/* Separator */}
+          <div className="hidden lg:block border-l border-be-grey-250/60 mx-1" />
 
           {/* Column 4 — Contact */}
           <div className="flex flex-col gap-3">
@@ -326,8 +338,8 @@ export function Footer() {
         </div>
       </div>
 
-      {/* ── Bottom bar ── */}
-      <div className="border-t border-be-grey-250">
+      {/* ── Bottom bar with yellow tint ── */}
+      <div className="border-t border-be-grey-250 bg-be-yellow-50/50">
         <div className="container-site page-horizontal-padding py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-metadata text-be-grey-650 text-center sm:text-left">
             &copy; 2025 Bharat Electrosafe. All rights reserved.
@@ -345,6 +357,9 @@ export function Footer() {
             >
               Terms
             </Link>
+            <span className="text-metadata text-be-grey-650 hidden sm:inline">
+              Made in India 🇮🇳
+            </span>
           </div>
         </div>
       </div>

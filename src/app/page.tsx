@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { BackToTop } from '@/components/ui/BackToTop';
 import HomeHero from '@/components/home/HomeHero';
 import ProductRange from '@/components/home/ProductRange';
 import TrustDocuments from '@/components/home/TrustDocuments';
@@ -23,6 +24,10 @@ export default function Home() {
           if (entry.isIntersecting) {
             const revealElements = entry.target.querySelectorAll('.reveal-up');
             revealElements.forEach((el) => {
+              el.classList.add('revealed');
+            });
+            const staggerElements = entry.target.querySelectorAll('.stagger-reveal');
+            staggerElements.forEach((el) => {
               el.classList.add('revealed');
             });
             observer.unobserve(entry.target);
@@ -50,6 +55,7 @@ export default function Home() {
         <HomeCTA />
       </main>
       <Footer />
+      <BackToTop />
     </div>
   );
 }

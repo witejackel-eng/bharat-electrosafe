@@ -41,10 +41,24 @@ export default function CapabilitySection() {
               substations, railways and industrial facilities across India.
             </p>
 
-            <FeatureList items={proofPoints} />
+            {/* Decorative "Est. India" text */}
+            <p className="text-metadata text-be-grey-400 font-medium tracking-wider">
+              Est. India — Serving since decades
+            </p>
+
+            {/* Feature list with yellow left border */}
+            <div className="[&_li]:border-l-2 [&_li]:border-be-yellow-400 [&_li]:pl-3 [&_li]:ml-[-3px]">
+              <FeatureList items={proofPoints} />
+            </div>
 
             <div className="mt-2">
-              <TextLink href="/about-us">About Us</TextLink>
+              <TextLink
+                href="/about-us"
+                className="text-lg font-semibold hover-arrow-shift inline-flex items-center gap-2 text-be-charcoal-800 hover:text-be-yellow-600 transition-colors duration-200"
+              >
+                About Us
+                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+              </TextLink>
             </div>
           </div>
         </div>
