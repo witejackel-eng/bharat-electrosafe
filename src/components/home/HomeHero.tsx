@@ -5,7 +5,7 @@ import { Eyebrow } from '@/components/ui/Eyebrow';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { TechnicalBadge } from '@/components/ui/TechnicalBadge';
-import { ImageFrame } from '@/components/ui/ImageFrame';
+import Image from 'next/image';
 
 const proofItems = [
   'IS 15652:2006',
@@ -88,13 +88,14 @@ export default function HomeHero() {
 
           {/* Media — 45% */}
           <div className="w-full lg:w-[45%] reveal-up">
-            <div className="bg-gradient-to-br from-be-yellow-50 to-be-cream rounded-lg">
-              <ImageFrame
+            <div className="bg-gradient-to-br from-be-yellow-50 to-be-cream rounded-lg aspect-[16/10]">
+              <Image
                 src="/media/home/hero-product.webp"
                 alt="Bharat Electrosafe electrical insulating mat — Class B with anti-skid coin pattern surface"
-                aspectRatio="landscape"
-                fit="contain"
-                className="w-full"
+                fill
+                className="object-contain object-center"
+                style={{ width: '100%', height: '100%' }}
+                sizes="(max-width: 768px) 100vw, (max-width: 1360px) 50vw, 680px"
                 priority
               />
             </div>
