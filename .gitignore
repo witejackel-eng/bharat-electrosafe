@@ -66,3 +66,10 @@ mini-services/
 # Uploads & VLM analysis
 upload/
 vlm-*-analysis.json
+# Proprietary Bharat Electrosafe asset audit (added by asset-readiness work)
+bharatsafe/
+.private-bharatsafe-audit/
+private-assets/
+asset-working/
+*.private-inventory.csv
+*.private-selection.md
