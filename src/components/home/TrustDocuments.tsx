@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { trustMarks, organisationRefs } from '@/data/trust';
+import { primaryTrustMarks, organisationReferences, organisationReferenceHeading, organisationReferenceNote, scaleFacts } from '@/data/trust';
 
 export default function TrustDocuments() {
   return (
@@ -22,47 +22,54 @@ export default function TrustDocuments() {
 
         {/* Trust marks grid */}
         <div className="reveal-up grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 mb-10 pb-6 border-b-[3px] border-be-yellow-500/30">
-          {trustMarks.map((mark) => (
-            <div key={mark.name} className="flex flex-col items-center gap-2 p-4 rounded-lg border border-be-grey-250 bg-be-white hover:border-be-yellow-400 transition-colors duration-300">
-              <Image
-                src={mark.imagePath}
-                alt={`${mark.name} certification mark`}
-                width={60}
-                height={60}
-                className="object-contain"
-                sizes="60px"
-              />
+          {primaryTrustMarks.map((mark) => (
+            <div key={mark.label} className="flex flex-col items-center gap-2 p-4 rounded-lg border border-be-grey-250 bg-be-white hover:border-be-yellow-400 transition-colors duration-300">
+              <span className="relative flex h-14 w-full items-center justify-center">
+                <Image
+                  src={mark.logo}
+                  alt={mark.alt}
+                  fill
+                  className="object-contain"
+                  sizes="120px"
+                />
+              </span>
               <span className="text-metadata text-be-grey-650 font-medium text-center">{mark.label}</span>
+              <span className="text-metadata text-be-grey-650 text-center">{mark.note}</span>
+              {mark.document && (
+                <a
+                  href={mark.document}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-metadata font-semibold text-be-yellow-600 underline underline-offset-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
+                >
+                  View certificate
+                </a>
+              )}
             </div>
           ))}
         </div>
 
         {/* Trust facts row */}
         <div className="reveal-up flex flex-wrap items-center justify-center gap-6 mb-10">
-          <div className="flex items-center gap-2 px-4 py-2 rounded-md bg-be-yellow-50 border border-be-yellow-400/30">
-            <span className="text-sm font-semibold text-be-charcoal-950">11+</span>
-            <span className="text-metadata text-be-grey-650">Countries served</span>
-          </div>
-          <div className="flex items-center gap-2 px-4 py-2 rounded-md bg-be-yellow-50 border border-be-yellow-400/30">
-            <span className="text-sm font-semibold text-be-charcoal-950">5</span>
-            <span className="text-metadata text-be-grey-650">Product Families</span>
-          </div>
-          <div className="flex items-center gap-2 px-4 py-2 rounded-md bg-be-yellow-50 border border-be-yellow-400/30">
-            <span className="text-sm font-semibold text-be-charcoal-950">IS 15652:2006</span>
-            <span className="text-metadata text-be-grey-650">Governing Standard</span>
-          </div>
+          {scaleFacts.map((fact) => (
+            <div key={fact.label} className="flex items-center gap-2 px-4 py-2 rounded-md bg-be-yellow-50 border border-be-yellow-400/30">
+              <span className="text-sm font-semibold text-be-charcoal-950">{fact.value}</span>
+              <span className="text-metadata text-be-grey-650">{fact.label}</span>
+            </div>
+          ))}
         </div>
 
-        {/* Organisation logo rail */}
+        {/* Organisation logo rail — conservative wording */}
         <div className="reveal-up mb-8">
           <p className="text-sm text-be-grey-650 font-semibold uppercase tracking-wider mb-4 text-center">
-            Trusted by leading organisations
+            {organisationReferenceHeading}
           </p>
+          <p className="text-metadata text-be-grey-650 text-center mb-4">{organisationReferenceNote}</p>
           <div className="flex flex-wrap items-center justify-center gap-6">
-            {organisationRefs.map((org) => (
+            {organisationReferences.map((org) => (
               <div key={org.name} className="flex items-center justify-center p-3 rounded-lg border border-be-grey-250 bg-be-white/60">
                 <Image
-                  src={org.imagePath}
+                  src={org.logo}
                   alt={`${org.name} logo`}
                   width={80}
                   height={40}

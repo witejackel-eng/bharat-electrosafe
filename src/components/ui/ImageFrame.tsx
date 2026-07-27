@@ -4,20 +4,27 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { EmptyMediaFallback } from './EmptyMediaFallback';
+import { getSlotById } from '@/data/asset-slots';
 
 interface ImageFrameProps {
   src?: string;
   alt: string;
   slotId?: string;
-  aspectRatio?: 'landscape' | 'portrait' | 'square';
+  aspectRatio?: 'landscape' | 'portrait' | 'square' | 'wide';
   className?: string;
   objectPosition?: string;
+  /** `contain` for isolated product shots, `cover` for real photographs. */
+  fit?: 'cover' | 'contain';
+  /** Set on the single above-the-fold image of a page. */
+  priority?: boolean;
+  sizes?: string;
 }
 
 const aspectRatioClasses = {
   landscape: 'aspect-[16/10]',
   portrait: 'aspect-[3/4]',
   square: 'aspect-square',
+  wide: 'aspect-[21/9]',
 };
 
 export function ImageFrame({
@@ -27,35 +34,46 @@ export function ImageFrame({
   aspectRatio = 'landscape',
   className,
   objectPosition = 'center',
+  fit = 'cover',
+  priority = false,
+  sizes = '(max-width: 768px) 100vw, (max-width: 1360px) 50vw, 680px',
 }: ImageFrameProps) {
   const [hasError, setHasError] = useState(false);
-  const showImage = src && !hasError;
+
+  /* Editorial call sites identify their image by slot rather than passing a
+     path, so resolve the slot registry when no explicit src is given. Product
+     call sites pass `src` straight from the product's own image data. */
+  const slot = slotId ? getSlotById(slotId) : undefined;
+  const resolvedSrc = src || slot?.currentFallbackPath || undefined;
+  const resolvedPosition =
+    objectPosition !== 'center' ? objectPosition : slot?.objectPosition ?? 'center';
+  const showImage = resolvedSrc && !hasError;
 
   return (
     <div
       className={cn(
         'relative overflow-hidden rounded-lg border border-be-grey-250',
         aspectRatioClasses[aspectRatio],
+        fit === 'contain' && 'bg-be-white',
         className
       )}
     >
       {showImage ? (
         <Image
-          src={src}
+          src={resolvedSrc}
           alt={alt}
           fill
           className={cn(
-            'hover-image-scale object-cover',
+            fit === 'contain' ? 'object-contain p-3' : 'hover-image-scale object-cover'
           )}
-          style={{ objectPosition }}
+          style={{ objectPosition: resolvedPosition }}
           onError={() => setHasError(true)}
-          sizes="(max-width: 768px) 100vw, (max-width: 1360px) 50vw, 680px"
+          sizes={sizes}
+          priority={priority}
+          loading={priority ? undefined : 'lazy'}
         />
       ) : (
-        <EmptyMediaFallback
-          label={alt}
-          slotId={slotId}
-        />
+        <EmptyMediaFallback slotId={slotId} />
       )}
     </div>
   );

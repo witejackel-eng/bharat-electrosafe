@@ -19,6 +19,9 @@ const cspHeader = [
   "img-src 'self' data: https:",
   "font-src 'self'",
   "connect-src 'self'",
+  /* The About page embeds two company YouTube videos, click-to-load and via
+     the no-cookie host. Nothing else may be framed. */
+  "frame-src 'self' https://www.youtube-nocookie.com",
   "object-src 'none'",
   "base-uri 'self'",
   "frame-ancestors 'none'",
@@ -61,6 +64,13 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   output: 'standalone',
   reactStrictMode: true,
+  /* Pin the workspace root. Without this Turbopack walks up to the first
+     lockfile it finds, which on a developer machine can be a directory above
+     the repo — it then compiles unrelated files that happen to sit at
+     `src/` there. */
+  turbopack: {
+    root: __dirname,
+  },
   async headers() {
     return [
       {
@@ -80,7 +90,9 @@ const nextConfig: NextConfig = {
       { source: '/bi-color-insulating-mats.php', destination: '/products/bi-color-insulating-mats' },
       { source: '/auto-glow-reflective-band-insulating-mat.php', destination: '/products/auto-glow-reflective-band-insulating-mats' },
       { source: '/bharat-membrane.php', destination: '/products/bharat-membrane' },
-      { source: '/BharatHydro-Seal.php', destination: '/contact-us' },
+      /* The BharatHydro Seal page is not part of the current five-family range;
+         its old URL lands on the products list rather than a 404. */
+      { source: '/BharatHydro-Seal.php', destination: '/products/electrical-insulating-mats' },
     ];
 
     return [
@@ -89,7 +101,7 @@ const nextConfig: NextConfig = {
         destination: r.destination,
         permanent: true,
       })),
-      { source: '/products/bharat-hydro-seal', destination: '/contact-us', permanent: true },
+      { source: '/products/bharat-hydro-seal', destination: '/products/electrical-insulating-mats', permanent: true },
     ];
   },
 };

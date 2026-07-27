@@ -27,7 +27,7 @@ import { TechnicalBadge } from '@/components/ui/TechnicalBadge';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import type { ProductData } from '@/data/products';
-import { cn } from '@/lib/utils';
+import { getImageAlt, getImageFit } from '@/data/products';
 
 /* ── Icon mapping ── */
 
@@ -46,8 +46,7 @@ const iconMap: Record<string, LucideIcon> = {
   shield: Shield,
 };
 
-const trustIndicators = [
-  { icon: ShieldCheck, label: 'IS 15652:2006 Certified' },
+const staticTrustIndicators = [
   { icon: FileText, label: 'Full documentation provided' },
   { icon: Truck, label: 'Pan-India delivery' },
   { icon: Headphones, label: 'Technical support available' },
@@ -133,24 +132,24 @@ export function ProductHero({ product }: ProductHeroProps) {
               <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg">
                 <Image
                   src={product.images.hero}
-                  alt={`${product.name} — hero image`}
+                  alt={getImageAlt(product, product.images.hero)}
                   fill
-                  className="object-cover"
+                  className={getImageFit(product, product.images.hero) === 'contain' ? 'object-contain p-3' : 'object-cover'}
                   sizes="(max-width: 768px) 100vw, 54vw"
                   priority
                 />
               </div>
 
-              {/* Supporting thumbnails */}
+              {/* Supporting detail views */}
               {product.images.details.length > 0 && (
                 <div className="flex flex-row gap-4">
-                  {product.images.details.map((detailSrc, idx) => (
-                    <div key={idx} className="relative w-1/2 aspect-[16/10] overflow-hidden rounded-lg">
+                  {product.images.details.slice(0, 2).map((detailSrc) => (
+                    <div key={detailSrc} className="relative w-1/2 aspect-[16/10] overflow-hidden rounded-lg">
                       <Image
                         src={detailSrc}
-                        alt={`${product.name} — detail view ${idx + 1}`}
+                        alt={getImageAlt(product, detailSrc)}
                         fill
-                        className="object-contain p-2"
+                        className={getImageFit(product, detailSrc) === 'contain' ? 'object-contain p-2' : 'object-cover'}
                         sizes="(max-width: 768px) 50vw, 27vw"
                       />
                     </div>
@@ -162,32 +161,30 @@ export function ProductHero({ product }: ProductHeroProps) {
         </div>
       </section>
 
-      {/* Trust indicators strip (merged from ProductTrustIndicators) */}
-      <section
-        aria-label="Product trust indicators"
-        className="bg-be-yellow-50 border-y border-be-yellow-100 py-6"
-      >
-        <div className="container-site page-horizontal-padding">
-          <ul className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5">
-            {trustIndicators.map((item) => {
-              const Icon = item.icon;
-              return (
-                <li
-                  key={item.label}
-                  className="flex items-center gap-3 justify-center md:justify-start"
-                >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-be-white border border-be-yellow-100">
-                    <Icon className="h-4 w-4 text-be-yellow-600" />
-                  </span>
-                  <span className="text-metadata font-semibold text-be-charcoal-950 uppercase tracking-wide">
-                    {item.label}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
+      {/* Product-specific trust strip — mat claims never appear on the membrane. */}
+      <div className="container-site page-horizontal-padding mt-10">
+        <ul className="flex flex-wrap gap-x-6 gap-y-3 rounded-lg border border-be-yellow-100 bg-be-yellow-50 px-5 py-4">
+          {product.trustPoints.map((point) => (
+            <li key={point} className="flex items-center gap-2">
+              <Shield className="size-4 shrink-0 text-be-yellow-600" />
+              <span className="text-metadata font-semibold uppercase tracking-wide text-be-charcoal-950">
+                {point}
+              </span>
+            </li>
+          ))}
+          {staticTrustIndicators.map((item) => {
+            const Icon = item.icon;
+            return (
+              <li key={item.label} className="flex items-center gap-2">
+                <Icon className="size-4 shrink-0 text-be-yellow-600" />
+                <span className="text-metadata font-semibold uppercase tracking-wide text-be-charcoal-950">
+                  {item.label}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </>
   );
 }

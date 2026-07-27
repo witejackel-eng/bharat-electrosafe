@@ -1,9 +1,16 @@
 /**
  * Product Data — Bharat Electrosafe
  *
- * Comprehensive data definitions for all 5 products.
- * Electrical insulating mat data verified against IS 15652:2006.
- * Engineered-product content corrected — no unsupported numeric claims.
+ * Comprehensive data definitions for all 5 product families.
+ *
+ * Every technical figure below is transcribed from the client's own product
+ * pages on bharatelectrosafe.com. The four insulating-mat families share one
+ * published specification table (IS 15652:2006, codes BES1001–BES1003), so
+ * that table is defined once and reused rather than re-typed per product —
+ * re-typing is how the old 650 V / 1100 V / 3300 V contradiction crept in.
+ *
+ * Nothing here may be strengthened beyond the source. Where the client
+ * publishes no figure, no figure is invented.
  */
 
 export interface QuickFact {
@@ -43,13 +50,67 @@ export interface Document {
   name: string;
   issuer: string;
   available: boolean;
+  /** Local path under /public when a genuine document exists. */
+  href?: string;
 }
+
+/**
+ * Real, locally-stored imagery for a product.
+ *
+ * Every path resolves to a file under /public/media/products. Components read
+ * images from here rather than picking their own, so a product shows the same
+ * photograph on the homepage card, its hero and any related-product tile.
+ */
+export interface ProductImages {
+  /** Homepage card and related-product tile. */
+  thumbnail: string;
+  /** Main product-page hero. */
+  hero: string;
+  /** Supporting close-ups and alternate genuine views. */
+  details: string[];
+  /** Wider context shot used beside the overview copy. */
+  overview?: string;
+  /** Genuine in-situ installation photograph, where one exists. */
+  application?: string;
+  /**
+   * Photographs taken in a real setting — installed, on the line, in a tunnel.
+   * These fill their frame. Every other image is an isolated product shot and
+   * is contained on white instead, so a coloured strip, a moulded marking or a
+   * cut edge is never cropped away by the frame's aspect ratio.
+   */
+  contextual?: string[];
+  /** Alt text, indexed by image path — never generic. */
+  alt: Record<string, string>;
+}
+
+/**
+ * Short trust statements rendered in the product hero strip.
+ *
+ * Per-product rather than global: the mat range is made under IS 15652:2006
+ * and a BIS licence, the geo-membrane is not. Applying one array to every
+ * product is how `IS 15652:2006 Certified` ended up on BharatMembrane.
+ */
+export const matTrustPoints: string[] = [
+  'IS 15652:2006',
+  'BIS Licence CM/L:8800129617',
+  'ERDA / NTH tested',
+  'Technical documentation available',
+];
+
+export const membraneTrustPoints: string[] = [
+  'IS 15909:2020',
+  'PVC geo-membrane',
+  'Thermally welded seams',
+  'Technical documentation available',
+];
 
 export interface ProductData {
   slug: string;
   name: string;
   shortName: string;
-  heroSlotId: string;
+  images: ProductImages;
+  /** Statements safe to show for this product specifically. */
+  trustPoints: string[];
   description: string;
   introduction: string;
   badges: string[];
@@ -67,467 +128,761 @@ export interface ProductData {
   relatedProducts: string[];
   classType?: 'A' | 'B' | 'C' | 'all' | 'membrane';
   hasDatasheet?: boolean;
-  images: {
-    thumbnail: string;
-    hero: string;
-    details: string[];
-    overview?: string;
-    application?: string;
-  };
 }
+
+/* ────────────────────────────────────────────
+   Shared insulating-mat technical data
+
+   Published identically on all four mat pages of the source site. Defined
+   once so the four products cannot drift apart.
+   ──────────────────────────────────────────── */
+
+const matSpecifications: SpecificationTable = {
+  headers: [
+    'Product Code',
+    'Class',
+    'Thickness',
+    'Working Voltage',
+    'AC Proof Voltage',
+    'Dielectric Strength',
+  ],
+  rows: [
+    ['BES1001', 'A', '2.0 mm', '3.3 kV', '10.0 kV', '30.0 kV'],
+    ['BES1002', 'B', '2.5 mm', '11.0 kV', '22.0 kV', '45.0 kV'],
+    ['BES1003', 'C', '3.0 mm', '33.0 kV', '36.0 kV', '65.0 kV'],
+  ],
+};
+
+const matMaterialProperties: MaterialProperty[] = [
+  {
+    label: 'Material Composition',
+    value:
+      'Elastomer free from any insertion — typically a combination of PVC and synthetic rubber polymers',
+  },
+  { label: 'Anti-skid Design', value: 'Coin, Dot, Hexa' },
+  { label: 'Tensile Strength (T.S.)', value: '15 N/mm² (min.)' },
+  { label: 'Elongation at Break (E.B.)', value: '250% (min.)' },
+  { label: 'Leakage Current', value: '10 mA (max.)' },
+  {
+    label: 'Insulation Resistance with Water',
+    value: '100,000 MΩ (min.) when tested at 500 V',
+  },
+  { label: 'Flame Retardance', value: 'Extinguishes within 5 seconds (max.)' },
+  {
+    label: 'Ageing Properties at 70 ± 1 °C for 168 hours',
+    value: 'T.S. and E.B. not less than 75% of original value',
+  },
+  {
+    label: 'Acid, Alkali and Oil Resistance',
+    value: 'T.S. and E.B. not less than 80% of original value',
+  },
+  { label: 'Working Temperature', value: '−10 °C to 55 °C' },
+];
+
+const matDimensions: Dimension[] = [
+  {
+    label: 'Standard Size',
+    value: '1.0 m wide × 10.0 m or 20 m long, in 2.0 mm, 2.5 mm and 3.0 mm',
+  },
+  { label: 'Custom Size', value: '1.0 m wide × length as per customer requirement' },
+  { label: 'Standard Colour', value: 'Black and blue, without metallic derivatives' },
+  {
+    label: 'Fixing at Site',
+    value: 'Site fixing undertaken along with materials, subject to minimum criteria',
+  },
+];
+
+const matInstallation: string[] = [
+  'Confirm the insulation class required for the working voltage at the installation',
+  'Clean and dry the floor before laying the mat',
+  'Cut to size from the 1.0 m wide roll — custom lengths are supplied to requirement',
+  'Lay flat with no wrinkles or air pockets, butt-joining adjacent sections tightly',
+  'Site fixing can be undertaken by Bharat Electrosafe along with the material, subject to minimum criteria',
+  'Inspect regularly for cuts, wear or embedded conductive debris',
+];
+
+/** Documents published on the source site. `available: false` means the client
+ *  has not released a public file for that item — the UI shows the label
+ *  without a download control rather than inventing one. */
+const matDocuments: Document[] = [
+  {
+    type: 'Test report',
+    name: 'ERDA test report — 2.5 mm insulating mat',
+    issuer: 'ERDA',
+    available: true,
+    href: '/documents/certifications/erda-test-report-2-5mm.pdf',
+  },
+  {
+    type: 'Certificate',
+    name: 'ISO 9001:2015 — Quality Management System',
+    issuer: 'Certification body',
+    available: true,
+    href: '/documents/certifications/iso-9001-2015-qms.pdf',
+  },
+  {
+    type: 'Licence',
+    name: 'BIS Licence CM/L:8800129617 — IS 15652:2006',
+    issuer: 'Bureau of Indian Standards',
+    available: false,
+  },
+  {
+    type: 'Datasheet',
+    name: 'Product datasheet — available on request',
+    issuer: 'Bharat Electrosafe',
+    available: false,
+  },
+];
 
 /* ────────────────────────────────────────────
    Product 1: Electrical Insulating Mats
    ──────────────────────────────────────────── */
 
+const EIM = '/media/products/electrical-insulating-mats';
+
 const electricalInsulatingMats: ProductData = {
   slug: 'electrical-insulating-mats',
   name: 'Electrical Insulating Mats',
   shortName: 'EIM',
-  heroSlotId: 'PRODUCT-EIM-HERO-01',
+  images: {
+    thumbnail: `${EIM}/photo-plain-01.webp`,
+    hero: `${EIM}/photo-coin-01.webp`,
+    details: [
+      `${EIM}/gallery-04.webp`,
+      `${EIM}/photo-iec-01.webp`,
+      `${EIM}/photo-hexa-02.webp`,
+      `${EIM}/photo-surface-01.webp`,
+    ],
+    overview: `${EIM}/photo-plain-01.webp`,
+    contextual: [`${EIM}/photo-plain-01.webp`],
+    alt: {
+      [`${EIM}/photo-coin-01.webp`]:
+        'Blue coin-pattern electrical insulating mat sheet showing the raised anti-skid coins',
+      [`${EIM}/gallery-04.webp`]:
+        'Embossed panel on a grey coin-pattern mat reading High Voltage Insulating Mats, Made in Bharat, with the IS 15652 and CM/L:8800129617 marks',
+      [`${EIM}/photo-iec-01.webp`]:
+        'Yellow surface marking reading Bharat Electrosafe Insulating Mat, IEC 61111/2009 Class 2, with the rated use, proof and withstand voltages',
+      [`${EIM}/photo-hexa-02.webp`]:
+        'Navy hexa-pattern insulating mat sheet showing the raised anti-skid hexagons',
+      [`${EIM}/photo-surface-01.webp`]:
+        'Black diamond-textured insulating mat sheet laid flat',
+      [`${EIM}/photo-plain-01.webp`]:
+        'Fanned stack of coin- and dot-pattern insulating mats in yellow, orange, grey, blue, red and black',
+    },
+  },
+  trustPoints: matTrustPoints,
   description:
-    'IS 15652:2006 certified Class A, B & C electrical insulating mats providing voltage-rated protection for control panels, substations and industrial environments.',
+    'Class A, B and C electrical insulating mats manufactured for IS 15652:2006 requirements, under BIS Licence CM/L:8800129617, for control panels, substations and industrial floors.',
   introduction:
-    'Bharat Electrosafe Electrical Insulating Mats are manufactured to IS 15652:2006 standards and certified by BIS. Available in Class A (650V), Class B (1100V), and Class C (3300V), these mats provide essential electrical insulation protection for operators working near live equipment in control panels, substations, and switchrooms.',
-  badges: ['IS 15652:2006', 'Class A/B/C', 'BIS Certified'],
+    'Bharat Electrosafe Electrical Insulating Mats are manufactured for IS 15652:2006 requirements under BIS Licence CM/L:8800129617. Class A, Class B and Class C cover working voltages of 3.3 kV, 11 kV and 33 kV respectively, giving operators an insulating barrier at floor level around AC and DC control panels, substations and switchrooms. Every metre carries the ISI marking, and the range is supported by ERDA / NTH test documentation.',
+  badges: ['IS 15652:2006', 'CM/L:8800129617', 'Class A / B / C', 'ISI marked'],
   quickFacts: [
-    { icon: 'zap', label: 'Voltage Rating', value: '650V – 3300V' },
-    { icon: 'ruler', label: 'Thickness', value: '2mm – 5mm' },
+    { icon: 'zap', label: 'Working voltage', value: '3.3 kV – 33 kV' },
+    { icon: 'ruler', label: 'Thickness', value: '2.0 – 3.0 mm' },
     { icon: 'award', label: 'Standard', value: 'IS 15652:2006' },
   ],
   overviewText:
-    'Designed for maximum operator safety in high-voltage environments, our Electrical Insulating Mats create a reliable insulating barrier between the operator and the floor. Each class is tested to rigorous voltage standards, ensuring compliance with Indian and international safety requirements. The mats are available in multiple surface patterns for anti-slip performance and can be custom-cut to fit any installation.',
+    'Engineered to meet IS 15652:2006, these mats create a reliable insulating barrier between the operator and the floor in high-voltage environments. The elastomer compound is free from any insertion and resists water, oil and chemical exposure, while coin, dot and hexa anti-skid surfaces keep footing secure. Mats are supplied 1.0 m wide in 10 m and 20 m rolls, or cut to a length you specify, in black and blue without metallic derivatives.',
   keyBenefits: [
-    { icon: 'shield', text: 'Voltage-rated protection compliant with IS 15652:2006' },
-    { icon: 'layers', text: 'Multiple class options — A, B and C — for varying voltage environments' },
-    { icon: 'settings', text: 'Custom dimensions available for any installation requirement' },
-    { icon: 'badge-check', text: 'BIS certified and independently tested for breakdown voltage' },
+    {
+      icon: 'shield',
+      text: 'High dielectric strength — 30 kV, 45 kV and 65 kV for Classes A, B and C',
+    },
+    {
+      icon: 'layers',
+      text: 'Three thickness options — 2.0 mm, 2.5 mm and 3.0 mm — to suit the working voltage',
+    },
+    {
+      icon: 'grip',
+      text: 'Coin, dot and hexa anti-skid surfaces for stable footing',
+    },
+    {
+      icon: 'flame',
+      text: 'Flame retardant — extinguishes within 5 seconds — and resistant to water, oil and chemicals',
+    },
+    {
+      icon: 'badge-check',
+      text: 'ISI marking on every metre, with ERDA / NTH test documentation',
+    },
   ],
-  specifications: {
-    headers: ['Property', 'Class A (BES1001)', 'Class B (BES1002)', 'Class C (BES1003)'],
-    rows: [
-      ['Working Voltage', '3.3 KV', '11.0 KV', '33.0 KV'],
-      ['AC Proof Voltage', '10.0 KV', '22.0 KV', '36.0 KV'],
-      ['Dielectric Strength', '30.0 KV', '45.0 KV', '65.0 KV'],
-      ['Thickness', '2.0 mm', '2.5 mm', '3.0 mm'],
-      ['Width', '1 metre', '1 metre', '1 metre'],
-      ['Lengths', '10 m / 20 m', '10 m / 20 m', '10 m / 20 m'],
-      ['Standard Colours', 'Black, Blue', 'Black, Blue', 'Black, Blue'],
-      ['Surface Patterns', 'Coin, Dot, Hexa', 'Coin, Dot, Hexa', 'Coin, Dot, Hexa'],
-    ],
-  },
-  materialProperties: [
-    { label: 'Base Material', value: 'Elastomer compound (PVC / Rubber blend)' },
-    { label: 'Insulation Grade', value: 'Class A / B / C per IS 15652:2006' },
-    { label: 'Tensile Strength (min)', value: '15 N/mm²' },
-    { label: 'Elongation at Break (min)', value: '250%' },
-    { label: 'Leakage Current (max)', value: '10 mA' },
-    { label: 'Insulation Resistance @ 500 V (min)', value: '100,000 MΩ' },
-    { label: 'Flame Extinguishing (max)', value: '5 seconds' },
-    { label: 'Operating Temperature', value: '−10 °C to 55 °C' },
-  ],
-  dimensions: [
-    { label: 'Standard Width', value: '1 metre' },
-    { label: 'Standard Lengths', value: '10 m and 20 m rolls' },
-    { label: 'Thickness — Class A', value: '2.0 mm' },
-    { label: 'Thickness — Class B', value: '2.5 mm' },
-    { label: 'Thickness — Class C', value: '3.0 mm' },
-    { label: 'Custom Dimensions', value: 'Available on request' },
-  ],
+  specifications: matSpecifications,
+  materialProperties: matMaterialProperties,
+  dimensions: matDimensions,
   colors: ['Black', 'Blue'],
   surfacePatterns: ['Coin', 'Dot', 'Hexa'],
-  installation: [
-    'Clean and dry the floor surface before laying',
-    'Cut to required dimensions using a sharp utility knife',
-    'Lay flat ensuring no wrinkles or air pockets',
-    'Butt-join adjacent mats tightly with no gaps',
-    'Seal joints with compatible insulating tape for continuous coverage',
-    'Inspect regularly for wear, cuts, or embedded conductive debris',
-  ],
+  installation: matInstallation,
   applications: [
-    { icon: 'panel-top', name: 'Control Panels', description: 'Insulation for operators standing near live switchgear and control panels' },
-    { icon: 'factory', name: 'Substations', description: 'Floor-level protection in power distribution substations' },
-    { icon: 'door-open', name: 'Switchrooms', description: 'Safe operating zones within electrical switchrooms' },
-    { icon: 'plug', name: 'Power Utilities', description: 'Protection in utility maintenance and repair environments' },
-    { icon: 'hard-hat', name: 'Industrial Floors', description: 'General insulation for manufacturing floors with live equipment' },
+    {
+      icon: 'panel-top',
+      name: 'AC & DC Control Panels',
+      description: 'Insulation for operators working at live control and switchgear panels',
+    },
+    {
+      icon: 'factory',
+      name: 'Substations',
+      description: 'Floor-level protection in power generation and distribution substations',
+    },
+    {
+      icon: 'door-open',
+      name: 'Switchrooms',
+      description: 'Safe operating zones inside electrical switchrooms',
+    },
+    {
+      icon: 'plug',
+      name: 'Power Utilities',
+      description: 'Protection during utility maintenance and repair work',
+    },
+    {
+      icon: 'hard-hat',
+      name: 'Industrial Floors',
+      description: 'General floor insulation on plant floors with live equipment',
+    },
   ],
-  documents: [
-    { type: 'Datasheet', name: 'Electrical Insulating Mats — Product Datasheet', issuer: 'Bharat Electrosafe', available: false },
-    { type: 'Certificate', name: 'BIS Certification — IS 15652:2006', issuer: 'Bureau of Indian Standards', available: false },
-    { type: 'Test Report', name: 'Type Test Report — Class A/B/C', issuer: 'NABL Accredited Lab', available: false },
-    { type: 'Installation Guide', name: 'Installation & Maintenance Guide', issuer: 'Bharat Electrosafe', available: false },
+  documents: matDocuments,
+  relatedProducts: [
+    'coloured-strip-insulating-mats',
+    'bi-color-insulating-mats',
+    'auto-glow-reflective-band-insulating-mats',
   ],
-  relatedProducts: ['coloured-strip-insulating-mats', 'bi-color-insulating-mats', 'auto-glow-reflective-band-insulating-mats'],
   classType: 'all',
   hasDatasheet: false,
-  images: {
-    thumbnail: '/media/products/electrical-insulating-mats/gallery-01.webp',
-    hero: '/media/products/electrical-insulating-mats/hero.webp',
-    details: ['/media/products/electrical-insulating-mats/gallery-02.webp', '/media/products/electrical-insulating-mats/gallery-03.webp'],
-    overview: '/media/products/electrical-insulating-mats/gallery-04.webp',
-    application: '/media/products/electrical-insulating-mats/gallery-05.webp',
-  },
 };
 
 /* ────────────────────────────────────────────
    Product 2: Coloured Strip Insulating Mats
    ──────────────────────────────────────────── */
 
+const CSIM = '/media/products/coloured-strip-insulating-mats';
+
 const colouredStripInsulatingMats: ProductData = {
   slug: 'coloured-strip-insulating-mats',
   name: 'Coloured Strip Insulating Mats',
   shortName: 'CSIM',
-  heroSlotId: 'PRODUCT-CSIM-HERO-01',
+  images: {
+    thumbnail: `${CSIM}/photo-strip-04.webp`,
+    hero: `${CSIM}/photo-strip-05.webp`,
+    details: [
+      `${CSIM}/photo-strip-01.webp`,
+      `${CSIM}/photo-strip-03.webp`,
+      `${CSIM}/photo-strip-02.webp`,
+    ],
+    overview: `${CSIM}/photo-strip-04.webp`,
+    application: `${CSIM}/photo-strip-05.webp`,
+    contextual: [`${CSIM}/photo-strip-05.webp`],
+    alt: {
+      [`${CSIM}/photo-strip-05.webp`]:
+        'Blue coin-pattern insulating mat with bright yellow edge strips running the full length, coming off the production line',
+      [`${CSIM}/photo-strip-04.webp`]:
+        'Black dot-pattern insulating mat sheet with a bright yellow marking strip across the centre',
+      [`${CSIM}/photo-strip-01.webp`]:
+        'Corner of a black dot-pattern insulating mat with a bright yellow strip running through it',
+      [`${CSIM}/photo-strip-03.webp`]:
+        'Cut sheet of black dot-pattern insulating mat with a yellow strip, viewed at an angle',
+      [`${CSIM}/photo-strip-02.webp`]:
+        'Close view of the yellow marking strip moulded into the black insulating mat surface',
+    },
+  },
+  trustPoints: matTrustPoints,
   description:
-    'IS 15652:2006 certified coloured strip insulating mats for hazard zone boundary marking and walkway safety demarcation in electrical environments.',
+    'IS 15652:2006 insulating mats with high-visibility coloured strips that mark safe pathways and hazard-zone boundaries around live electrical installations.',
   introduction:
-    'Bharat Electrosafe Coloured Strip Insulating Mats combine electrical insulation with visual safety demarcation. Designed per IS 15652:2006, these strip-format mats create clearly visible hazard zone boundaries around live equipment, walkway edges, and restricted areas — providing both voltage-rated protection and colour-coded safety guidance.',
-  badges: ['IS 15652:2006', 'Boundary Marking', 'BIS Certified'],
+    'Clear demarcation of hazardous zones is essential in preventing accidents. Coloured Strip Insulating Mats are manufactured for IS 15652:2006 requirements under BIS Licence CM/L:8800129617, with bold coloured markings that act as visual guides — creating safe pathways around high-risk electrical installations while delivering the same Class A, B and C insulation as the standard range.',
+  badges: ['IS 15652:2006', 'CM/L:8800129617', 'Boundary marking', 'ISI marked'],
   quickFacts: [
-    { icon: 'palette', label: 'Strip Config', value: 'Colour-coded strips' },
-    { icon: 'zap', label: 'Voltage Class', value: 'A / B / C' },
-    { icon: 'road', label: 'Application', value: 'Hazard zone marking' },
+    { icon: 'palette', label: 'Marking', value: 'High-visibility strip' },
+    { icon: 'zap', label: 'Working Voltage', value: '3.3 kV – 33 kV' },
+    { icon: 'route', label: 'Purpose', value: 'Hazard zone marking' },
   ],
   overviewText:
-    'In busy electrical environments, clear visual demarcation is as important as insulation. Our Coloured Strip Insulating Mats use contrasting strip configurations to define safe walkways, equipment perimeters, and restricted zones. The colour-coded strips make safety boundaries immediately visible to operators, reducing the risk of accidental contact with live equipment while maintaining full electrical insulation performance.',
+    'A vivid strip provides immediate visual cues for navigating safely around electrical panels and machinery. The strip is built into the same elastomer body as the standard mat, so demarcation costs nothing in insulation performance: anti-slip texturing keeps footing stable in high-traffic areas, and the compound resists moisture, oil and corrosive chemicals. Thickness is selected to match the working voltage, exactly as for the standard range.',
   keyBenefits: [
-    { icon: 'map', text: 'Clear hazard zone marking with colour-coded strip boundaries' },
-    { icon: 'palette', text: 'Colour-coded safety boundaries — yellow, red, green configurations' },
-    { icon: 'settings-2', text: 'Strip configuration options for varied boundary widths' },
-    { icon: 'wrench', text: 'Easy installation alongside full-width mats or standalone' },
+    {
+      icon: 'eye',
+      text: 'High-visibility markings give immediate visual cues around panels and machinery',
+    },
+    {
+      icon: 'layers',
+      text: 'Thickness selected to match the voltage application — 2.0 mm, 2.5 mm or 3.0 mm',
+    },
+    {
+      icon: 'grip',
+      text: 'Anti-slip texture holds footing in high-traffic industrial areas',
+    },
+    {
+      icon: 'droplets',
+      text: 'Elastomeric compound resists moisture, oil and corrosive chemicals',
+    },
+    {
+      icon: 'flame',
+      text: 'Flame retardant, adding a further layer of protection',
+    },
   ],
-  specifications: {
-    headers: ['Property', 'Class A', 'Class B', 'Class C'],
-    rows: [
-      ['Working Voltage', '650V AC', '1100V AC', '3300V AC'],
-      ['Strip Width', '100mm – 300mm', '100mm – 300mm', '100mm – 300mm'],
-      ['Testing Voltage', '3.5kV AC', '6.5kV AC', '15kV AC'],
-      ['Thickness (mm)', '2.0', '3.0', '5.0'],
-      ['Strip Colours', 'Yellow / Red / Green', 'Yellow / Red / Green', 'Yellow / Red / Green'],
-      ['Background Colour', 'Black', 'Black', 'Black'],
-      ['Operating Temp.', '–20°C to 70°C', '–20°C to 70°C', '–20°C to 70°C'],
-    ],
-  },
-  materialProperties: [
-    { label: 'Base Material', value: 'Elastomer compound (PVC / Rubber blend)' },
-    { label: 'Insulation Grade', value: 'Class A / B / C per IS 15652:2006' },
-    { label: 'Strip Pattern', value: 'Contrasting colour strips on black base' },
-    { label: 'Colour Fastness', value: 'High — UV-stable pigments' },
-    { label: 'Tensile Strength', value: '≥ 6 MPa' },
-    { label: 'Oil Resistance', value: 'Excellent' },
-    { label: 'Operating Temperature', value: '–20°C to 70°C' },
-  ],
-  dimensions: [
-    { label: 'Strip Widths', value: '100mm, 150mm, 200mm, 300mm' },
-    { label: 'Roll Length', value: 'Custom up to 20m' },
-    { label: 'Thickness — Class A', value: '2mm' },
-    { label: 'Thickness — Class B', value: '3mm' },
-    { label: 'Thickness — Class C', value: '5mm' },
-    { label: 'Custom Strip Widths', value: 'Available on request' },
-  ],
-  colors: ['Yellow on Black', 'Red on Black', 'Green on Black', 'Dual-colour strips'],
-  surfacePatterns: ['Strip configuration', 'Chequered base with strip overlay', 'Plain with strip inset'],
+  specifications: matSpecifications,
+  materialProperties: matMaterialProperties,
+  dimensions: matDimensions,
+  colors: ['Black with yellow strip', 'Blue with yellow strip'],
+  surfacePatterns: ['Coin', 'Dot', 'Hexa'],
   installation: [
-    'Plan strip layout to match hazard zone boundaries',
-    'Cut strips to required lengths for perimeter marking',
-    'Align strip edges precisely for clean visual demarcation',
-    'Adhere or butt-join to adjacent full-width mats',
-    'Use insulating tape at strip junction points',
-    'Inspect strip colour visibility regularly — replace if faded',
+    'Plan the strip layout so markings follow the hazard-zone boundary or walkway edge',
+    'Cut to length from the 1.0 m wide roll, keeping the strip continuous along the run',
+    'Clean and dry the floor before laying',
+    'Butt-join adjacent sections so the strip line reads unbroken',
+    'Site fixing can be undertaken by Bharat Electrosafe along with the material, subject to minimum criteria',
+    'Inspect regularly for wear and for loss of strip visibility',
   ],
   applications: [
-    { icon: 'triangle-alert', name: 'Hazard Zone Marking', description: 'Visible boundaries around high-voltage equipment and restricted areas' },
-    { icon: 'footprints', name: 'Walkway Boundaries', description: 'Colour-coded safe walkway edges in substations and switchrooms' },
-    { icon: 'box', name: 'Equipment Perimeter', description: 'Perimeter marking around switchgear, transformers and control panels' },
-    { icon: 'route', name: 'Substation Pathways', description: 'Defined safe pathways through substation layouts' },
-    { icon: 'shield-check', name: 'Industrial Safety Zones', description: 'Safety zone demarcation on manufacturing floors with live equipment' },
+    {
+      icon: 'triangle-alert',
+      name: 'Hazard Zone Marking',
+      description: 'Visible boundaries around high-voltage equipment and restricted areas',
+    },
+    {
+      icon: 'footprints',
+      name: 'Walkway Boundaries',
+      description: 'Marked safe walkway edges in substations and switchrooms',
+    },
+    {
+      icon: 'box',
+      name: 'Equipment Perimeter',
+      description: 'Perimeter marking around switchgear, transformers and control panels',
+    },
+    {
+      icon: 'route',
+      name: 'Substation Pathways',
+      description: 'Defined safe routes through substation layouts',
+    },
+    {
+      icon: 'shield-check',
+      name: 'Industrial Safety Zones',
+      description: 'Zone demarcation on plant floors with live equipment',
+    },
   ],
-  documents: [
-    { type: 'Datasheet', name: 'Coloured Strip Insulating Mats — Product Datasheet', issuer: 'Bharat Electrosafe', available: false },
-    { type: 'Certificate', name: 'BIS Certification — IS 15652:2006', issuer: 'Bureau of Indian Standards', available: false },
-    { type: 'Test Report', name: 'Type Test Report — Strip Configuration', issuer: 'NABL Accredited Lab', available: false },
-    { type: 'Installation Guide', name: 'Installation Guide — Strip Mat Layouts', issuer: 'Bharat Electrosafe', available: false },
+  documents: matDocuments,
+  relatedProducts: [
+    'electrical-insulating-mats',
+    'bi-color-insulating-mats',
+    'auto-glow-reflective-band-insulating-mats',
   ],
-  relatedProducts: ['electrical-insulating-mats', 'bi-color-insulating-mats', 'auto-glow-reflective-band-insulating-mats'],
   classType: 'all',
   hasDatasheet: false,
-  images: {
-    thumbnail: '/media/products/coloured-strip-insulating-mats/gallery-01.webp',
-    hero: '/media/products/coloured-strip-insulating-mats/hero.webp',
-    details: ['/media/products/coloured-strip-insulating-mats/gallery-02.webp'],
-    overview: '/media/products/coloured-strip-insulating-mats/gallery-03.webp',
-  },
 };
 
 /* ────────────────────────────────────────────
    Product 3: Bi-Color Insulating Mats
    ──────────────────────────────────────────── */
 
+const BCIM = '/media/products/bi-color-insulating-mats';
+
 const biColorInsulatingMats: ProductData = {
   slug: 'bi-color-insulating-mats',
   name: 'Bi-Color Insulating Mats',
   shortName: 'BCIM',
-  heroSlotId: 'PRODUCT-BCIM-DIAGRAM-01',
+  images: {
+    thumbnail: `${BCIM}/gallery-01.webp`,
+    hero: `${BCIM}/gallery-03.webp`,
+    details: [`${BCIM}/gallery-02.webp`],
+    overview: `${BCIM}/hero.webp`,
+    alt: {
+      [`${BCIM}/gallery-01.webp`]:
+        'Blue coin-pattern bi-color insulating mat with the contrasting red under-layer visible along the cut edge',
+      [`${BCIM}/gallery-03.webp`]:
+        'Separated view of a bi-color insulating mat showing the blue coin-pattern top layer above the red bottom layer',
+      [`${BCIM}/gallery-02.webp`]:
+        'Bi-color insulating mat with magnified callouts on the two-tone edge where the red layer meets the blue surface',
+      [`${BCIM}/hero.webp`]:
+        'Cross-section diagram of a bi-color mat showing a 0.5 mm top layer over a PVC bottom layer, with a scriber revealing the colour change',
+    },
+  },
+  trustPoints: matTrustPoints,
   description:
-    'IS 15652:2006 certified bi-color insulating mats with wear-visible contrasting layers that signal when mat integrity needs inspection.',
+    'IS 15652:2006 insulating mats built in two contrasting layers, so mechanical damage to the surface shows as a colour change and signals that the mat should be replaced.',
   introduction:
-    'Bharat Electrosafe Bi-Color Insulating Mats feature a dual-layer construction with contrasting top and bottom colours. As the mat wears over time, the underlying contrasting colour becomes visible, providing an immediate visual signal that the mat has reached a wear threshold and should be inspected or replaced. This built-in wear detection system eliminates guesswork and ensures continuous electrical safety.',
-  badges: ['IS 15652:2006', 'Wear Detection', 'BIS Certified'],
+    'Where functionality meets visual innovation, Bi-Color Insulating Mats pair full IS 15652:2006 insulation with a two-tone construction. The two colours and two layers serve the purpose of mechanical damage indication: when the contrasting colour becomes visible on the surface, that is the hint to replace the mat. Manufactured under BIS Licence CM/L:8800129617.',
+  badges: ['IS 15652:2006', 'CM/L:8800129617', 'Damage indication', 'ISI marked'],
   quickFacts: [
-    { icon: 'eye', label: 'Wear Visible', value: 'Contrasting dual layers' },
-    { icon: 'zap', label: 'Voltage Class', value: 'A / B / C' },
-    { icon: 'clock', label: 'Service Life', value: 'Visual wear indication' },
+    { icon: 'eye', label: 'Damage Indication', value: 'Visible colour change' },
+    { icon: 'layers', label: 'Top Layer', value: '0.5 mm' },
+    { icon: 'zap', label: 'Working Voltage', value: '3.3 kV – 33 kV' },
   ],
   overviewText:
-    'In safety-critical installations, knowing when an insulating mat has worn thin is vital. Our Bi-Color Insulating Mats solve this with a two-layer construction — a dark top surface over a bright contrasting under-layer. When wear reveals the contrasting colour, operators and maintenance teams know immediately that the mat needs inspection or replacement. No special tools, no guesswork — just visible, reliable wear monitoring built into the product itself.',
+    'A sophisticated two-tone scheme does more than look considered — it makes wear legible. The mat is built as a 0.5 mm top layer over a PVC bottom layer in a contrasting colour. Any cut, gouge or abrasion that reaches through the top layer exposes the colour beneath, so damage that would be invisible on a single-colour mat is obvious at a glance during a walk-round. Dielectric strength, anti-skid embossing and chemical resistance match the standard range.',
   keyBenefits: [
-    { icon: 'eye', text: 'Wear-visible dual layers provide immediate visual indication of mat thinning' },
-    { icon: 'contrast', text: 'Contrasting colour detection — dark surface reveals bright under-layer at wear threshold' },
-    { icon: 'timer', text: 'Extended service life indication — proactive replacement before safety compromise' },
-    { icon: 'activity', text: 'Layer integrity monitoring without special tools or instruments' },
+    {
+      icon: 'eye',
+      text: 'Dual-tone design indicates mechanical damage and marks safety boundaries clearly',
+    },
+    {
+      icon: 'shield',
+      text: 'High dielectric strength maintained around high-voltage equipment',
+    },
+    {
+      icon: 'grip',
+      text: 'Anti-skid embossed surface provides secure footing in demanding environments',
+    },
+    {
+      icon: 'droplets',
+      text: 'Advanced elastomer compound resists moisture, oil and chemicals',
+    },
   ],
-  specifications: {
-    headers: ['Property', 'Class A', 'Class B', 'Class C'],
-    rows: [
-      ['Working Voltage', '650V AC', '1100V AC', '3300V AC'],
-      ['Testing Voltage', '3.5kV AC', '6.5kV AC', '15kV AC'],
-      ['Breakdown Voltage', '≥ 10kV', '≥ 20kV', '≥ 40kV'],
-      ['Total Thickness (mm)', '2.5', '3.5', '5.5'],
-      ['Top Layer Colour', 'Black / Grey', 'Black / Grey', 'Black / Grey'],
-      ['Bottom Layer Colour', 'Yellow / Red', 'Yellow / Red', 'Yellow / Red'],
-      ['Wear Indicator Depth', '0.5mm remaining', '0.5mm remaining', '0.5mm remaining'],
-      ['Operating Temp.', '–20°C to 70°C', '–20°C to 70°C', '–20°C to 70°C'],
-    ],
-  },
+  specifications: matSpecifications,
   materialProperties: [
-    { label: 'Base Material', value: 'Dual-layer elastomer compound' },
-    { label: 'Top Layer', value: 'Black/Grey — primary insulating surface' },
-    { label: 'Bottom Layer', value: 'Yellow/Red — contrasting wear indicator' },
-    { label: 'Insulation Grade', value: 'Class A / B / C per IS 15652:2006' },
-    { label: 'Layer Bonding', value: 'Vulcanised bond — no delamination' },
-    { label: 'Tensile Strength', value: '≥ 6 MPa' },
-    { label: 'Operating Temperature', value: '–20°C to 70°C' },
+    {
+      label: 'Construction',
+      value: '0.5 mm top layer over a PVC bottom layer in a contrasting colour',
+    },
+    {
+      label: 'Purpose of the Two Layers',
+      value:
+        'Mechanical damage indication — a visible colour change on the surface signals replacement',
+    },
+    ...matMaterialProperties,
   ],
-  dimensions: [
-    { label: 'Standard Widths', value: '1000mm, 1200mm' },
-    { label: 'Standard Lengths', value: 'Custom roll lengths up to 20m' },
-    { label: 'Thickness — Class A', value: '2.5mm (dual layer)' },
-    { label: 'Thickness — Class B', value: '3.5mm (dual layer)' },
-    { label: 'Thickness — Class C', value: '5.5mm (dual layer)' },
-    { label: 'Wear Indicator Threshold', value: 'Contrast visible at 0.5mm remaining' },
-  ],
-  colors: ['Black/Yellow', 'Grey/Red', 'Black/Orange', 'Custom combinations'],
-  surfacePatterns: ['Chequered top surface', 'Ribbed top surface', 'Plain top surface'],
+  dimensions: matDimensions,
+  colors: ['Blue over red', 'Grey over blue', 'Other combinations to order'],
+  surfacePatterns: ['Coin', 'Dot', 'Hexa'],
   installation: [
-    'Lay on clean, dry floor as with standard insulating mats',
-    'Ensure the contrasting bottom layer is fully covered at installation',
-    'If contrasting colour appears at any point, schedule inspection immediately',
-    'Do not attempt to repair worn spots — replace the mat section',
-    'Regular visual inspection — check for contrasting colour showing through',
-    'Document wear observations in maintenance log for lifecycle tracking',
+    'Lay on a clean, dry floor as with standard insulating mats',
+    'Cut to length from the 1.0 m wide roll',
+    'Butt-join adjacent sections tightly with no gaps',
+    'During inspection, look for the contrasting colour showing through the top surface',
+    'Replace any section where the colour change is visible — do not attempt a repair',
+    'Site fixing can be undertaken by Bharat Electrosafe along with the material, subject to minimum criteria',
   ],
   applications: [
-    { icon: 'hammer', name: 'Heavy-Wear Environments', description: 'Areas with high foot traffic or equipment movement causing accelerated mat wear' },
-    { icon: 'shield-alert', name: 'Safety-Critical Installations', description: 'Substations and switchrooms where mat integrity must be continuously verified' },
-    { icon: 'clipboard-check', name: 'Maintenance Monitoring', description: 'Facilities with scheduled maintenance regimes needing visual wear indicators' },
-    { icon: 'factory', name: 'Substation Flooring', description: 'Power distribution substations requiring ongoing mat condition assessment' },
-    { icon: 'footprints', name: 'Industrial Walkways', description: 'Busy industrial walkways where operators need assurance of mat thickness' },
+    {
+      icon: 'hammer',
+      name: 'Heavy-Wear Environments',
+      description: 'Areas with high foot traffic or equipment movement that abrades the surface',
+    },
+    {
+      icon: 'shield-alert',
+      name: 'Safety-Critical Installations',
+      description: 'Substations and switchrooms where mat condition must be verifiable on sight',
+    },
+    {
+      icon: 'clipboard-check',
+      name: 'Maintenance Monitoring',
+      description: 'Facilities running scheduled inspection regimes',
+    },
+    {
+      icon: 'factory',
+      name: 'Substation Flooring',
+      description: 'Distribution substations needing ongoing condition assessment',
+    },
+    {
+      icon: 'footprints',
+      name: 'Industrial Walkways',
+      description: 'Busy walkways where operators need assurance the mat is intact',
+    },
   ],
-  documents: [
-    { type: 'Datasheet', name: 'Bi-Color Insulating Mats — Product Datasheet', issuer: 'Bharat Electrosafe', available: false },
-    { type: 'Certificate', name: 'BIS Certification — IS 15652:2006', issuer: 'Bureau of Indian Standards', available: false },
-    { type: 'Test Report', name: 'Type Test Report — Bi-Color Layer Integrity', issuer: 'NABL Accredited Lab', available: false },
-    { type: 'Installation Guide', name: 'Installation & Wear Monitoring Guide', issuer: 'Bharat Electrosafe', available: false },
+  documents: matDocuments,
+  relatedProducts: [
+    'electrical-insulating-mats',
+    'coloured-strip-insulating-mats',
+    'auto-glow-reflective-band-insulating-mats',
   ],
-  relatedProducts: ['electrical-insulating-mats', 'coloured-strip-insulating-mats', 'auto-glow-reflective-band-insulating-mats'],
   classType: 'all',
   hasDatasheet: false,
-  images: {
-    thumbnail: '/media/products/bi-color-insulating-mats/gallery-01.webp',
-    hero: '/media/products/bi-color-insulating-mats/hero.webp',
-    details: ['/media/products/bi-color-insulating-mats/gallery-02.webp'],
-  },
 };
 
 /* ────────────────────────────────────────────
    Product 4: Auto-Glow / Reflective Band Mats
    ──────────────────────────────────────────── */
 
+const AGRIM = '/media/products/auto-glow-reflective-band';
+
 const autoGlowReflectiveBandMats: ProductData = {
   slug: 'auto-glow-reflective-band-insulating-mats',
   name: 'Auto-Glow / Reflective Band Insulating Mats',
   shortName: 'AGRIM',
-  heroSlotId: 'PRODUCT-AGRIM-LOWLIGHT-01',
+  images: {
+    thumbnail: `${AGRIM}/photo-01.webp`,
+    /* Normal-light product first — the glow is evidenced further down the
+       gallery by a real low-light photograph, not by a rendered scene. */
+    hero: `${AGRIM}/photo-03.webp`,
+    details: [
+      `${AGRIM}/photo-04.webp`,
+      `${AGRIM}/photo-02.webp`,
+      `${AGRIM}/photo-05.webp`,
+    ],
+    overview: `${AGRIM}/photo-06.webp`,
+    application: `${AGRIM}/photo-02.webp`,
+    alt: {
+      [`${AGRIM}/photo-03.webp`]:
+        'Auto-glow band insulating mat sheet in normal light, marked IS 15652-2006 Class C, voltage up to 33 kV, with the pale glow band between orange dot-pattern sections',
+      [`${AGRIM}/photo-01.webp`]:
+        'Auto-glow band mat sample in daylight, showing the green, orange and pale glow-band sections side by side',
+      [`${AGRIM}/photo-04.webp`]:
+        'Band construction across an auto-glow mat sample, with the raised dot pattern continuing through the glow band',
+      [`${AGRIM}/photo-02.webp`]:
+        'The same mat sample in a darkened room, its band emitting bright green light',
+      [`${AGRIM}/photo-05.webp`]:
+        'Close view along the auto-glow band where it meets the orange dot-pattern mat surface',
+      [`${AGRIM}/photo-06.webp`]:
+        'Raised dot anti-skid texture running across the glow band of an auto-glow insulating mat',
+    },
+  },
+  trustPoints: matTrustPoints,
   description:
-    'IS 15652:2006 certified insulating mats with auto-glow and reflective band variants for emergency pathway guidance in low-light electrical environments.',
+    'IS 15652:2006 insulating mats with auto-glow or reflective bands that keep walkways and hazard zones visible when normal lighting fails.',
   introduction:
-    'Bharat Electrosafe Auto-Glow and Reflective Band Insulating Mats provide two critical functions: electrical insulation per IS 15652:2006 and emergency pathway guidance in low-light conditions. The Auto-Glow variant stores ambient light and emits a visible glow during darkness, while the Reflective Band variant bounces external light sources for immediate visibility. Both variants ensure operators can locate safe pathways even during power outages or in poorly lit environments.',
-  badges: ['IS 15652:2006', 'Auto-Glow', 'Reflective', 'BIS Certified'],
+    'When the lights go out, safety should never fade. Auto-Glow Band Insulating Mats carry a glow-in-the-dark band that illuminates pathways in emergency situations. Reflective Band Insulating Mats instead integrate high-visibility reflective strips into the same robust insulating platform. Both variants are manufactured for IS 15652:2006 requirements under BIS Licence CM/L:8800129617 and retain full dielectric strength.',
+  badges: ['IS 15652:2006', 'CM/L:8800129617', 'Auto-glow', 'Reflective band'],
   quickFacts: [
-    { icon: 'sun', label: 'Auto-Glow', value: 'Self-illuminating pathway' },
-    { icon: 'mirror', label: 'Reflective', value: 'Light-bounce visibility' },
-    { icon: 'zap', label: 'Voltage Class', value: 'A / B / C' },
+    { icon: 'sun', label: 'Auto-Glow', value: 'Glow-in-the-dark band' },
+    { icon: 'scan-eye', label: 'Reflective', value: 'High-visibility band' },
+    { icon: 'zap', label: 'Working Voltage', value: '3.3 kV – 33 kV' },
   ],
   overviewText:
-    'When lighting fails in a substation or underground facility, finding the safe path can be life-threatening. Our Auto-Glow mats absorb ambient light during normal operation and emit a sustained glow in darkness, guiding operators to exits and safe zones without any external power. The Reflective Band variant uses high-visibility reflective strips that bounce torchlight or emergency lighting for instant pathway detection. Both variants maintain full Class A/B/C electrical insulation.',
+    'A specially engineered glow-in-the-dark band lights the environment, guiding movement and highlighting hazard zones without any power supply. The reflective variant outlines work areas clearly under torchlight or emergency lighting. In both cases the band is built into a mat that retains high dielectric strength, keeps its anti-slip texture, and withstands industrial conditions including moisture and chemical exposure without losing its glow.',
   keyBenefits: [
-    { icon: 'sun', text: 'Self-illuminating guidance — Auto-Glow variant emits light in darkness' },
-    { icon: 'mirror', text: 'Reflective low-light visibility — Reflective Band variant bounces external light' },
-    { icon: 'siren', text: 'Emergency pathway marking — guides operators to safe zones and exits' },
-    { icon: 'unplug', text: 'No external power required — glow or reflection works independently' },
+    {
+      icon: 'sun',
+      text: 'Luminous glow band lights the environment and highlights hazard zones',
+    },
+    {
+      icon: 'scan-eye',
+      text: 'Reflective band outlines work areas clearly in low-light conditions',
+    },
+    {
+      icon: 'shield',
+      text: 'Dielectric strength retained alongside the luminous properties',
+    },
+    {
+      icon: 'grip',
+      text: 'Anti-slip textured pattern provides a secure base on any surface',
+    },
+    {
+      icon: 'droplets',
+      text: 'Withstands moisture and chemical exposure without losing its glow',
+    },
   ],
-  specifications: {
-    headers: ['Property', 'Auto-Glow Variant', 'Reflective Band Variant', 'Standard (Base)'],
-    rows: [
-      ['Working Voltage', '650V / 1100V / 3300V', '650V / 1100V / 3300V', '650V / 1100V / 3300V'],
-      ['Glow Duration', '≥ 8 hours after 30min charge', '—', '—'],
-      ['Reflective Index', '—', '≥ 200 cd/lx/m²', '—'],
-      ['Thickness (mm)', '2.0 / 3.0 / 5.0', '2.0 / 3.0 / 5.0', '2.0 / 3.0 / 5.0'],
-      ['Band/Strip Width', '50mm glow strip', '50mm reflective strip', '—'],
-      ['Testing Voltage', '3.5kV / 6.5kV / 15kV', '3.5kV / 6.5kV / 15kV', '3.5kV / 6.5kV / 15kV'],
-      ['Operating Temp.', '–20°C to 70°C', '–20°C to 70°C', '–20°C to 70°C'],
-    ],
-  },
-  materialProperties: [
-    { label: 'Base Material', value: 'Elastomer compound (PVC / Rubber blend)' },
-    { label: 'Auto-Glow Element', value: 'Strontium aluminate phosphor strip' },
-    { label: 'Reflective Element', value: 'Glass-bead reflective tape strip' },
-    { label: 'Insulation Grade', value: 'Class A / B / C per IS 15652:2006' },
-    { label: 'Gow Charge Time', value: '≥ 30 minutes ambient light exposure' },
-    { label: 'Glow Emission Duration', value: '≥ 8 hours sustained visibility' },
-    { label: 'Operating Temperature', value: '–20°C to 70°C' },
+  specifications: matSpecifications,
+  materialProperties: matMaterialProperties,
+  dimensions: matDimensions,
+  colors: [
+    'Black with auto-glow band',
+    'Black with reflective band',
+    'Blue with reflective band',
   ],
-  dimensions: [
-    { label: 'Standard Widths', value: '1000mm, 1200mm' },
-    { label: 'Strip/Band Width', value: '50mm along mat edges or centre' },
-    { label: 'Roll Length', value: 'Custom up to 20m' },
-    { label: 'Thickness — Class A', value: '2mm' },
-    { label: 'Thickness — Class B', value: '3mm' },
-    { label: 'Thickness — Class C', value: '5mm' },
-  ],
-  colors: ['Black with Green Glow Strip', 'Black with Yellow Reflective Strip', 'Grey with Glow Strip', 'Custom band placement'],
-  surfacePatterns: ['Chequered with glow/reflective band', 'Ribbed with glow/reflective band', 'Plain with inset glow strip'],
+  surfacePatterns: ['Coin', 'Dot', 'Hexa'],
   installation: [
-    'Position glow/reflective bands along designated escape pathways',
-    'Ensure bands face the direction of egress for clear guidance',
-    'For Auto-Glow: expose mats to ambient light for ≥ 30 min before relying on glow',
-    'For Reflective Band: align strips with expected torch/emergency light angles',
-    'Butt-join mats ensuring band continuity across adjacent sections',
-    'Test glow/reflection performance after installation in simulated low-light conditions',
+    'Position the glow or reflective band along the intended escape or access route',
+    'Cut to length from the 1.0 m wide roll, keeping the band continuous across joins',
+    'Clean and dry the floor before laying',
+    'For the auto-glow variant, allow the band ambient light exposure before relying on it in darkness',
+    'For the reflective variant, align the band with the expected torch or emergency-light angle',
+    'Site fixing can be undertaken by Bharat Electrosafe along with the material, subject to minimum criteria',
   ],
   applications: [
-    { icon: 'door-open', name: 'Emergency Exits', description: 'Glow/reflective pathway guidance toward emergency exit routes' },
-    { icon: 'moon', name: 'Low-Light Substations', description: 'Navigation aid in substations with limited or emergency lighting' },
-    { icon: 'mountain', name: 'Underground Facilities', description: 'Pathway marking in underground vaults, tunnels, and cable galleries' },
-    { icon: 'train-front', name: 'Railway Platforms', description: 'Emergency guidance on electrified railway platforms and substations' },
-    { icon: 'route', name: 'Industrial Emergency Routes', description: 'Marked escape routes through factories with live electrical equipment' },
+    {
+      icon: 'door-open',
+      name: 'Emergency Exit Routes',
+      description: 'Glow or reflective guidance towards exits when lighting fails',
+    },
+    {
+      icon: 'moon',
+      name: 'Low-Light Substations',
+      description: 'Navigation aid in substations on emergency or reduced lighting',
+    },
+    {
+      icon: 'mountain',
+      name: 'Underground Facilities',
+      description: 'Pathway marking in vaults, tunnels and cable galleries',
+    },
+    {
+      icon: 'train-front',
+      name: 'Railways',
+      description: 'Guidance on electrified platforms and in railway substations',
+    },
+    {
+      icon: 'route',
+      name: 'Industrial Escape Routes',
+      description: 'Marked routes through plants with live electrical equipment',
+    },
   ],
-  documents: [
-    { type: 'Datasheet', name: 'Auto-Glow / Reflective Band Mats — Product Datasheet', issuer: 'Bharat Electrosafe', available: false },
-    { type: 'Certificate', name: 'BIS Certification — IS 15652:2006', issuer: 'Bureau of Indian Standards', available: false },
-    { type: 'Test Report', name: 'Glow Duration & Reflective Index Test Report', issuer: 'NABL Accredited Lab', available: false },
-    { type: 'Installation Guide', name: 'Installation Guide — Emergency Pathway Layout', issuer: 'Bharat Electrosafe', available: false },
+  documents: matDocuments,
+  relatedProducts: [
+    'electrical-insulating-mats',
+    'coloured-strip-insulating-mats',
+    'bi-color-insulating-mats',
   ],
-  relatedProducts: ['electrical-insulating-mats', 'coloured-strip-insulating-mats', 'bi-color-insulating-mats'],
   classType: 'all',
   hasDatasheet: false,
-  images: {
-    thumbnail: '/media/products/auto-glow-reflective-band/gallery-01.webp',
-    hero: '/media/products/auto-glow-reflective-band/low-light.webp',
-    details: ['/media/products/auto-glow-reflective-band/gallery-02.webp'],
-  },
 };
 
 /* ────────────────────────────────────────────
    Product 5: BharatMembrane
    ──────────────────────────────────────────── */
 
+const BM = '/media/products/bharat-membrane';
+
 const bharatMembrane: ProductData = {
   slug: 'bharat-membrane',
   name: 'BharatMembrane',
   shortName: 'BM',
-  heroSlotId: 'PRODUCT-BM-HERO-01',
+  images: {
+    thumbnail: `${BM}/gallery-01.webp`,
+    hero: `${BM}/hero.webp`,
+    details: [`${BM}/gallery-03.webp`, `${BM}/gallery-02.webp`, `${BM}/gallery-04.webp`],
+    overview: `${BM}/gallery-05.webp`,
+    application: `${BM}/gallery-01.webp`,
+    /* Every membrane image is an installed site photograph. */
+    contextual: [
+      `${BM}/hero.webp`,
+      `${BM}/gallery-01.webp`,
+      `${BM}/gallery-02.webp`,
+      `${BM}/gallery-03.webp`,
+      `${BM}/gallery-04.webp`,
+      `${BM}/gallery-05.webp`,
+    ],
+    alt: {
+      [`${BM}/gallery-01.webp`]:
+        'Yellow PVC geo-membrane lining the crown and walls of a rail tunnel',
+      [`${BM}/hero.webp`]:
+        'Tunnel interior fully lined with PVC geo-membrane between the structural arches',
+      [`${BM}/gallery-03.webp`]:
+        'Hot-air welding gun sealing an overlap seam in yellow PVC geo-membrane',
+      [`${BM}/gallery-02.webp`]:
+        'Site worker in high-visibility clothing fixing PVC geo-membrane to a tunnel soffit',
+      [`${BM}/gallery-04.webp`]:
+        'Tunnel portal under construction with PVC geo-membrane installed across the opening',
+      [`${BM}/gallery-05.webp`]:
+        'Dark PVC geo-membrane lining the bank and bed of a large water containment channel',
+    },
+  },
+  trustPoints: membraneTrustPoints,
   description:
-    'PVC Geo-Membrane for tunnel waterproofing, containment lining and barrier protection — IS 15909:2020 certified engineered membrane for civil and environmental applications.',
+    'PVC geo-membrane to IS 15909:2020 for tunnel waterproofing, containment and barrier protection in civil and environmental engineering.',
   introduction:
-    'BharatMembrane is a high-grade PVC Geo-Membrane engineered for tunnel waterproofing, containment lining and barrier protection in civil and environmental engineering applications. Manufactured from premium PVC polymers with chemical resistance, UV stability and mechanical strength for leak-proof performance. Unlike our electrical insulating mats, BharatMembrane provides waterproofing and moisture barrier protection for infrastructure projects.',
-  badges: ['IS 15909:2020', 'PVC Geo-Membrane', 'Civil Engineering', 'Waterproofing'],
+    'BharatMembrane is a premium range of PVC geo-membranes developed by Bharat Electrosafe for tunnel waterproofing, containment and barrier protection in civil and environmental engineering applications. Manufactured using high-grade PVC polymers, it is engineered for chemical resistance, UV stability and mechanical strength, making it suited to projects that demand long-lasting, leak-proof performance.',
+  badges: ['IS 15909:2020', 'PVC geo-membrane', 'BIS approved', 'Thermally weldable'],
   quickFacts: [
-    { icon: 'droplets', label: 'Function', value: 'Waterproofing barrier' },
-    { icon: 'ruler', label: 'Thickness', value: '1.2mm – 2.0mm' },
-    { icon: 'building', label: 'Application', value: 'Infrastructure projects' },
+    { icon: 'droplets', label: 'Function', value: 'Waterproofing and containment' },
+    { icon: 'ruler', label: 'Thickness', value: '1 mm – 5 mm' },
+    { icon: 'award', label: 'Standard', value: 'IS 15909:2020' },
   ],
   overviewText:
-    'BharatMembrane delivers continuous waterproofing protection for structures exposed to moisture, groundwater, and weather. Its elastomeric composition provides long-term flexibility, accommodating structural movement without cracking. Available in multiple thicknesses for different exposure levels, BharatMembrane can be applied by torch-welding, adhesive bonding, or self-adhesive methods depending on project requirements.',
+    'BharatMembrane is manufactured under ISO-certified processes at Bharat Electrosafe facilities and backed by both in-house and third-party quality testing. Sheets are seamable by thermal welding, producing continuous joints without adhesives, and custom fabrication is available so roll sizes suit the project rather than the other way round. Whether the application is industrial, environmental or infrastructure, the material provides a robust and cost-effective barrier.',
   keyBenefits: [
-    { icon: 'shield', text: 'Waterproofing protection against moisture, groundwater, and weather ingress' },
-    { icon: 'git-branch', text: 'Flexible membrane application — torch-welded, adhesive, or self-adhesive' },
-    { icon: 'hammer', text: 'Durable construction withstands structural movement and environmental stress' },
-    { icon: 'wrench', text: 'Easy joining and installation with proven seam techniques' },
+    { icon: 'shield', text: 'High-quality PVC geo-membrane for leak-proof barrier performance' },
+    { icon: 'hammer', text: 'Excellent puncture and tear resistance' },
+    { icon: 'sun', text: 'High resistance to UV radiation, chemicals and weathering' },
+    { icon: 'git-merge', text: 'Seamable using thermal welding techniques for secure joints' },
+    {
+      icon: 'badge-check',
+      text: 'BIS approved to IS 15909:2020, with compliance to BS, EN and international standards',
+    },
   ],
   specifications: {
-    headers: ['Property', 'BM-1200', 'BM-1500', 'BM-2000'],
+    headers: ['Property', 'Specification'],
     rows: [
-      ['Thickness', '1.2mm', '1.5mm', '2.0mm'],
-      ['Reinforcement', 'Polyester mesh', 'Polyester mesh', 'Polyester mesh'],
-      ['Tensile Strength', '≥ 15 MPa', '≥ 18 MPa', '≥ 20 MPa'],
-      ['Elongation at Break', '≥ 300%', '≥ 300%', '≥ 350%'],
-      ['Water Penetration', 'Zero', 'Zero', 'Zero'],
-      ['Puncture Resistance', 'High', 'High', 'Very High'],
-      ['Application Temp.', '–10°C to 80°C', '–10°C to 80°C', '–10°C to 80°C'],
+      ['Material', 'High-grade PVC polymer geo-membrane'],
+      ['Standard', 'IS 15909:2020 — BIS approved'],
+      ['Further Compliance', 'BS, EN and international standards'],
+      ['Available Thicknesses', '1 mm, 1.5 mm, 2 mm, 2.5 mm, 3 mm and up to 5 mm'],
+      ['Roll Sizes', 'To suit project requirements'],
+      ['Jointing Method', 'Thermal welding'],
+      ['Resistance', 'UV radiation, chemicals and weathering'],
+      ['Mechanical', 'Puncture and tear resistant'],
     ],
   },
   materialProperties: [
-    { label: 'Base Material', value: 'Modified bitumen with elastomeric compound' },
-    { label: 'Reinforcement', value: 'Polyester mesh / glass fibre mat' },
-    { label: 'Surface Finish', value: 'Polyethylene film / sand finish / mineral granules' },
-    { label: 'Tensile Strength', value: '≥ 15 MPa (BM-1200)' },
-    { label: 'Elongation at Break', value: '≥ 300%' },
-    { label: 'Water Penetration Resistance', value: 'Zero — full waterproof barrier' },
-    { label: 'UV Resistance', value: 'High — suitable for exposed rooftop applications' },
-    { label: 'Root Resistance', value: 'Yes — meets root penetration resistance standards' },
+    { label: 'Base Material', value: 'High-grade PVC polymers' },
+    { label: 'Standard', value: 'IS 15909:2020, BIS approved' },
+    { label: 'International Compliance', value: 'BS, EN and international standards' },
+    { label: 'UV Resistance', value: 'High' },
+    { label: 'Chemical Resistance', value: 'High' },
+    { label: 'Weathering Resistance', value: 'High' },
+    { label: 'Puncture and Tear Resistance', value: 'Excellent' },
+    { label: 'Jointing', value: 'Thermal welding for secure, continuous seams' },
+    { label: 'Manufacturing', value: 'Produced under ISO-certified processes' },
+    {
+      label: 'Quality Testing',
+      value: 'In-house and third-party testing',
+    },
   ],
   dimensions: [
-    { label: 'Standard Width', value: '1000mm (1m)' },
-    { label: 'Roll Length', value: '10m, 15m, 20m standard' },
-    { label: 'Thickness — BM-1200', value: '1.2mm' },
-    { label: 'Thickness — BM-1500', value: '1.5mm' },
-    { label: 'Thickness — BM-2000', value: '2.0mm' },
-    { label: 'Custom Lengths', value: 'Available on request' },
+    { label: 'Thickness Range', value: '1 mm, 1.5 mm, 2 mm, 2.5 mm, 3 mm, up to 5 mm' },
+    { label: 'Roll Sizes', value: 'Supplied to suit project needs' },
+    { label: 'Custom Fabrication', value: 'Available' },
   ],
-  colors: ['Black (PE film)', 'Sand finish', 'Mineral granule — Green/Grey'],
-  surfacePatterns: ['Smooth (PE film surface)', 'Sand-coated', 'Mineral granule textured'],
+  colors: ['Yellow', 'Black'],
+  surfacePatterns: ['Smooth sheet'],
   installation: [
-    'Torch-welding method: heat-weld overlapping seams for continuous seal',
-    'Adhesive method: apply approved membrane adhesive to substrate and membrane',
-    'Self-adhesive method: peel protective film and press onto primed substrate',
-    'Minimum overlap at seams: 100mm for all application methods',
-    'Ensure substrate is clean, dry, and primed before membrane application',
-    'Seal all edges, corners, and penetrations with compatible flashing material',
-    'Test seam integrity with peel test after installation',
+    'Prepare and inspect the substrate before the membrane is placed',
+    'Position sheets with sufficient overlap at every seam',
+    'Weld overlaps thermally to form a continuous, leak-proof joint',
+    'Seal around penetrations, corners and terminations',
+    'Check completed seams before the membrane is covered or backfilled',
+    'Custom fabrication is available where a project needs non-standard sheet sizes',
   ],
   applications: [
-    { icon: 'cloud', name: 'Roof Waterproofing', description: 'Flat and pitched roof membranes for commercial and industrial buildings' },
-    { icon: 'layers', name: 'Basement Protection', description: 'Below-grade waterproofing for basement walls and floors' },
-    { icon: 'mountain', name: 'Tunnel Lining', description: 'Waterproof membrane lining for tunnels and underground passages' },
-    { icon: 'box', name: 'Foundation Sealing', description: 'Foundation wall and slab waterproofing for new construction' },
-    { icon: 'building-2', name: 'Infrastructure Projects', description: 'Large-scale infrastructure — bridges, flyovers, water treatment plants' },
+    {
+      icon: 'mountain',
+      name: 'Tunnel & Basement Waterproofing',
+      description: 'Continuous waterproof lining for tunnels and below-grade structures',
+    },
+    {
+      icon: 'trash-2',
+      name: 'Landfills & Hazardous Waste Containment',
+      description: 'Barrier lining for landfill cells and hazardous waste containment',
+    },
+    {
+      icon: 'waves',
+      name: 'Reservoirs, Canals & Ponds',
+      description: 'Lining for water reservoirs, canals and ponds',
+    },
+    {
+      icon: 'pickaxe',
+      name: 'Mining & Ash Dyke Lining',
+      description: 'Containment lining for mining operations and ash dykes',
+    },
+    {
+      icon: 'factory',
+      name: 'Industrial Effluent Ponds',
+      description: 'Chemically resistant lining for effluent containment',
+    },
+    {
+      icon: 'sprout',
+      name: 'Aquaculture & Agriculture Lining',
+      description: 'Lining for aquaculture ponds and agricultural water storage',
+    },
   ],
   documents: [
-    { type: 'Datasheet', name: 'BharatMembrane — Product Datasheet', issuer: 'Bharat Electrosafe', available: false },
-    { type: 'Test Report', name: 'Water Penetration & Tensile Test Report', issuer: 'NABL Accredited Lab', available: false },
-    { type: 'Installation Guide', name: 'Installation & Joining Guide', issuer: 'Bharat Electrosafe', available: false },
-    { type: 'Certificate', name: 'BIS Certification — IS 15909:2020', issuer: 'Bureau of Indian Standards', available: false },
+    {
+      type: 'Certificate',
+      name: 'ISO 9001:2015 — Quality Management System',
+      issuer: 'Certification body',
+      available: true,
+      href: '/documents/certifications/iso-9001-2015-qms.pdf',
+    },
+    {
+      type: 'Certificate',
+      name: 'ISO 14001:2015 — Environmental Management System',
+      issuer: 'Certification body',
+      available: true,
+      href: '/documents/certifications/iso-14001-2015-ems.pdf',
+    },
+    {
+      type: 'Approval',
+      name: 'BIS approval — IS 15909:2020',
+      issuer: 'Bureau of Indian Standards',
+      available: false,
+    },
+    {
+      type: 'Datasheet',
+      name: 'Product datasheet — available on request',
+      issuer: 'Bharat Electrosafe',
+      available: false,
+    },
   ],
-  relatedProducts: ['electrical-insulating-mats', 'auto-glow-reflective-band-insulating-mats'],
+  relatedProducts: [
+    'electrical-insulating-mats',
+    'coloured-strip-insulating-mats',
+    'auto-glow-reflective-band-insulating-mats',
+  ],
   classType: 'membrane',
   hasDatasheet: false,
-  images: {
-    thumbnail: '/media/products/bharat-membrane/gallery-01.webp',
-    hero: '/media/products/bharat-membrane/hero.webp',
-    details: ['/media/products/bharat-membrane/gallery-02.webp', '/media/products/bharat-membrane/gallery-03.webp'],
-    overview: '/media/products/bharat-membrane/gallery-04.webp',
-  },
 };
 
 /* ────────────────────────────────────────────
@@ -542,12 +897,33 @@ export const products: ProductData[] = [
   bharatMembrane,
 ];
 
+/** Number of active product families — the single source for any "N families"
+ *  claim in company data, copy or metadata. */
+export const productFamilyCount = products.length;
+
 export function getProductBySlug(slug: string): ProductData | undefined {
   return products.find((p) => p.slug === slug);
 }
 
 export function getProductNames(): string[] {
   return products.map((p) => p.name);
+}
+
+/**
+ * Alt text for a product image, resolved from the product's own registry.
+ * Falls back to the product name so an unmapped path can never render an
+ * empty or placeholder-sounding alt attribute.
+ */
+export function getImageAlt(product: ProductData, src: string): string {
+  return product.images.alt[src] ?? product.name;
+}
+
+/**
+ * How an image should sit in its frame. Real-setting photographs fill it;
+ * isolated product shots are contained so nothing is cropped off.
+ */
+export function getImageFit(product: ProductData, src: string): 'cover' | 'contain' {
+  return product.images.contextual?.includes(src) ? 'cover' : 'contain';
 }
 
 /** Labels for the contact-form product selector — all five families. */

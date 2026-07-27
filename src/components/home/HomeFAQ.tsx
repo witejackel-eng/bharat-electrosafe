@@ -11,7 +11,7 @@ const faqItems: FAQItem[] = [
   {
     question: 'What voltage classes are available?',
     answer:
-      'We manufacture mats in three voltage classes — Class A (up to 650V), Class B (up to 1100V), and Class C (up to 3300V) — suitable for low, medium and high voltage applications.',
+      'We manufacture mats in three voltage classes — Class A (3.3 kV working voltage), Class B (11 kV) and Class C (33 kV) — in 2.0 mm, 2.5 mm and 3.0 mm thicknesses respectively.',
   },
   {
     question: 'Can you supply custom dimensions?',

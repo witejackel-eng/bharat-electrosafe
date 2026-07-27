@@ -32,6 +32,7 @@ export const metadata: Metadata = {
     'electrical safety mats',
     'PVC geo-membrane',
     'BharatMembrane',
+    'tunnel waterproofing membrane',
     'Noida',
   ],
   icons: {

@@ -1,17 +1,17 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { TechnicalBadge } from '@/components/ui/TechnicalBadge';
+import { ImageFrame } from '@/components/ui/ImageFrame';
 
 const proofItems = [
-  'BIS Licence CM/L:8800129617',
   'IS 15652:2006',
-  'ERDA / NTH tested',
-  'Five product families',
+  'BIS Licence CM/L:8800129617',
+  'ERDA / NTH Tested',
+  'Conforming to IEC 61111',
 ];
 
 export default function HomeHero() {
@@ -88,14 +88,12 @@ export default function HomeHero() {
 
           {/* Media — 45% */}
           <div className="w-full lg:w-[45%] reveal-up">
-            <div className="bg-gradient-to-br from-be-yellow-50 to-be-cream rounded-lg overflow-hidden">
-              <Image
-                src="/media/home/hero.webp"
-                alt="Electrical insulating mats in substation environment"
-                width={800}
-                height={500}
-                className="w-full h-auto object-cover"
-                sizes="(max-width: 768px) 100vw, 45vw"
+            <div className="bg-gradient-to-br from-be-yellow-50 to-be-cream rounded-lg">
+              <ImageFrame
+                alt="Fanned stack of Bharat Electrosafe insulating mats in yellow, orange, grey, blue, red and black, showing the coin and dot anti-skid textures"
+                slotId="HOME-HERO-01"
+                aspectRatio="landscape"
+                className="w-full"
                 priority
               />
             </div>

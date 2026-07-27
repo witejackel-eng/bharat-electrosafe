@@ -5,6 +5,8 @@
  * addresses or WhatsApp links in component files — import from this module.
  */
 
+import { productFamilyCount } from './products';
+
 export const company = {
   name: 'Bharat Electrosafe',
   legalName: 'Bharat Electrosafe',
@@ -39,14 +41,14 @@ export const company = {
     cmL: 'CM/L:8800129617',
     iec: 'IEC 61111',
     membraneStandard: 'IS 15909:2020',
-
   },
 
-  // Only qualified, source-supported claims
+  /* Only qualified, source-supported claims. The family count is derived from
+     the active product registry so it cannot fall out of step with it. */
   stats: [
-    { value: '5', label: 'Product Families' },
+    { value: String(productFamilyCount), label: 'Product Families' },
     { value: 'A · B · C', label: 'Insulation Classes' },
-    { value: 'IS 15652:2006', label: 'Governing Standard' },
+    { value: 'IS 15652:2006', label: 'Manufacturing Standard' },
     { value: '11+', label: 'Countries Served' },
   ],
 

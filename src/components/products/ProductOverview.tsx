@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import {
   Shield,
   Layers,
@@ -24,8 +23,10 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/SectionHeader';
+import { ImageFrame } from '@/components/ui/ImageFrame';
 import { FeatureList } from '@/components/ui/FeatureList';
 import type { ProductData, KeyBenefit } from '@/data/products';
+import { getImageAlt, getImageFit } from '@/data/products';
 
 /* ── Icon mapping ── */
 
@@ -63,33 +64,20 @@ export function ProductOverview({ product }: ProductOverviewProps) {
     text: b.text,
   }));
 
+  const overviewSrc = product.images.overview ?? product.images.hero;
+
   return (
     <section className="section-padding-supporting bg-be-white">
       <div className="container-site page-horizontal-padding">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
           {/* Left: Application image */}
           <div className="lg:w-[45%] order-first lg:order-last">
-            {product.images.overview ? (
-              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg border border-be-grey-250">
-                <Image
-                  src={product.images.overview}
-                  alt={`${product.name} — application overview`}
-                  fill
-                  className="object-contain p-2"
-                  sizes="(max-width: 768px) 100vw, 45vw"
-                />
-              </div>
-            ) : product.images.hero ? (
-              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg border border-be-grey-250">
-                <Image
-                  src={product.images.hero}
-                  alt={`${product.name} — overview`}
-                  fill
-                  className="object-contain p-2"
-                  sizes="(max-width: 768px) 100vw, 45vw"
-                />
-              </div>
-            ) : null}
+            <ImageFrame
+              src={overviewSrc}
+              alt={getImageAlt(product, overviewSrc)}
+              aspectRatio="landscape"
+              fit={getImageFit(product, overviewSrc)}
+            />
           </div>
 
           {/* Right: Overview text + key benefits */}
