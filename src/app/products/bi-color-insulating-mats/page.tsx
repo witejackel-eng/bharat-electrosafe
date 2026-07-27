@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
@@ -46,7 +46,7 @@ export default function BiColorInsulatingMatsPage() {
       <Header />
       <main className="flex-1">
         <ProductHero product={product} />
-        <ProductTrustIndicators />
+        <ProductTrustIndicators product={product} />
         <ProductOverview product={product} />
         <ProductSpecifications product={product} stickyFirstColumn />
         <ProductMaterialDimensions product={product} />

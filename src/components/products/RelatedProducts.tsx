@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageFrame } from '@/components/ui/ImageFrame';
-import { getProductBySlug, products } from '@/data/products';
+import { getProductBySlug, getImageAlt, getImageFit } from '@/data/products';
 import type { ProductData } from '@/data/products';
 import { cn } from '@/lib/utils';
 
@@ -54,10 +54,12 @@ export function RelatedProducts({ product }: RelatedProductsProps) {
               {/* Image-led card */}
               <div className="relative">
                 <ImageFrame
-                  slotId={rp.heroSlotId}
-                  alt={`${rp.name} — product image`}
+                  src={rp.images.thumbnail}
+                  alt={getImageAlt(rp, rp.images.thumbnail)}
                   aspectRatio="landscape"
+                  fit={getImageFit(rp, rp.images.thumbnail)}
                   className="border-0 rounded-none"
+                  sizes="(max-width: 768px) 100vw, 360px"
                 />
               </div>
 

@@ -32,8 +32,7 @@ export const metadata: Metadata = {
     'electrical safety mats',
     'PVC geo-membrane',
     'BharatMembrane',
-    'BharatHydro Seal',
-    'water stop solutions',
+    'tunnel waterproofing membrane',
     'Noida',
   ],
   icons: {

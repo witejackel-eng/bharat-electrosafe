@@ -90,10 +90,11 @@ export default function HomeHero() {
           <div className="w-full lg:w-[45%] reveal-up">
             <div className="bg-gradient-to-br from-be-yellow-50 to-be-cream rounded-lg">
               <ImageFrame
-                alt="Electrical insulating mat product display"
+                alt="Fanned stack of Bharat Electrosafe insulating mats in yellow, orange, grey, blue, red and black, showing the coin and dot anti-skid textures"
                 slotId="HOME-HERO-01"
                 aspectRatio="landscape"
                 className="w-full"
+                priority
               />
             </div>
           </div>

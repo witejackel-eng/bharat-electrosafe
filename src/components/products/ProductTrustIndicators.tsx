@@ -2,20 +2,31 @@
 
 import { ShieldCheck, FileText, Truck, Headphones } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import type { ProductData } from '@/data/products';
 
 interface TrustIndicator {
   icon: LucideIcon;
   label: string;
 }
 
-const trustIndicators: TrustIndicator[] = [
-  { icon: ShieldCheck, label: 'IS 15652:2006 Certified' },
-  { icon: FileText, label: 'Full documentation provided' },
-  { icon: Truck, label: 'Pan-India delivery' },
-  { icon: Headphones, label: 'Technical support available' },
-];
+/**
+ * The standard claim differs by product, so it is taken from the product's own
+ * data rather than hard-coded — a mat standard must never appear on the
+ * geo-membrane page. The remaining three are commercial facts true of the
+ * whole range.
+ */
+interface ProductTrustIndicatorsProps {
+  product: ProductData;
+}
 
-export function ProductTrustIndicators() {
+export function ProductTrustIndicators({ product }: ProductTrustIndicatorsProps) {
+  const trustIndicators: TrustIndicator[] = [
+    { icon: ShieldCheck, label: product.trustPoints[0] },
+    { icon: FileText, label: 'Full documentation provided' },
+    { icon: Truck, label: 'Pan-India delivery' },
+    { icon: Headphones, label: 'Technical support available' },
+  ];
+
   return (
     <section
       aria-label="Product trust indicators"

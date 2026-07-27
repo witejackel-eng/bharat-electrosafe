@@ -25,6 +25,7 @@ import type { LucideIcon } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageFrame } from '@/components/ui/ImageFrame';
 import type { ProductData, Application } from '@/data/products';
+import { getImageAlt, getImageFit } from '@/data/products';
 
 /* ── Icon mapping ── */
 
@@ -57,6 +58,11 @@ interface ProductApplicationsProps {
 }
 
 export function ProductApplications({ product }: ProductApplicationsProps) {
+  const applicationSrc =
+    product.images.application ??
+    product.images.details[product.images.details.length - 1] ??
+    product.images.hero;
+
   return (
     <section className="section-padding-supporting bg-be-warm-white">
       <div className="container-site page-horizontal-padding">
@@ -64,9 +70,10 @@ export function ProductApplications({ product }: ProductApplicationsProps) {
           {/* Left: installed-use image */}
           <div className="lg:w-[45%]">
             <ImageFrame
-              slotId={`${product.heroSlotId}-APPLICATION`}
-              alt={`${product.name} — installed application`}
+              src={applicationSrc}
+              alt={getImageAlt(product, applicationSrc)}
               aspectRatio="landscape"
+              fit={getImageFit(product, applicationSrc)}
             />
           </div>
 

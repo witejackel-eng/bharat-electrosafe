@@ -26,6 +26,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageFrame } from '@/components/ui/ImageFrame';
 import { FeatureList } from '@/components/ui/FeatureList';
 import type { ProductData, KeyBenefit } from '@/data/products';
+import { getImageAlt, getImageFit } from '@/data/products';
 
 /* ── Icon mapping ── */
 
@@ -63,6 +64,8 @@ export function ProductOverview({ product }: ProductOverviewProps) {
     text: b.text,
   }));
 
+  const overviewSrc = product.images.overview ?? product.images.hero;
+
   return (
     <section className="section-padding-supporting bg-be-white">
       <div className="container-site page-horizontal-padding">
@@ -70,9 +73,10 @@ export function ProductOverview({ product }: ProductOverviewProps) {
           {/* Left: Application image */}
           <div className="lg:w-[45%] order-first lg:order-last">
             <ImageFrame
-              slotId={`${product.heroSlotId}-OVERVIEW`}
-              alt={`${product.name} — application overview`}
+              src={overviewSrc}
+              alt={getImageAlt(product, overviewSrc)}
               aspectRatio="landscape"
+              fit={getImageFit(product, overviewSrc)}
             />
           </div>
 

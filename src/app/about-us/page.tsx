@@ -10,7 +10,7 @@ import ProductOverview from '@/components/about/ProductOverview';
 import CompanyLeadership from '@/components/about/CompanyLeadership';
 import CompanyTimeline from '@/components/about/CompanyTimeline';
 import ManufacturingQuality from '@/components/about/ManufacturingQuality';
-import CertificatesAwardsMedia from '@/components/about/CertificatesAwardsMedia';
+import AwardsCertifications from '@/components/about/AwardsCertifications';
 import IndustriesClientsCTA from '@/components/about/IndustriesClientsCTA';
 
 export default function AboutUsPage() {
@@ -51,7 +51,7 @@ export default function AboutUsPage() {
         <CompanyLeadership />
         <CompanyTimeline />
         <ManufacturingQuality />
-        <CertificatesAwardsMedia />
+        <AwardsCertifications />
         <IndustriesClientsCTA />
       </main>
       <Footer />

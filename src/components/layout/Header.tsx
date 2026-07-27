@@ -71,12 +71,6 @@ const products: ProductNavItem[] = [
     href: '/products/bharat-membrane',
     color: 'bg-be-charcoal-800',
   },
-  {
-    name: 'BharatHydro Seal',
-    description: 'Water stop solutions for construction joints',
-    href: '/products/bharat-hydro-seal',
-    color: 'bg-be-grey-400',
-  },
 ];
 
 const navLinks = [

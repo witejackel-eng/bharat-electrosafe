@@ -1,13 +1,20 @@
 /**
  * Leadership and company values for the About section.
  *
- * Biographies are kept concise and source-derived. No invented employers,
- * awards, founding year or timeline.
+ * Names, titles and biographical facts are taken from the leadership section
+ * of bharatelectrosafe.com. Portraits are matched to people by the `alt`
+ * attributes on the client's own leadership markup, not by filename order.
+ *
+ * Biographies are condensed for the redesigned interface but nothing is
+ * added: no qualification, employer, figure or achievement appears here that
+ * the source does not state.
  */
 
 export interface Leader {
   name: string;
   role: string;
+  image: string;
+  imageAlt: string;
   shortBio: string;
   fullProfile: string;
 }
@@ -15,27 +22,33 @@ export interface Leader {
 export const leaders: Leader[] = [
   {
     name: 'Vishnu Gupta',
-    role: 'Founder & Director',
+    role: 'Co-Founder & Director',
+    image: '/media/leadership/vishnu-gupta.webp',
+    imageAlt: 'Vishnu Gupta, Co-Founder and Director of Bharat Electrosafe',
     shortBio:
-      'Leads Bharat Electrosafe with a focus on electrical-safety manufacturing and engineered product quality.',
+      'Chartered Accountant and entrepreneur leading Bharat Electrosafe’s manufacturing and compliance direction.',
     fullProfile:
-      'Vishnu Gupta founded Bharat Electrosafe to deliver IS 15652:2006 certified electrical insulating mats and engineered PVC membranes to industrial and civil sectors. He oversees manufacturing standards, regulatory compliance and the company’s relationships across India and overseas markets, ensuring every product meets the certified electrical and environmental specifications it carries.',
+      'CA. Vishnu Gupta is a Chartered Accountant (ICAI, 2005) with over 18 years of leadership experience across finance, manufacturing and infrastructure. As Co-Founder & Director he has led Bharat Electrosafe to become a nationally trusted manufacturer of IS 15652 and IEC 61111 compliant high-voltage insulating mats, marketed through Tata Precision Industries (India) Ltd. He previously held financial leadership roles at Universal Cables Ltd. (MP Birla Group), GHCL Ltd. and Cavendish Industries Ltd. (JK Tyre Group). He is also Co-Founder of Samridhi Test House Pvt. Ltd., an ISO/IEC 17025-accredited and BIS-recognised testing laboratory.',
   },
   {
     name: 'Krishan Kumar Khandelwal',
-    role: 'Director',
+    role: 'Co-Founder & Director',
+    image: '/media/leadership/krishan-kumar.webp',
+    imageAlt: 'Krishan Kumar Khandelwal, Co-Founder and Director of Bharat Electrosafe',
     shortBio:
-      'Directs operations and product engineering across the insulating-mat and membrane divisions.',
+      'Business strategist overseeing production, quality assurance and partner engagement.',
     fullProfile:
-      'Krishan Kumar Khandelwal is responsible for the operational and engineering direction of Bharat Electrosafe. His work covers production planning, quality assurance against IS 15652:2006 and IS 15909:2020 standards, and the delivery of the company’s six product families to customers across India and abroad.',
+      'Mr. Krishan Kumar Khandelwal is an entrepreneur and business strategist with over 25 years across manufacturing, trading, real estate, infrastructure and customer relations. As Co-Founder & Director he oversees operations, quality assurance and partner engagement at Bharat Electrosafe, managing production, vendor development and after-sales coordination. He comes from a business family with a legacy of more than 70 years in the tobacco and sweet supari industry, a background that shaped his approach to supply chain management and long-term customer relationships. His collaborative work supported the company’s tie-up with Tata Precision Industries (India) Ltd.',
   },
   {
     name: 'Priyanka Garg',
-    role: 'Director',
+    role: 'Entrepreneur | Co-Founder & Director',
+    image: '/media/leadership/priyanka-garg.webp',
+    imageAlt: 'Priyanka Garg, Entrepreneur, Co-Founder and Director of Bharat Electrosafe',
     shortBio:
-      'Leads commercial operations, customer engagement and export coordination.',
+      'Rubber and polymer industry leader directing strategy, exports and international trade.',
     fullProfile:
-      'Priyanka Garg directs the commercial side of Bharat Electrosafe, including customer engagement, enquiry handling and coordination of deliveries to the markets the company serves. She ensures that customer requirements for the six product families are matched to the correct insulation class, membrane type and application.',
+      'Mrs. Priyanka Garg brings over 20 years of experience in the rubber and polymer industry, and as Co-Founder and Director has shaped Bharat Electrosafe’s development into a global supplier and exporter of industrial and commercial products, particularly electrical insulating mats. She holds an M.Com from Agra University and a business certification from UP Technical University. Her proficiencies span insulating mats, silicone rubber sheets, EPDM membranes, and PVC and rubber compounds, extending beyond manufacturing into consulting, quality testing and international trade facilitation. Under her leadership the company reports a presence in 11+ countries.',
   },
 ];
 
@@ -44,35 +57,32 @@ export interface Value {
   description: string;
 }
 
+/** Vision, mission and the four values, worded as the source About page words them. */
 export const companyValues: Value[] = [
   {
     title: 'Vision',
     description:
-      'To be the trusted manufacturer of electrical insulating mats and engineered membranes, protecting people and infrastructure across India and overseas.',
+      'To be the most trusted name in electrical safety by delivering world-class insulating products that help businesses create secure and compliant workspaces.',
   },
   {
     title: 'Mission',
     description:
-      'To manufacture certified safety products to the correct standards, deliver them reliably, and support every customer with accurate technical information.',
+      'To safeguard lives and assets by providing superior electrical insulation solutions that adhere to the highest quality and safety standards.',
   },
   {
     title: 'Respect',
-    description:
-      'We treat customers, colleagues and partners with respect, and we respect the standards we are certified against.',
+    description: 'Thoughtful of showing regard for another person.',
   },
   {
     title: 'Trust',
-    description:
-      'We earn trust by publishing only verified specifications and by standing behind the certifications our products carry.',
+    description: 'Our integrity speaks through consistent actions and reliable results.',
   },
   {
     title: 'Ownership',
-    description:
-      'Every team member owns the quality of their work, from raw material to finished roll, from enquiry to delivery.',
+    description: 'We lead from within, taking charge of outcomes with pride and purpose.',
   },
   {
     title: 'Integrated Team Work',
-    description:
-      'Manufacturing, engineering and commercial teams work as one integrated unit to deliver the six product families on time and to standard.',
+    description: 'United in mission, seamless in execution — we move forward together.',
   },
 ];

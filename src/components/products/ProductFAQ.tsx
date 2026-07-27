@@ -13,7 +13,7 @@ const productSpecificQuestions: Record<string, FAQItem> = {
   'electrical-insulating-mats': {
     question: 'How do I select between Class A, B and C?',
     answer:
-      'Class selection is based on the maximum working voltage at the installation. Class A is rated for 650V AC, Class B for 1100V AC and Class C for 3300V AC. Choose the class that meets or exceeds the highest voltage present at the work location. When in doubt, our technical team can recommend the appropriate class based on your substation or panel specifications.',
+      'Class selection is based on the maximum working voltage at the installation. Class A is rated for a 3.3 kV working voltage, Class B for 11 kV and Class C for 33 kV. Choose the class that meets or exceeds the highest voltage present at the work location. When in doubt, our technical team can recommend the appropriate class based on your substation or panel specifications.',
   },
   'coloured-strip-insulating-mats': {
     question: 'What colour options are available for the strip configuration?',

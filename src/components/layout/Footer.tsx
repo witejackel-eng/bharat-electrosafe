@@ -42,10 +42,6 @@ const products: ProductNavItem[] = [
     name: 'BharatMembrane',
     href: '/products/bharat-membrane',
   },
-  {
-    name: 'BharatHydro Seal',
-    href: '/products/bharat-hydro-seal',
-  },
 ];
 
 const navLinks = [

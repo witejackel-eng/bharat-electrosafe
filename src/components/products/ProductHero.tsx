@@ -23,7 +23,7 @@ import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { ImageFrame } from '@/components/ui/ImageFrame';
 import type { ProductData } from '@/data/products';
-import { cn } from '@/lib/utils';
+import { getImageAlt, getImageFit } from '@/data/products';
 
 /* ── Icon mapping ── */
 
@@ -119,28 +119,43 @@ export function ProductHero({ product }: ProductHeroProps) {
           <div className="lg:w-[54%] flex flex-col gap-4 order-first lg:order-last">
             {/* Main hero image */}
             <ImageFrame
-              slotId={product.heroSlotId}
-              alt={`${product.name} — hero image`}
+              src={product.images.hero}
+              alt={getImageAlt(product, product.images.hero)}
               aspectRatio="landscape"
+              fit={getImageFit(product, product.images.hero)}
+              priority
             />
 
-            {/* Supporting thumbnails */}
+            {/* Supporting detail views */}
             <div className="flex flex-row gap-4">
-              <ImageFrame
-                slotId={`${product.heroSlotId}-THUMB-1`}
-                alt={`${product.name} — detail view 1`}
-                aspectRatio="landscape"
-                className="w-1/2"
-              />
-              <ImageFrame
-                slotId={`${product.heroSlotId}-THUMB-2`}
-                alt={`${product.name} — detail view 2`}
-                aspectRatio="landscape"
-                className="w-1/2"
-              />
+              {product.images.details.slice(0, 2).map((src) => (
+                <ImageFrame
+                  key={src}
+                  src={src}
+                  alt={getImageAlt(product, src)}
+                  aspectRatio="landscape"
+                  fit={getImageFit(product, src)}
+                  className="w-1/2"
+                  sizes="(max-width: 768px) 50vw, 340px"
+                />
+              ))}
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Product-specific trust strip — mat claims never appear on the membrane. */}
+      <div className="container-site page-horizontal-padding mt-10">
+        <ul className="flex flex-wrap gap-x-6 gap-y-3 rounded-lg border border-be-yellow-100 bg-be-yellow-50 px-5 py-4">
+          {product.trustPoints.map((point) => (
+            <li key={point} className="flex items-center gap-2">
+              <Shield className="size-4 shrink-0 text-be-yellow-600" />
+              <span className="text-metadata font-semibold uppercase tracking-wide text-be-charcoal-950">
+                {point}
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
