@@ -8,7 +8,19 @@ export type ProductSlug =
   | "coloured-strip-insulating-mats"
   | "bi-color-insulating-mats"
   | "auto-glow-reflective-band-insulating-mats"
-  | "bharat-membrane";
+  | "bharat-membrane"
+  | "bharat-hydro-seal";
+
+/** Runtime list of every valid slug. Used to validate enquiry payloads so the
+ *  API allow-list can never drift from the catalogue. */
+export const productSlugs = [
+  "electrical-insulating-mats",
+  "coloured-strip-insulating-mats",
+  "bi-color-insulating-mats",
+  "auto-glow-reflective-band-insulating-mats",
+  "bharat-membrane",
+  "bharat-hydro-seal",
+] as const satisfies readonly ProductSlug[];
 
 // ── Insulation Class Specification ──
 export interface InsulationClassSpec {
@@ -113,17 +125,35 @@ export interface Product {
   /** Downloads and certificates for insulating mats */
   matDownloads?: ProductDownload[];
 
-  // ── Membrane-specific fields (only for BharatMembrane) ──
-  /** Available thickness options — null for mat products */
-  membraneThicknessOptions?: MembraneThicknessOption[];
-  /** BharatMembrane-specific applications */
-  membraneApplications?: string[];
-  /** Physical properties for BharatMembrane */
-  membranePhysicalProperties?: MaterialProperty[];
-  /** Installation / welding notes for BharatMembrane */
-  membraneInstallationNotes?: string[];
-  /** Downloads and documents for BharatMembrane */
-  membraneDownloads?: ProductDownload[];
+  /* ── Engineered-product fields ──
+     Used by products that are not rated to IS 15652 voltage classes
+     (BharatMembrane, BharatHydro Seal). These render through
+     EngineeredProductLayout, which is driven entirely by this data so a
+     new engineered product needs no new component. */
+  /** Thickness / size options offered. Omit when sizing is project-specific. */
+  variantOptions?: MembraneThicknessOption[];
+  /** Heading above the variant table. */
+  variantOptionsTitle?: string;
+  /** Typical applications. */
+  engineeredApplications?: string[];
+  /** Material and physical properties. */
+  engineeredProperties?: MaterialProperty[];
+  /** Caption shown under the properties heading. */
+  propertiesCaption?: string;
+  /** Accessible summary for the properties table. */
+  propertiesTableSummary?: string;
+  /** Installation / jointing notes. */
+  engineeredNotes?: string[];
+  /** Heading above the notes list. */
+  engineeredNotesTitle?: string;
+  /** Downloads and documents. */
+  engineeredDownloads?: ProductDownload[];
+  /** Prose for the standards/compliance block. */
+  standardsNarrative?: string;
+  /** Alt text for the hero image. */
+  heroImageAlt?: string;
+  /** Supporting line in the closing enquiry CTA. */
+  enquiryBlurb?: string;
 }
 
 // ── Product Data ──
@@ -533,9 +563,20 @@ export const products: Product[] = [
       { slotId: "PRODUCT-BM-APPLICATION-01", src: "/images/app-tunnel.png", alt: "BharatMembrane PVC geo-membrane in a tunnel waterproofing application" },
     ],
     // NO insulationClasses, NO workingVoltage, NO proofVoltage, NO dielectricStrength
+    heroImageAlt: "BharatMembrane PVC geo-membrane product image",
+    standardsNarrative:
+      "BharatMembrane is BIS approved to IS 15909:2020 and manufactured from high-grade PVC polymers, with compliance to BS, EN and international standards. It is produced under ISO-certified processes at Bharat Electrosafe facilities and backed by in-house and third-party quality testing.",
+    propertiesCaption:
+      "Material characteristics as published for BharatMembrane PVC geo-membrane.",
+    propertiesTableSummary:
+      "Material and physical properties for BharatMembrane per IS 15909:2020",
+    variantOptionsTitle: "Available thicknesses",
+    engineeredNotesTitle: "Installation",
+    enquiryBlurb:
+      "Contact our technical team for project-specific guidance, thickness recommendations and delivery information for BharatMembrane.",
     // Thicknesses as published by the client. Application labels are
     // deliberately not asserted per thickness — selection is project-specific.
-    membraneThicknessOptions: [
+    variantOptions: [
       { thickness: "1 mm", label: "Available" },
       { thickness: "1.5 mm", label: "Available" },
       { thickness: "2 mm", label: "Available" },
@@ -543,7 +584,7 @@ export const products: Product[] = [
       { thickness: "3 mm", label: "Available" },
       { thickness: "Up to 5 mm", label: "Available" },
     ],
-    membraneApplications: [
+    engineeredApplications: [
       "Tunnel and basement waterproofing",
       "Landfills and hazardous waste containment",
       "Water reservoirs, canals and ponds",
@@ -554,7 +595,7 @@ export const products: Product[] = [
     // Only properties confirmed by the client's published product page are listed.
     // Numeric values (density, tensile, puncture) require the BharatMembrane
     // technical datasheet before publication — see docs/CONTENT_VERIFICATION.md.
-    membranePhysicalProperties: [
+    engineeredProperties: [
       { label: "Material", value: "High-grade PVC polymer" },
       { label: "Standard", value: "IS 15909:2020 (BIS approved)" },
       { label: "Thickness range", value: "1 mm to 5 mm" },
@@ -562,13 +603,81 @@ export const products: Product[] = [
       { label: "UV resistance", value: "High resistance to UV radiation" },
       { label: "Jointing", value: "Seamable by thermal welding" },
     ],
-    membraneInstallationNotes: [
+    engineeredNotes: [
       "Seams joined using thermal welding techniques for secure, leak-proof joints",
       "Roll sizes and thicknesses supplied to suit project requirements",
       "Custom fabrication available",
       "Backed by in-house and third-party quality testing",
     ],
-    membraneDownloads: [],
+    engineeredDownloads: [],
+  },
+
+  /* ─── 6. BharatHydro Seal ───
+     Content transcribed from the client's published BharatHydro-Seal.php
+     page. No profile dimensions, tensile figures or pressure ratings are
+     stated there, and no datasheet was supplied in the asset archive, so
+     none are published here. See docs/CLIENT_VERIFICATION_REQUIRED.md. */
+  {
+    slug: "bharat-hydro-seal",
+    name: "BharatHydro Seal",
+    shortName: "BharatHydro Seal",
+    description:
+      "PVC and rubber water stop seals that block water passage through construction and expansion joints.",
+    detailCopy:
+      "BharatHydro Seal is a range of water stop sealing solutions engineered to prevent the passage of water through construction and expansion joints in concrete structures. Manufactured from high-quality PVC and rubber compounds, it offers resistance to water pressure, chemicals and environmental stress. Conforming to IS 15058-2002.",
+    image: "/images/civil-protection.png",
+    standards: ["IS 15058-2002"],
+    features: [
+      "Superior water-tight sealing",
+      "High tensile strength and flexibility",
+      "Resistant to chemicals, corrosion and weather conditions",
+      "Easy installation and long service life",
+      "Suitable for high-pressure water retention structures",
+    ],
+    systemGroup: "civil-protection",
+    systemIndex: "06",
+    variants: ["Construction joints", "Expansion joints"],
+    exploreLink: "/products/bharat-hydro-seal",
+    overviewText:
+      "BharatHydro Seal is a range of water stop solutions manufactured to IS 15058-2002, designed to ensure protection against water leakage at construction joints. The seals are engineered to prevent the passage of water through construction and expansion joints in concrete structures, and are manufactured from high-quality PVC and rubber compounds that resist water pressure, chemicals and environmental stress.",
+    benefits: [
+      "Prevents water passage through construction and expansion joints",
+      "High tensile strength combined with the flexibility joints require",
+      "Resistant to chemicals, corrosion and weather exposure",
+      "Straightforward installation and long service life",
+      "Suitable for high-pressure water retention structures",
+    ],
+    galleryImages: [],
+    heroImageAlt: "BharatHydro Seal water stop product image",
+    standardsNarrative:
+      "BharatHydro Seal conforms to IS 15058-2002 and is manufactured from high-quality PVC and rubber compounds under Bharat Electrosafe's ISO 9001:2015 certified quality management system.",
+    propertiesCaption:
+      "Material characteristics as published for BharatHydro Seal water stops.",
+    propertiesTableSummary: "Material properties for BharatHydro Seal per IS 15058-2002",
+    engineeredProperties: [
+      { label: "Material", value: "High-quality PVC and rubber compounds" },
+      { label: "Standard", value: "IS 15058-2002" },
+      { label: "Sealing", value: "Water-tight at construction and expansion joints" },
+      { label: "Mechanical", value: "High tensile strength and flexibility" },
+      { label: "Chemical resistance", value: "Resistant to chemicals and corrosion" },
+      { label: "Weathering", value: "Resistant to environmental and weather exposure" },
+    ],
+    engineeredApplications: [
+      "Water tanks and reservoirs",
+      "Dams and canals",
+      "Sewage treatment plants",
+      "Basements and underground structures",
+      "Swimming pools and tunnels",
+    ],
+    engineeredNotesTitle: "Selection and installation",
+    engineeredNotes: [
+      "Supplied for both construction joints and expansion joints",
+      "Profile and size selected to suit the joint detail and project requirement",
+      "Designed for straightforward on-site installation",
+    ],
+    engineeredDownloads: [],
+    enquiryBlurb:
+      "Contact our technical team for joint details, profile selection and delivery information for BharatHydro Seal.",
   },
 ];
 
@@ -589,9 +698,10 @@ export function isMatProduct(product: Product): boolean {
   return product.insulationClasses !== undefined;
 }
 
-// ── Helper: Is this BharatMembrane (has membrane fields)? ──
-export function isMembraneProduct(product: Product): boolean {
-  return product.membraneThicknessOptions !== undefined;
+/** True for products rendered by EngineeredProductLayout rather than the
+ *  voltage-class mat layout — i.e. anything without IS 15652 classes. */
+export function isEngineeredProduct(product: Product): boolean {
+  return product.insulationClasses === undefined;
 }
 
 // ── Helper: Get other products (for related products section) ──
@@ -653,8 +763,9 @@ export const systemGroups: SystemGroup[] = [
   {
     id: "civil-protection",
     name: "Civil Protection",
-    shortName: "BharatMembrane",
-    description: "Waterproofing and containment for civil infrastructure.",
+    shortName: "Waterproofing & Sealing",
+    description:
+      "Engineered waterproofing, containment and joint sealing for civil infrastructure.",
   },
 ];
 
