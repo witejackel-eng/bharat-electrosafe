@@ -1,0 +1,1460 @@
+     1→     1→     1→# Z.ai Master Prompt — Bharat Electrosafe Client-Ready Layout and Visual Rebuild
+     2→     2→     2→
+     3→     3→     3→Work directly inside the existing project:
+     4→     4→     4→
+     5→     5→     5→**GitHub repository:**  
+     6→     6→     6→https://github.com/witejackel-eng/bharat-electrosafe
+     7→     7→     7→
+     8→     8→     8→**Current preview:**  
+     9→     9→     9→https://bharat-electrosafe.vercel.app/
+    10→    10→    10→
+    11→    11→    11→**Original website and factual reference:**  
+    12→    12→    12→https://bharatelectrosafe.com/index.php
+    13→    13→    13→
+    14→    14→    14→---
+    15→    15→    15→
+    16→    16→    16→# 1. ROLE
+    17→    17→    17→
+    18→    18→    18→Act as a senior creative director, industrial B2B UX designer, brand-system designer, conversion strategist and production-grade Next.js engineer.
+    19→    19→    19→
+    20→    20→    20→This task is about **layout, visual hierarchy, page composition, responsive art direction and production finishing**.
+    21→    21→    21→
+    22→    22→    22→Do not perform the proprietary `bharatsafe` asset audit in this task.
+    23→    23→    23→
+    24→    24→    24→Claude Code will later inspect, select and allocate the proprietary assets.
+    25→    25→    25→
+    26→    26→    26→Your responsibility now is to make the complete website look polished enough to show the client immediately, using:
+    27→    27→    27→
+    28→    28→    28→1. Assets already present in the public repository
+    29→    29→    29→2. Assets already publicly available on the existing Bharat Electrosafe website
+    30→    30→    30→3. Carefully designed neutral visual fallback blocks only when no usable public image exists
+    31→    31→    31→
+    32→    32→    32→Do not leave broken image boxes.
+    33→    33→    33→
+    34→    34→    34→Do not wait for future assets before completing the design.
+    35→    35→    35→
+    36→    36→    36→Build stable asset slots so Claude can later replace the temporary public images without changing the layout.
+    37→    37→    37→
+    38→    38→    38→---
+    39→    39→    39→
+    40→    40→    40→# 2. CURRENT WEBSITE ASSESSMENT
+    41→    41→    41→
+    42→    42→    42→The current website has a useful white-and-yellow direction, but it still looks like an unfinished development build.
+    43→    43→    43→
+    44→    44→    44→The current screenshots reveal these problems:
+    45→    45→    45→
+    46→    46→    46→- Broken product-card images on the homepage
+    47→    47→    47→- Broken manufacturing image
+    48→    48→    48→- Product cards feel like basic bordered boxes
+    49→    49→    49→- Homepage sections are visually similar and lack hierarchy
+    50→    50→    50→- The header looks generic
+    51→    51→    51→- The footer is functional but not premium
+    52→    52→    52→- The About Us page is too long, too sparse and visually fragmented
+    53→    53→    53→- Leadership cards contain empty or placeholder visuals
+    54→    54→    54→- Manufacturing and testing cards feel like placeholders
+    55→    55→    55→- Certificate cards are small and repetitive
+    56→    56→    56→- Contact page has too much vertical space and weak composition
+    57→    57→    57→- Contact form occupies only a narrow portion of the page
+    58→    58→    58→- Product-selection guidance is visually detached from the form
+    59→    59→    59→- Product page has excessive vertical length
+    60→    60→    60→- Product gallery repeats the same large image
+    61→    61→    61→- Technical content is broken into too many full-width sections
+    62→    62→    62→- Related-product cards are too small and repetitive
+    63→    63→    63→- The product-page final CTA uses a dark section that conflicts with the approved calm white-and-yellow theme
+    64→    64→    64→- Some table headings are visually heavy
+    65→    65→    65→- There is insufficient visual difference between page types
+    66→    66→    66→- The site still feels like a wireframe with real text added
+    67→    67→    67→
+    68→    68→    68→Do not apply another small styling pass.
+    69→    69→    69→
+    70→    70→    70→Recompose the pages into clear, premium, editorially controlled experiences.
+    71→    71→    71→
+    72→    72→    72→---
+    73→    73→    73→
+    74→    74→    74→# 3. PROJECT BOUNDARIES
+    75→    75→    75→
+    76→    76→    76→## Keep the approved structure
+    77→    77→    77→
+    78→    78→    78→Main header:
+    79→    79→    79→
+    80→    80→    80→- Home
+    81→    81→    81→- Products
+    82→    82→    82→- About Us
+    83→    83→    83→- Contact Us
+    84→    84→    84→- Request a Quote button
+    85→    85→    85→
+    86→    86→    86→Products dropdown:
+    87→    87→    87→
+    88→    88→    88→1. Electrical Insulating Mats
+    89→    89→    89→2. Coloured Strip Insulating Mats
+    90→    90→    90→3. Bi-Color Insulating Mats
+    91→    91→    91→4. Auto-Glow / Reflective Band Insulating Mats
+    92→    92→    92→5. BharatMembrane
+    93→    93→    93→
+    94→    94→    94→Approved routes:
+    95→    95→    95→
+    96→    96→    96→```text
+    97→    97→    97→/
+    98→    98→    98→├── /products/electrical-insulating-mats
+    99→    99→    99→├── /products/coloured-strip-insulating-mats
+   100→   100→   100→├── /products/bi-color-insulating-mats
+   101→   101→   101→├── /products/auto-glow-reflective-band-insulating-mats
+   102→   102→   102→├── /products/bharat-membrane
+   103→   103→   103→├── /about-us
+   104→   104→   104→├── /contact-us
+   105→   105→   105→├── /privacy-policy
+   106→   106→   106→├── /terms
+   107→   107→   107→└── custom 404
+   108→   108→   108→```
+   109→   109→   109→
+   110→   110→   110→Do not add more top-level navigation pages.
+   111→   111→   111→
+   112→   112→   112→Do not add more products.
+   113→   113→   113→
+   114→   114→   114→Do not build a CMS.
+   115→   115→   115→
+   116→   116→   116→Do not build an ecommerce checkout.
+   117→   117→   117→
+   118→   118→   118→Do not redesign the business.
+   119→   119→   119→
+   120→   120→   120→---
+   121→   121→   121→
+   122→   122→   122→# 4. DESIGN GOAL
+   123→   123→   123→
+   124→   124→   124→The final website should feel like a custom ₹1 lakh industrial corporate website.
+   125→   125→   125→
+   126→   126→   126→It must communicate:
+   127→   127→   127→
+   128→   128→   128→- Technical competence
+   129→   129→   129→- Product confidence
+   130→   130→   130→- Manufacturing credibility
+   131→   131→   131→- Documentation readiness
+   132→   132→   132→- Safety expertise
+   133→   133→   133→- Professional enquiry handling
+   134→   134→   134→
+   135→   135→   135→The website should feel expensive because of:
+   136→   136→   136→
+   137→   137→   137→- Strong hierarchy
+   138→   138→   138→- Authentic product presentation
+   139→   139→   139→- Refined spacing
+   140→   140→   140→- Consistent typography
+   141→   141→   141→- Controlled yellow usage
+   142→   142→   142→- Excellent mobile composition
+   143→   143→   143→- Clear page storytelling
+   144→   144→   144→- Subtle motion
+   145→   145→   145→- Careful component finishing
+   146→   146→   146→
+   147→   147→   147→It should not feel expensive by adding more sections, shadows, animations or decorative elements.
+   148→   148→   148→
+   149→   149→   149→---
+   150→   150→   150→
+   151→   151→   151→# 5. VISUAL SYSTEM
+   152→   152→   152→
+   153→   153→   153→## 5.1 Colour palette
+   154→   154→   154→
+   155→   155→   155→Maintain the original Bharat Electrosafe white-and-yellow character.
+   156→   156→   156→
+   157→   157→   157→Use:
+   158→   158→   158→
+   159→   159→   159→```css
+   160→   160→   160→--white: #FFFFFF;
+   161→   161→   161→--warm-white: #FFFEF9;
+   162→   162→   162→--cream: #FFFDF3;
+   163→   163→   163→--yellow-50: #FFFBE8;
+   164→   164→   164→--yellow-100: #FFF4BE;
+   165→   165→   165→--yellow-400: #FFD43B;
+   166→   166→   166→--yellow-500: #FFC400;
+   167→   167→   167→--yellow-600: #DFAA00;
+   168→   168→   168→--charcoal-950: #242426;
+   169→   169→   169→--charcoal-800: #38383A;
+   170→   170→   170→--grey-650: #66666A;
+   171→   171→   171→--grey-400: #A9A9A5;
+   172→   172→   172→--grey-250: #D8D7D1;
+   173→   173→   173→--grey-150: #ECEBE5;
+   174→   174→   174→```
+   175→   175→   175→
+   176→   176→   176→Sample the final yellow from the existing approved logo.
+   177→   177→   177→
+   178→   178→   178→## 5.2 Colour rules
+   179→   179→   179→
+   180→   180→   180→- White and warm white should dominate
+   181→   181→   181→- Pale yellow should define sections gently
+   182→   182→   182→- Strong yellow should be used for actions and small accents
+   183→   183→   183→- Charcoal should carry all primary text
+   184→   184→   184→- Grey should carry metadata and borders
+   185→   185→   185→- Avoid large black or navy sections
+   186→   186→   186→- Avoid blue footers
+   187→   187→   187→- Avoid strong gradients
+   188→   188→   188→- Avoid glowing effects
+   189→   189→   189→- Avoid glassmorphism
+   190→   190→   190→- Avoid multiple competing accent colours
+   191→   191→   191→
+   192→   192→   192→## 5.3 Typography
+   193→   193→   193→
+   194→   194→   194→Use one clean sans-serif family.
+   195→   195→   195→
+   196→   196→   196→Preferred:
+   197→   197→   197→
+   198→   198→   198→- Manrope
+   199→   199→   199→- DM Sans
+   200→   200→   200→- Inter
+   201→   201→   201→
+   202→   202→   202→Use one family consistently.
+   203→   203→   203→
+   204→   204→   204→Suggested scale:
+   205→   205→   205→
+   206→   206→   206→```css
+   207→   207→   207→Hero H1:
+   208→   208→   208→clamp(3rem, 6vw, 5.75rem)
+   209→   209→   209→
+   210→   210→   210→Page H1:
+   211→   211→   211→clamp(2.6rem, 5vw, 4.75rem)
+   212→   212→   212→
+   213→   213→   213→Section H2:
+   214→   214→   214→clamp(2.1rem, 4vw, 3.6rem)
+   215→   215→   215→
+   216→   216→   216→Product H1:
+   217→   217→   217→clamp(2.45rem, 4.6vw, 4.3rem)
+   218→   218→   218→
+   219→   219→   219→Card title:
+   220→   220→   220→1.05rem to 1.25rem
+   221→   221→   221→
+   222→   222→   222→Body large:
+   223→   223→   223→1.125rem
+   224→   224→   224→
+   225→   225→   225→Body:
+   226→   226→   226→1rem
+   227→   227→   227→
+   228→   228→   228→Metadata:
+   229→   229→   229→0.8rem to 0.875rem
+   230→   230→   230→```
+   231→   231→   231→
+   232→   232→   232→Do not make all headings oversized.
+   233→   233→   233→
+   234→   234→   234→Control line lengths.
+   235→   235→   235→
+   236→   236→   236→Hero headings should generally remain under 12 words.
+   237→   237→   237→
+   238→   238→   238→## 5.4 Spacing
+   239→   239→   239→
+   240→   240→   240→Use an 8px spacing system.
+   241→   241→   241→
+   242→   242→   242→Desktop:
+   243→   243→   243→
+   244→   244→   244→- Major section padding: 104–144px
+   245→   245→   245→- Supporting section padding: 72–96px
+   246→   246→   246→- Container width: 1280–1360px
+   247→   247→   247→- Page horizontal padding: 32–56px
+   248→   248→   248→
+   249→   249→   249→Tablet:
+   250→   250→   250→
+   251→   251→   251→- Major section padding: 80–104px
+   252→   252→   252→- Horizontal padding: 28–40px
+   253→   253→   253→
+   254→   254→   254→Mobile:
+   255→   255→   255→
+   256→   256→   256→- Major section padding: 64–80px
+   257→   257→   257→- Horizontal padding: 20–24px
+   258→   258→   258→
+   259→   259→   259→Do not leave huge blank areas caused by missing images.
+   260→   260→   260→
+   261→   261→   261→---
+   262→   262→   262→
+   263→   263→   263→# 6. GLOBAL COMPONENT SYSTEM
+   264→   264→   264→
+   265→   265→   265→Create or refine these primitives:
+   266→   266→   266→
+   267→   267→   267→```text
+   268→   268→   268→src/components/ui/
+   269→   269→   269→├── SectionHeader.tsx
+   270→   270→   270→├── Eyebrow.tsx
+   271→   271→   271→├── PrimaryButton.tsx
+   272→   272→   272→├── SecondaryButton.tsx
+   273→   273→   273→├── TextLink.tsx
+   274→   274→   274→├── ImageFrame.tsx
+   275→   275→   275→├── TechnicalBadge.tsx
+   276→   276→   276→├── DocumentCard.tsx
+   277→   277→   277→├── LogoRail.tsx
+   278→   278→   278→├── DataTable.tsx
+   279→   279→   279→├── FeatureList.tsx
+   280→   280→   280→├── PageIntro.tsx
+   281→   281→   281→└── EmptyMediaFallback.tsx
+   282→   282→   282→```
+   283→   283→   283→
+   284→   284→   284→Do not wrap every piece of content in a card.
+   285→   285→   285→
+   286→   286→   286→Use cards only for:
+   287→   287→   287→
+   288→   288→   288→- Products
+   289→   289→   289→- Documents
+   290→   290→   290→- Awards
+   291→   291→   291→- Contact methods
+   292→   292→   292→- Related products
+   293→   293→   293→
+   294→   294→   294→Use spacing and typography for everything else.
+   295→   295→   295→
+   296→   296→   296→---
+   297→   297→   297→
+   298→   298→   298→# 7. ASSET SLOT SYSTEM
+   299→   299→   299→
+   300→   300→   300→Claude will replace assets later.
+   301→   301→   301→
+   302→   302→   302→Create stable slots now.
+   303→   303→   303→
+   304→   304→   304→Every major visual must use a slot ID.
+   305→   305→   305→
+   306→   306→   306→Examples:
+   307→   307→   307→
+   308→   308→   308→```text
+   309→   309→   309→HOME-HERO-01
+   310→   310→   310→HOME-PRODUCT-EIM-01
+   311→   311→   311→HOME-PRODUCT-CSIM-01
+   312→   312→   312→HOME-PRODUCT-BCIM-01
+   313→   313→   313→HOME-PRODUCT-AGRIM-01
+   314→   314→   314→HOME-PRODUCT-BM-01
+   315→   315→   315→HOME-CAPABILITY-01
+   316→   316→   316→ABOUT-LEADERSHIP-01
+   317→   317→   317→ABOUT-MANUFACTURING-01
+   318→   318→   318→ABOUT-TESTING-01
+   319→   319→   319→ABOUT-AWARD-01
+   320→   320→   320→PRODUCT-EIM-HERO-01
+   321→   321→   321→PRODUCT-EIM-GALLERY-01
+   322→   322→   322→PRODUCT-CSIM-HERO-01
+   323→   323→   323→PRODUCT-BCIM-DIAGRAM-01
+   324→   324→   324→PRODUCT-AGRIM-LOWLIGHT-01
+   325→   325→   325→PRODUCT-BM-HERO-01
+   326→   326→   326→```
+   327→   327→   327→
+   328→   328→   328→Create:
+   329→   329→   329→
+   330→   330→   330→```text
+   331→   331→   331→src/data/asset-slots.ts
+   332→   332→   332→docs/ASSET_SLOT_SPECIFICATION.md
+   333→   333→   333→```
+   334→   334→   334→
+   335→   335→   335→Each slot should define:
+   336→   336→   336→
+   337→   337→   337→- Current public fallback path
+   338→   338→   338→- Alt text
+   339→   339→   339→- Desktop aspect ratio
+   340→   340→   340→- Mobile aspect ratio
+   341→   341→   341→- Object position
+   342→   342→   342→- Future replacement category
+   343→   343→   343→
+   344→   344→   344→Do not reference the private `bharatsafe` folder.
+   345→   345→   345→
+   346→   346→   346→## Broken-image rule
+   347→   347→   347→
+   348→   348→   348→No `<img>` or `Image` component may render a broken source.
+   349→   349→   349→
+   350→   350→   350→Before rendering an image:
+   351→   351→   351→
+   352→   352→   352→- Confirm the path exists
+   353→   353→   353→- Provide a public fallback
+   354→   354→   354→- Use a designed `EmptyMediaFallback` only as a final fallback
+   355→   355→   355→
+   356→   356→   356→The fallback should look intentional:
+   357→   357→   357→
+   358→   358→   358→- Pale-yellow field
+   359→   359→   359→- Small product/category label
+   360→   360→   360→- Subtle technical line pattern
+   361→   361→   361→- No word “placeholder”
+   362→   362→   362→- No broken-image icon
+   363→   363→   363→
+   364→   364→   364→---
+   365→   365→   365→
+   366→   366→   366→# 8. HEADER REDESIGN
+   367→   367→   367→
+   368→   368→   368→The current header is too generic.
+   369→   369→   369→
+   370→   370→   370→Create a polished two-level header.
+   371→   371→   371→
+   372→   372→   372→## Top contact strip
+   373→   373→   373→
+   374→   374→   374→Height:
+   375→   375→   375→
+   376→   376→   376→- Approximately 28–32px desktop
+   377→   377→   377→- Hidden or simplified on mobile
+   378→   378→   378→
+   379→   379→   379→Content:
+   380→   380→   380→
+   381→   381→   381→- Email
+   382→   382→   382→- Primary phone
+   383→   383→   383→- WhatsApp
+   384→   384→   384→
+   385→   385→   385→Style:
+   386→   386→   386→
+   387→   387→   387→- Warm-white or pale-yellow
+   388→   388→   388→- Small charcoal text
+   389→   389→   389→- Thin bottom border
+   390→   390→   390→- No black background
+   391→   391→   391→- No heavy icons
+   392→   392→   392→
+   393→   393→   393→## Main header
+   394→   394→   394→
+   395→   395→   395→Height:
+   396→   396→   396→
+   397→   397→   397→- 72–80px desktop
+   398→   398→   398→- 64–72px mobile
+   399→   399→   399→
+   400→   400→   400→Structure:
+   401→   401→   401→
+   402→   402→   402→```text
+   403→   403→   403→[ Logo + name ]        Home   Products ▼   About Us   Contact Us        [ Request a Quote ]
+   404→   404→   404→```
+   405→   405→   405→
+   406→   406→   406→Visual treatment:
+   407→   407→   407→
+   408→   408→   408→- White background
+   409→   409→   409→- Soft bottom border
+   410→   410→   410→- Very subtle shadow after scroll
+   411→   411→   411→- Sticky
+   412→   412→   412→- Compact scroll state
+   413→   413→   413→- No floating glass panel
+   414→   414→   414→- No large rounded capsule header
+   415→   415→   415→- No experimental interaction
+   416→   416→   416→
+   417→   417→   417→## Product dropdown
+   418→   418→   418→
+   419→   419→   419→Create a refined wide dropdown.
+   420→   420→   420→
+   421→   421→   421→Desktop:
+   422→   422→   422→
+   423→   423→   423→- Two or three columns
+   424→   424→   424→- Five products
+   425→   425→   425→- Small thumbnail
+   426→   426→   426→- Product name
+   427→   427→   427→- One-line use
+   428→   428→   428→- View all products not required
+   429→   429→   429→
+   430→   430→   430→Do not render a plain vertical list with thick borders.
+   431→   431→   431→
+   432→   432→   432→Mobile:
+   433→   433→   433→
+   434→   434→   434→- Accordion
+   435→   435→   435→- Clear five product links
+   436→   436→   436→- Large touch targets
+   437→   437→   437→
+   438→   438→   438→---
+   439→   439→   439→
+   440→   440→   440→# 9. HOMEPAGE REDESIGN
+   441→   441→   441→
+   442→   442→   442→The homepage must be client-presentable now.
+   443→   443→   443→
+   444→   444→   444→Use exactly six primary sections.
+   445→   445→   445→
+   446→   446→   446→---
+   447→   447→   447→
+   448→   448→   448→## SECTION 1 — HERO
+   449→   449→   449→
+   450→   450→   450→Create a high-quality editorial hero.
+   451→   451→   451→
+   452→   452→   452→Desktop:
+   453→   453→   453→
+   454→   454→   454→- 55% copy
+   455→   455→   455→- 45% media
+   456→   456→   456→- Minimum height approximately 650–720px
+   457→   457→   457→- Vertically centred
+   458→   458→   458→- Warm-white background
+   459→   459→   459→- Subtle pale-yellow media field
+   460→   460→   460→
+   461→   461→   461→Copy:
+   462→   462→   462→
+   463→   463→   463→Eyebrow:
+   464→   464→   464→
+   465→   465→   465→**ELECTRICAL INSULATION AND INDUSTRIAL PROTECTION**
+   466→   466→   466→
+   467→   467→   467→H1:
+   468→   468→   468→
+   469→   469→   469→**Certified protection for critical electrical environments.**
+   470→   470→   470→
+   471→   471→   471→Supporting text:
+   472→   472→   472→
+   473→   473→   473→**Electrical insulating mats and engineered protection products for control panels, substations, utilities, industry and infrastructure.**
+   474→   474→   474→
+   475→   475→   475→Primary CTA:
+   476→   476→   476→
+   477→   477→   477→**View Products**
+   478→   478→   478→
+   479→   479→   479→Secondary CTA:
+   480→   480→   480→
+   481→   481→   481→**Request a Quote**
+   482→   482→   482→
+   483→   483→   483→Proof line:
+   484→   484→   484→
+   485→   485→   485→- IS 15652:2006
+   486→   486→   486→- BIS licence
+   487→   487→   487→- Tested documentation
+   488→   488→   488→- Custom dimensions
+   489→   489→   489→
+   490→   490→   490→Visual:
+   491→   491→   491→
+   492→   492→   492→- Use current valid public product asset
+   493→   493→   493→- Preserve visible product detail
+   494→   494→   494→- No broken image
+   495→   495→   495→- No generic worker illustration
+   496→   496→   496→- No Class A/B/C text floating randomly over the image
+   497→   497→   497→- If Class labels are used, align them in a restrained technical legend below the image
+   498→   498→   498→
+   499→   499→   499→Mobile:
+   500→   500→   500→
+   501→   501→   501→- Copy first
+   502→   502→   502→- CTA buttons visible before long scroll
+   503→   503→   503→- Media immediately after CTA
+   504→   504→   504→- Proof line wraps cleanly
+   505→   505→   505→
+   506→   506→   506→---
+   507→   507→   507→
+   508→   508→   508→## SECTION 2 — PRODUCT RANGE
+   509→   509→   509→
+   510→   510→   510→Heading:
+   511→   511→   511→
+   512→   512→   512→**Our product range**
+   513→   513→   513→
+   514→   514→   514→Supporting line:
+   515→   515→   515→
+   516→   516→   516→**Five product families, each designed around a specific protection requirement.**
+   517→   517→   517→
+   518→   518→   518→Use a premium editorial 3+2 layout.
+   519→   519→   519→
+   520→   520→   520→Desktop:
+   521→   521→   521→
+   522→   522→   522→- First row: three cards
+   523→   523→   523→- Second row: two wider cards
+   524→   524→   524→- Cards have varied but controlled proportions
+   525→   525→   525→- Images occupy 58–65% of card height
+   526→   526→   526→- Text remains concise
+   527→   527→   527→
+   528→   528→   528→Tablet:
+   529→   529→   529→
+   530→   530→   530→- Two columns
+   531→   531→   531→- Fifth card spans two columns only when visually balanced
+   532→   532→   532→
+   533→   533→   533→Mobile:
+   534→   534→   534→
+   535→   535→   535→- One column
+   536→   536→   536→- Image ratio approximately 16:10 or 4:3
+   537→   537→   537→
+   538→   538→   538→Every card:
+   539→   539→   539→
+   540→   540→   540→- Real current public image or intentional fallback
+   541→   541→   541→- Product name
+   542→   542→   542→- One sentence
+   543→   543→   543→- View Product
+   544→   544→   544→- Subtle yellow line or index
+   545→   545→   545→- Gentle hover image scale
+   546→   546→   546→
+   547→   547→   547→Do not show broken image alt text.
+   548→   548→   548→
+   549→   549→   549→Do not use identical repeated images for three products.
+   550→   550→   550→
+   551→   551→   551→---
+   552→   552→   552→
+   553→   553→   553→## SECTION 3 — DOCUMENTATION AND TRUST
+   554→   554→   554→
+   555→   555→   555→Heading:
+   556→   556→   556→
+   557→   557→   557→**Documentation that supports technical decisions**
+   558→   558→   558→
+   559→   559→   559→Supporting text:
+   560→   560→   560→
+   561→   561→   561→**Standards, licences, testing records and company credentials organised for faster technical evaluation.**
+   562→   562→   562→
+   563→   563→   563→Layout:
+   564→   564→   564→
+   565→   565→   565→Desktop:
+   566→   566→   566→
+   567→   567→   567→- Left: three featured document cards
+   568→   568→   568→- Right or below: moving institutional logo rail
+   569→   569→   569→
+   570→   570→   570→Document cards:
+   571→   571→   571→
+   572→   572→   572→- Larger than current
+   573→   573→   573→- Thumbnail area
+   574→   574→   574→- Document type
+   575→   575→   575→- Name
+   576→   576→   576→- Issuer
+   577→   577→   577→- Reference/standard
+   578→   578→   578→- Preview
+   579→   579→   579→- Download PDF
+   580→   580→   580→- Hide unavailable buttons
+   581→   581→   581→
+   582→   582→   582→Logo rail:
+   583→   583→   583→
+   584→   584→   584→- Slow
+   585→   585→   585→- Accessible
+   586→   586→   586→- Grayscale to colour on hover/focus
+   587→   587→   587→- Names visible on mobile
+   588→   588→   588→- No public disclaimer paragraph
+   589→   589→   589→- Use neutral heading
+   590→   590→   590→
+   591→   591→   591→Do not create a tiny row of acronyms that looks unfinished.
+   592→   592→   592→
+   593→   593→   593→---
+   594→   594→   594→
+   595→   595→   595→## SECTION 4 — CAPABILITY
+   596→   596→   596→
+   597→   597→   597→Heading:
+   598→   598→   598→
+   599→   599→   599→**Built around safety, quality and application support**
+   600→   600→   600→
+   601→   601→   601→Use a balanced split layout.
+   602→   602→   602→
+   603→   603→   603→Left:
+   604→   604→   604→
+   605→   605→   605→- Authentic current public company/manufacturing image or intentional fallback
+   606→   606→   606→
+   607→   607→   607→Right:
+   608→   608→   608→
+   609→   609→   609→- Short company paragraph
+   610→   610→   610→- Four proof points
+   611→   611→   611→- About Us link
+   612→   612→   612→
+   613→   613→   613→Proof points:
+   614→   614→   614→
+   615→   615→   615→- Certified and tested products
+   616→   616→   616→- Classes A, B and C
+   617→   617→   617→- Custom dimensions and configurations
+   618→   618→   618→- Technical documentation and enquiry support
+   619→   619→   619→
+   620→   620→   620→Do not use four generic icon cards followed by a broken image.
+   621→   621→   621→
+   622→   622→   622→---
+   623→   623→   623→
+   624→   624→   624→## SECTION 5 — INDUSTRIES AND APPLICATIONS
+   625→   625→   625→
+   626→   626→   626→Heading:
+   627→   627→   627→
+   628→   628→   628→**Industries and applications**
+   629→   629→   629→
+   630→   630→   630→Use a visual mosaic or compact editorial list.
+   631→   631→   631→
+   632→   632→   632→Applications:
+   633→   633→   633→
+   634→   634→   634→- Power utilities
+   635→   635→   635→- Substations and switchrooms
+   636→   636→   636→- Railways and metro
+   637→   637→   637→- Oil and gas
+   638→   638→   638→- Manufacturing
+   639→   639→   639→- Infrastructure and construction
+   640→   640→   640→
+   641→   641→   641→Desktop:
+   642→   642→   642→
+   643→   643→   643→- Three-column visual/list arrangement
+   644→   644→   644→
+   645→   645→   645→Mobile:
+   646→   646→   646→
+   647→   647→   647→- Two columns only if readable
+   648→   648→   648→- Otherwise one column
+   649→   649→   649→
+   650→   650→   650→Use very short copy.
+   651→   651→   651→
+   652→   652→   652→Do not make six identical bordered text boxes with tiny icons.
+   653→   653→   653→
+   654→   654→   654→---
+   655→   655→   655→
+   656→   656→   656→## SECTION 6 — FINAL CTA
+   657→   657→   657→
+   658→   658→   658→Use a pale-yellow full-width section.
+   659→   659→   659→
+   660→   660→   660→Heading:
+   661→   661→   661→
+   662→   662→   662→**Need help selecting the correct product?**
+   663→   663→   663→
+   664→   664→   664→Copy:
+   665→   665→   665→
+   666→   666→   666→**Share your operating voltage, dimensions, quantity and delivery location.**
+   667→   667→   667→
+   668→   668→   668→Actions:
+   669→   669→   669→
+   670→   670→   670→- Request a Quote
+   671→   671→   671→- Call Sales
+   672→   672→   672→- WhatsApp
+   673→   673→   673→
+   674→   674→   674→No dark footer-like CTA.
+   675→   675→   675→
+   676→   676→   676→No section after this except the footer.
+   677→   677→   677→
+   678→   678→   678→---
+   679→   679→   679→
+   680→   680→   680→# 10. ABOUT US PAGE REDESIGN
+   681→   681→   681→
+   682→   682→   682→The current About Us page is too long and fragmented.
+   683→   683→   683→
+   684→   684→   684→Rebuild it into six primary chapters.
+   685→   685→   685→
+   686→   686→   686→---
+   687→   687→   687→
+   688→   688→   688→## CHAPTER 1 — PAGE INTRO
+   689→   689→   689→
+   690→   690→   690→Desktop:
+   691→   691→   691→
+   692→   692→   692→- 55/45 split
+   693→   693→   693→- Left: page title and concise introduction
+   694→   694→   694→- Right: company/product visual
+   695→   695→   695→
+   696→   696→   696→H1:
+   697→   697→   697→
+   698→   698→   698→**About Bharat Electrosafe**
+   699→   699→   699→
+   700→   700→   700→Supporting paragraph:
+   701→   701→   701→
+   702→   702→   702→Maximum 80–110 words.
+   703→   703→   703→
+   704→   704→   704→Do not begin with a long wall of text.
+   705→   705→   705→
+   706→   706→   706→---
+   707→   707→   707→
+   708→   708→   708→## CHAPTER 2 — WHAT THE COMPANY MANUFACTURES
+   709→   709→   709→
+   710→   710→   710→Show the five approved products in a compact visual overview.
+   711→   711→   711→
+   712→   712→   712→Use:
+   713→   713→   713→
+   714→   714→   714→- One large lead product
+   715→   715→   715→- Four smaller product links
+   716→   716→   716→
+   717→   717→   717→Do not repeat the homepage’s exact card layout.
+   718→   718→   718→
+   719→   719→   719→---
+   720→   720→   720→
+   721→   721→   721→## CHAPTER 3 — COMPANY, MISSION AND LEADERSHIP
+   722→   722→   722→
+   723→   723→   723→Combine:
+   724→   724→   724→
+   725→   725→   725→- Short company journey
+   726→   726→   726→- Mission and values
+   727→   727→   727→- Leadership
+   728→   728→   728→
+   729→   729→   729→Do not create a long vertical timeline unless verified and visually meaningful.
+   730→   730→   730→
+   731→   731→   731→Leadership:
+   732→   732→   732→
+   733→   733→   733→- Three balanced profiles
+   734→   734→   734→- Proper image frames
+   735→   735→   735→- Consistent crop
+   736→   736→   736→- Name
+   737→   737→   737→- Role
+   738→   738→   738→- Short relevant biography
+   739→   739→   739→- No empty circles
+   740→   740→   740→
+   741→   741→   741→Until Claude replaces images:
+   742→   742→   742→
+   743→   743→   743→- Use current public leadership asset if available
+   744→   744→   744→- Otherwise use a refined monogram portrait fallback
+   745→   745→   745→
+   746→   746→   746→No broken image.
+   747→   747→   747→
+   748→   748→   748→---
+   749→   749→   749→
+   750→   750→   750→## CHAPTER 4 — MANUFACTURING, TESTING AND QUALITY
+   751→   751→   751→
+   752→   752→   752→Use one major visual composition.
+   753→   753→   753→
+   754→   754→   754→Desktop:
+   755→   755→   755→
+   756→   756→   756→- Large image
+   757→   757→   757→- Supporting two smaller image slots
+   758→   758→   758→- Short verified copy
+   759→   759→   759→- Three technical proof rows
+   760→   760→   760→
+   761→   761→   761→Do not show three pale placeholder cards with icons.
+   762→   762→   762→
+   763→   763→   763→---
+   764→   764→   764→
+   765→   765→   765→## CHAPTER 5 — CERTIFICATES, AWARDS AND MEDIA
+   766→   766→   766→
+   767→   767→   767→Combine related credibility content.
+   768→   768→   768→
+   769→   769→   769→### Certificates
+   770→   770→   770→
+   771→   771→   771→- Responsive document grid
+   772→   772→   772→- Three columns desktop
+   773→   773→   773→- Two tablet
+   774→   774→   774→- One mobile
+   775→   775→   775→- Larger thumbnails
+   776→   776→   776→- Clear Preview and Download
+   777→   777→   777→- No tiny text
+   778→   778→   778→- No repeated empty icon panels
+   779→   779→   779→
+   780→   780→   780→### Awards
+   781→   781→   781→
+   782→   782→   782→- Two or three real cards
+   783→   783→   783→- Image-led
+   784→   784→   784→- Short factual captions
+   785→   785→   785→
+   786→   786→   786→### Industry Participation & Media
+   787→   787→   787→
+   788→   788→   788→Include:
+   789→   789→   789→
+   790→   790→   790→- Plast India 2026 video
+   791→   791→   791→- Make in India Conclave interview
+   792→   792→   792→
+   793→   793→   793→Use YouTube facade.
+   794→   794→   794→
+   795→   795→   795→No iframe before interaction.
+   796→   796→   796→
+   797→   797→   797→---
+   798→   798→   798→
+   799→   799→   799→## CHAPTER 6 — INDUSTRIES, CLIENTS AND CTA
+   800→   800→   800→
+   801→   801→   801→Show:
+   802→   802→   802→
+   803→   803→   803→- Industries served
+   804→   804→   804→- Client/institutional logo rail
+   805→   805→   805→- Contact CTA
+   806→   806→   806→
+   807→   807→   807→Do not add a separate “Sectors we serve” section after “Industries served” if both repeat the same content.
+   808→   808→   808→
+   809→   809→   809→Merge them.
+   810→   810→   810→
+   811→   811→   811→---
+   812→   812→   812→
+   813→   813→   813→# 11. CONTACT US PAGE REDESIGN
+   814→   814→   814→
+   815→   815→   815→The current Contact page is too vertically long and underuses desktop width.
+   816→   816→   816→
+   817→   817→   817→Rebuild into four chapters.
+   818→   818→   818→
+   819→   819→   819→---
+   820→   820→   820→
+   821→   821→   821→## CHAPTER 1 — PAGE INTRO AND CONTACT METHODS
+   822→   822→   822→
+   823→   823→   823→Desktop:
+   824→   824→   824→
+   825→   825→   825→- 45% intro
+   826→   826→   826→- 55% contact-method grid
+   827→   827→   827→
+   828→   828→   828→Show:
+   829→   829→   829→
+   830→   830→   830→- Email
+   831→   831→   831→- Primary phone
+   832→   832→   832→- Secondary phone
+   833→   833→   833→- WhatsApp
+   834→   834→   834→- Address
+   835→   835→   835→
+   836→   836→   836→Use refined cards with enough whitespace.
+   837→   837→   837→
+   838→   838→   838→Do not use a huge empty hero area.
+   839→   839→   839→
+   840→   840→   840→---
+   841→   841→   841→
+   842→   842→   842→## CHAPTER 2 — ENQUIRY AND QUOTATION
+   843→   843→   843→
+   844→   844→   844→Desktop:
+   845→   845→   845→
+   846→   846→   846→- 7/5 split
+   847→   847→   847→
+   848→   848→   848→Left:
+   849→   849→   849→
+   850→   850→   850→- Form
+   851→   851→   851→
+   852→   852→   852→Right:
+   853→   853→   853→
+   854→   854→   854→- Product-selection guidance
+   855→   855→   855→- Class A/B/C compact comparison
+   856→   856→   856→- Direct call/WhatsApp help
+   857→   857→   857→
+   858→   858→   858→This is better than placing guidance far below the form.
+   859→   859→   859→
+   860→   860→   860→Form width should not remain narrow on desktop.
+   861→   861→   861→
+   862→   862→   862→Use logical two-column fields:
+   863→   863→   863→
+   864→   864→   864→- Name / Company
+   865→   865→   865→- Email / Phone
+   866→   866→   866→- Enquiry type / Product
+   867→   867→   867→
+   868→   868→   868→Message full width.
+   869→   869→   869→
+   870→   870→   870→Conditional fields appear only when needed.
+   871→   871→   871→
+   872→   872→   872→Mobile:
+   873→   873→   873→
+   874→   874→   874→- One column
+   875→   875→   875→- Guidance below form
+   876→   876→   876→
+   877→   877→   877→---
+   878→   878→   878→
+   879→   879→   879→## CHAPTER 3 — OFFICE LOCATION
+   880→   880→   880→
+   881→   881→   881→Desktop:
+   882→   882→   882→
+   883→   883→   883→- 5/7 split
+   884→   884→   884→- Address and directions on left
+   885→   885→   885→- Click-to-load map on right
+   886→   886→   886→
+   887→   887→   887→Do not use a tiny map placeholder floating alone.
+   888→   888→   888→
+   889→   889→   889→---
+   890→   890→   890→
+   891→   891→   891→## CHAPTER 4 — FINAL DIRECT CONTACT CTA
+   892→   892→   892→
+   893→   893→   893→Use pale yellow.
+   894→   894→   894→
+   895→   895→   895→Keep actions:
+   896→   896→   896→
+   897→   897→   897→- Call
+   898→   898→   898→- Email
+   899→   899→   899→- WhatsApp
+   900→   900→   900→
+   901→   901→   901→Do not use a full bright-yellow wall with low contrast.
+   902→   902→   902→
+   903→   903→   903→---
+   904→   904→   904→
+   905→   905→   905→# 12. PRODUCT PAGE REDESIGN
+   906→   906→   906→
+   907→   907→   907→The current product page is too long and repetitive.
+   908→   908→   908→
+   909→   909→   909→Reduce it to eight primary chapters.
+   910→   910→   910→
+   911→   911→   911→---
+   912→   912→   912→
+   913→   913→   913→## CHAPTER 1 — PRODUCT HERO
+   914→   914→   914→
+   915→   915→   915→Desktop:
+   916→   916→   916→
+   917→   917→   917→- 46% content
+   918→   918→   918→- 54% media
+   919→   919→   919→
+   920→   920→   920→Content:
+   921→   921→   921→
+   922→   922→   922→- Breadcrumb
+   923→   923→   923→- Standard badges
+   924→   924→   924→- Product H1
+   925→   925→   925→- Short introduction
+   926→   926→   926→- Three quick facts
+   927→   927→   927→- Request Quote
+   928→   928→   928→- Download Datasheet if real
+   929→   929→   929→
+   930→   930→   930→Media:
+   931→   931→   931→
+   932→   932→   932→- Main product image
+   933→   933→   933→- Two small supporting thumbnails
+   934→   934→   934→- No repeated giant image below
+   935→   935→   935→
+   936→   936→   936→Mobile:
+   937→   937→   937→
+   938→   938→   938→- H1
+   939→   939→   939→- Main image
+   940→   940→   940→- Quick facts
+   941→   941→   941→- CTAs
+   942→   942→   942→
+   943→   943→   943→---
+   944→   944→   944→
+   945→   945→   945→## CHAPTER 2 — PRODUCT OVERVIEW
+   946→   946→   946→
+   947→   947→   947→Use a split layout:
+   948→   948→   948→
+   949→   949→   949→- Application image
+   950→   950→   950→- Overview text
+   951→   951→   951→- Key functional benefits
+   952→   952→   952→
+   953→   953→   953→Do not make Overview and Key Benefits separate large sections with excessive whitespace.
+   954→   954→   954→
+   955→   955→   955→---
+   956→   956→   956→
+   957→   957→   957→## CHAPTER 3 — SPECIFICATIONS
+   958→   958→   958→
+   959→   959→   959→Use a refined technical table.
+   960→   960→   960→
+   961→   961→   961→Style:
+   962→   962→   962→
+   963→   963→   963→- Pale-yellow table header
+   964→   964→   964→- Charcoal text
+   965→   965→   965→- White rows
+   966→   966→   966→- Soft borders
+   967→   967→   967→- No black header
+   968→   968→   968→- Sticky first column only when useful
+   969→   969→   969→- Mobile scroll affordance
+   970→   970→   970→
+   971→   971→   971→---
+   972→   972→   972→
+   973→   973→   973→## CHAPTER 4 — MATERIAL AND DIMENSIONS
+   974→   974→   974→
+   975→   975→   975→Combine:
+   976→   976→   976→
+   977→   977→   977→- Material properties
+   978→   978→   978→- Dimensions
+   979→   979→   979→- Colours
+   980→   980→   980→- Surface patterns
+   981→   981→   981→- Installation
+   982→   982→   982→
+   983→   983→   983→Use:
+   984→   984→   984→
+   985→   985→   985→- Two-column layout desktop
+   986→   986→   986→- Accordion or stacked sections mobile
+   987→   987→   987→
+   988→   988→   988→Do not create two separate long full-width tables unless necessary.
+   989→   989→   989→
+   990→   990→   990→---
+   991→   991→   991→
+   992→   992→   992→## CHAPTER 5 — APPLICATIONS
+   993→   993→   993→
+   994→   994→   994→Use:
+   995→   995→   995→
+   996→   996→   996→- One installed-use image
+   997→   997→   997→- Five concise applications
+   998→   998→   998→- Pale-yellow supporting field
+   999→   999→   999→
+  1000→  1000→  1000→No oversized empty area.
+  1001→  1001→  1001→
+  1002→  1002→  1002→---
+  1003→  1003→  1003→
+  1004→  1004→  1004→## CHAPTER 6 — DOCUMENTS
+  1005→  1005→  1005→
+  1006→  1006→  1006→Show only real documents.
+  1007→  1007→  1007→
+  1008→  1008→  1008→- Datasheet
+  1009→  1009→  1009→- Certificate
+  1010→  1010→  1010→- Test report
+  1011→  1011→  1011→- Installation guide
+  1012→  1012→  1012→
+  1013→  1013→  1013→Hide unavailable items.
+  1014→  1014→  1014→
+  1015→  1015→  1015→---
+  1016→  1016→  1016→
+  1017→  1017→  1017→## CHAPTER 7 — RELATED PRODUCTS
+  1018→  1018→  1018→
+  1019→  1019→  1019→Show three related products, not four tiny cards.
+  1020→  1020→  1020→
+  1021→  1021→  1021→Use larger image-led cards.
+  1022→  1022→  1022→
+  1023→  1023→  1023→Make each visually distinct.
+  1024→  1024→  1024→
+  1025→  1025→  1025→---
+  1026→  1026→  1026→
+  1027→  1027→  1027→## CHAPTER 8 — QUOTE CTA
+  1028→  1028→  1028→
+  1029→  1029→  1029→Use warm-white or pale-yellow.
+  1030→  1030→  1030→
+  1031→  1031→  1031→Do not use a black/dark section.
+  1032→  1032→  1032→
+  1033→  1033→  1033→Heading:
+  1034→  1034→  1034→
+  1035→  1035→  1035→**Request a quote for [Product Name]**
+  1036→  1036→  1036→
+  1037→  1037→  1037→Actions:
+  1038→  1038→  1038→
+  1039→  1039→  1039→- Request a Quote
+  1040→  1040→  1040→- Call Sales
+  1041→  1041→  1041→
+  1042→  1042→  1042→---
+  1043→  1043→  1043→
+  1044→  1044→  1044→# 13. PRODUCT-SPECIFIC PAGE DIFFERENTIATION
+  1045→  1045→  1045→
+  1046→  1046→  1046→Do not use exactly the same content composition for all products.
+  1047→  1047→  1047→
+  1048→  1048→  1048→## Electrical Insulating Mats
+  1049→  1049→  1049→
+  1050→  1050→  1050→Emphasise:
+  1051→  1051→  1051→
+  1052→  1052→  1052→- Class A/B/C
+  1053→  1053→  1053→- Working voltage
+  1054→  1054→  1054→- Thickness
+  1055→  1055→  1055→- Surface patterns
+  1056→  1056→  1056→- Installed electrical environments
+  1057→  1057→  1057→
+  1058→  1058→  1058→## Coloured Strip Mats
+  1059→  1059→  1059→
+  1060→  1060→  1060→Emphasise:
+  1061→  1061→  1061→
+  1062→  1062→  1062→- Boundary marking
+  1063→  1063→  1063→- Strip configuration
+  1064→  1064→  1064→- Hazard zoning
+  1065→  1065→  1065→- Installed pathways
+  1066→  1066→  1066→
+  1067→  1067→  1067→## Bi-Color Mats
+  1068→  1068→  1068→
+  1069→  1069→  1069→Emphasise:
+  1070→  1070→  1070→
+  1071→  1071→  1071→- Contrasting layer
+  1072→  1072→  1072→- Wear visibility
+  1073→  1073→  1073→- Colour combinations
+  1074→  1074→  1074→- Layer diagram
+  1075→  1075→  1075→
+  1076→  1076→  1076→## Auto-Glow / Reflective Band
+  1077→  1077→  1077→
+  1078→  1078→  1078→Emphasise:
+  1079→  1079→  1079→
+  1080→  1080→  1080→- Two variants
+  1081→  1081→  1081→- Daylight and low-light comparison
+  1082→  1082→  1082→- Glow versus reflection
+  1083→  1083→  1083→- Installed emergency guidance
+  1084→  1084→  1084→
+  1085→  1085→  1085→## BharatMembrane
+  1086→  1086→  1086→
+  1087→  1087→  1087→Use a separate template:
+  1088→  1088→  1088→
+  1089→  1089→  1089→1. Hero
+  1090→  1090→  1090→2. Material and thickness
+  1091→  1091→  1091→3. Applications
+  1092→  1092→  1092→4. Properties
+  1093→  1093→  1093→5. Installation/joining
+  1094→  1094→  1094→6. Documents
+  1095→  1095→  1095→7. Project enquiry
+  1096→  1096→  1096→
+  1097→  1097→  1097→No electrical table.
+  1098→  1098→  1098→
+  1099→  1099→  1099→---
+  1100→  1100→  1100→
+  1101→  1101→  1101→# 14. FOOTER REDESIGN
+  1102→  1102→  1102→
+  1103→  1103→  1103→Use warm-white or pale-yellow.
+  1104→  1104→  1104→
+  1105→  1105→  1105→Desktop:
+  1106→  1106→  1106→
+  1107→  1107→  1107→- Four columns
+  1108→  1108→  1108→- Brand
+  1109→  1109→  1109→- Navigation
+  1110→  1110→  1110→- Products
+  1111→  1111→  1111→- Contact
+  1112→  1112→  1112→
+  1113→  1113→  1113→Bottom:
+  1114→  1114→  1114→
+  1115→  1115→  1115→- Copyright
+  1116→  1116→  1116→- Privacy
+  1117→  1117→  1117→- Terms
+  1118→  1118→  1118→
+  1119→  1119→  1119→No blue footer.
+  1120→  1120→  1120→
+  1121→  1121→  1121→No large location list.
+  1122→  1122→  1122→
+  1123→  1123→  1123→No tiny unreadable text.
+  1124→  1124→  1124→
+  1125→  1125→  1125→Mobile:
+  1126→  1126→  1126→
+  1127→  1127→  1127→- Clear stacked groups
+  1128→  1128→  1128→- 16px minimum body text
+  1129→  1129→  1129→- Sufficient spacing
+  1130→  1130→  1130→
+  1131→  1131→  1131→---
+  1132→  1132→  1132→
+  1133→  1133→  1133→# 15. MINIMAL MOTION
+  1134→  1134→  1134→
+  1135→  1135→  1135→Use a consistent motion system.
+  1136→  1136→  1136→
+  1137→  1137→  1137→## Reveal
+  1138→  1138→  1138→
+  1139→  1139→  1139→- Opacity 0 → 1
+  1140→  1140→  1140→- TranslateY 10–14px → 0
+  1141→  1141→  1141→- 500–600ms
+  1142→  1142→  1142→- Trigger once
+  1143→  1143→  1143→
+  1144→  1144→  1144→## Hover
+  1145→  1145→  1145→
+  1146→  1146→  1146→- Image scale 1.015
+  1147→  1147→  1147→- Card translateY -2px
+  1148→  1148→  1148→- Arrow translateX 4px
+  1149→  1149→  1149→- Border becomes yellow
+  1150→  1150→  1150→
+  1151→  1151→  1151→## Header
+  1152→  1152→  1152→
+  1153→  1153→  1153→- Compact after scroll
+  1154→  1154→  1154→- Smooth 250–350ms
+  1155→  1155→  1155→
+  1156→  1156→  1156→## Logo rail
+  1157→  1157→  1157→
+  1158→  1158→  1158→- Slow continuous CSS movement
+  1159→  1159→  1159→- Pause on hover/focus
+  1160→  1160→  1160→- Reduced-motion static grid
+  1161→  1161→  1161→
+  1162→  1162→  1162→Do not use:
+  1163→  1163→  1163→
+  1164→  1164→  1164→- Parallax
+  1165→  1165→  1165→- Scroll-jacking
+  1166→  1166→  1166→- Large staggers
+  1167→  1167→  1167→- Animated counters
+  1168→  1168→  1168→- 3D
+  1169→  1169→  1169→- WebGL
+  1170→  1170→  1170→- Autoplay sliders
+  1171→  1171→  1171→- Heavy animation library
+  1172→  1172→  1172→
+  1173→  1173→  1173→---
+  1174→  1174→  1174→
+  1175→  1175→  1175→# 16. RESPONSIVE ART DIRECTION
+  1176→  1176→  1176→
+  1177→  1177→  1177→Test all pages.
+  1178→  1178→  1178→
+  1179→  1179→  1179→## Mobile
+  1180→  1180→  1180→
+  1181→  1181→  1181→- 320×568
+  1182→  1182→  1182→- 360×800
+  1183→  1183→  1183→- 390×844
+  1184→  1184→  1184→- 430×932
+  1185→  1185→  1185→
+  1186→  1186→  1186→## Tablet
+  1187→  1187→  1187→
+  1188→  1188→  1188→- 600×960
+  1189→  1189→  1189→- 768×1024
+  1190→  1190→  1190→- 820×1180
+  1191→  1191→  1191→- 1024×1366
+  1192→  1192→  1192→- 1180×820
+  1193→  1193→  1193→
+  1194→  1194→  1194→## Desktop
+  1195→  1195→  1195→
+  1196→  1196→  1196→- 1280×800
+  1197→  1197→  1197→- 1440×900
+  1198→  1198→  1198→- 1920×1080
+  1199→  1199→  1199→
+  1200→  1200→  1200→Requirements:
+  1201→  1201→  1201→
+  1202→  1202→  1202→- No broken images
+  1203→  1203→  1203→- No horizontal overflow
+  1204→  1204→  1204→- Header never collides
+  1205→  1205→  1205→- Product dropdown works
+  1206→  1206→  1206→- Mobile drawer works
+  1207→  1207→  1207→- Tables remain readable
+  1208→  1208→  1208→- Product gallery works with touch
+  1209→  1209→  1209→- Form uses 16px inputs
+  1210→  1210→  1210→- Hero image crop remains useful
+  1211→  1211→  1211→- Certificate cards are one column on mobile
+  1212→  1212→  1212→- Footer remains readable
+  1213→  1213→  1213→- CTA buttons remain at least 44px high
+  1214→  1214→  1214→- No giant empty spaces
+  1215→  1215→  1215→
+  1216→  1216→  1216→---
+  1217→  1217→  1217→
+  1218→  1218→  1218→# 17. SEO AND CONTENT SAFETY
+  1219→  1219→  1219→
+  1220→  1220→  1220→Keep existing factual content unless clearly wrong.
+  1221→  1221→  1221→
+  1222→  1222→  1222→Do not invent new claims.
+  1223→  1223→  1223→
+  1224→  1224→  1224→Ensure:
+  1225→  1225→  1225→
+  1226→  1226→  1226→- Unique metadata
+  1227→  1227→  1227→- Correct company name
+  1228→  1228→  1228→- Correct contact information
+  1229→  1229→  1229→- Correct canonical paths
+  1230→  1230→  1230→- Correct product names
+  1231→  1231→  1231→- Breadcrumbs
+  1232→  1232→  1232→- Sitemap
+  1233→  1233→  1233→- Robots
+  1234→  1234→  1234→- Legacy redirects
+  1235→  1235→  1235→- Favicon
+  1236→  1236→  1236→- Open Graph image
+  1237→  1237→  1237→- Accurate structured data
+  1238→  1238→  1238→
+  1239→  1239→  1239→Do not expose future proprietary asset names.
+  1240→  1240→  1240→
+  1241→  1241→  1241→Use stable public asset paths.
+  1242→  1242→  1242→
+  1243→  1243→  1243→---
+  1244→  1244→  1244→
+  1245→  1245→  1245→# 18. SECURITY AND PERFORMANCE
+  1246→  1246→  1246→
+  1247→  1247→  1247→Verify:
+  1248→  1248→  1248→
+  1249→  1249→  1249→- No TypeScript build ignoring
+  1250→  1250→  1250→- No lint ignoring
+  1251→  1251→  1251→- React strict mode
+  1252→  1252→  1252→- Server-side validation
+  1253→  1253→  1253→- Rate limiting
+  1254→  1254→  1254→- Honeypot
+  1255→  1255→  1255→- Security headers
+  1256→  1256→  1256→- Safe errors
+  1257→  1257→  1257→- No private paths
+  1258→  1258→  1258→- No missing image requests
+  1259→  1259→  1259→- No unnecessary large client bundle
+  1260→  1260→  1260→
+  1261→  1261→  1261→Performance:
+  1262→  1262→  1262→
+  1263→  1263→  1263→- `next/image`
+  1264→  1264→  1264→- Correct `sizes`
+  1265→  1265→  1265→- Priority only for hero
+  1266→  1266→  1266→- Lazy loading
+  1267→  1267→  1267→- One font
+  1268→  1268→  1268→- No preloaded PDFs
+  1269→  1269→  1269→- Click-to-load YouTube
+  1270→  1270→  1270→- Click-to-load map
+  1271→  1271→  1271→- No duplicate giant images
+  1272→  1272→  1272→- Server Components by default
+  1273→  1273→  1273→
+  1274→  1274→  1274→---
+  1275→  1275→  1275→
+  1276→  1276→  1276→# 19. CODE ORGANISATION
+  1277→  1277→  1277→
+  1278→  1278→  1278→Recommended new structure:
+  1279→  1279→  1279→
+  1280→  1280→  1280→```text
+  1281→  1281→  1281→src/components/
+  1282→  1282→  1282→├── home/
+  1283→  1283→  1283→│   ├── HomeHero.tsx
+  1284→  1284→  1284→│   ├── ProductRange.tsx
+  1285→  1285→  1285→│   ├── TrustDocuments.tsx
+  1286→  1286→  1286→│   ├── CapabilitySection.tsx
+  1287→  1287→  1287→│   ├── IndustryApplications.tsx
+  1288→  1288→  1288→│   └── HomeCTA.tsx
+  1289→  1289→  1289→├── about/
+  1290→  1290→  1290→│   ├── AboutIntro.tsx
+  1291→  1291→  1291→│   ├── ProductOverview.tsx
+  1292→  1292→  1292→│   ├── CompanyLeadership.tsx
+  1293→  1293→  1293→│   ├── ManufacturingQuality.tsx
+  1294→  1294→  1294→│   ├── CertificatesAwardsMedia.tsx
+  1295→  1295→  1295→│   └── IndustriesClientsCTA.tsx
+  1296→  1296→  1296→├── contact/
+  1297→  1297→  1297→│   ├── ContactIntro.tsx
+  1298→  1298→  1298→│   ├── ContactMethods.tsx
+  1299→  1299→  1299→│   ├── EnquiryQuoteLayout.tsx
+  1300→  1300→  1300→│   ├── SelectionGuidance.tsx
+  1301→  1301→  1301→│   └── OfficeLocation.tsx
+  1302→  1302→  1302→├── products/
+  1303→  1303→  1303→│   ├── ProductHero.tsx
+  1304→  1304→  1304→│   ├── ProductOverview.tsx
+  1305→  1305→  1305→│   ├── ProductSpecifications.tsx
+  1306→  1306→  1306→│   ├── ProductMaterialDimensions.tsx
+  1307→  1307→  1307→│   ├── ProductApplications.tsx
+  1308→  1308→  1308→│   ├── ProductDocuments.tsx
+  1309→  1309→  1309→│   ├── RelatedProducts.tsx
+  1310→  1310→  1310→│   └── ProductCTA.tsx
+  1311→  1311→  1311→├── documents/
+  1312→  1312→  1312→├── media/
+  1313→  1313→  1313→├── layout/
+  1314→  1314→  1314→└── ui/
+  1315→  1315→  1315→```
+  1316→  1316→  1316→
+  1317→  1317→  1317→Do not keep old component boundaries if they force the weak layout.
+  1318→  1318→  1318→
+  1319→  1319→  1319→Delete unused old components only after confirming they are no longer referenced.
+  1320→  1320→  1320→
+  1321→  1321→  1321→---
+  1322→  1322→  1322→
+  1323→  1323→  1323→# 20. IMPLEMENTATION WORKFLOW
+  1324→  1324→  1324→
+  1325→  1325→  1325→1. Pull latest repository
+  1326→  1326→  1326→2. Run current project
+  1327→  1327→  1327→3. Capture baseline screenshots
+  1328→  1328→  1328→4. Create branch:
+  1329→  1329→  1329→
+  1330→  1330→  1330→```text
+  1331→  1331→  1331→client-ready-layout-rebuild
+  1332→  1332→  1332→```
+  1333→  1333→  1333→
+  1334→  1334→  1334→5. Fix broken image paths first
+  1335→  1335→  1335→6. Build global visual primitives
+  1336→  1336→  1336→7. Rebuild header and footer
+  1337→  1337→  1337→8. Rebuild homepage
+  1338→  1338→  1338→9. Rebuild About Us
+  1339→  1339→  1339→10. Rebuild Contact Us
+  1340→  1340→  1340→11. Rebuild reusable product layout
+  1341→  1341→  1341→12. Create separate BharatMembrane layout
+  1342→  1342→  1342→13. Test mobile and tablet
+  1343→  1343→  1343→14. Run lint
+  1344→  1344→  1344→15. Run type-check
+  1345→  1345→  1345→16. Run production build
+  1346→  1346→  1346→17. Capture final screenshots
+  1347→  1347→  1347→18. Push branch
+  1348→  1348→  1348→19. Open pull request
+  1349→  1349→  1349→20. Update Vercel preview if access exists
+  1350→  1350→  1350→
+  1351→  1351→  1351→---
+  1352→  1352→  1352→
+  1353→  1353→  1353→# 21. COMMIT PLAN
+  1354→  1354→  1354→
+  1355→  1355→  1355→Suggested commits:
+  1356→  1356→  1356→
+  1357→  1357→  1357→```text
+  1358→  1358→  1358→fix: remove broken media paths and add stable asset fallbacks
+  1359→  1359→  1359→design: establish refined white and yellow visual system
+  1360→  1360→  1360→feat: rebuild header footer and responsive navigation
+  1361→  1361→  1361→feat: rebuild client-ready homepage layout
+  1362→  1362→  1362→feat: recompose about us company credibility experience
+  1363→  1363→  1363→feat: redesign contact and quotation journey
+  1364→  1364→  1364→refactor: simplify and improve product page architecture
+  1365→  1365→  1365→feat: create dedicated BharatMembrane page layout
+  1366→  1366→  1366→fix: complete tablet mobile and accessibility polish
+  1367→  1367→  1367→perf: optimise media loading and remove duplicate payload
+  1368→  1368→  1368→seo: verify metadata structured data and redirects
+  1369→  1369→  1369→docs: add asset slots and final visual QA report
+  1370→  1370→  1370→```
+  1371→  1371→  1371→
+  1372→  1372→  1372→---
+  1373→  1373→  1373→
+  1374→  1374→  1374→# 22. FINAL ACCEPTANCE CRITERIA
+  1375→  1375→  1375→
+  1376→  1376→  1376→The work is complete only when:
+  1377→  1377→  1377→
+  1378→  1378→  1378→- No broken image appears anywhere
+  1379→  1379→  1379→- Homepage looks complete without private assets
+  1380→  1380→  1380→- Product cards contain visible media
+  1381→  1381→  1381→- Manufacturing/capability visual is present
+  1382→  1382→  1382→- About page leadership area looks intentional
+  1383→  1383→  1383→- Certificate cards look professional
+  1384→  1384→  1384→- Media participation section is visually integrated
+  1385→  1385→  1385→- Contact form uses desktop width properly
+  1386→  1386→  1386→- Product-selection guidance is integrated beside the form
+  1387→  1387→  1387→- Product page no longer repeats the same giant image twice
+  1388→  1388→  1388→- Product page is significantly shorter
+  1389→  1389→  1389→- Technical tables use pale yellow, not black
+  1390→  1390→  1390→- Related products are larger and fewer
+  1391→  1391→  1391→- Final product CTA is not dark
+  1392→  1392→  1392→- Footer matches the white-and-yellow theme
+  1393→  1393→  1393→- Mobile and tablet feel separately designed
+  1394→  1394→  1394→- All approved routes work
+  1395→  1395→  1395→- Lint passes
+  1396→  1396→  1396→- Type-check passes
+  1397→  1397→  1397→- Build passes
+  1398→  1398→  1398→- Vercel preview is ready to show the client
+  1399→  1399→  1399→
+  1400→  1400→  1400→---
+  1401→  1401→  1401→
+  1402→  1402→  1402→# 23. FINAL REPORT
+  1403→  1403→  1403→
+  1404→  1404→  1404→Return:
+  1405→  1405→  1405→
+  1406→  1406→  1406→## Layout transformation
+  1407→  1407→  1407→
+  1408→  1408→  1408→- Homepage
+  1409→  1409→  1409→- Header
+  1410→  1410→  1410→- Footer
+  1411→  1411→  1411→- About Us
+  1412→  1412→  1412→- Contact Us
+  1413→  1413→  1413→- Product pages
+  1414→  1414→  1414→- BharatMembrane
+  1415→  1415→  1415→
+  1416→  1416→  1416→## Broken media fixes
+  1417→  1417→  1417→
+  1418→  1418→  1418→List every broken image path corrected.
+  1419→  1419→  1419→
+  1420→  1420→  1420→## Asset slots
+  1421→  1421→  1421→
+  1422→  1422→  1422→List the slots prepared for Claude’s future proprietary asset integration.
+  1423→  1423→  1423→
+  1424→  1424→  1424→## Responsive QA
+  1425→  1425→  1425→
+  1426→  1426→  1426→List viewports tested and issues fixed.
+  1427→  1427→  1427→
+  1428→  1428→  1428→## Build
+  1429→  1429→  1429→
+  1430→  1430→  1430→- Lint
+  1431→  1431→  1431→- Type-check
+  1432→  1432→  1432→- Production build
+  1433→  1433→  1433→
+  1434→  1434→  1434→## Git
+  1435→  1435→  1435→
+  1436→  1436→  1436→- Branch
+  1437→  1437→  1437→- Commit hashes
+  1438→  1438→  1438→- Pull request URL
+  1439→  1439→  1439→
+  1440→  1440→  1440→## Deployment
+  1441→  1441→  1441→
+  1442→  1442→  1442→- Preview URL
+  1443→  1443→  1443→- Deployment status
+  1444→  1444→  1444→
+  1445→  1445→  1445→Only report verified results.
+  1446→  1446→  1446→
+  1447→  1447→  1447→---
+  1448→  1448→  1448→
+  1449→  1449→  1449→# FINAL EXECUTION INSTRUCTION
+  1450→  1450→  1450→
+  1451→  1451→  1451→Do not audit or integrate the private `bharatsafe` folder in this task.
+  1452→  1452→  1452→
+  1453→  1453→  1453→Do not wait for Claude.
+  1454→  1454→  1454→
+  1455→  1455→  1455→Use the current public repository assets and safe fallbacks to make the full layout client-presentable now.
+  1456→  1456→  1456→
+  1457→  1457→  1457→Rebuild the visual hierarchy, page composition, responsive layouts and component finishing.
+  1458→  1458→  1458→
+  1459→  1459→  1459→The site must look complete before the final proprietary assets are allocated.
+  1460→  1460→  1460→
