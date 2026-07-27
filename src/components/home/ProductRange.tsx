@@ -27,10 +27,10 @@ export function ProductRange() {
               {/* Image */}
               <div className="relative aspect-[16/10] bg-yellow-50 overflow-hidden">
                 <Image
-                  src={`/images/products/${product.slug}/hero.jpg`}
-                  alt={product.name}
+                  src={product.image}
+                  alt={`${product.name} — ${product.description}`}
                   fill
-                  className="object-contain p-4 group-hover:scale-[1.02] transition-transform duration-300"
+                  className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
                 {/* Fallback background if image not available */}

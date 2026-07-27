@@ -167,7 +167,7 @@ export const products: Product[] = [
       "Rubber insulating mats selected by operating voltage — IS 15652 Class A, B and C.",
     detailCopy:
       "Rubber insulating mats engineered for electrical panels, substations, switchrooms and industrial control areas. Selected by operating voltage to IS 15652:2006, each class is proof-tested and dielectric-tested at voltages well above the rated working voltage. Permanent embossed class and voltage marking, diamond-pattern anti-skid surface on both sides.",
-    image: "/images/electrical-insulation.png",
+    image: "/media/products/electrical-insulating-mats/photo-coin-01.webp",
     standards: ["IS 15652:2006", "IEC 61111"],
     features: [
       "Tested to IS 15652:2006 for electrical insulation",
@@ -191,10 +191,12 @@ export const products: Product[] = [
       "Insulation resistance of 100,000 MΩ minimum at 500 V with water",
     ],
     galleryImages: [
-      { slotId: "PRODUCT-EIM-GALLERY-01", src: "/images/electrical-insulation.png", alt: "Electrical insulating mat laid in front of an electrical control panel" },
-      { slotId: "PRODUCT-EIM-GALLERY-02", src: "/images/mat-texture.png", alt: "Close-up of the anti-skid surface texture of an electrical insulating mat" },
-      { slotId: "PRODUCT-EIM-GALLERY-03", src: "/images/product-marking.png", alt: "Embossed class and voltage marking on an electrical insulating mat" },
-      { slotId: "PRODUCT-EIM-GALLERY-04", src: "/images/app-substation.png", alt: "Electrical insulating mat in a substation working area" },
+      { slotId: "PRODUCT-EIM-GALLERY-01", src: "/media/products/electrical-insulating-mats/photo-coin-01.webp", alt: "Blue electrical insulating mat with a raised coin-pattern anti-skid surface" },
+      { slotId: "PRODUCT-EIM-GALLERY-02", src: "/media/products/electrical-insulating-mats/photo-coin-03.webp", alt: "Close-up of the raised circular studs forming the coin anti-skid pattern" },
+      { slotId: "PRODUCT-EIM-GALLERY-03", src: "/media/products/electrical-insulating-mats/photo-hexa-01.webp", alt: "Insulating mat with a hexagonal anti-skid surface pattern" },
+      { slotId: "PRODUCT-EIM-GALLERY-04", src: "/media/products/electrical-insulating-mats/photo-dot-01.webp", alt: "Insulating mat with a fine dot anti-skid surface pattern" },
+      { slotId: "PRODUCT-EIM-GALLERY-05", src: "/media/products/electrical-insulating-mats/photo-surface-01.webp", alt: "Black insulating mat sheet showing its diamond-textured working surface" },
+      { slotId: "PRODUCT-EIM-GALLERY-06", src: "/media/products/electrical-insulating-mats/photo-iec-01.webp", alt: "Insulating mat carrying its IEC 61111 class marking" },
     ],
     insulationClasses: [
       {
@@ -262,7 +264,7 @@ export const products: Product[] = [
       "Insulating mats with coloured strip for hazard demarcation and safety zoning.",
     detailCopy:
       "Coloured strip insulating mats combine the full electrical insulation performance of IS 15652 with integrated coloured strip bands for hazard demarcation and safety zoning. The coloured strip provides clear visual guidance in industrial environments — marking safe approach zones, danger boundaries, and equipment perimeters — while maintaining the same proof-tested dielectric protection.",
-    image: "/images/visible-safety.png",
+    image: "/media/products/coloured-strip-insulating-mats/photo-strip-05.webp",
     standards: ["IS 15652:2006", "IEC 61111"],
     features: [
       "High-visibility colour coding for safety zoning",
@@ -286,9 +288,10 @@ export const products: Product[] = [
       "Full IS 15652 dielectric protection maintained",
     ],
     galleryImages: [
-      { slotId: "PRODUCT-CSIM-GALLERY-01", src: "/images/visible-safety.png", alt: "Coloured strip insulating mat with a high-visibility yellow band" },
-      { slotId: "PRODUCT-CSIM-GALLERY-02", src: "/images/app-control-room.png", alt: "Coloured strip insulating mat in a control-room walkway" },
-      { slotId: "PRODUCT-CSIM-GALLERY-03", src: "/images/app-power-utility.png", alt: "Coloured strip insulating mat laid around electrical panels" },
+      { slotId: "PRODUCT-CSIM-GALLERY-01", src: "/media/products/coloured-strip-insulating-mats/photo-strip-05.webp", alt: "Insulating mat with a contrasting coloured guidance strip along its edge" },
+      { slotId: "PRODUCT-CSIM-GALLERY-02", src: "/media/products/coloured-strip-insulating-mats/photo-strip-01.webp", alt: "Coloured strip insulating mat showing the boundary strip against the mat body" },
+      { slotId: "PRODUCT-CSIM-GALLERY-03", src: "/media/products/coloured-strip-insulating-mats/photo-strip-02.webp", alt: "Coloured strip insulating mat, alternative view of the strip edge" },
+      { slotId: "PRODUCT-CSIM-GALLERY-04", src: "/media/products/coloured-strip-insulating-mats/photo-strip-03.webp", alt: "Anti-skid surface of a coloured strip insulating mat" },
     ],
     insulationClasses: [
       {
@@ -353,7 +356,7 @@ export const products: Product[] = [
       "Two-tone insulating mats for clear safety zone delineation in high-traffic areas.",
     detailCopy:
       "Bi-color insulating mats feature two distinct colour zones on the mat surface, providing clear safety zone delineation in high-traffic industrial areas. Each colour zone communicates a different safety message — e.g. safe approach zone versus danger boundary — while the mat maintains full IS 15652 electrical insulation performance for the designated voltage class.",
-    image: "/images/visible-safety.png",
+    image: "/media/products/bi-color-insulating-mats/hero.webp",
     standards: ["IS 15652:2006", "IEC 61111"],
     features: [
       "Two distinct colour zones for clear delineation",
@@ -377,9 +380,9 @@ export const products: Product[] = [
       "Manufactured to IS 15652:2006 for the designated voltage class",
     ],
     galleryImages: [
-      { slotId: "PRODUCT-BCIM-GALLERY-01", src: "/images/visible-safety.png", alt: "Bi-Color insulating mat showing two contrasting surface tones" },
-      { slotId: "PRODUCT-BCIM-GALLERY-02", src: "/images/mat-texture.png", alt: "Close-up of the anti-skid embossed surface of a Bi-Color insulating mat" },
-      { slotId: "PRODUCT-BCIM-GALLERY-03", src: "/images/app-manufacturing.png", alt: "Bi-Color insulating mat in an industrial working area" },
+      { slotId: "PRODUCT-BCIM-GALLERY-01", src: "/media/products/bi-color-insulating-mats/gallery-01.webp", alt: "Bi-colour insulating mat showing two contrasting surface tones" },
+      { slotId: "PRODUCT-BCIM-GALLERY-02", src: "/media/products/bi-color-insulating-mats/gallery-02.webp", alt: "Bi-colour insulating mat, alternative view of the dual-tone surface" },
+      { slotId: "PRODUCT-BCIM-GALLERY-03", src: "/media/products/bi-color-insulating-mats/gallery-03.webp", alt: "Bi-colour insulating mat roll" },
     ],
     insulationClasses: [
       {
@@ -444,7 +447,7 @@ export const products: Product[] = [
       "Insulating mats with auto-glow or reflective band for low-light and emergency visibility.",
     detailCopy:
       "Auto-glow / reflective band insulating mats integrate photoluminescent or reflective strip bands into the IS 15652 insulating mat surface. In normal lighting the reflective band provides high-visibility demarcation; in low-light or emergency power-loss conditions the auto-glow strip emits stored light, guiding personnel toward safe zones and away from energised equipment. Full electrical insulation performance is maintained for the designated voltage class.",
-    image: "/images/visible-safety.png",
+    image: "/media/products/auto-glow-reflective-band/photo-05.webp",
     standards: ["IS 15652:2006", "IEC 61111"],
     features: [
       "Auto-glow strip emits stored light in power-loss conditions",
@@ -468,9 +471,10 @@ export const products: Product[] = [
       "Full IS 15652 dielectric protection maintained in both variants",
     ],
     galleryImages: [
-      { slotId: "PRODUCT-AGRIM-GALLERY-01", src: "/images/visible-safety.png", alt: "Auto-Glow / Reflective Band insulating mat with a high-visibility band" },
-      { slotId: "PRODUCT-AGRIM-LOWLIGHT-01", src: "/images/app-substation.png", alt: "Auto-Glow / Reflective Band insulating mat in a substation working area" },
-      { slotId: "PRODUCT-AGRIM-GALLERY-02", src: "/images/app-power-utility.png", alt: "Auto-Glow / Reflective Band insulating mat in a power utility area" },
+      { slotId: "PRODUCT-AGRIM-GALLERY-01", src: "/media/products/auto-glow-reflective-band/photo-05.webp", alt: "Auto-glow / reflective band insulating mat photographed in normal lighting" },
+      { slotId: "PRODUCT-AGRIM-LOWLIGHT-01", src: "/media/products/auto-glow-reflective-band/photo-02.webp", alt: "The same mat photographed in low light, with the auto-glow band emitting green light and the IS 15652 class marking visible" },
+      { slotId: "PRODUCT-AGRIM-GALLERY-02", src: "/media/products/auto-glow-reflective-band/photo-06.webp", alt: "Auto-glow / reflective band insulating mat, alternative view" },
+      { slotId: "PRODUCT-AGRIM-GALLERY-03", src: "/media/products/auto-glow-reflective-band/photo-03.webp", alt: "Close view of the auto-glow band against the mat surface" },
     ],
     insulationClasses: [
       {
@@ -535,7 +539,7 @@ export const products: Product[] = [
       "PVC geo-membrane for tunnel waterproofing, containment and barrier protection.",
     detailCopy:
       "BharatMembrane is a premium range of PVC geo-membranes developed by Bharat Electrosafe for tunnel waterproofing, containment and barrier protection in civil and environmental engineering applications. Manufactured using high-grade PVC polymers, it is engineered for chemical resistance, UV stability and mechanical strength, and is seamable by thermal welding for leak-proof joints. BIS approved to IS 15909:2020.",
-    image: "/images/civil-protection.png",
+    image: "/media/products/bharat-membrane/hero.webp",
     standards: ["IS 15909:2020"],
     features: [
       "High-quality PVC geo-membrane",
@@ -559,8 +563,10 @@ export const products: Product[] = [
       "Manufactured under ISO-certified processes at Bharat Electrosafe facilities",
     ],
     galleryImages: [
-      { slotId: "PRODUCT-BM-GALLERY-01", src: "/images/civil-protection.png", alt: "BharatMembrane PVC geo-membrane material" },
-      { slotId: "PRODUCT-BM-APPLICATION-01", src: "/images/app-tunnel.png", alt: "BharatMembrane PVC geo-membrane in a tunnel waterproofing application" },
+      { slotId: "PRODUCT-BM-GALLERY-01", src: "/media/products/bharat-membrane/gallery-01.webp", alt: "BharatMembrane PVC geo-membrane material" },
+      { slotId: "PRODUCT-BM-GALLERY-02", src: "/media/products/bharat-membrane/gallery-02.webp", alt: "BharatMembrane PVC geo-membrane, surface view" },
+      { slotId: "PRODUCT-BM-GALLERY-03", src: "/media/products/bharat-membrane/gallery-03.webp", alt: "BharatMembrane PVC geo-membrane roll" },
+      { slotId: "PRODUCT-BM-GALLERY-04", src: "/media/products/bharat-membrane/gallery-04.webp", alt: "BharatMembrane PVC geo-membrane, alternative view" },
     ],
     // NO insulationClasses, NO workingVoltage, NO proofVoltage, NO dielectricStrength
     heroImageAlt: "BharatMembrane PVC geo-membrane product image",
@@ -625,7 +631,7 @@ export const products: Product[] = [
       "PVC and rubber water stop seals that block water passage through construction and expansion joints.",
     detailCopy:
       "BharatHydro Seal is a range of water stop sealing solutions engineered to prevent the passage of water through construction and expansion joints in concrete structures. Manufactured from high-quality PVC and rubber compounds, it offers resistance to water pressure, chemicals and environmental stress. Conforming to IS 15058-2002.",
-    image: "/images/civil-protection.png",
+    image: "/media/products/bharat-hydro-seal/hero.webp",
     standards: ["IS 15058-2002"],
     features: [
       "Superior water-tight sealing",
@@ -647,8 +653,11 @@ export const products: Product[] = [
       "Straightforward installation and long service life",
       "Suitable for high-pressure water retention structures",
     ],
-    galleryImages: [],
-    heroImageAlt: "BharatHydro Seal water stop product image",
+    galleryImages: [
+      { slotId: "PRODUCT-BHS-GALLERY-01", src: "/media/products/bharat-hydro-seal/hero.webp", alt: "BharatHydro Seal water stop, showing the ribbed profile and central bulb" },
+      { slotId: "PRODUCT-BHS-GALLERY-02", src: "/media/products/bharat-hydro-seal/gallery-01.webp", alt: "BharatHydro Seal water stop profile, alternative view" },
+    ],
+    heroImageAlt: "BharatHydro Seal water stop, showing the ribbed profile and central bulb",
     standardsNarrative:
       "BharatHydro Seal conforms to IS 15058-2002 and is manufactured from high-quality PVC and rubber compounds under Bharat Electrosafe's ISO 9001:2015 certified quality management system.",
     propertiesCaption:
