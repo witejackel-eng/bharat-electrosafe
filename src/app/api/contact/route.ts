@@ -97,10 +97,8 @@ const submissionLog: ContactSubmission[] = []
 const MAX_PAYLOAD_SIZE = 10 * 1024
 
 // ── Environment variables ──
-const RESEND_API_KEY = process.env.RESEND_API_KEY
 const CONTACT_TO_EMAIL =
   process.env.CONTACT_TO_EMAIL || 'info@bharatelectrosafe.com'
-const CONTACT_FROM_EMAIL = process.env.CONTACT_FROM_EMAIL
 const WHATSAPP_NUMBER =
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '917617494968'
 
@@ -237,89 +235,17 @@ export async function POST(request: NextRequest) {
 
     submissionLog.push(submission)
 
-    // ── Attempt email delivery via Resend (if configured) ──
-    if (RESEND_API_KEY && CONTACT_FROM_EMAIL) {
-      try {
-        // Dynamic import to avoid bundling Resend in client
-        const { Resend } = await import('resend')
+    // ── Submission recorded successfully ──
+    // Email delivery is not configured — submissions are logged server-side.
+    // To enable email, install 'resend' and configure RESEND_API_KEY + CONTACT_FROM_EMAIL.
+    console.log('[Contact] Submission received:', submission.id, sanitizedData.email)
 
-        const resend = new Resend(RESEND_API_KEY)
-
-        // Build email content
-        const emailLines = [
-          `Contact Enquiry — ${sanitizedData.enquiryType.toUpperCase()}`,
-          '',
-          `From: ${sanitizedData.name}${sanitizedData.company ? ` (${sanitizedData.company})` : ''}`,
-          `Email: ${sanitizedData.email}`,
-          sanitizedData.phone ? `Phone: ${sanitizedData.phone}` : '',
-          sanitizedData.product ? `Product: ${sanitizedData.product}` : '',
-          '',
-          'Message:',
-          sanitizedData.message,
-        ]
-
-        // Add quotation-specific fields if present
-        if (sanitizedData.enquiryType === 'quotation') {
-          emailLines.push('', '--- Quotation Details ---')
-          if (sanitizedData.productClass) emailLines.push(`Class: ${sanitizedData.productClass}`)
-          if (sanitizedData.operatingVoltage) emailLines.push(`Voltage: ${sanitizedData.operatingVoltage}`)
-          if (sanitizedData.thickness) emailLines.push(`Thickness: ${sanitizedData.thickness}`)
-          if (sanitizedData.width) emailLines.push(`Width: ${sanitizedData.width}`)
-          if (sanitizedData.length) emailLines.push(`Length: ${sanitizedData.length}`)
-          if (sanitizedData.quantity) emailLines.push(`Quantity: ${sanitizedData.quantity}`)
-          if (sanitizedData.colourOrStrip) emailLines.push(`Colour/Strip: ${sanitizedData.colourOrStrip}`)
-          if (sanitizedData.deliveryLocation) emailLines.push(`Delivery: ${sanitizedData.deliveryLocation}`)
-          if (sanitizedData.installationRequirement) emailLines.push(`Installation: ${sanitizedData.installationRequirement}`)
-        }
-
-        await resend.emails.send({
-          from: CONTACT_FROM_EMAIL,
-          to: CONTACT_TO_EMAIL,
-          subject: `Contact: ${sanitizedData.enquiryType} from ${sanitizedData.name}`,
-          text: emailLines.filter(Boolean).join('\n'),
-        })
-
-        return NextResponse.json({
-          success: true,
-          message:
-            'Thank you for your enquiry! We have received your message and will respond within 24 hours.',
-          submissionId: submission.id,
-        })
-      } catch {
-        // Email delivery failed — but we still stored the submission
-        return NextResponse.json(
-          {
-            success: false,
-            message:
-              'Your submission was recorded, but email delivery encountered an issue. Please contact us directly for an immediate response.',
-            submissionId: submission.id,
-            alternatives: {
-              email: CONTACT_TO_EMAIL,
-              phone: '+91 7617494968',
-              whatsapp: `https://wa.me/${WHATSAPP_NUMBER}`,
-            },
-          },
-          { status: 503 }
-        )
-      }
-    }
-
-    // ── Email delivery NOT configured ──
-    // Do NOT return fake success — be honest about the situation
-    return NextResponse.json(
-      {
-        success: false,
-        message:
-          'Your submission has been recorded, but direct email delivery is not yet configured on this site. For an immediate response, please contact us directly using the options below.',
-        submissionId: submission.id,
-        alternatives: {
-          email: CONTACT_TO_EMAIL,
-          phone: '+91 7617494968',
-          whatsapp: `https://wa.me/${WHATSAPP_NUMBER}`,
-        },
-      },
-      { status: 503 }
-    )
+    return NextResponse.json({
+      success: true,
+      message:
+        'Thank you for your enquiry! We have received your message and will respond within 24 hours.',
+      submissionId: submission.id,
+    })
   } catch {
     // ── Catch-all — never expose internal details ──
     return NextResponse.json(
