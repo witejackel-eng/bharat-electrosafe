@@ -383,7 +383,7 @@ const colouredStripInsulatingMats: ProductData = {
   },
   trustPoints: matTrustPoints,
   description:
-    'IS 15652:2006 insulating mats with high-visibility coloured strips that mark safe pathways and hazard-zone boundaries around live electrical installations.',
+    'IS 15652:2006 insulating mats with a high-visibility yellow strip that marks safe pathways and hazard-zone boundaries around live electrical installations.',
   introduction:
     'Clear demarcation of hazardous zones is essential in preventing accidents. Coloured Strip Insulating Mats are manufactured for IS 15652:2006 requirements under BIS Licence CM/L:8800129617, with bold coloured markings that act as visual guides — creating safe pathways around high-risk electrical installations while delivering the same Class A, B and C insulation as the standard range.',
   badges: ['IS 15652:2006', 'CM/L:8800129617', 'Boundary marking', 'ISI marked'],
@@ -489,26 +489,26 @@ const biColorInsulatingMats: ProductData = {
       [`${BCIM}/gallery-02.webp`]:
         'Bi-color insulating mat with magnified callouts on the two-tone edge where the red layer meets the blue surface',
       [`${BCIM}/hero.webp`]:
-        'Cross-section diagram of a bi-color mat showing a 0.5 mm top layer over a PVC bottom layer, with a scriber revealing the colour change',
+        'Cross-section view of a bi-color insulating mat showing the two contrasting colour layers',
     },
   },
   trustPoints: matTrustPoints,
   description:
-    'IS 15652:2006 insulating mats built in two contrasting layers, so mechanical damage to the surface shows as a colour change and signals that the mat should be replaced.',
+    'IS 15652:2006 insulating mats with a dual-tone colour scheme that serves as a clear indicator of safety boundaries while enhancing visual appeal in the workspace.',
   introduction:
-    'Where functionality meets visual innovation, Bi-Color Insulating Mats pair full IS 15652:2006 insulation with a two-tone construction. The two colours and two layers serve the purpose of mechanical damage indication: when the contrasting colour becomes visible on the surface, that is the hint to replace the mat. Manufactured under BIS Licence CM/L:8800129617.',
-  badges: ['IS 15652:2006', 'CM/L:8800129617', 'Damage indication', 'ISI marked'],
+    'Where functionality meets aesthetic innovation, Bi-Color Insulating Mats redefine industrial safety with a striking dual-tone design. A sophisticated two-tone colour scheme not only enhances visual appeal but also serves as a clear indicator of safety boundaries. Manufactured under BIS Licence CM/L:8800129617.',
+  badges: ['IS 15652:2006', 'CM/L:8800129617', 'Dual-tone design', 'ISI marked'],
   quickFacts: [
-    { icon: 'eye', label: 'Damage Indication', value: 'Visible colour change' },
-    { icon: 'layers', label: 'Top Layer', value: '0.5 mm' },
+    { icon: 'palette', label: 'Design', value: 'Dual-tone colour scheme' },
+    { icon: 'shield', label: 'Purpose', value: 'Safety boundary indicator' },
     { icon: 'zap', label: 'Working Voltage', value: '3.3 kV – 33 kV' },
   ],
   overviewText:
-    'A sophisticated two-tone scheme does more than look considered — it makes wear legible. The mat is built as a 0.5 mm top layer over a PVC bottom layer in a contrasting colour. Any cut, gouge or abrasion that reaches through the top layer exposes the colour beneath, so damage that would be invisible on a single-colour mat is obvious at a glance during a walk-round. Dielectric strength, anti-skid embossing and chemical resistance match the standard range.',
+    'A sophisticated two-tone colour scheme not only enhances visual appeal but also serves as a clear indicator of safety boundaries. The contrasting colours make hazard zones and restricted areas immediately visible, supporting safe navigation around electrical installations. Dielectric strength, anti-skid embossing and chemical resistance match the standard insulating mat range.',
   keyBenefits: [
     {
       icon: 'eye',
-      text: 'Dual-tone design indicates mechanical damage and marks safety boundaries clearly',
+      text: 'Dual-tone colour scheme enhances visual appeal and serves as a clear indicator of safety boundaries',
     },
     {
       icon: 'shield',
@@ -526,25 +526,19 @@ const biColorInsulatingMats: ProductData = {
   specifications: matSpecifications,
   materialProperties: [
     {
-      label: 'Construction',
-      value: '0.5 mm top layer over a PVC bottom layer in a contrasting colour',
-    },
-    {
-      label: 'Purpose of the Two Layers',
-      value:
-        'Mechanical damage indication — a visible colour change on the surface signals replacement',
+      label: 'Design Feature',
+      value: 'Dual-tone colour scheme — serves as a clear indicator of safety boundaries',
     },
     ...matMaterialProperties,
   ],
   dimensions: matDimensions,
-  colors: ['Blue over red', 'Grey over blue', 'Other combinations to order'],
+  colors: ['Black & Blue dual-tone', 'Custom combinations to order'],
   surfacePatterns: ['Coin', 'Dot', 'Hexa'],
   installation: [
     'Lay on a clean, dry floor as with standard insulating mats',
     'Cut to length from the 1.0 m wide roll',
     'Butt-join adjacent sections tightly with no gaps',
-    'During inspection, look for the contrasting colour showing through the top surface',
-    'Replace any section where the colour change is visible — do not attempt a repair',
+    'Inspect regularly for cuts, wear or embedded conductive debris',
     'Site fixing can be undertaken by Bharat Electrosafe along with the material, subject to minimum criteria',
   ],
   applications: [

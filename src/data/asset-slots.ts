@@ -35,9 +35,9 @@ export const assetSlots: AssetSlot[] = [
   /* ── Home page ── */
   {
     slotId: 'HOME-HERO-01',
-    currentFallbackPath: '/media/products/electrical-insulating-mats/photo-plain-01.webp',
+    currentFallbackPath: '/media/products/electrical-insulating-mats/photo-surface-01.webp',
     altText:
-      'Fanned stack of Bharat Electrosafe insulating mats in yellow, orange, grey, blue, red and black, showing the coin and dot anti-skid textures',
+      'Bharat Electrosafe electrical insulating mat with anti-skid surface',
     desktopAspectRatio: '16/10',
     mobileAspectRatio: '4/3',
     objectPosition: 'center',
