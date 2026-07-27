@@ -244,29 +244,35 @@ const electricalInsulatingMats: ProductData = {
   name: 'Electrical Insulating Mats',
   shortName: 'EIM',
   images: {
-    thumbnail: `${EIM}/photo-plain-01.webp`,
-    hero: `${EIM}/photo-coin-01.webp`,
+    thumbnail: `${EIM}/product-01.webp`,
+    hero: `${EIM}/product-02.webp`,
     details: [
-      `${EIM}/gallery-04.webp`,
-      `${EIM}/photo-iec-01.webp`,
-      `${EIM}/photo-hexa-02.webp`,
-      `${EIM}/photo-surface-01.webp`,
+      `${EIM}/product-03.webp`,
+      `${EIM}/product-04.webp`,
+      `${EIM}/product-05.webp`,
+      `${EIM}/product-06.webp`,
+      `${EIM}/product-07.webp`,
+      `${EIM}/product-08.webp`,
     ],
-    overview: `${EIM}/photo-plain-01.webp`,
-    contextual: [`${EIM}/photo-plain-01.webp`],
+    overview: `${EIM}/product-01.webp`,
+    contextual: [`${EIM}/product-04.webp`, `${EIM}/product-07.webp`],
     alt: {
-      [`${EIM}/photo-coin-01.webp`]:
-        'Blue coin-pattern electrical insulating mat sheet showing the raised anti-skid coins',
-      [`${EIM}/gallery-04.webp`]:
-        'Embossed panel on a grey coin-pattern mat reading High Voltage Insulating Mats, Made in Bharat, with the IS 15652 and CM/L:8800129617 marks',
-      [`${EIM}/photo-iec-01.webp`]:
-        'Yellow surface marking reading Bharat Electrosafe Insulating Mat, IEC 61111/2009 Class 2, with the rated use, proof and withstand voltages',
-      [`${EIM}/photo-hexa-02.webp`]:
-        'Navy hexa-pattern insulating mat sheet showing the raised anti-skid hexagons',
-      [`${EIM}/photo-surface-01.webp`]:
-        'Black diamond-textured insulating mat sheet laid flat',
-      [`${EIM}/photo-plain-01.webp`]:
-        'Fanned stack of coin- and dot-pattern insulating mats in yellow, orange, grey, blue, red and black',
+      [`${EIM}/product-01.webp`]:
+        'Electrical insulating mat — Class A showing anti-skid coin pattern surface',
+      [`${EIM}/product-02.webp`]:
+        'Electrical insulating mat — Class B blue coin-pattern with IS 15652:2006 marking',
+      [`${EIM}/product-03.webp`]:
+        'Electrical insulating mat roll showing textured anti-skid surface pattern',
+      [`${EIM}/product-04.webp`]:
+        'Electrical insulating mat in substation installation with control panels',
+      [`${EIM}/product-05.webp`]:
+        'Electrical insulating mat sample showing coin-pattern anti-skid texture',
+      [`${EIM}/product-06.webp`]:
+        'Electrical insulating mat with ISI marking and BIS certification details',
+      [`${EIM}/product-07.webp`]:
+        'Electrical insulating mat installed in front of high-voltage switchgear',
+      [`${EIM}/product-08.webp`]:
+        'Electrical insulating mat roll with dot-pattern anti-skid surface',
     },
   },
   trustPoints: matTrustPoints,
@@ -358,27 +364,27 @@ const colouredStripInsulatingMats: ProductData = {
   name: 'Coloured Strip Insulating Mats',
   shortName: 'CSIM',
   images: {
-    thumbnail: `${CSIM}/photo-strip-04.webp`,
-    hero: `${CSIM}/photo-strip-05.webp`,
+    thumbnail: `${CSIM}/product-02.webp`,
+    hero: `${CSIM}/product-04.webp`,
     details: [
-      `${CSIM}/photo-strip-01.webp`,
-      `${CSIM}/photo-strip-03.webp`,
-      `${CSIM}/photo-strip-02.webp`,
+      `${CSIM}/product-03.webp`,
+      `${CSIM}/product-05.webp`,
+      `${CSIM}/product-demo.webp`,
     ],
-    overview: `${CSIM}/photo-strip-04.webp`,
-    application: `${CSIM}/photo-strip-05.webp`,
-    contextual: [`${CSIM}/photo-strip-05.webp`],
+    overview: `${CSIM}/product-02.webp`,
+    application: `${CSIM}/product-demo.webp`,
+    contextual: [`${CSIM}/product-demo.webp`],
     alt: {
-      [`${CSIM}/photo-strip-05.webp`]:
-        'Blue coin-pattern insulating mat with bright yellow edge strips running the full length, coming off the production line',
-      [`${CSIM}/photo-strip-04.webp`]:
-        'Black dot-pattern insulating mat sheet with a bright yellow marking strip across the centre',
-      [`${CSIM}/photo-strip-01.webp`]:
-        'Corner of a black dot-pattern insulating mat with a bright yellow strip running through it',
-      [`${CSIM}/photo-strip-03.webp`]:
-        'Cut sheet of black dot-pattern insulating mat with a yellow strip, viewed at an angle',
-      [`${CSIM}/photo-strip-02.webp`]:
-        'Close view of the yellow marking strip moulded into the black insulating mat surface',
+      [`${CSIM}/product-02.webp`]:
+        'Coloured strip insulating mat with yellow marking strip on anti-skid surface',
+      [`${CSIM}/product-04.webp`]:
+        'Coloured strip insulating mat showing yellow strip boundary marking on blue mat',
+      [`${CSIM}/product-03.webp`]:
+        'Coloured strip insulating mat with yellow strip across the mat surface',
+      [`${CSIM}/product-05.webp`]:
+        'Coloured strip insulating mat sample with yellow strip detail',
+      [`${CSIM}/product-demo.webp`]:
+        'Coloured strip insulating mat demonstration showing the yellow strip boundary in a real installation',
     },
   },
   trustPoints: matTrustPoints,
@@ -477,19 +483,19 @@ const biColorInsulatingMats: ProductData = {
   name: 'Bi-Color Insulating Mats',
   shortName: 'BCIM',
   images: {
-    thumbnail: `${BCIM}/gallery-01.webp`,
-    hero: `${BCIM}/gallery-03.webp`,
-    details: [`${BCIM}/gallery-02.webp`],
-    overview: `${BCIM}/hero.webp`,
+    thumbnail: `${BCIM}/product-01.webp`,
+    hero: `${BCIM}/product-02.webp`,
+    details: [`${BCIM}/product-03.webp`, `${BCIM}/product-demo-bi-color.webp`],
+    overview: `${BCIM}/product-01.webp`,
     alt: {
-      [`${BCIM}/gallery-01.webp`]:
-        'Blue coin-pattern bi-color insulating mat with the contrasting red under-layer visible along the cut edge',
-      [`${BCIM}/gallery-03.webp`]:
-        'Separated view of a bi-color insulating mat showing the blue coin-pattern top layer above the red bottom layer',
-      [`${BCIM}/gallery-02.webp`]:
-        'Bi-color insulating mat with magnified callouts on the two-tone edge where the red layer meets the blue surface',
-      [`${BCIM}/hero.webp`]:
-        'Cross-section view of a bi-color insulating mat showing the two contrasting colour layers',
+      [`${BCIM}/product-01.webp`]:
+        'Bi-color insulating mat showing dual-tone design with contrasting colour layers',
+      [`${BCIM}/product-02.webp`]:
+        'Bi-color insulating mat with two-tone colour scheme providing visual differentiation',
+      [`${BCIM}/product-03.webp`]:
+        'Bi-color insulating mat sample showing the dual-tone construction detail',
+      [`${BCIM}/product-demo-bi-color.webp`]:
+        'Bi-color insulating mat demonstration showing the dual-tone design in a real setting',
     },
   },
   trustPoints: matTrustPoints,
@@ -582,37 +588,40 @@ const biColorInsulatingMats: ProductData = {
    Product 4: Auto-Glow / Reflective Band Mats
    ──────────────────────────────────────────── */
 
-const AGRIM = '/media/products/auto-glow-reflective-band';
+const AGRIM = '/media/products/auto-glow-reflective-band-insulating-mats';
 
 const autoGlowReflectiveBandMats: ProductData = {
   slug: 'auto-glow-reflective-band-insulating-mats',
   name: 'Auto-Glow / Reflective Band Insulating Mats',
   shortName: 'AGRIM',
   images: {
-    thumbnail: `${AGRIM}/photo-01.webp`,
+    thumbnail: `${AGRIM}/product-01.webp`,
     /* Normal-light product first — the glow is evidenced further down the
        gallery by a real low-light photograph, not by a rendered scene. */
-    hero: `${AGRIM}/photo-03.webp`,
+    hero: `${AGRIM}/product-06.webp`,
     details: [
-      `${AGRIM}/photo-04.webp`,
-      `${AGRIM}/photo-02.webp`,
-      `${AGRIM}/photo-05.webp`,
+      `${AGRIM}/product-02.webp`,
+      `${AGRIM}/product-03.webp`,
+      `${AGRIM}/product-04.webp`,
+      `${AGRIM}/product-05.webp`,
+      `${AGRIM}/product-demo-glowing-dark.webp`,
     ],
-    overview: `${AGRIM}/photo-06.webp`,
-    application: `${AGRIM}/photo-02.webp`,
+    overview: `${AGRIM}/product-01.webp`,
     alt: {
-      [`${AGRIM}/photo-03.webp`]:
-        'Auto-glow band insulating mat sheet in normal light, marked IS 15652-2006 Class C, voltage up to 33 kV, with the pale glow band between orange dot-pattern sections',
-      [`${AGRIM}/photo-01.webp`]:
-        'Auto-glow band mat sample in daylight, showing the green, orange and pale glow-band sections side by side',
-      [`${AGRIM}/photo-04.webp`]:
-        'Band construction across an auto-glow mat sample, with the raised dot pattern continuing through the glow band',
-      [`${AGRIM}/photo-02.webp`]:
-        'The same mat sample in a darkened room, its band emitting bright green light',
-      [`${AGRIM}/photo-05.webp`]:
-        'Close view along the auto-glow band where it meets the orange dot-pattern mat surface',
-      [`${AGRIM}/photo-06.webp`]:
-        'Raised dot anti-skid texture running across the glow band of an auto-glow insulating mat',
+      [`${AGRIM}/product-06.webp`]:
+        'Auto-glow reflective band insulating mat in normal light showing the reflective strip',
+      [`${AGRIM}/product-01.webp`]:
+        'Auto-glow band mat in daylight showing the glow-in-the-dark strip alongside the reflective band',
+      [`${AGRIM}/product-02.webp`]:
+        'Auto-glow band insulating mat with glow-in-the-dark strip detail',
+      [`${AGRIM}/product-03.webp`]:
+        'Reflective band insulating mat showing high-visibility reflective strip in normal light',
+      [`${AGRIM}/product-04.webp`]:
+        'Reflective band insulating mat with the reflective strip visible along the mat surface',
+      [`${AGRIM}/product-05.webp`]:
+        'Auto-glow and reflective band insulating mat showing both strip features',
+      [`${AGRIM}/product-demo-glowing-dark.webp`]:
+        'Auto-glow insulating mat demonstration in dark conditions showing the glow-in-the-dark band illuminating',
     },
   },
   trustPoints: matTrustPoints,
@@ -715,33 +724,30 @@ const bharatMembrane: ProductData = {
   name: 'BharatMembrane',
   shortName: 'BM',
   images: {
-    thumbnail: `${BM}/gallery-01.webp`,
-    hero: `${BM}/hero.webp`,
-    details: [`${BM}/gallery-03.webp`, `${BM}/gallery-02.webp`, `${BM}/gallery-04.webp`],
-    overview: `${BM}/gallery-05.webp`,
-    application: `${BM}/gallery-01.webp`,
-    /* Every membrane image is an installed site photograph. */
+    thumbnail: `${BM}/product-01.webp`,
+    hero: `${BM}/product-06.webp`,
+    details: [`${BM}/product-02.webp`, `${BM}/product-03.webp`, `${BM}/product-04.webp`, `${BM}/product-05.webp`, `${BM}/product-logo.webp`],
+    overview: `${BM}/product-01.webp`,
     contextual: [
-      `${BM}/hero.webp`,
-      `${BM}/gallery-01.webp`,
-      `${BM}/gallery-02.webp`,
-      `${BM}/gallery-03.webp`,
-      `${BM}/gallery-04.webp`,
-      `${BM}/gallery-05.webp`,
+      `${BM}/product-06.webp`,
+      `${BM}/product-04.webp`,
+      `${BM}/product-05.webp`,
     ],
     alt: {
-      [`${BM}/gallery-01.webp`]:
-        'Yellow PVC geo-membrane lining the crown and walls of a rail tunnel',
-      [`${BM}/hero.webp`]:
-        'Tunnel interior fully lined with PVC geo-membrane between the structural arches',
-      [`${BM}/gallery-03.webp`]:
-        'Hot-air welding gun sealing an overlap seam in yellow PVC geo-membrane',
-      [`${BM}/gallery-02.webp`]:
-        'Site worker in high-visibility clothing fixing PVC geo-membrane to a tunnel soffit',
-      [`${BM}/gallery-04.webp`]:
-        'Tunnel portal under construction with PVC geo-membrane installed across the opening',
-      [`${BM}/gallery-05.webp`]:
-        'Dark PVC geo-membrane lining the bank and bed of a large water containment channel',
+      [`${BM}/product-01.webp`]:
+        'BharatMembrane PVC geo-membrane roll showing the high-grade PVC polymer sheet',
+      [`${BM}/product-06.webp`]:
+        'BharatMembrane PVC geo-membrane installed in a tunnel waterproofing application',
+      [`${BM}/product-02.webp`]:
+        'BharatMembrane PVC geo-membrane sheet showing the smooth surface texture',
+      [`${BM}/product-03.webp`]:
+        'BharatMembrane PVC geo-membrane installation with thermal welding seams',
+      [`${BM}/product-04.webp`]:
+        'BharatMembrane PVC geo-membrane applied in a civil engineering containment project',
+      [`${BM}/product-05.webp`]:
+        'BharatMembrane PVC geo-membrane on a water conservation canal lining',
+      [`${BM}/product-logo.webp`]:
+        'BharatMembrane product logo — PVC geo-membrane by Bharat Electrosafe',
     },
   },
   trustPoints: membraneTrustPoints,
