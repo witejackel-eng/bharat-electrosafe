@@ -146,7 +146,7 @@ export default function EnquiryQuoteLayout() {
               Our team will respond within 24 business hours. If urgent, feel free to call us directly.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <PrimaryButton href="/contact-us" onClick={() => setSubmitted(false)}>
+              <PrimaryButton onClick={() => setSubmitted(false)}>
                 Submit Another Enquiry
               </PrimaryButton>
               <SecondaryButton href="tel:+91XXXXXXXXXX">
@@ -438,8 +438,8 @@ export default function EnquiryQuoteLayout() {
               {/* Submit */}
               <div className="mt-2">
                 <PrimaryButton
+                  type="submit"
                   className={cn('w-full sm:w-auto', isSubmitting && 'opacity-70 pointer-events-none')}
-                  onClick={handleSubmit(onSubmit)}
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (

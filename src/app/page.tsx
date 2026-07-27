@@ -4,12 +4,25 @@ import { useEffect, useRef } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
+import { Marquee } from '@/components/ui/Marquee';
 import HomeHero from '@/components/home/HomeHero';
+import StatsSection from '@/components/home/StatsSection';
 import ProductRange from '@/components/home/ProductRange';
 import TrustDocuments from '@/components/home/TrustDocuments';
 import CapabilitySection from '@/components/home/CapabilitySection';
 import IndustryApplications from '@/components/home/IndustryApplications';
+import HomeFAQ from '@/components/home/HomeFAQ';
 import HomeCTA from '@/components/home/HomeCTA';
+
+const trustMarqueeItems = [
+  'IS 15652:2006 Certified',
+  'BIS Licensed',
+  'CPRI Tested',
+  'ERDA Verified',
+  'Make in India',
+  'Classes A, B & C',
+  'Custom Dimensions Available',
+];
 
 export default function Home() {
   const revealRef = useRef<boolean>(false);
@@ -47,11 +60,14 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-be-warm-white">
       <Header />
       <main className="flex-1">
+        <Marquee items={trustMarqueeItems} speed="normal" />
         <HomeHero />
+        <StatsSection />
         <ProductRange />
         <TrustDocuments />
         <CapabilitySection />
         <IndustryApplications />
+        <HomeFAQ />
         <HomeCTA />
       </main>
       <Footer />

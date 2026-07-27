@@ -5,9 +5,13 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
 import { ProductHero } from '@/components/products/ProductHero';
+import { ProductTrustIndicators } from '@/components/products/ProductTrustIndicators';
+import { ProductOverview } from '@/components/products/ProductOverview';
 import { ProductMaterialDimensions } from '@/components/products/ProductMaterialDimensions';
 import { ProductApplications } from '@/components/products/ProductApplications';
 import { ProductDocuments } from '@/components/products/ProductDocuments';
+import { ProductFAQ } from '@/components/products/ProductFAQ';
+import { RelatedProducts } from '@/components/products/RelatedProducts';
 import { ProductCTA } from '@/components/products/ProductCTA';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { DataTable } from '@/components/ui/DataTable';
@@ -45,13 +49,19 @@ export default function BharatMembranePage() {
         {/* 1. Hero */}
         <ProductHero product={product} />
 
-        {/* 2. Material & Thickness (primary content — no electrical specs) */}
+        {/* 2. Trust indicators strip */}
+        <ProductTrustIndicators />
+
+        {/* 3. Overview */}
+        <ProductOverview product={product} />
+
+        {/* 4. Material & Thickness (primary content — no electrical specs) */}
         <ProductMaterialDimensions product={product} />
 
-        {/* 3. Applications */}
+        {/* 5. Applications */}
         <ProductApplications product={product} />
 
-        {/* 4. Membrane Properties — custom section (not electrical specs table) */}
+        {/* 6. Membrane Properties — custom section (not electrical specs table) */}
         <section className="section-padding-supporting bg-be-white">
           <div className="container-site page-horizontal-padding">
             <div className="flex flex-col gap-6">
@@ -70,10 +80,16 @@ export default function BharatMembranePage() {
           </div>
         </section>
 
-        {/* 5. Documents */}
+        {/* 7. Documents */}
         <ProductDocuments product={product} />
 
-        {/* 6. Project Enquiry CTA */}
+        {/* 8. FAQ */}
+        <ProductFAQ product={product} />
+
+        {/* 9. Related Products */}
+        <RelatedProducts product={product} />
+
+        {/* 10. Project Enquiry CTA */}
         <ProductCTA product={product} headingPrefix="Project enquiry for" />
       </main>
       <Footer />
