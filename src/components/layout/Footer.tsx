@@ -67,17 +67,15 @@ export function Footer() {
         <div className="hidden md:grid md:grid-cols-4 gap-8">
           {/* Column 1 — Brand */}
           <div className="flex flex-col gap-4">
-            <Link href="/" className="flex items-center gap-2.5" aria-label="Bharat Electrosafe — Home">
+            <Link href="/" aria-label="Bharat Electrosafe — Home">
               <Image
-                src="/images/brand/bharat-electrosafe-logo.webp"
-                alt="Bharat Electrosafe"
-                width={32}
-                height={32}
+                src="/images/brand/bharat-electrosafe-logo-full.webp"
+                alt="Bharat Electrosafe logo"
+                width={160}
+                height={60}
+                className="object-contain w-[140px] h-auto"
                 priority
               />
-              <span className="font-bold text-be-charcoal-950 text-lg">
-                Bharat Electrosafe
-              </span>
             </Link>
             <p className="text-sm text-be-grey-650 leading-relaxed max-w-[280px]">
               Certified electrical insulating mats and engineered protection products for control panels, substations, utilities and industry.
@@ -206,17 +204,15 @@ export function Footer() {
         <div className="md:hidden flex flex-col gap-6">
           {/* Brand at top */}
           <div className="flex flex-col gap-3">
-            <Link href="/" className="flex items-center gap-2.5" aria-label="Bharat Electrosafe — Home">
+            <Link href="/" aria-label="Bharat Electrosafe — Home">
               <Image
-                src="/images/brand/bharat-electrosafe-logo.webp"
-                alt="Bharat Electrosafe"
-                width={32}
-                height={32}
+                src="/images/brand/bharat-electrosafe-logo-full.webp"
+                alt="Bharat Electrosafe logo"
+                width={140}
+                height={53}
+                className="object-contain w-[130px] h-auto"
                 priority
               />
-              <span className="font-bold text-be-charcoal-950 text-lg">
-                Bharat Electrosafe
-              </span>
             </Link>
             <p className="text-base text-be-grey-650 leading-relaxed">
               Certified electrical insulating mats and engineered protection products for control panels, substations, utilities and industry.

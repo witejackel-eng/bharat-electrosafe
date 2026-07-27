@@ -203,28 +203,20 @@ export function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2.5 shrink-0"
+            className="shrink-0"
             aria-label="Bharat Electrosafe — Home"
           >
             <Image
-              src="/images/brand/bharat-electrosafe-logo.webp"
-              alt="Bharat Electrosafe"
-              width={36}
-              height={36}
+              src="/images/brand/bharat-electrosafe-logo-full.webp"
+              alt="Bharat Electrosafe logo"
+              width={160}
+              height={60}
               className={cn(
-                'object-contain transition-all duration-300',
-                compact ? 'size-8' : 'size-9'
+                'object-contain transition-all duration-300 h-auto',
+                compact ? 'w-[85px]' : 'w-[110px]'
               )}
               priority
             />
-            <span
-              className={cn(
-                'font-bold text-be-charcoal-950 whitespace-nowrap transition-all duration-300',
-                compact ? 'text-base' : 'text-lg'
-              )}
-            >
-              Bharat Electrosafe
-            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -355,17 +347,16 @@ export function Header() {
 
               <SheetContent side="right" className="w-[320px] sm:w-[360px] bg-be-white p-0">
                 <SheetHeader className="px-5 pt-5 pb-3 border-b border-be-grey-250">
-                  <SheetTitle className="flex items-center gap-2.5">
-                    <Image
-                      src="/images/brand/bharat-electrosafe-logo.webp"
-                      alt="Bharat Electrosafe"
-                      width={28}
-                      height={28}
-                      className="object-contain"
-                    />
-                    <span className="font-bold text-be-charcoal-950">
-                      Bharat Electrosafe
-                    </span>
+                  <SheetTitle className="flex items-center">
+                    <Link href="/" onClick={() => setMobileOpen(false)}>
+                      <Image
+                        src="/images/brand/bharat-electrosafe-logo-full.webp"
+                        alt="Bharat Electrosafe logo"
+                        width={120}
+                        height={46}
+                        className="object-contain w-[120px] h-auto"
+                      />
+                    </Link>
                   </SheetTitle>
                 </SheetHeader>
 
