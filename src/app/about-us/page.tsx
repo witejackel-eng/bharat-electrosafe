@@ -21,6 +21,7 @@ import { products } from '@/data/products';
 import { company } from '@/data/company';
 import { certificates, certificateCategoryLabels } from '@/data/certificates';
 import { clients } from '@/data/clients';
+import { publishedLeadership } from '@/data/leadership';
 
 /* ── SEO Metadata ── */
 export const metadata: Metadata = {
@@ -365,39 +366,65 @@ export default function AboutUsPage() {
         </section>
 
         {/* ════════════════════════════════════════════
-            Section 5: Leadership (Placeholder)
+            Section 5: Leadership
            ════════════════════════════════════════════ */}
         <section className="bg-warm-white py-16 md:py-20 border-t border-grey-300/30">
           <div className="container-site">
-            <h2 className="text-section-h2 text-charcoal-950 mb-4">
-              Leadership
-            </h2>
+            <h2 className="text-section-h2 text-charcoal-950 mb-4">Leadership</h2>
             <p className="text-body text-grey-600 mb-10 max-w-[680px]">
-              The leadership team at Bharat Electrosafe brings expertise in electrical safety
-              engineering, manufacturing operations and customer support.
+              Bharat Electrosafe is led by its three founding directors, covering finance and
+              compliance, production and vendor management, and polymer product development.
             </p>
 
-            {/* Placeholder — awaiting client-approved photos and roles */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3].map((slot) => (
-                <div
-                  key={slot}
-                  className="p-6 border border-grey-300/50 rounded-md bg-white text-center"
+              {publishedLeadership.map((person) => (
+                <article
+                  key={person.id}
+                  className="flex flex-col p-6 border border-grey-300/50 rounded-md bg-white"
                 >
-                  <div className="w-20 h-20 rounded-full bg-grey-150 mx-auto mb-4 flex items-center justify-center">
-                    <span className="text-small-meta text-grey-600">Photo</span>
-                  </div>
-                  <p className="text-[0.9375rem] font-medium text-charcoal-800">
-                    [Leadership information pending client approval]
+                  {person.portrait && (
+                    <div className="relative w-24 h-24 rounded-full overflow-hidden bg-grey-150 mb-4">
+                      <Image
+                        src={person.portrait}
+                        alt={person.portraitAlt ?? person.name}
+                        fill
+                        sizes="96px"
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <h3 className="text-[1.0625rem] font-semibold text-charcoal-950">
+                    {person.name}
+                  </h3>
+                  <p className="text-small-meta text-yellow-600 font-medium mb-3">
+                    {person.designation}
                   </p>
-                </div>
+                  <p className="text-[0.9375rem] text-grey-600 leading-relaxed">
+                    {person.summary}
+                  </p>
+
+                  {/* Full biography stays collapsed so the section reads as
+                      three comparable cards rather than three walls of text. */}
+                  <details className="mt-4 group">
+                    <summary className="cursor-pointer text-sm font-medium text-charcoal-800 hover:text-yellow-600 transition-colors min-h-[44px] flex items-center">
+                      Read full biography
+                    </summary>
+                    <div className="mt-3 flex flex-col gap-3">
+                      {person.biography.map((paragraph, i) => (
+                        <p key={i} className="text-[0.9375rem] text-grey-600 leading-relaxed">
+                          {paragraph}
+                        </p>
+                      ))}
+                    </div>
+                  </details>
+                </article>
               ))}
             </div>
           </div>
         </section>
 
         {/* ════════════════════════════════════════════
-            Section 6: Manufacturing and Testing (Placeholder images)
+            Section 6: Manufacturing and Testing
            ════════════════════════════════════════════ */}
         <section className="bg-white py-16 md:py-20 border-t border-grey-300/30">
           <div className="container-site">
@@ -502,13 +529,16 @@ export default function AboutUsPage() {
               details.
             </p>
 
-            {/* Verification notice */}
+            {/* Documents are published only once their reference numbers and
+                validity dates have been read off the certificate itself. Until
+                then each card offers a request route rather than a download, so
+                the page never implies a document it cannot serve. */}
             <div className="mb-8 p-4 border border-yellow-400/40 rounded-md bg-yellow-50/50 flex items-start gap-3">
-              <Eye className="size-5 text-yellow-500 shrink-0 mt-0.5" />
+              <Eye className="size-5 text-yellow-500 shrink-0 mt-0.5" aria-hidden="true" />
               <p className="text-small-meta text-charcoal-800">
-                Document verification pending — all certificates and reports listed below are
-                placeholders. Actual documents, reference numbers and issue dates will be
-                published once verified and approved by the issuing authorities.
+                Copies of our certificates, licences and test reports are available on request.
+                Contact us with your requirement and we will send the current documents with
+                their reference numbers and validity dates.
               </p>
             </div>
 

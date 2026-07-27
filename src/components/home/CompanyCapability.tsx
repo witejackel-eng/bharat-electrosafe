@@ -70,10 +70,10 @@ export function CompanyCapability() {
           <div className="lg:col-span-5">
             <div className="relative aspect-[4/3] rounded-md overflow-hidden bg-yellow-50">
               <Image
-                src="/images/company-factory.jpg"
-                alt="Bharat Electrosafe manufacturing facility"
+                src="/media/manufacturing/production-line.webp"
+                alt="Bharat Electrosafe production line, with insulating mat material being processed on the calender"
                 fill
-                className="object-contain p-4"
+                className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 42vw"
               />
               {/* Fallback background */}
