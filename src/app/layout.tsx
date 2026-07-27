@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     images: [
       {
-        url: '/brand/og-bharat-electrosafe.png',
+        url: '/brand/og-bharat-electrosafe.png?v=2',
         width: 1200,
         height: 630,
         alt: `${company.name} — Certified electrical insulating mats and engineered protection`,
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: `${company.name} — Electrical Insulating Mats & Engineered Membranes`,
     description: company.description,
-    images: ['/brand/twitter-card-bharat-electrosafe.png'],
+    images: ['/brand/twitter-card-bharat-electrosafe.png?v=2'],
   },
   category: 'manufacturing',
 };
