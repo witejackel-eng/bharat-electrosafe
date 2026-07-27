@@ -18,17 +18,17 @@ const productSpecificQuestions: Record<string, FAQItem> = {
   'coloured-strip-insulating-mats': {
     question: 'What colour options are available for the strip configuration?',
     answer:
-      'Standard colour options include yellow, red, green and blue strips on a black insulating base, following common industrial safety colour conventions. Custom colour combinations can be discussed for project-specific safety demarcation requirements. All variants retain the same IS 15652:2006 insulation performance.',
+      'The standard strip configuration uses a vivid yellow marking on a black insulating base, providing clear visual cues around electrical panels and machinery. Custom colour combinations can be discussed for project-specific requirements. All variants retain the same IS 15652:2006 insulation performance.',
   },
   'bi-color-insulating-mats': {
-    question: 'How does the bi-color construction indicate wear?',
+    question: 'What is the purpose of the dual-tone design?',
     answer:
-      'The mat is manufactured with two contrasting layers — a top working layer and a base indicator layer in a different colour. As the top layer wears down through foot traffic or equipment movement, the contrasting base colour becomes visible, signalling that the mat has reached its minimum safe thickness and should be inspected or replaced.',
+      'The dual-tone colour scheme not only enhances visual appeal but also serves as a clear indicator of safety boundaries in the workspace. The contrasting colours make hazard zones and restricted areas immediately visible, supporting safe navigation around electrical installations.',
   },
   'auto-glow-reflective-band-insulating-mats': {
     question: 'How long does the auto-glow effect last after lights-out?',
     answer:
-      'The photoluminescent band is charged by ambient light during normal operation. After lights-out, the visible glow typically remains effective for several hours, supporting emergency wayfinding and exit guidance. Reflective banding also returns light from torches and emergency lamps, providing additional visibility in low-light conditions.',
+      'The glow-in-the-dark band is charged by normal lighting during operation. After lights-out, the visible glow continues to illuminate pathways and hazard zones, supporting emergency wayfinding and exit guidance. Reflective banding also returns light from torches and emergency lamps, providing additional visibility in low-light conditions.',
   },
   'bharat-membrane': {
     question: 'Can BharatMembrane be used in below-grade and underwater applications?',
