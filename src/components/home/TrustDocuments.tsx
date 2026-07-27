@@ -42,7 +42,10 @@ const logos = [
 
 export default function TrustDocuments() {
   return (
-    <section id="documentation" className="bg-be-cream section-padding-major">
+    <section id="documentation" className="bg-be-cream section-padding-major relative">
+      {/* Subtle gradient at top */}
+      <div className="absolute top-0 left-0 right-0 h-[80px] bg-gradient-to-b from-be-cream to-transparent pointer-events-none" />
+
       <div className="container-site page-horizontal-padding">
         <div className="reveal-up mb-12">
           <SectionHeader
@@ -53,9 +56,9 @@ export default function TrustDocuments() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 reveal-up">
-          {/* Document cards */}
+          {/* Document cards — with bottom yellow accent border */}
           <div className="w-full lg:w-3/5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-4 border-b-[3px] border-be-yellow-500/30">
               {documents.map((doc) => (
                 <DocumentCard
                   key={doc.name}
@@ -68,10 +71,10 @@ export default function TrustDocuments() {
             </div>
           </div>
 
-          {/* Logo rail */}
+          {/* Logo rail — subtle bg-be-yellow-50 tint */}
           <div className="w-full lg:w-2/5 flex flex-col justify-center">
-            <div className="rounded-lg border border-be-grey-250 bg-be-white p-6">
-              <p className="text-metadata text-be-grey-650 font-semibold uppercase tracking-wider mb-4">
+            <div className="rounded-lg border border-be-grey-250 bg-be-yellow-50/40 p-6">
+              <p className="text-sm text-be-grey-650 font-semibold uppercase tracking-wider mb-4">
                 Recognised &amp; Certified By
               </p>
               <LogoRail logos={logos} />

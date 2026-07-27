@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Menu,
@@ -71,16 +72,26 @@ const products: ProductNavItem[] = [
   },
 ];
 
+const navLinks = [
+  { name: 'Home', href: '/' },
+  { name: 'About Us', href: '/about-us' },
+  { name: 'Contact Us', href: '/contact-us' },
+];
+
 /* ────────────────────────────────────────────
    Header component
    ──────────────────────────────────────────── */
 
 export function Header() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [compact, setCompact] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Check if a product link matches current path
+  const isProductActive = products.some((p) => pathname.startsWith(p.href));
 
   // Scroll detection
   useEffect(() => {
@@ -117,6 +128,13 @@ export function Header() {
     dropdownTimeoutRef.current = setTimeout(() => {
       setDropdownOpen(false);
     }, 180);
+  }, []);
+
+  // Keyboard handler for dropdown (Escape to close)
+  const handleDropdownKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setDropdownOpen(false);
+    }
   }, []);
 
   // Cleanup timeout on unmount
@@ -212,7 +230,10 @@ export function Header() {
           <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
             <Link
               href="/"
-              className="px-4 py-2 text-sm font-medium text-be-charcoal-800 hover:text-be-yellow-600 transition-colors rounded-md hover:bg-be-yellow-50"
+              className={cn(
+                'px-4 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-600',
+                pathname === '/' ? 'text-be-yellow-600 border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
+              )}
             >
               Home
             </Link>
@@ -222,14 +243,16 @@ export function Header() {
               className="relative"
               onMouseEnter={handleDropdownEnter}
               onMouseLeave={handleDropdownLeave}
+              onKeyDown={handleDropdownKeyDown}
             >
               <button
                 type="button"
                 className={cn(
                   'flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-md transition-colors',
-                  dropdownOpen
+                  dropdownOpen || isProductActive
                     ? 'text-be-yellow-600 bg-be-yellow-50'
-                    : 'text-be-charcoal-800 hover:text-be-yellow-600 hover:bg-be-yellow-50'
+                    : 'text-be-charcoal-800 hover:text-be-yellow-600 hover:bg-be-yellow-50',
+                  isProductActive && 'border-l-[3px] border-be-yellow-500 pl-3'
                 )}
                 aria-expanded={dropdownOpen}
                 aria-haspopup="true"
@@ -255,6 +278,7 @@ export function Header() {
                     className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-[640px] bg-be-yellow-50 border border-be-grey-250 rounded-xl shadow-lg p-5"
                     onMouseEnter={handleDropdownEnter}
                     onMouseLeave={handleDropdownLeave}
+                    onKeyDown={handleDropdownKeyDown}
                   >
                     <div className="grid grid-cols-2 gap-3">
                       {products.map((product) => (
@@ -291,14 +315,20 @@ export function Header() {
 
             <Link
               href="/about-us"
-              className="px-4 py-2 text-sm font-medium text-be-charcoal-800 hover:text-be-yellow-600 transition-colors rounded-md hover:bg-be-yellow-50"
+              className={cn(
+                'px-4 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-600',
+                pathname === '/about-us' ? 'text-be-yellow-600 border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
+              )}
             >
               About Us
             </Link>
 
             <Link
               href="/contact-us"
-              className="px-4 py-2 text-sm font-medium text-be-charcoal-800 hover:text-be-yellow-600 transition-colors rounded-md hover:bg-be-yellow-50"
+              className={cn(
+                'px-4 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-600',
+                pathname === '/contact-us' ? 'text-be-yellow-600 border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
+              )}
             >
               Contact Us
             </Link>
@@ -340,7 +370,12 @@ export function Header() {
                 <nav className="flex flex-col py-2" aria-label="Mobile navigation">
                   <Link
                     href="/"
-                    className="px-5 py-3.5 text-base font-medium text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-600 transition-colors min-h-[44px] flex items-center"
+                    className={cn(
+                      'px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center',
+                      pathname === '/'
+                        ? 'text-be-yellow-600 bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
+                        : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-600'
+                    )}
                     onClick={() => setMobileOpen(false)}
                   >
                     Home
@@ -349,7 +384,12 @@ export function Header() {
                   {/* Products accordion */}
                   <Accordion type="single" collapsible className="px-0">
                     <AccordionItem value="products" className="border-b-0">
-                      <AccordionTrigger className="px-5 py-3.5 text-base font-medium text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-600 transition-colors min-h-[44px] hover:no-underline">
+                      <AccordionTrigger className={cn(
+                        'px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] hover:no-underline',
+                        isProductActive
+                          ? 'text-be-yellow-600 bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
+                          : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-600'
+                      )}>
                         Products
                       </AccordionTrigger>
                       <AccordionContent className="pb-2">
@@ -358,7 +398,12 @@ export function Header() {
                             <Link
                               key={product.href}
                               href={product.href}
-                              className="flex items-center gap-3 px-5 py-3 pl-8 text-sm text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 transition-colors min-h-[44px]"
+                              className={cn(
+                                'flex items-center gap-3 px-5 py-3 pl-8 text-sm transition-colors min-h-[44px]',
+                                pathname.startsWith(product.href)
+                                  ? 'text-be-yellow-600 bg-be-yellow-50'
+                                  : 'text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600'
+                              )}
                               onClick={() => setMobileOpen(false)}
                             >
                               <div
@@ -384,9 +429,17 @@ export function Header() {
                     </AccordionItem>
                   </Accordion>
 
+                  {/* Divider between Products accordion and other nav items */}
+                  <div className="mx-5 my-1 h-px bg-be-grey-250" />
+
                   <Link
                     href="/about-us"
-                    className="px-5 py-3.5 text-base font-medium text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-600 transition-colors min-h-[44px] flex items-center"
+                    className={cn(
+                      'px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center',
+                      pathname === '/about-us'
+                        ? 'text-be-yellow-600 bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
+                        : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-600'
+                    )}
                     onClick={() => setMobileOpen(false)}
                   >
                     About Us
@@ -394,7 +447,12 @@ export function Header() {
 
                   <Link
                     href="/contact-us"
-                    className="px-5 py-3.5 text-base font-medium text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-600 transition-colors min-h-[44px] flex items-center"
+                    className={cn(
+                      'px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center',
+                      pathname === '/contact-us'
+                        ? 'text-be-yellow-600 bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
+                        : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-600'
+                    )}
                     onClick={() => setMobileOpen(false)}
                   >
                     Contact Us

@@ -2,37 +2,43 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 /* ────────────────────────────────────────────
-   Rate limiting (simple in-memory counter)
+   Sliding-window rate limiting (in-memory)
    ──────────────────────────────────────────── */
 
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 const RATE_LIMIT_MAX = 5; // max 5 submissions per window per IP
 
-const rateLimitMap = new Map<string, { count: number; startTime: number }>();
+// Store an array of timestamps per IP for sliding-window
+const rateLimitMap = new Map<string, number[]>();
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
-  const entry = rateLimitMap.get(ip);
+  const timestamps = rateLimitMap.get(ip) || [];
 
-  if (!entry || now - entry.startTime > RATE_LIMIT_WINDOW) {
-    rateLimitMap.set(ip, { count: 1, startTime: now });
-    return true;
-  }
+  // Filter out timestamps outside the sliding window
+  const recentTimestamps = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW);
 
-  if (entry.count >= RATE_LIMIT_MAX) {
+  if (recentTimestamps.length >= RATE_LIMIT_MAX) {
+    // Still store for cleanup
+    rateLimitMap.set(ip, recentTimestamps);
     return false;
   }
 
-  entry.count += 1;
+  // Add current timestamp
+  recentTimestamps.push(now);
+  rateLimitMap.set(ip, recentTimestamps);
   return true;
 }
 
-// Clean up old entries periodically
+// Clean up old entries periodically (remove IPs with no recent requests)
 function cleanupRateLimit() {
   const now = Date.now();
-  for (const [ip, entry] of rateLimitMap.entries()) {
-    if (now - entry.startTime > RATE_LIMIT_WINDOW) {
+  for (const [ip, timestamps] of rateLimitMap.entries()) {
+    const recent = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW);
+    if (recent.length === 0) {
       rateLimitMap.delete(ip);
+    } else {
+      rateLimitMap.set(ip, recent);
     }
   }
 }
@@ -76,6 +82,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Content-type validation: must be application/json
+    const contentType = request.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      return NextResponse.json(
+        { success: false, message: 'Request must be application/json.' },
+        { status: 415 }
+      );
+    }
+
     // Parse request body
     const body = await request.json();
 
@@ -96,15 +111,16 @@ export async function POST(request: NextRequest) {
     }
 
     // In production, you would save to database or send email here
-    // For now, just return success
     const data = result.data;
 
     // Log the enquiry (server-side only)
-    console.log('[Contact Form] Enquiry received:', {
+    console.log('[Contact Form] Successful submission:', {
       name: data.name,
       email: data.email,
       enquiryType: data.enquiryType,
+      productInterest: data.productInterest || 'none',
       timestamp: new Date().toISOString(),
+      ip,
     });
 
     return NextResponse.json({

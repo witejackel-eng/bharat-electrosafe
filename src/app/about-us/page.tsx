@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { BackToTop } from '@/components/ui/BackToTop';
 import AboutIntro from '@/components/about/AboutIntro';
 import ProductOverview from '@/components/about/ProductOverview';
 import CompanyLeadership from '@/components/about/CompanyLeadership';
@@ -50,6 +51,7 @@ export default function AboutUsPage() {
         <IndustriesClientsCTA />
       </main>
       <Footer />
+      <BackToTop />
     </div>
   );
 }

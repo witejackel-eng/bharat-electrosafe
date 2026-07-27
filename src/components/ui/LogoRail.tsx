@@ -40,7 +40,7 @@ export function LogoRail({ logos, className }: LogoRailProps) {
                 className="object-contain max-h-12 w-auto"
               />
             ) : (
-              <span className="text-metadata text-be-grey-650 font-semibold text-center">
+              <span className="text-sm text-be-grey-650 font-semibold text-center hover:text-be-charcoal-800 hover:underline underline-offset-4 transition-all duration-300">
                 {logo.name}
               </span>
             )}

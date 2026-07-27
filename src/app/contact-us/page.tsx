@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { BackToTop } from '@/components/ui/BackToTop';
 import ContactIntro from '@/components/contact/ContactIntro';
 import EnquiryQuoteLayout from '@/components/contact/EnquiryQuoteLayout';
 import OfficeLocation from '@/components/contact/OfficeLocation';
@@ -46,6 +47,7 @@ export default function ContactUsPage() {
         <DirectContactCTA />
       </main>
       <Footer />
+      <BackToTop />
     </div>
   );
 }

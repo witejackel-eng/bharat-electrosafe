@@ -2,13 +2,21 @@
 
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
-import { Phone, MessageCircle } from 'lucide-react';
+import { ShieldCheck, Phone, MessageCircle } from 'lucide-react';
 
 export default function HomeCTA() {
   return (
-    <section className="bg-be-yellow-50 section-padding-major">
+    <section className="bg-gradient-to-b from-be-yellow-50 to-be-cream section-padding-major relative">
+      {/* Subtle top border decoration */}
+      <div className="absolute top-0 left-0 right-0 h-[3px] bg-be-yellow-500" />
+
       <div className="container-site page-horizontal-padding">
         <div className="reveal-up flex flex-col items-center text-center gap-6 max-w-2xl mx-auto">
+          {/* Decorative shield icon */}
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-be-yellow-50 border border-be-yellow-400/30 text-be-yellow-600 shadow-sm">
+            <ShieldCheck className="h-7 w-7" />
+          </div>
+
           <h2 className="text-section-h2 text-be-charcoal-950">
             Need help selecting the correct product?
           </h2>
@@ -18,7 +26,7 @@ export default function HomeCTA() {
             location.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
+          <div className="flex flex-wrap items-center justify-center gap-6 mt-2">
             <PrimaryButton href="/contact-us" size="lg">
               Request a Quote
             </PrimaryButton>

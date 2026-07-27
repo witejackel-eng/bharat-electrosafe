@@ -1,0 +1,16 @@
+{
+  "name": "Bharat Electrosafe",
+  "short_name": "Bharat ES",
+  "description": "Certified electrical insulating mats and engineered protection products for control panels, substations, utilities, industry and infrastructure.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF9F0",
+  "theme_color": "#F5C518",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

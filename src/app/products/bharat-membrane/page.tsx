@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { BackToTop } from '@/components/ui/BackToTop';
 import { ProductHero } from '@/components/products/ProductHero';
 import { ProductMaterialDimensions } from '@/components/products/ProductMaterialDimensions';
 import { ProductApplications } from '@/components/products/ProductApplications';
@@ -76,6 +77,7 @@ export default function BharatMembranePage() {
         <ProductCTA product={product} headingPrefix="Project enquiry for" />
       </main>
       <Footer />
+      <BackToTop />
     </div>
   );
 }
