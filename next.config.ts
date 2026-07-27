@@ -90,9 +90,8 @@ const nextConfig: NextConfig = {
       { source: '/bi-color-insulating-mats.php', destination: '/products/bi-color-insulating-mats' },
       { source: '/auto-glow-reflective-band-insulating-mat.php', destination: '/products/auto-glow-reflective-band-insulating-mats' },
       { source: '/bharat-membrane.php', destination: '/products/bharat-membrane' },
-      /* The BharatHydro Seal page is not part of the current five-family range;
-         its old URL lands on the products list rather than a 404. */
-      { source: '/BharatHydro-Seal.php', destination: '/products/electrical-insulating-mats' },
+      /* The old BharatHydro Seal PHP URL now redirects to the new product page. */
+      { source: '/BharatHydro-Seal.php', destination: '/products/bharat-hydro-seal' },
     ];
 
     return [
@@ -101,7 +100,6 @@ const nextConfig: NextConfig = {
         destination: r.destination,
         permanent: true,
       })),
-      { source: '/products/bharat-hydro-seal', destination: '/products/electrical-insulating-mats', permanent: true },
     ];
   },
 };
