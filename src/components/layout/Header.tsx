@@ -71,6 +71,12 @@ const products: ProductNavItem[] = [
     href: '/products/bharat-membrane',
     thumbnail: '/media/products/bharat-membrane/product-01.webp',
   },
+  {
+    name: 'BharatHydro Seal',
+    description: 'PVC water stop for construction joints',
+    href: '/products/bharat-hydro-seal',
+    thumbnail: '/media/products/bharat-hydro-seal/product-01.webp',
+  },
 ];
 
 const navLinks = [
