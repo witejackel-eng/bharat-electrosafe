@@ -237,10 +237,23 @@ export async function POST(req: Request) {
   const plainText = buildPlainTextEmail(input, meta);
   const html = buildHtmlEmail(input, meta);
 
-  const fromEmail =
-    process.env.CONTACT_FROM_EMAIL ||
-    `Bharat Electrosafe Website <onboarding@resend.dev>`;
+  /* CONTACT_FROM_EMAIL must be an address on a domain verified with Resend.
+     There is no sandbox fallback: sending from an unverified default would
+     have enquiries silently rejected in production. */
+  const fromEmail = process.env.CONTACT_FROM_EMAIL;
   const toEmail = process.env.CONTACT_TO_EMAIL || company.email;
+
+  if (!fromEmail) {
+    console.error('[contact] CONTACT_FROM_EMAIL is not configured');
+    return NextResponse.json(
+      {
+        ok: false,
+        message:
+          'We could not deliver your message right now. Please reach us directly using the contact details below.',
+      },
+      { status: 500 }
+    );
+  }
 
   try {
     const { error } = await resend.emails.send({

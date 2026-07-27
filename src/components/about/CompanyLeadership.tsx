@@ -62,8 +62,8 @@ export default function CompanyLeadership() {
               {/* Real portrait */}
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
-                  src={leader.imagePath}
-                  alt={leader.name}
+                  src={leader.image}
+                  alt={leader.imageAlt}
                   fill
                   className="object-cover object-top"
                   sizes="(max-width: 768px) 100vw, 33vw"

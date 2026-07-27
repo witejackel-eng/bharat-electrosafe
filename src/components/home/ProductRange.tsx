@@ -1,12 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { TextLink } from '@/components/ui/TextLink';
-import { products } from '@/data/products';
+import { products, productFamilyCount, getImageAlt, getImageFit } from '@/data/products';
 
 function ProductCard({ product, index }: { product: typeof products[number]; index: number }) {
+  const src = product.images.thumbnail;
+
   return (
     <div className="hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
       {/* Yellow accent line — animates wider on hover */}
@@ -17,13 +18,13 @@ function ProductCard({ product, index }: { product: typeof products[number]; ind
         {String(index + 1).padStart(2, '0')}
       </div>
 
-      {/* Image area — real product image */}
+      {/* Image area */}
       <div className="relative w-full aspect-[16/10] overflow-hidden bg-be-cream">
         <Image
-          src={product.images.thumbnail}
-          alt={`${product.name} — product image`}
+          src={src}
+          alt={getImageAlt(product, src)}
           fill
-          className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+          className={getImageFit(product, src) === 'contain' ? 'object-contain p-2' : 'object-cover group-hover:scale-105 transition-transform duration-300'}
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
         {/* Dark overlay on hover */}
@@ -59,7 +60,7 @@ export default function ProductRange() {
           <SectionHeader
             eyebrow="PRODUCT RANGE"
             title="Our product range"
-            supportingText="Five product families, each designed around a specific protection requirement."
+            supportingText={`${productFamilyCount} product families, each designed around a specific protection requirement.`}
           />
         </div>
 

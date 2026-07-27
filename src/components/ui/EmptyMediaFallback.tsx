@@ -6,11 +6,7 @@ interface EmptyMediaFallbackProps {
   className?: string;
 }
 
-export function EmptyMediaFallback({
-  label,
-  slotId,
-  className,
-}: EmptyMediaFallbackProps) {
+export function EmptyMediaFallback({ slotId, className }: EmptyMediaFallbackProps) {
   return (
     <div
       data-slot-id={slotId}
@@ -45,19 +41,11 @@ export function EmptyMediaFallback({
       {/* Inner shadow */}
       <div className="absolute inset-0 shadow-[inset_0_2px_8px_rgba(0,0,0,0.04)]" />
 
-      {/* Center content */}
-      {label && (
-        <div className="relative flex flex-col items-center gap-2">
-          <span className="text-sm font-semibold text-be-charcoal-800 text-center px-6">
-            {label}
-          </span>
-          {slotId && (
-            <span className="text-[0.7rem] text-be-grey-400 tracking-wider uppercase">
-              BE-{slotId}
-            </span>
-          )}
-        </div>
-      )}
+      {/* No visible text. This component is a last-resort fallback for a
+          failed image request, not a content slot — rendering the label or a
+          slot code here would surface development scaffolding to visitors.
+          `label` stays in the signature so callers keep passing meaningful
+          alt text to the <Image> that normally renders instead. */}
     </div>
   );
 }

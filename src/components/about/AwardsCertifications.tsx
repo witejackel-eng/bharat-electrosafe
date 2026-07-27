@@ -2,130 +2,137 @@
 
 import Image from 'next/image';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { DocumentCard } from '@/components/ui/DocumentCard';
-import { trustMarks, awards, organisationRefs } from '@/data/trust';
+import { Eyebrow } from '@/components/ui/Eyebrow';
+import { YouTubeFacade } from '@/components/media/YouTubeFacade';
+import { awards, allTrustMarks } from '@/data/trust';
 
-const certificates = [
+/**
+ * About-page recognition section.
+ *
+ * Every award and every mark below comes from `src/data/trust.ts`, which only
+ * carries content the source site actually publishes. Nothing is added here to
+ * balance a grid — the layout adapts to however many verified items exist.
+ *
+ * The two videos are the company's own YouTube uploads, embedded through a
+ * click-to-load facade so no third-party request is made on page load.
+ */
+
+const videos = [
   {
-    type: 'Standard',
-    name: 'IS 15652:2006 Standard',
-    issuer: 'Bureau of Indian Standards',
+    videoId: 'e9jF3JYMLco',
+    title: 'Plast India 2026 @ Bharat Mandpam - Delhi',
+    poster: '/media/videos/e9jF3JYMLco.jpg',
+    posterAlt:
+      'Insulating mat samples in several colours laid out on an exhibition stand table',
   },
   {
-    type: 'Licence',
-    name: 'BIS Certification Licence',
-    issuer: 'BIS',
-  },
-  {
-    type: 'Test Report',
-    name: 'ERDA Type Test Report',
-    issuer: 'ERDA',
-  },
-  {
-    type: 'Test Report',
-    name: 'NTH Type Test Report',
-    issuer: 'NTH',
-  },
-  {
-    type: 'Certification',
-    name: 'ISO 9001:2015',
-    issuer: 'ISO',
+    videoId: 's6PHbPrf-lQ',
+    title: 'Interview with Make In India Conclave @ ABP News',
+    poster: '/media/videos/s6PHbPrf-lQ.jpg',
+    posterAlt:
+      'Vishnu Gupta being interviewed on stage at the Make in India Conclave',
   },
 ];
 
 export default function AwardsCertifications() {
   return (
-    <section className="bg-be-white section-padding-major page-horizontal-padding">
-      <div className="container-site">
-        {/* ── Certificates ── */}
-        <div className="reveal-up mb-12">
-          <SectionHeader
-            eyebrow="Certificates & Standards"
-            title="Certified Compliance"
-            supportingText="Our products and processes are verified by national standards bodies and third-party testing authorities."
-          />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {certificates.map((cert) => (
-            <div key={cert.name} className="reveal-up">
-              <DocumentCard
-                type={cert.type}
-                name={cert.name}
-                issuer={cert.issuer}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* ── Certification marks ── */}
-        <div className="reveal-up mb-16">
-          <p className="text-sm text-be-grey-650 font-semibold uppercase tracking-wider mb-4 text-center">
-            Registered and certified marks
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            {trustMarks.map((mark) => (
-              <div key={mark.name} className="flex items-center justify-center p-3 rounded-lg border border-be-grey-250 bg-be-white">
-                <Image
-                  src={mark.imagePath}
-                  alt={`${mark.name} — ${mark.label}`}
-                  width={50}
-                  height={50}
-                  className="object-contain"
-                  sizes="50px"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
+    <section
+      id="recognition"
+      className="bg-be-white section-padding-major page-horizontal-padding"
+    >
+      <div className="container-site flex flex-col gap-12">
         {/* ── Awards ── */}
-        <div className="reveal-up mb-10">
+        <div className="reveal-up">
           <SectionHeader
-            eyebrow="Awards & Recognition"
-            title="Industry Recognition"
-            supportingText="Awards that validate our commitment to quality, innovation and domestic manufacturing."
+            eyebrow="Awards and recognition"
+            title="Recognition received"
+            supportingText="Awards and recognition presented to Bharat Electrosafe and its founders."
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 reveal-up">
           {awards.map((award) => (
-            <div key={award.title} className="reveal-up hover-card-lift rounded-lg border border-be-grey-250 bg-be-warm-white overflow-hidden">
-              {/* Image-led card */}
-              <div className="relative aspect-[4/3] overflow-hidden">
+            <article
+              key={award.title}
+              className="flex flex-col overflow-hidden rounded-lg border border-be-grey-250 bg-be-warm-white hover-card-lift"
+            >
+              <div className="relative aspect-[4/3] w-full bg-be-cream">
                 <Image
-                  src={award.imagePath}
-                  alt={`${award.title} — ${award.associatedPerson}`}
+                  src={award.image}
+                  alt={award.alt}
                   fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className={
+                    award.fit === 'contain' ? 'object-contain p-3' : 'object-cover'
+                  }
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
                 />
               </div>
               <div className="flex flex-col gap-2 p-5">
                 <h3 className="text-card-title text-be-charcoal-950">{award.title}</h3>
-                <p className="text-body text-be-grey-650">{award.context}</p>
+                <p className="text-metadata font-semibold uppercase tracking-wide text-be-yellow-600">
+                  {award.presenter}
+                </p>
+                <p className="text-body text-be-grey-650">{award.detail}</p>
               </div>
-            </div>
+            </article>
           ))}
         </div>
 
-        {/* ── Organisation references ── */}
+        {/* ── Certifications, testing and memberships ── */}
         <div className="reveal-up">
-          <p className="text-sm text-be-grey-650 font-semibold uppercase tracking-wider mb-4 text-center">
-            Trusted by leading organisations
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-6">
-            {organisationRefs.map((org) => (
-              <div key={org.name} className="flex items-center justify-center p-3 rounded-lg border border-be-grey-250 bg-be-white/60">
+          <SectionHeader
+            eyebrow="Certifications and memberships"
+            title="Standards, testing and registrations"
+            supportingText="Marks the company holds, each labelled for what it actually is."
+          />
+        </div>
+
+        <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 reveal-up">
+          {allTrustMarks.map((mark) => (
+            <li
+              key={mark.label}
+              className="flex flex-col items-center gap-3 rounded-lg border border-be-grey-250 bg-be-warm-white p-4 text-center"
+            >
+              {/* Fixed box so marks of different intrinsic sizes read as one row. */}
+              <span className="relative flex h-14 w-full items-center justify-center">
                 <Image
-                  src={org.imagePath}
-                  alt={`${org.name} logo`}
-                  width={80}
-                  height={40}
+                  src={mark.logo}
+                  alt={mark.alt}
+                  fill
                   className="object-contain"
-                  sizes="80px"
+                  sizes="120px"
                 />
-              </div>
+              </span>
+              <span className="text-body font-semibold text-be-charcoal-950">
+                {mark.label}
+              </span>
+              <span className="text-metadata text-be-grey-650">{mark.note}</span>
+              {mark.document && (
+                <a
+                  href={mark.document}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-metadata font-semibold text-be-yellow-600 underline underline-offset-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
+                >
+                  View certificate
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+
+        {/* ── Industry participation (compact sub-section, not a new page section) ── */}
+        <div className="reveal-up flex flex-col gap-6 rounded-lg border border-be-grey-250 bg-be-warm-white p-6 lg:p-8">
+          <div className="flex flex-col gap-2">
+            <Eyebrow>Industry Participation</Eyebrow>
+            <h3 className="text-card-title text-be-charcoal-950">
+              Events and company media
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {videos.map((video) => (
+              <YouTubeFacade key={video.videoId} {...video} />
             ))}
           </div>
         </div>
