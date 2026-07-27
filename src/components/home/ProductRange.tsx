@@ -18,13 +18,13 @@ function ProductCard({ product, index }: { product: typeof products[number]; ind
         {String(index + 1).padStart(2, '0')}
       </div>
 
-      {/* Image area */}
-      <div className="relative w-full aspect-[16/10] overflow-hidden bg-be-cream">
+      {/* Image area — square images use a squarer ratio on mobile */}
+      <div className="relative w-full overflow-hidden bg-be-cream aspect-[4/3] md:aspect-[16/10]">
         <Image
           src={src}
           alt={getImageAlt(product, src)}
           fill
-          className={getImageFit(product, src) === 'contain' ? 'object-contain p-2' : 'object-cover group-hover:scale-105 transition-transform duration-300'}
+          className={getImageFit(product, src) === 'contain' ? 'object-contain p-3 md:p-2' : 'object-cover group-hover:scale-105 transition-transform duration-300'}
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
         {/* Dark overlay on hover */}
@@ -73,8 +73,8 @@ export default function ProductRange() {
             ))}
           </div>
 
-          {/* Second row: 2 centered cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[calc(66.666%+1.5rem)] lg:max-w-[calc(66.666%+1.5rem)] mx-auto justify-center">
+          {/* Second row: 2 centered cards — full width on mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:max-w-[calc(66.666%+1.5rem)] mx-auto justify-center">
             {products.slice(3, 5).map((product, i) => (
               <ProductCard key={product.slug} product={product} index={3 + i} />
             ))}
