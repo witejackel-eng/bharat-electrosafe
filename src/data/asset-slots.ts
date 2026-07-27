@@ -1,16 +1,23 @@
 /**
  * Asset Slot System
  *
- * Each slot defines where an image or media asset is used across the site.
- * Slots that have no current public asset use an empty `currentFallbackPath`,
- * which signals the `EmptyMediaFallback` component to render the intentional
- * diagonal-line pattern placeholder.
+ * Slots describe the non-product editorial imagery — hero, capability,
+ * leadership, awards — where the page owns the image rather than a product.
+ *
+ * Product imagery is NOT here. Each product carries its own `images` block in
+ * `src/data/products.ts`, so a product shows the same photograph on its card,
+ * its hero and any related-product tile without components choosing for
+ * themselves.
+ *
+ * Every slot below resolves to a real local file. A slot with no genuine
+ * asset is deleted rather than left empty, so `EmptyMediaFallback` never
+ * renders as a normal page state.
  */
 
 export interface AssetSlot {
   /** Unique identifier for the slot, e.g. "HOME-HERO-01" */
   slotId: string;
-  /** Path to the current fallback image (empty string → EmptyMediaFallback) */
+  /** Path to the current image. */
   currentFallbackPath: string;
   /** Alt text for accessibility */
   altText: string;
@@ -28,53 +35,9 @@ export const assetSlots: AssetSlot[] = [
   /* ── Home page ── */
   {
     slotId: 'HOME-HERO-01',
-    currentFallbackPath: '',
-    altText: 'Hero image — electrical insulating mats in substation environment',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'top center',
-    replacementCategory: 'product-hero',
-  },
-  {
-    slotId: 'HOME-PRODUCT-EIM-01',
-    currentFallbackPath: '',
-    altText: 'Electrical Insulating Mats — product showcase',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'center',
-    replacementCategory: 'product-hero',
-  },
-  {
-    slotId: 'HOME-PRODUCT-CSIM-01',
-    currentFallbackPath: '',
-    altText: 'Coloured Strip Insulating Mats — product showcase',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'center',
-    replacementCategory: 'product-hero',
-  },
-  {
-    slotId: 'HOME-PRODUCT-BCIM-01',
-    currentFallbackPath: '',
-    altText: 'Bi-Color Insulating Mats — product showcase',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'center',
-    replacementCategory: 'product-hero',
-  },
-  {
-    slotId: 'HOME-PRODUCT-AGRIM-01',
-    currentFallbackPath: '',
-    altText: 'Auto-Glow / Reflective Band Mats — product showcase',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'center',
-    replacementCategory: 'product-hero',
-  },
-  {
-    slotId: 'HOME-PRODUCT-BM-01',
-    currentFallbackPath: '',
-    altText: 'BharatMembrane — product showcase',
+    currentFallbackPath: '/media/products/electrical-insulating-mats/photo-plain-01.webp',
+    altText:
+      'Fanned stack of Bharat Electrosafe insulating mats in yellow, orange, grey, blue, red and black, showing the coin and dot anti-skid textures',
     desktopAspectRatio: '16/10',
     mobileAspectRatio: '4/3',
     objectPosition: 'center',
@@ -82,8 +45,9 @@ export const assetSlots: AssetSlot[] = [
   },
   {
     slotId: 'HOME-CAPABILITY-01',
-    currentFallbackPath: '',
-    altText: 'Manufacturing capability and production facility',
+    currentFallbackPath: '/media/manufacturing/production-line.webp',
+    altText:
+      'Insulating mat production line inside the Bharat Electrosafe manufacturing setup',
     desktopAspectRatio: '16/10',
     mobileAspectRatio: '4/3',
     objectPosition: 'center',
@@ -92,125 +56,31 @@ export const assetSlots: AssetSlot[] = [
 
   /* ── About page ── */
   {
-    slotId: 'ABOUT-LEADERSHIP-01',
-    currentFallbackPath: '',
-    altText: 'Company leadership and management team',
-    desktopAspectRatio: '4/3',
-    mobileAspectRatio: '1/1',
-    objectPosition: 'top center',
-    replacementCategory: 'leadership',
+    slotId: 'ABOUT-INTRO-01',
+    currentFallbackPath: '/media/home/about-overview.webp',
+    altText: 'Bharat Electrosafe insulating mat range presented as a product overview',
+    desktopAspectRatio: '16/10',
+    mobileAspectRatio: '4/3',
+    objectPosition: 'center',
+    replacementCategory: 'company',
   },
   {
     slotId: 'ABOUT-MANUFACTURING-01',
-    currentFallbackPath: '',
-    altText: 'Manufacturing plant and production lines',
+    currentFallbackPath: '/media/manufacturing/production-line.webp',
+    altText: 'Manufacturing setup and insulating mat production line',
     desktopAspectRatio: '16/10',
     mobileAspectRatio: '4/3',
     objectPosition: 'center',
     replacementCategory: 'manufacturing',
   },
   {
-    slotId: 'ABOUT-TESTING-01',
-    currentFallbackPath: '',
-    altText: 'Quality testing and certification lab',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'center',
-    replacementCategory: 'manufacturing',
-  },
-  {
-    slotId: 'ABOUT-AWARD-01',
-    currentFallbackPath: '',
-    altText: 'Awards, certifications and industry recognition',
+    slotId: 'ABOUT-VALUES-01',
+    currentFallbackPath: '/media/home/core-values.webp',
+    altText: 'Bharat Electrosafe core values illustration',
     desktopAspectRatio: '4/3',
-    mobileAspectRatio: '1/1',
-    objectPosition: 'center',
-    replacementCategory: 'leadership',
-  },
-
-  /* ── Product pages ── */
-  {
-    slotId: 'PRODUCT-EIM-HERO-01',
-    currentFallbackPath: '',
-    altText: 'Electrical Insulating Mats hero — installed in substation',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'top center',
-    replacementCategory: 'product-hero',
-  },
-  {
-    slotId: 'PRODUCT-EIM-GALLERY-01',
-    currentFallbackPath: '',
-    altText: 'Electrical Insulating Mats gallery — multiple angles',
-    desktopAspectRatio: '4/3',
-    mobileAspectRatio: '1/1',
-    objectPosition: 'center',
-    replacementCategory: 'product-gallery',
-  },
-  {
-    slotId: 'PRODUCT-CSIM-HERO-01',
-    currentFallbackPath: '',
-    altText: 'Coloured Strip Insulating Mats hero — boundary marking',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'top center',
-    replacementCategory: 'product-hero',
-  },
-  {
-    slotId: 'PRODUCT-BCIM-DIAGRAM-01',
-    currentFallbackPath: '',
-    altText: 'Bi-Color Insulating Mats — wear-visible layer diagram',
-    desktopAspectRatio: '16/10',
     mobileAspectRatio: '4/3',
     objectPosition: 'center',
-    replacementCategory: 'product-diagram',
-  },
-  {
-    slotId: 'PRODUCT-AGRIM-LOWLIGHT-01',
-    currentFallbackPath: '',
-    altText: 'Auto-Glow Mats in low-light emergency environment',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'center',
-    replacementCategory: 'product-hero',
-  },
-  {
-    slotId: 'PRODUCT-BM-HERO-01',
-    currentFallbackPath: '',
-    altText: 'BharatMembrane hero — waterproofing application',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'top center',
-    replacementCategory: 'product-hero',
-  },
-  {
-    slotId: 'PRODUCT-BHS-HERO-01',
-    currentFallbackPath: '',
-    altText: 'BharatHydro Seal hero — water stop application',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'top center',
-    replacementCategory: 'product-hero',
-  },
-  {
-    slotId: 'HOME-PRODUCT-BHS-01',
-    currentFallbackPath: '',
-    altText: 'BharatHydro Seal — product showcase',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'center',
-    replacementCategory: 'product-hero',
-  },
-
-  /* ── Contact page ── */
-  {
-    slotId: 'CONTACT-OFFICE-01',
-    currentFallbackPath: '',
-    altText: 'Bharat Electrosafe office and headquarters exterior',
-    desktopAspectRatio: '16/10',
-    mobileAspectRatio: '4/3',
-    objectPosition: 'center',
-    replacementCategory: 'office',
+    replacementCategory: 'company',
   },
 ];
 

@@ -45,11 +45,11 @@ type ContactFormData = z.infer<typeof contactSchema>;
    Class comparison data
    ──────────────────────────────────────────── */
 
-const classHeaders = ['Class', 'Working Voltage', 'Application'];
+const classHeaders = ['Class', 'Working voltage', 'Thickness'];
 const classRows = [
-  ['Class A', 'Up to 650V', 'Low voltage applications'],
-  ['Class B', 'Up to 1100V', 'Medium voltage applications'],
-  ['Class C', 'Up to 3300V', 'High voltage applications'],
+  ['Class A', '3.3 kV', '2.0 mm'],
+  ['Class B', '11 kV', '2.5 mm'],
+  ['Class C', '33 kV', '3.0 mm'],
 ];
 
 const enquiryTypes = [
@@ -249,7 +249,7 @@ export default function EnquiryQuoteLayout() {
                       errors.email && 'border-red-400 focus:border-red-400 focus:ring-red-400/20',
                       isSubmitting && 'opacity-60 cursor-not-allowed'
                     )}
-                    placeholder="you@example.com"
+                    placeholder="you@yourcompany.in"
                   />
                   {errors.email && (
                     <span className="text-sm text-red-600">{errors.email.message}</span>
@@ -378,7 +378,7 @@ export default function EnquiryQuoteLayout() {
                           'h-11 rounded-lg border border-be-grey-250 bg-be-white px-4 text-base outline-none transition-colors focus:border-be-yellow-500 focus:ring-2 focus:ring-be-yellow-500/20',
                           isSubmitting && 'opacity-60 cursor-not-allowed'
                         )}
-                        placeholder="e.g. 1100V"
+                        placeholder="e.g. 11 kV"
                       />
                     </div>
 

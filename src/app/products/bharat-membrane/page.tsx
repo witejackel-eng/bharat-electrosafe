@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
@@ -50,18 +50,18 @@ export default function BharatMembranePage() {
         <ProductHero product={product} />
 
         {/* 2. Trust indicators strip */}
-        <ProductTrustIndicators />
+        <ProductTrustIndicators product={product} />
 
         {/* 3. Overview */}
         <ProductOverview product={product} />
 
-        {/* 4. Material & Thickness (primary content — no electrical specs) */}
+        {/* 4. Material & Thickness (primary content â€” no electrical specs) */}
         <ProductMaterialDimensions product={product} />
 
         {/* 5. Applications */}
         <ProductApplications product={product} />
 
-        {/* 6. Membrane Properties — custom section (not electrical specs table) */}
+        {/* 6. Membrane Properties â€” custom section (not electrical specs table) */}
         <section className="section-padding-supporting bg-be-white">
           <div className="container-site page-horizontal-padding">
             <div className="flex flex-col gap-6">

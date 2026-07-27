@@ -3,68 +3,20 @@
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageFrame } from '@/components/ui/ImageFrame';
 import { TextLink } from '@/components/ui/TextLink';
+import {
+  products,
+  productFamilyCount,
+  getImageAlt,
+  getImageFit,
+} from '@/data/products';
+import type { ProductData } from '@/data/products';
 
-interface Product {
-  name: string;
-  description: string;
-  href: string;
-  slotId: string;
-  imageAlt: string;
-  index: string;
-}
+/* Cards read straight from the product registry, so a card cannot advertise a
+   family the site does not have a page for. */
 
-const products: Product[] = [
-  {
-    name: 'Electrical Insulating Mats',
-    description: 'Class A, B and C voltage-rated insulating mats for electrical safety.',
-    href: '/products/electrical-insulating-mats',
-    slotId: 'HOME-PRODUCT-EIM-01',
-    imageAlt: 'Electrical insulating mat roll',
-    index: '01',
-  },
-  {
-    name: 'Coloured Strip Insulating Mats',
-    description: 'Colour-coded boundary marking for hazard zone identification.',
-    href: '/products/coloured-strip-insulating-mats',
-    slotId: 'HOME-PRODUCT-CSIM-01',
-    imageAlt: 'Coloured strip insulating mat',
-    index: '02',
-  },
-  {
-    name: 'Bi-Color Insulating Mats',
-    description: 'Contrasting dual-layer mats for visible wear detection.',
-    href: '/products/bi-color-insulating-mats',
-    slotId: 'HOME-PRODUCT-BCIM-01',
-    imageAlt: 'Bi-color insulating mat',
-    index: '03',
-  },
-  {
-    name: 'Auto-Glow / Reflective Band Mats',
-    description: 'Self-illuminating and reflective mats for low-light emergency guidance.',
-    href: '/products/auto-glow-reflective-band-insulating-mats',
-    slotId: 'HOME-PRODUCT-AGRIM-01',
-    imageAlt: 'Auto-glow reflective band mat',
-    index: '04',
-  },
-  {
-    name: 'BharatMembrane',
-    description: 'PVC Geo-Membrane for tunnel waterproofing and containment lining.',
-    href: '/products/bharat-membrane',
-    slotId: 'HOME-PRODUCT-BM-01',
-    imageAlt: 'BharatMembrane waterproofing product',
-    index: '05',
-  },
-  {
-    name: 'BharatHydro Seal',
-    description: 'Water stop solutions for construction and expansion joints.',
-    href: '/products/bharat-hydro-seal',
-    slotId: 'HOME-PRODUCT-BHS-01',
-    imageAlt: 'BharatHydro Seal water stop profile',
-    index: '06',
-  },
-];
+function ProductCard({ product, index }: { product: ProductData; index: number }) {
+  const src = product.images.thumbnail;
 
-function ProductCard({ product }: { product: Product }) {
   return (
     <div className="hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
       {/* Yellow accent line — animates wider on hover */}
@@ -72,19 +24,21 @@ function ProductCard({ product }: { product: Product }) {
 
       {/* Index badge */}
       <div className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md bg-be-yellow-500/90 text-be-charcoal-950 text-[0.65rem] font-bold tracking-wide shadow-sm">
-        {product.index}
+        {String(index + 1).padStart(2, '0')}
       </div>
 
       {/* Image area — 58-65% of card height */}
       <div className="relative w-full aspect-[16/10] overflow-hidden">
         <ImageFrame
-          alt={product.imageAlt}
-          slotId={product.slotId}
+          src={src}
+          alt={getImageAlt(product, src)}
           aspectRatio="landscape"
+          fit={getImageFit(product, src)}
           className="w-full h-full"
+          sizes="(max-width: 768px) 100vw, 380px"
         />
         {/* Dark overlay on hover */}
-        <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/10 transition-colors duration-300" />
+        <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/10 transition-colors duration-300 pointer-events-none" />
       </div>
 
       {/* Text content */}
@@ -97,7 +51,7 @@ function ProductCard({ product }: { product: Product }) {
         </p>
         <div className="mt-2">
           <TextLink
-            href={product.href}
+            href={`/products/${product.slug}`}
             className="text-be-grey-650 group-hover:text-be-yellow-600 transition-colors duration-200"
           >
             View Product
@@ -116,25 +70,15 @@ export default function ProductRange() {
           <SectionHeader
             eyebrow="PRODUCT RANGE"
             title="Our product range"
-            supportingText="Six product families, each designed around a specific protection requirement."
+            supportingText={`${productFamilyCount} product families, each designed around a specific protection requirement.`}
           />
         </div>
 
-        {/* Desktop: 3+3 layout with stagger animation */}
-        <div className="stagger-reveal" data-stagger="true">
-          {/* First row: 3 cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-            {products.slice(0, 3).map((product) => (
-              <ProductCard key={product.name} product={product} />
-            ))}
-          </div>
-
-          {/* Second row: 3 wider cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.slice(3, 6).map((product) => (
-              <ProductCard key={product.name} product={product} />
-            ))}
-          </div>
+        {/* Grid adapts to however many families the registry holds. */}
+        <div className="stagger-reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-stagger="true">
+          {products.map((product, index) => (
+            <ProductCard key={product.slug} product={product} index={index} />
+          ))}
         </div>
       </div>
     </section>
