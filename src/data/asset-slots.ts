@@ -35,9 +35,9 @@ export const assetSlots: AssetSlot[] = [
   /* ── Home page ── */
   {
     slotId: 'HOME-HERO-01',
-    currentFallbackPath: '/media/products/electrical-insulating-mats/photo-surface-01.webp',
+    currentFallbackPath: '/media/home/hero-product.webp',
     altText:
-      'Bharat Electrosafe electrical insulating mat with anti-skid surface',
+      'Bharat Electrosafe electrical insulating mat — Class B with anti-skid coin pattern surface',
     desktopAspectRatio: '16/10',
     mobileAspectRatio: '4/3',
     objectPosition: 'center',

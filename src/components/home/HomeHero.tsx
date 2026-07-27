@@ -90,8 +90,8 @@ export default function HomeHero() {
           <div className="w-full lg:w-[45%] reveal-up">
             <div className="bg-gradient-to-br from-be-yellow-50 to-be-cream rounded-lg">
               <ImageFrame
-                src="/media/products/electrical-insulating-mats/photo-surface-01.webp"
-                alt="Bharat Electrosafe electrical insulating mat with anti-skid surface"
+                src="/media/home/hero-product.webp"
+                alt="Bharat Electrosafe electrical insulating mat — Class B with anti-skid coin pattern surface"
                 aspectRatio="landscape"
                 fit="contain"
                 className="w-full"
