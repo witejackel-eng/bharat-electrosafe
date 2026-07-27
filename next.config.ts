@@ -1,8 +1,20 @@
 import type { NextConfig } from "next";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
   output: "standalone",
   reactStrictMode: true,
+
+  /* Pin the workspace root. Without this, Turbopack walks up the directory
+     tree looking for a lockfile and can select an unrelated parent folder as
+     the root, then fail resolving modules that belong to a different project.
+     Pinning it makes the build independent of what sits above the repo. */
+  turbopack: {
+    root: projectRoot,
+  },
   devIndicators: false,
   images: {
     unoptimized: true,
@@ -76,6 +88,26 @@ const nextConfig: NextConfig = {
     {
       source: "/terms.php",
       destination: "/terms",
+      permanent: true,
+    },
+
+    /* ── Slug-variant redirects ──
+       Earlier revisions of this site used British "colour" spelling and an
+       unhyphenated membrane slug. Keep these permanent so any external or
+       indexed link still resolves to the canonical route. */
+    {
+      source: "/products/bi-colour-insulating-mats",
+      destination: "/products/bi-color-insulating-mats",
+      permanent: true,
+    },
+    {
+      source: "/products/bharatmembrane",
+      destination: "/products/bharat-membrane",
+      permanent: true,
+    },
+    {
+      source: "/products/auto-glow-reflective-band-insulating-mat",
+      destination: "/products/auto-glow-reflective-band-insulating-mats",
       permanent: true,
     },
   ],
