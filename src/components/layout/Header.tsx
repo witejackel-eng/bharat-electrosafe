@@ -37,7 +37,7 @@ interface ProductNavItem {
   name: string;
   description: string;
   href: string;
-  color: string; // accent color for the thumbnail placeholder
+  thumbnail: string; // real product image from official website
 }
 
 const products: ProductNavItem[] = [
@@ -45,31 +45,31 @@ const products: ProductNavItem[] = [
     name: 'Electrical Insulating Mats',
     description: 'Class A, B & C voltage-rated insulation',
     href: '/products/electrical-insulating-mats',
-    color: 'bg-be-yellow-400',
+    thumbnail: '/media/products/electrical-insulating-mats/product-02.webp',
   },
   {
     name: 'Coloured Strip Insulating Mats',
     description: 'Boundary marking for hazard zones',
     href: '/products/coloured-strip-insulating-mats',
-    color: 'bg-be-yellow-100',
+    thumbnail: '/media/products/coloured-strip-insulating-mats/product-04.webp',
   },
   {
     name: 'Bi-Color Insulating Mats',
-    description: 'Wear-visible contrasting layers',
+    description: 'Dual-tone visual differentiation',
     href: '/products/bi-color-insulating-mats',
-    color: 'bg-be-grey-400',
+    thumbnail: '/media/products/bi-color-insulating-mats/product-01.webp',
   },
   {
     name: 'Auto-Glow / Reflective Band Mats',
     description: 'Low-light emergency guidance',
     href: '/products/auto-glow-reflective-band-insulating-mats',
-    color: 'bg-be-yellow-500',
+    thumbnail: '/media/products/auto-glow-reflective-band-insulating-mats/product-06.webp',
   },
   {
     name: 'BharatMembrane',
     description: 'Engineered waterproofing membrane',
     href: '/products/bharat-membrane',
-    color: 'bg-be-charcoal-800',
+    thumbnail: '/media/products/bharat-membrane/product-01.webp',
   },
 ];
 
@@ -281,15 +281,14 @@ export function Header() {
                           className="flex items-start gap-3 p-3 rounded-lg bg-be-white hover:bg-be-cream transition-colors group"
                           onClick={() => setDropdownOpen(false)}
                         >
-                          {/* Thumbnail placeholder */}
-                          <div
-                            className={cn(
-                              'shrink-0 w-10 h-10 rounded-md flex items-center justify-center',
-                              product.color
-                            )}
-                          >
-                            <div className="w-5 h-5 rounded-sm bg-be-white/40" />
-                          </div>
+                          {/* Thumbnail — real product image */}
+                          <Image
+                            src={product.thumbnail}
+                            alt={product.name}
+                            width={40}
+                            height={40}
+                            className="shrink-0 w-10 h-10 rounded-md object-cover"
+                          />
                           <div className="min-w-0">
                             <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors leading-snug">
                               {product.name}
@@ -399,14 +398,13 @@ export function Header() {
                               )}
                               onClick={() => setMobileOpen(false)}
                             >
-                              <div
-                                className={cn(
-                                  'shrink-0 w-7 h-7 rounded-md flex items-center justify-center',
-                                  product.color
-                                )}
-                              >
-                                <div className="w-3.5 h-3.5 rounded-sm bg-be-white/40" />
-                              </div>
+                              <Image
+                                src={product.thumbnail}
+                                alt={product.name}
+                                width={28}
+                                height={28}
+                                className="shrink-0 w-7 h-7 rounded-md object-cover"
+                              />
                               <div className="min-w-0">
                                 <div className="font-medium leading-snug">
                                   {product.name}
