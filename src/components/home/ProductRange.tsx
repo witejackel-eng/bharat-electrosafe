@@ -26,7 +26,7 @@ const products: Product[] = [
     name: 'Coloured Strip Insulating Mats',
     description: 'Colour-coded boundary marking for hazard zone identification.',
     href: '/products/coloured-strip-insulating-mats',
-    slotId: 'HOME-PRODUCT-CS-01',
+    slotId: 'HOME-PRODUCT-CSIM-01',
     imageAlt: 'Coloured strip insulating mat',
     index: '02',
   },
@@ -34,7 +34,7 @@ const products: Product[] = [
     name: 'Bi-Color Insulating Mats',
     description: 'Contrasting dual-layer mats for visible wear detection.',
     href: '/products/bi-color-insulating-mats',
-    slotId: 'HOME-PRODUCT-BC-01',
+    slotId: 'HOME-PRODUCT-BCIM-01',
     imageAlt: 'Bi-color insulating mat',
     index: '03',
   },
@@ -42,17 +42,25 @@ const products: Product[] = [
     name: 'Auto-Glow / Reflective Band Mats',
     description: 'Self-illuminating and reflective mats for low-light emergency guidance.',
     href: '/products/auto-glow-reflective-band-insulating-mats',
-    slotId: 'HOME-PRODUCT-AG-01',
+    slotId: 'HOME-PRODUCT-AGRIM-01',
     imageAlt: 'Auto-glow reflective band mat',
     index: '04',
   },
   {
     name: 'BharatMembrane',
-    description: 'Engineered waterproofing membrane for infrastructure protection.',
+    description: 'PVC Geo-Membrane for tunnel waterproofing and containment lining.',
     href: '/products/bharat-membrane',
     slotId: 'HOME-PRODUCT-BM-01',
     imageAlt: 'BharatMembrane waterproofing product',
     index: '05',
+  },
+  {
+    name: 'BharatHydro Seal',
+    description: 'Water stop solutions for construction and expansion joints.',
+    href: '/products/bharat-hydro-seal',
+    slotId: 'HOME-PRODUCT-BHS-01',
+    imageAlt: 'BharatHydro Seal water stop profile',
+    index: '06',
   },
 ];
 
@@ -108,11 +116,11 @@ export default function ProductRange() {
           <SectionHeader
             eyebrow="PRODUCT RANGE"
             title="Our product range"
-            supportingText="Five product families, each designed around a specific protection requirement."
+            supportingText="Six product families, each designed around a specific protection requirement."
           />
         </div>
 
-        {/* Desktop: 3+2 layout with stagger animation */}
+        {/* Desktop: 3+3 layout with stagger animation */}
         <div className="stagger-reveal" data-stagger="true">
           {/* First row: 3 cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
@@ -121,9 +129,9 @@ export default function ProductRange() {
             ))}
           </div>
 
-          {/* Second row: 2 wider cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {products.slice(3, 5).map((product) => (
+          {/* Second row: 3 wider cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {products.slice(3, 6).map((product) => (
               <ProductCard key={product.name} product={product} />
             ))}
           </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import { company } from '@/data/company';
 import { Phone, Mail, MessageCircle } from 'lucide-react';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 
@@ -15,15 +16,15 @@ export default function DirectContactCTA() {
             Our experts are ready to help you select the right product, answer technical questions, and provide quotations.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <SecondaryButton href="tel:+91XXXXXXXXXX">
+            <SecondaryButton href={`tel:${company.phonePrimaryTel}`}>
               <Phone className="size-4 mr-1.5" />
               Call
             </SecondaryButton>
-            <SecondaryButton href="mailto:info@bharatelectrosafe.com">
+            <SecondaryButton href={`mailto:${company.email}`}>
               <Mail className="size-4 mr-1.5" />
               Email
             </SecondaryButton>
-            <SecondaryButton href="https://wa.me/91XXXXXXXXXX">
+            <SecondaryButton href={company.whatsapp.href}>
               <MessageCircle className="size-4 mr-1.5" />
               WhatsApp
             </SecondaryButton>

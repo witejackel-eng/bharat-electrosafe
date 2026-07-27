@@ -16,10 +16,9 @@ import HomeCTA from '@/components/home/HomeCTA';
 
 const trustMarqueeItems = [
   'IS 15652:2006 Certified',
-  'BIS Licensed',
-  'CPRI Tested',
-  'ERDA Verified',
-  'Make in India',
+  'BIS Licence CM/L:8800129617',
+  'ERDA / NTH Tested',
+  'Conforming to IEC 61111',
   'Classes A, B & C',
   'Custom Dimensions Available',
 ];

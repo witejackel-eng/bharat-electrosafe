@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { company } from "@/data/company";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -10,33 +11,60 @@ const manrope = Manrope({
   display: "swap",
 });
 
+const allowIndexing = process.env.NEXT_PUBLIC_ALLOW_INDEXING === 'true';
+const siteUrl = company.siteUrl;
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
-    default: "Bharat Electrosafe — Electrical Insulation & Industrial Protection",
-    template: "%s | Bharat Electrosafe",
+    default: `${company.name} — Electrical Insulating Mats & Engineered Membranes`,
+    template: `%s | ${company.name}`,
   },
-  description: "Certified electrical insulating mats and engineered protection products for control panels, substations, utilities, industry and infrastructure. IS 15652:2006 compliant.",
-  keywords: ["Bharat Electrosafe", "electrical insulating mats", "IS 15652", "Class A B C mats", "insulation protection", "substation mats", "industrial safety", "BIS certified"],
-  authors: [{ name: "Bharat Electrosafe" }],
+  description: company.description,
+  applicationName: company.name,
+  authors: [{ name: company.name }],
+  creator: company.name,
+  publisher: company.name,
+  keywords: [
+    'electrical insulating mats',
+    'IS 15652:2006',
+    'insulating mats manufacturer India',
+    'electrical safety mats',
+    'PVC geo-membrane',
+    'BharatMembrane',
+    'BharatHydro Seal',
+    'water stop solutions',
+    'Noida',
+  ],
   icons: {
     icon: "/logo.svg",
     apple: "/logo.svg",
   },
+  alternates: {
+    canonical: '/',
+  },
+  robots: allowIndexing
+    ? { index: true, follow: true }
+    : { index: false, follow: false },
   openGraph: {
-    title: "Bharat Electrosafe — Certified Electrical Insulation & Protection",
-    description: "Electrical insulating mats and engineered protection products for critical electrical environments.",
-    siteName: "Bharat Electrosafe",
-    type: "website",
+    type: 'website',
+    siteName: company.name,
+    title: `${company.name} — Electrical Insulating Mats & Engineered Membranes`,
+    description: company.description,
+    url: siteUrl,
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Bharat Electrosafe — Certified Electrical Insulation & Protection",
-    description: "Electrical insulating mats and engineered protection products for critical electrical environments.",
+    card: 'summary',
+    title: company.name,
+    description: company.description,
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  category: 'manufacturing',
+};
+
+export const viewport = {
+  themeColor: '#FFC400',
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -46,27 +74,35 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${manrope.variable} antialiased bg-be-warm-white text-be-charcoal-950`}
-        style={{ fontFamily: "var(--font-manrope), sans-serif" }}
-      >
+      <head>
+        {/* Organization structured data (JSON-LD) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "Bharat Electrosafe",
-              "description": "Certified manufacturer of electrical insulating mats and engineered protection products",
-              "url": "https://bharatelectrosafe.com",
-              "email": "info@bharatelectrosafe.com",
-              "address": {
-                "@type": "PostalAddress",
-                "addressCountry": "IN",
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: company.name,
+              description: company.description,
+              url: siteUrl,
+              email: company.email,
+              telephone: company.phonePrimaryTel,
+              address: {
+                '@type': 'PostalAddress',
+                streetAddress: `${company.address.line1}, ${company.address.line2}`,
+                addressLocality: company.address.city,
+                addressRegion: company.address.state,
+                postalCode: company.address.pincode,
+                addressCountry: company.address.country,
               },
             }),
           }}
         />
+      </head>
+      <body
+        className={`${manrope.variable} antialiased bg-be-warm-white text-be-charcoal-950`}
+        style={{ fontFamily: "var(--font-manrope), sans-serif" }}
+      >
         {children}
         <Toaster />
       </body>

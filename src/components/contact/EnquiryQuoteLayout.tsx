@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { company } from '@/data/company';
 import { Phone, MessageCircle, Loader2, CheckCircle2 } from 'lucide-react';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
@@ -27,7 +28,7 @@ const contactSchema = z.object({
   email: z.string().email('Please enter a valid email'),
   phone: z.string().optional(),
   enquiryType: z.enum(['general', 'product-info', 'quote', 'support'], {
-    errorMap: () => ({ message: 'Please select an enquiry type' }),
+    message: 'Please select an enquiry type',
   }),
   productInterest: z.string().optional(),
   message: z.string().min(10, 'Message must be at least 10 characters'),
@@ -149,7 +150,7 @@ export default function EnquiryQuoteLayout() {
               <PrimaryButton onClick={() => setSubmitted(false)}>
                 Submit Another Enquiry
               </PrimaryButton>
-              <SecondaryButton href="tel:+91XXXXXXXXXX">
+              <SecondaryButton href={`tel:${company.phonePrimaryTel}`}>
                 <Phone className="size-4 mr-1.5" />
                 Call Us Now
               </SecondaryButton>
@@ -178,7 +179,7 @@ export default function EnquiryQuoteLayout() {
               <div className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 text-red-800">
                 <p className="font-semibold">Something went wrong. Please try again or contact us directly.</p>
                 <p className="text-body mt-1">
-                  You can reach us at info@bharatelectrosafe.com or call +91-XXXX-XXXXXX.
+                  You can reach us at {company.email} or call {company.phonePrimary}.
                 </p>
               </div>
             )}
@@ -268,7 +269,7 @@ export default function EnquiryQuoteLayout() {
                       'h-11 rounded-lg border border-be-grey-250 bg-be-white px-4 text-base outline-none transition-colors focus:border-be-yellow-500 focus:ring-2 focus:ring-be-yellow-500/20',
                       isSubmitting && 'opacity-60 cursor-not-allowed'
                     )}
-                    placeholder="+91-XXXX-XXXXXX"
+                    placeholder="Your phone number"
                   />
                 </div>
               </div>
@@ -470,11 +471,11 @@ export default function EnquiryQuoteLayout() {
                 Call our sales team directly for product selection guidance and quotation support.
               </p>
               <div className="flex flex-wrap gap-3">
-                <SecondaryButton href="tel:+91XXXXXXXXXX">
+                <SecondaryButton href={`tel:${company.phonePrimaryTel}`}>
                   <Phone className="size-4 mr-1.5" />
                   Call Sales
                 </SecondaryButton>
-                <SecondaryButton href="https://wa.me/91XXXXXXXXXX" onClick={() => {}}>
+                <SecondaryButton href={company.whatsapp.href} onClick={() => {}}>
                   <MessageCircle className="size-4 mr-1.5" />
                   WhatsApp
                 </SecondaryButton>
