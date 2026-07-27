@@ -16,7 +16,7 @@ import { company } from '@/data/company';
 
 const SEO_TITLE = 'BharatMembrane PVC Geo-Membrane | Bharat Electrosafe';
 const SEO_DESCRIPTION =
-  'BharatMembrane HDPE geomembrane for containment, waterproofing and civil infrastructure protection. Manufactured to IS 15909:2020. Available in 1 mm to 5 mm thicknesses for tunnel, basement, landfill and canal applications.';
+  'BharatMembrane PVC geo-membrane for tunnel waterproofing, containment and barrier protection. BIS approved to IS 15909:2020. Available in 1 mm to 5 mm thicknesses for tunnel, basement, landfill, canal and reservoir applications.';
 const CANONICAL_PATH = '/products/bharat-membrane';
 
 export function generateMetadata(): Metadata {
@@ -42,7 +42,7 @@ export function generateMetadata(): Metadata {
 }
 
 export default function BharatMembranePage() {
-  const product = getProductBySlug('bharatmembrane');
+  const product = getProductBySlug('bharat-membrane');
 
   if (!product) {
     return (

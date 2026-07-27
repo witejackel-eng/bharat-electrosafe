@@ -134,7 +134,7 @@ export function MembranePageLayout({
           <div className="animate-fade-up relative w-full aspect-[4/3] rounded-lg overflow-hidden bg-muted" style={{ animationDelay: '100ms' }}>
             <Image
               src={product.image}
-              alt={`${product.name} — HDPE geomembrane product image`}
+              alt={`${product.name} — PVC geo-membrane product image`}
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -209,7 +209,7 @@ export function MembranePageLayout({
             <h2 id="standard-heading" className="text-section-h2">Applicable Standard</h2>
           </div>
           <p className="text-body-lg text-grey-600 max-w-3xl">
-            BharatMembrane is manufactured to IS 15909:2020, the Indian Standard for high-density polyethylene (HDPE) geomembranes. This standard covers requirements for material composition, physical properties, dimensions and quality of HDPE geomembranes used for containment, waterproofing and civil infrastructure protection.
+            BharatMembrane is BIS approved to IS 15909:2020 and manufactured from high-grade PVC polymers, with compliance to BS, EN and international standards. It is produced under ISO-certified processes at Bharat Electrosafe facilities and backed by in-house and third-party quality testing.
           </p>
         </div>
       </section>
@@ -259,7 +259,7 @@ export function MembranePageLayout({
               <h2 id="properties-heading" className="text-section-h2">Material and Physical Properties</h2>
             </div>
             <p className="text-small-meta text-grey-600 mb-6">
-              Physical properties per IS 15909:2020 requirements for HDPE geomembranes.
+              Material characteristics as published for BharatMembrane PVC geo-membrane.
             </p>
             <div className="max-w-full overflow-x-auto rounded-lg border border-grey-300">
               <Table>

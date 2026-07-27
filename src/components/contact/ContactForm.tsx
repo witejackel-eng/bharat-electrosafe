@@ -192,7 +192,7 @@ export function ContactForm() {
         </h3>
         <p className="text-body text-grey-600">
           Thank you for your enquiry. Our team will review your message and respond within
-          1-2 business days.
+          as soon as possible.
         </p>
       </div>
     );

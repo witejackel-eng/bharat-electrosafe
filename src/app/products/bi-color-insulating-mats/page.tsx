@@ -37,7 +37,7 @@ export function generateMetadata(): Metadata {
 }
 
 export default function BiColorInsulatingMatsPage() {
-  const product = getProductBySlug('bi-colour-insulating-mats');
+  const product = getProductBySlug('bi-color-insulating-mats');
 
   if (!product) {
     return (

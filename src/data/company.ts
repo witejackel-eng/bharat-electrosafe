@@ -32,17 +32,28 @@ export const company = {
 
   /** One-line company description */
   tagline:
-    "Manufacturer of electrical insulating mats and BharatMembrane geomembranes for industrial, utility and infrastructure protection.",
+    "Manufacturer of electrical insulating mats and BharatMembrane PVC geo-membranes for industrial, utility and infrastructure protection.",
 
   /** Core business areas */
   businessAreas: [
     "Electrical insulating mats (IS 15652:2006)",
     "Visible-safety mat variants",
-    "HDPE geomembranes (BharatMembrane)",
+    "PVC geo-membranes (BharatMembrane)",
   ],
 
-  /** Operating regions */
-  regions: ["India", "South Asia"],
+  /** Sectors served — as published by the client on their About page. */
+  industries: [
+    "Power utilities",
+    "Railways",
+    "Oil & gas",
+    "Construction",
+    "Infrastructure",
+    "Heavy industries",
+  ],
+
+  /** Operating regions.
+   *  "South Asia" was removed — export/regional supply is unverified. */
+  regions: ["India"],
 };
 
 /* ── Contact convenience helpers ── */

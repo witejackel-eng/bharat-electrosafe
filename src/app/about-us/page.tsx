@@ -26,7 +26,7 @@ import { clients } from '@/data/clients';
 export const metadata: Metadata = {
   title: 'About Bharat Electrosafe | Company, Quality and Certifications',
   description:
-    'Learn about Bharat Electrosafe — manufacturer of electrical insulating mats (IS 15652), visible-safety mat variants, and BharatMembrane HDPE geomembranes. Our commitment to safety, quality and application support.',
+    'Learn about Bharat Electrosafe — manufacturer of electrical insulating mats (IS 15652:2006), visible-safety mat variants, and BharatMembrane PVC geo-membranes (IS 15909:2020). Our commitment to safety, quality and application support.',
   alternates: { canonical: 'https://bharatelectrosafe.com/about-us' },
   openGraph: {
     title: 'About Bharat Electrosafe | Company, Quality and Certifications',
@@ -121,32 +121,35 @@ const missionValues = [
   },
 ];
 
-/* ── Timeline entries (factual only — no invented founding year) ── */
+/* ── Capability statements ──
+   Sourced from the client's published "Why Choose Us" content. No founding
+   year, no supply history and no customer names are asserted — those remain
+   unverified. See docs/CONTENT_VERIFICATION.md. */
 const timeline = [
   {
-    phase: 'Establishment',
+    phase: 'Integrated manufacturing',
     description:
-      'Bharat Electrosafe was established to address the need for reliable, IS-standard electrical insulating mats in Indian utilities and infrastructure.',
+      'An integrated setup, commencing from compound manufacturing through to the finished insulating mat.',
   },
   {
-    phase: 'BIS Licensing',
+    phase: 'Modern plant',
     description:
-      'Obtained Bureau of Indian Standards (BIS) licence to manufacture insulating mats under IS 15652:2006, covering Class A, B and C voltage ratings.',
+      'Manufacturing facility equipped with modern machinery for consistent, repeatable production.',
   },
   {
-    phase: 'Visible-Safety Innovation',
+    phase: 'In-house testing',
     description:
-      'Introduced coloured-strip, bi-colour and auto-glow reflective-band mat variants — extending insulating mat functionality with visual safety identification.',
+      'A full-fledged testing lab facility, including high-voltage testing.',
   },
   {
-    phase: 'Civil Protection',
+    phase: 'Technical team',
     description:
-      'Launched BharatMembrane HDPE geomembrane for water containment, tunnel waterproofing and landfill lining — expanding from electrical insulation into civil infrastructure protection.',
+      'Qualified and experienced technical and production staff supporting specification and application questions.',
   },
   {
-    phase: 'Growth and Recognition',
+    phase: 'Customisation',
     description:
-      'Supplied to Indian Railways, NTPC, PGCIL, BHEL and other central and state utilities. Recognised under MSME, Startup India and ZED frameworks.',
+      'Products customised for rate contracts and project-specific requirements.',
   },
 ];
 
@@ -174,18 +177,18 @@ const industriesDetail = [
     name: 'Manufacturing',
     description:
       'HT/LT motor control centres, captive power-house panels, process-industry switchrooms and crane gantry cab floors. Oil-resistant compounds and visible-safety coloured-strip demarcation.',
-    link: '/products/bi-colour-insulating-mats',
+    link: '/products/bi-color-insulating-mats',
   },
   {
     name: 'Control Rooms',
     description:
-      'Insulating mats in front of control panels, mimic panels and SCADA consoles. Antistatic surface prevents static build-up on sensitive electronics while protecting personnel.',
+      'Insulating mats in front of control panels, mimic panels and SCADA consoles, protecting personnel working at AC and DC control panels.',
     link: '/products/electrical-insulating-mats',
   },
   {
     name: 'Tunnels & Water',
     description:
-      'BharatMembrane HDPE geomembranes for tunnel lining waterproofing, Metro construction joints, water-tank lining, canal and landfill containment. PVC water-stop profiles for construction-joint sealing.',
+      'BharatMembrane PVC geo-membranes for tunnel and basement waterproofing, water reservoirs, canal lining, landfill and hazardous-waste containment, and industrial effluent ponds.',
     link: '/products/bharat-membrane',
   },
 ];
@@ -229,10 +232,11 @@ export default function AboutUsPage() {
             </p>
             <p className="text-body text-charcoal-800 max-w-[800px]">
               Bharat Electrosafe is a manufacturer of electrical insulating mats conforming to
-              IS 15652:2006, visible-safety mat variants (coloured-strip, bi-colour and auto-glow
-              reflective-band), and BharatMembrane HDPE geomembranes for civil infrastructure
-              protection. Products are supplied to Indian utilities, railways, heavy engineering
-              and infrastructure projects across India and South Asia.
+              IS 15652:2006, visible-safety mat variants (coloured strip, Bi-Color and auto-glow
+              / reflective band), and BharatMembrane PVC geo-membranes to IS 15909:2020 for civil
+              infrastructure protection. Our insulating mats are manufactured under the standards
+              and legacy of Tata Precision Industries (India) Limited, and the company operates
+              under the Make in India initiative.
             </p>
           </div>
         </section>
@@ -665,66 +669,29 @@ export default function AboutUsPage() {
         <section className="bg-warm-white py-16 md:py-20 border-t border-grey-300/30">
           <div className="container-site">
             <h2 className="text-section-h2 text-charcoal-950 mb-4">
-              Trusted by leading institutions
+              Sectors we serve
             </h2>
             <p className="text-body text-grey-600 mb-8 max-w-[680px]">
-              Bharat Electrosafe products are specified and deployed by major Indian utilities,
-              railways, heavy engineering and infrastructure organisations.
+              Bharat Electrosafe supplies electrical safety and containment products to power
+              utilities, railways, oil &amp; gas, construction, infrastructure and heavy industry.
             </p>
-          </div>
 
-          {/* Logo rail — same CSS-only infinite scroll as homepage */}
-          <div className="overflow-hidden">
-            <div className="animate-logo-rail flex items-center gap-8 whitespace-nowrap py-6">
-              {/* First set */}
-              {clients.map((client) => (
-                <div
-                  key={`set1-${client.id}`}
-                  className="inline-flex items-center justify-center w-[120px] h-[60px] rounded-md bg-white border border-grey-300/40 shrink-0"
+            <ul className="flex flex-wrap gap-2.5" role="list">
+              {company.industries.map((industry) => (
+                <li
+                  key={industry}
+                  className="inline-flex items-center rounded-full border border-grey-300/60 bg-white px-4 py-2 text-[0.875rem] font-medium text-charcoal-800"
                 >
-                  {!client.logoApproved ? (
-                    <span className="text-[0.75rem] font-semibold text-grey-600 tracking-tight">
-                      {client.abbreviation}
-                    </span>
-                  ) : (
-                    <Image
-                      src={client.logo}
-                      alt={client.name}
-                      width={100}
-                      height={50}
-                      className="object-contain p-1"
-                    />
-                  )}
-                </div>
+                  {industry}
+                </li>
               ))}
-              {/* Duplicate set for seamless loop */}
-              {clients.map((client) => (
-                <div
-                  key={`set2-${client.id}`}
-                  className="inline-flex items-center justify-center w-[120px] h-[60px] rounded-md bg-white border border-grey-300/40 shrink-0"
-                >
-                  {!client.logoApproved ? (
-                    <span className="text-[0.75rem] font-semibold text-grey-600 tracking-tight">
-                      {client.abbreviation}
-                    </span>
-                  ) : (
-                    <Image
-                      src={client.logo}
-                      alt={client.name}
-                      width={100}
-                      height={50}
-                      className="object-contain p-1"
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+            </ul>
 
-          <div className="container-site mt-4">
-            <p className="text-xs text-grey-600 italic">
-              Client logos displayed with permission where approved. Placeholder abbreviations
-              shown for organisations pending logo approval.
+            {/* Customer names and logos are deliberately not shown. They require a
+                confirmed relationship plus written permission — see
+                src/data/clients.ts and docs/CONTENT_VERIFICATION.md. */}
+            <p className="text-xs text-grey-600 italic mt-6 max-w-[680px]">
+              Customer references and project case studies are available on request.
             </p>
           </div>
         </section>

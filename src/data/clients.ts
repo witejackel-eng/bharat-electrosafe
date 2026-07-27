@@ -1,157 +1,49 @@
 /* ────────────────────────────────────────────────────────────────
-   Bharat Electrosafe — Client Logos Data
+   Bharat Electrosafe — Client Reference Data
    ────────────────────────────────────────────────────────────────
 
-   NOTE: Real client logos require client approval before display.
-   This file provides a placeholder structure with sector labels.
-   Replace `logo` paths with actual client-approved logo assets
-   once approvals are obtained.
+   IMPORTANT — READ BEFORE ADDING ANYTHING HERE.
+
+   This list is intentionally EMPTY.
+
+   A previous revision hard-coded fifteen named organisations (Indian
+   Railways, NTPC, PGCIL, BHEL, Reliance, Tata Power, L&T and others) and
+   rendered them on the homepage under "Trusted by leading institutions".
+   None of those customer relationships were verified, and displaying a
+   third party's name or logo as a customer without permission is both a
+   factual and a legal risk. They have been removed.
+
+   To add a client reference, ALL of the following must be true:
+     1. The customer relationship is confirmed by the client (Bharat
+        Electrosafe), not inferred from a photograph or a document.
+     2. Written permission exists to display that organisation's name
+        and/or logo publicly.
+     3. `logoApproved` is set to true only when the logo file itself is
+        cleared for public use and present in /public/images/clients/.
+
+   Written endorsements exist in the private asset vault for a small
+   number of customers. Those still require explicit display approval
+   before they appear on the public site.
+   See docs/ASSET_INTEGRATION_PLAN.md and docs/CONTENT_VERIFICATION.md.
    ──────────────────────────────────────────────────────────────── */
 
 export interface ClientEntry {
   id: string;
   name: string;
   sector: string;
-  /** Short abbreviation shown in logo placeholder */
+  /** Short abbreviation shown when no approved logo is available. */
   abbreviation: string;
-  /** Logo image path — placeholder until client approval */
+  /** Logo image path — only used when logoApproved is true. */
   logo: string;
-  /** Whether logo has been approved for public display */
+  /** Whether the logo is cleared and present for public display. */
   logoApproved: boolean;
+  /** Whether the client has approved public naming of the relationship. */
+  nameApproved: boolean;
 }
 
-export const clients: ClientEntry[] = [
-  {
-    id: "1",
-    name: "Indian Railways",
-    sector: "Railway & Metro",
-    abbreviation: "IR",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "2",
-    name: "NTPC",
-    sector: "Power Generation",
-    abbreviation: "NTPC",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "3",
-    name: "Power Grid Corporation",
-    sector: "Power Transmission",
-    abbreviation: "PGCIL",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "4",
-    name: "BHEL",
-    sector: "Heavy Engineering",
-    abbreviation: "BHEL",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "5",
-    name: "NHPC",
-    sector: "Hydropower",
-    abbreviation: "NHPC",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "6",
-    name: "IOCL",
-    sector: "Oil & Gas",
-    abbreviation: "IOCL",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "7",
-    name: "SAIL",
-    sector: "Steel",
-    abbreviation: "SAIL",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "8",
-    name: "CPWD",
-    sector: "Construction",
-    abbreviation: "CPWD",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "9",
-    name: "DMRC",
-    sector: "Railway & Metro",
-    abbreviation: "DMRC",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "10",
-    name: "Tata Power",
-    sector: "Power Generation",
-    abbreviation: "TP",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "11",
-    name: "Adani Power",
-    sector: "Power Generation",
-    abbreviation: "AP",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "12",
-    name: "L&T",
-    sector: "Heavy Engineering",
-    abbreviation: "L&T",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "13",
-    name: "NPCIL",
-    sector: "Nuclear Power",
-    abbreviation: "NPCIL",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "14",
-    name: "GAIL",
-    sector: "Oil & Gas",
-    abbreviation: "GAIL",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-  {
-    id: "15",
-    name: "Reliance Industries",
-    sector: "Oil & Gas",
-    abbreviation: "RIL",
-    logo: "/images/clients/placeholder.svg",
-    logoApproved: false,
-  },
-];
+export const clients: ClientEntry[] = [];
 
-/* ── Sector labels for grouping ── */
-export const clientSectors = [
-  "Power Generation",
-  "Power Transmission",
-  "Railway & Metro",
-  "Heavy Engineering",
-  "Oil & Gas",
-  "Steel",
-  "Nuclear Power",
-  "Hydropower",
-  "Construction",
-];
+/** Only clients cleared for public display. Components must use this. */
+export const approvedClients: ClientEntry[] = clients.filter(
+  (c) => c.nameApproved
+);

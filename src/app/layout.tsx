@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://bharatelectrosafe.com"),
   title: "Bharat Electrosafe | Electrical Insulating Mats Manufacturer",
   description:
-    "Manufacturer of electrical insulating mats (IS 15652), coloured strip and bi-colour safety mats, auto-glow reflective mats, and BharatMembrane HDPE geomembranes. Trusted by Indian Railways, NTPC, PGCIL, BHEL and utilities nationwide.",
+    "Manufacturer of electrical insulating mats to IS 15652:2006 — coloured strip, bi-color and auto-glow / reflective band variants — and BharatMembrane PVC geo-membranes to IS 15909:2020.",
   keywords: [
     "Bharat Electrosafe",
     "electrical insulating mats",
@@ -32,8 +32,9 @@ export const metadata: Metadata = {
     "auto-glow mat",
     "reflective mat",
     "BharatMembrane",
-    "geomembrane",
-    "HDPE membrane",
+    "geo-membrane",
+    "PVC geo-membrane",
+    "IS 15909",
   ],
   authors: [{ name: "Bharat Electrosafe" }],
   creator: "Bharat Electrosafe",
@@ -55,7 +56,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Bharat Electrosafe | Electrical Insulating Mats Manufacturer",
     description:
-      "Manufacturer of electrical insulating mats, visible-safety variants, and BharatMembrane geomembranes for industrial, utility and infrastructure projects.",
+      "Manufacturer of electrical insulating mats, visible-safety variants, and BharatMembrane PVC geo-membranes for industrial, utility and infrastructure projects.",
     type: "website",
     siteName: "Bharat Electrosafe",
     url: "https://bharatelectrosafe.com",
@@ -65,7 +66,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Bharat Electrosafe | Electrical Insulating Mats Manufacturer",
     description:
-      "Electrical insulating mats, visible-safety variants and BharatMembrane geomembranes. Trusted by Indian Railways, NTPC, PGCIL, BHEL.",
+      "Electrical insulating mats to IS 15652:2006 and BharatMembrane PVC geo-membranes to IS 15909:2020.",
   },
 };
 
@@ -92,7 +93,7 @@ export default function RootLayout({
               "@type": "LocalBusiness",
               name: "Bharat Electrosafe",
               description:
-                "Manufacturer of electrical insulating mats, visible-safety variants, and BharatMembrane HDPE geomembranes.",
+                "Manufacturer of electrical insulating mats, visible-safety variants, and BharatMembrane PVC geo-membranes.",
               url: "https://bharatelectrosafe.com",
               email: "info@bharatelectrosafe.com",
               telephone: "+91-7617494968",
