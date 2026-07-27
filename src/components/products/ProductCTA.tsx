@@ -1,5 +1,6 @@
 'use client';
 
+import { company } from '@/data/company';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { Phone } from 'lucide-react';
@@ -25,7 +26,7 @@ export function ProductCTA({ product, headingPrefix = 'Request a quote for' }: P
             <PrimaryButton href="/contact-us" size="lg">
               Request a Quote
             </PrimaryButton>
-            <SecondaryButton href="tel:+91XXXXXXXXXX">
+            <SecondaryButton href={`tel:${company.phonePrimaryTel}`}>
               <Phone className="size-4 mr-1.5" />
               Call Sales
             </SecondaryButton>

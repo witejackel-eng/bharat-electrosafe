@@ -1,5 +1,6 @@
 'use client';
 
+import { company } from '@/data/company';
 import { Mail, Phone, MessageCircle, MapPin } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { cn } from '@/lib/utils';
@@ -16,35 +17,35 @@ const contactMethods: ContactMethodCard[] = [
   {
     icon: <Mail className="size-5 text-be-yellow-500" />,
     label: 'Email',
-    value: 'info@bharatelectrosafe.com',
-    href: 'mailto:info@bharatelectrosafe.com',
+    value: company.email,
+    href: `mailto:${company.email}`,
     bg: 'bg-be-yellow-50',
   },
   {
     icon: <Phone className="size-5 text-be-yellow-500" />,
     label: 'Primary Phone',
-    value: '+91-XXXX-XXXXXX',
-    href: 'tel:+91XXXXXXXXXX',
+    value: company.phonePrimary,
+    href: `tel:${company.phonePrimaryTel}`,
     bg: 'bg-be-white',
   },
   {
     icon: <Phone className="size-5 text-be-yellow-500" />,
     label: 'Secondary Phone',
-    value: '+91-XXXX-XXXXXX',
-    href: 'tel:+91XXXXXXXXXX2',
+    value: company.phoneSecondary,
+    href: `tel:${company.phoneSecondaryTel}`,
     bg: 'bg-be-white',
   },
   {
     icon: <MessageCircle className="size-5 text-be-yellow-500" />,
     label: 'WhatsApp',
     value: 'Chat on WhatsApp',
-    href: 'https://wa.me/91XXXXXXXXXX',
+    href: company.whatsapp.href,
     bg: 'bg-be-yellow-50',
   },
   {
     icon: <MapPin className="size-5 text-be-yellow-500" />,
     label: 'Address',
-    value: 'Bharat Electrosafe, Industrial Area, [City], India',
+    value: `${company.address.line1}, ${company.address.line2}, ${company.address.city}-${company.address.pincode}, ${company.address.country}`,
     bg: 'bg-be-white',
   },
 ];

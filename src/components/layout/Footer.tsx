@@ -10,6 +10,7 @@ import {
   AccordionContent,
 } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
+import { company } from '@/data/company';
 
 /* ────────────────────────────────────────────
    Product data (shared with Header)
@@ -40,6 +41,10 @@ const products: ProductNavItem[] = [
   {
     name: 'BharatMembrane',
     href: '/products/bharat-membrane',
+  },
+  {
+    name: 'BharatHydro Seal',
+    href: '/products/bharat-hydro-seal',
   },
 ];
 
@@ -83,21 +88,21 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-3 pt-1">
               <a
-                href="mailto:info@bharatelectrosafe.com"
+                href={`mailto:${company.email}`}
                 className="size-11 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
                 aria-label="Email"
               >
                 <Mail className="size-4" />
               </a>
               <a
-                href="tel:+91XXXXXXXXXX"
+                href={company.phonePrimaryTel}
                 className="size-11 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
                 aria-label="Phone"
               >
                 <Phone className="size-4" />
               </a>
               <a
-                href="https://wa.me/91XXXXXXXXXX"
+                href={company.whatsapp.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="size-11 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
@@ -163,38 +168,38 @@ export function Footer() {
             <ul className="flex flex-col gap-3">
               <li>
                 <a
-                  href="mailto:info@bharatelectrosafe.com"
+                  href={`mailto:${company.email}`}
                   className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
                 >
                   <Mail className="size-4 shrink-0" />
-                  <span>info@bharatelectrosafe.com</span>
+                  <span>{company.email}</span>
                 </a>
               </li>
               <li>
                 <a
-                  href="tel:+91XXXXXXXXXX"
+                  href={company.phonePrimaryTel}
                   className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
                 >
                   <Phone className="size-4 shrink-0" />
-                  <span>+91-XXXX-XXXXXX</span>
+                  <span>{company.phonePrimary}</span>
                 </a>
               </li>
               <li>
                 <a
-                  href="https://wa.me/91XXXXXXXXXX"
+                  href={company.whatsapp.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
                 >
                   <MessageCircle className="size-4 shrink-0" />
-                  <span>WhatsApp</span>
+                  <span>{company.whatsapp.label}</span>
                 </a>
               </li>
               <li className="flex items-start gap-2 text-base text-be-grey-650">
                 <MapPin className="size-4 shrink-0 mt-1" />
                 <span>
-                  Industrial Area, Sector XX,<br />
-                  City, State — XXXXXX
+                  {company.address.line1}, {company.address.line2},<br />
+                  {company.address.city}, {company.address.state} — {company.address.pincode}
                 </span>
               </li>
             </ul>
@@ -222,21 +227,21 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-3 pt-1">
               <a
-                href="mailto:info@bharatelectrosafe.com"
+                href={`mailto:${company.email}`}
                 className="size-10 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
                 aria-label="Email"
               >
                 <Mail className="size-4" />
               </a>
               <a
-                href="tel:+91XXXXXXXXXX"
+                href={company.phonePrimaryTel}
                 className="size-10 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
                 aria-label="Phone"
               >
                 <Phone className="size-4" />
               </a>
               <a
-                href="https://wa.me/91XXXXXXXXXX"
+                href={company.whatsapp.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="size-10 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
@@ -297,38 +302,38 @@ export function Footer() {
                 <ul className="flex flex-col gap-3 pb-2">
                   <li>
                     <a
-                      href="mailto:info@bharatelectrosafe.com"
+                      href={`mailto:${company.email}`}
                       className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors min-h-[44px]"
                     >
                       <Mail className="size-4 shrink-0" />
-                      <span>info@bharatelectrosafe.com</span>
+                      <span>{company.email}</span>
                     </a>
                   </li>
                   <li>
                     <a
-                      href="tel:+91XXXXXXXXXX"
+                      href={company.phonePrimaryTel}
                       className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors min-h-[44px]"
                     >
                       <Phone className="size-4 shrink-0" />
-                      <span>+91-XXXX-XXXXXX</span>
+                      <span>{company.phonePrimary}</span>
                     </a>
                   </li>
                   <li>
                     <a
-                      href="https://wa.me/91XXXXXXXXXX"
+                      href={company.whatsapp.href}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors min-h-[44px]"
                     >
                       <MessageCircle className="size-4 shrink-0" />
-                      <span>WhatsApp</span>
+                      <span>{company.whatsapp.label}</span>
                     </a>
                   </li>
                   <li className="flex items-start gap-2 text-base text-be-grey-650 py-2">
                     <MapPin className="size-4 shrink-0 mt-1" />
                     <span>
-                      Industrial Area, Sector XX,<br />
-                      City, State — XXXXXX
+                      {company.address.line1}, {company.address.line2},<br />
+                      {company.address.city}, {company.address.state} — {company.address.pincode}
                     </span>
                   </li>
                 </ul>
@@ -342,23 +347,11 @@ export function Footer() {
       <div className="border-t border-be-grey-250 bg-be-yellow-50/50">
         <div className="container-site page-horizontal-padding py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-metadata text-be-grey-650 text-center sm:text-left">
-            &copy; 2025 Bharat Electrosafe. All rights reserved.
+          &copy; {new Date().getFullYear()} {company.name}. All rights reserved. | IS 15652:2006 | CM/L:8800129617
           </p>
           <div className="flex items-center gap-4">
-            <Link
-              href="/privacy-policy"
-              className="text-metadata text-be-grey-650 hover:text-be-yellow-600 transition-colors"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-metadata text-be-grey-650 hover:text-be-yellow-600 transition-colors"
-            >
-              Terms
-            </Link>
-            <span className="text-metadata text-be-grey-650 hidden sm:inline">
-              Made in India 🇮🇳
+            <span className="text-metadata text-be-grey-650">
+              IS 15652:2006 | CM/L:8800129617 | Made in India
             </span>
           </div>
         </div>

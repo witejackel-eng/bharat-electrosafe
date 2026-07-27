@@ -1,9 +1,9 @@
 /**
  * Product Data — Bharat Electrosafe
  *
- * Comprehensive data definitions for all 5 products.
- * Each product follows the ProductData interface with
- * product-specific differentiation.
+ * Comprehensive data definitions for all 6 products.
+ * Electrical insulating mat data verified against IS 15652:2006.
+ * Engineered-product content corrected — no unsupported numeric claims.
  */
 
 export interface QuickFact {
@@ -65,7 +65,7 @@ export interface ProductData {
   applications: Application[];
   documents: Document[];
   relatedProducts: string[];
-  classType?: 'A' | 'B' | 'C' | 'all' | 'membrane';
+  classType?: 'A' | 'B' | 'C' | 'all' | 'membrane' | 'hydro';
   hasDatasheet?: boolean;
 }
 
@@ -97,37 +97,38 @@ const electricalInsulatingMats: ProductData = {
     { icon: 'badge-check', text: 'BIS certified and independently tested for breakdown voltage' },
   ],
   specifications: {
-    headers: ['Property', 'Class A', 'Class B', 'Class C'],
+    headers: ['Property', 'Class A (BES1001)', 'Class B (BES1002)', 'Class C (BES1003)'],
     rows: [
-      ['Working Voltage', '650V AC', '1100V AC', '3300V AC'],
-      ['Testing Voltage', '3.5kV AC', '6.5kV AC', '15kV AC'],
-      ['Breakdown Voltage', '≥ 10kV', '≥ 20kV', '≥ 40kV'],
-      ['Thickness (mm)', '2.0', '3.0', '5.0'],
-      ['Width Availability', '1m, 1.2m', '1m, 1.2m', '1m, 1.2m'],
-      ['Surface Pattern', 'Chequered / Ribbed', 'Chequered / Ribbed', 'Chequered / Ribbed'],
-      ['Operating Temp.', '–20°C to 70°C', '–20°C to 70°C', '–20°C to 70°C'],
-      ['Colour', 'Black / Grey', 'Black / Grey', 'Black / Grey'],
+      ['Working Voltage', '3.3 KV', '11.0 KV', '33.0 KV'],
+      ['AC Proof Voltage', '10.0 KV', '22.0 KV', '36.0 KV'],
+      ['Dielectric Strength', '30.0 KV', '45.0 KV', '65.0 KV'],
+      ['Thickness', '2.0 mm', '2.5 mm', '3.0 mm'],
+      ['Width', '1 metre', '1 metre', '1 metre'],
+      ['Lengths', '10 m / 20 m', '10 m / 20 m', '10 m / 20 m'],
+      ['Standard Colours', 'Black, Blue', 'Black, Blue', 'Black, Blue'],
+      ['Surface Patterns', 'Coin, Dot, Hexa', 'Coin, Dot, Hexa', 'Coin, Dot, Hexa'],
     ],
   },
   materialProperties: [
     { label: 'Base Material', value: 'Elastomer compound (PVC / Rubber blend)' },
     { label: 'Insulation Grade', value: 'Class A / B / C per IS 15652:2006' },
-    { label: 'Dielectric Strength', value: '≥ 10kV / 20kV / 40kV by class' },
-    { label: 'Tensile Strength', value: '≥ 6 MPa' },
-    { label: 'Abrasion Resistance', value: 'High — chequered surface pattern' },
-    { label: 'Oil Resistance', value: 'Excellent — suitable for industrial floors' },
-    { label: 'Operating Temperature', value: '–20°C to 70°C' },
+    { label: 'Tensile Strength (min)', value: '15 N/mm²' },
+    { label: 'Elongation at Break (min)', value: '250%' },
+    { label: 'Leakage Current (max)', value: '10 mA' },
+    { label: 'Insulation Resistance @ 500 V (min)', value: '100,000 MΩ' },
+    { label: 'Flame Extinguishing (max)', value: '5 seconds' },
+    { label: 'Operating Temperature', value: '−10 °C to 55 °C' },
   ],
   dimensions: [
-    { label: 'Standard Widths', value: '1000mm, 1200mm' },
-    { label: 'Standard Lengths', value: 'Custom roll lengths up to 20m' },
-    { label: 'Thickness — Class A', value: '2mm' },
-    { label: 'Thickness — Class B', value: '3mm' },
-    { label: 'Thickness — Class C', value: '5mm' },
-    { label: 'Custom Sizes', value: 'Available on request' },
+    { label: 'Standard Width', value: '1 metre' },
+    { label: 'Standard Lengths', value: '10 m and 20 m rolls' },
+    { label: 'Thickness — Class A', value: '2.0 mm' },
+    { label: 'Thickness — Class B', value: '2.5 mm' },
+    { label: 'Thickness — Class C', value: '3.0 mm' },
+    { label: 'Custom Dimensions', value: 'Available on request' },
   ],
-  colors: ['Black', 'Grey'],
-  surfacePatterns: ['Chequered', 'Ribbed', 'Plain'],
+  colors: ['Black', 'Blue'],
+  surfacePatterns: ['Coin', 'Dot', 'Hexa'],
   installation: [
     'Clean and dry the floor surface before laying',
     'Cut to required dimensions using a sharp utility knife',
@@ -144,14 +145,14 @@ const electricalInsulatingMats: ProductData = {
     { icon: 'hard-hat', name: 'Industrial Floors', description: 'General insulation for manufacturing floors with live equipment' },
   ],
   documents: [
-    { type: 'Datasheet', name: 'Electrical Insulating Mats — Product Datasheet', issuer: 'Bharat Electrosafe', available: true },
-    { type: 'Certificate', name: 'BIS Certification — IS 15652:2006', issuer: 'Bureau of Indian Standards', available: true },
-    { type: 'Test Report', name: 'Type Test Report — Class A/B/C', issuer: 'NABL Accredited Lab', available: true },
-    { type: 'Installation Guide', name: 'Installation & Maintenance Guide', issuer: 'Bharat Electrosafe', available: true },
+    { type: 'Datasheet', name: 'Electrical Insulating Mats — Product Datasheet', issuer: 'Bharat Electrosafe', available: false },
+    { type: 'Certificate', name: 'BIS Certification — IS 15652:2006', issuer: 'Bureau of Indian Standards', available: false },
+    { type: 'Test Report', name: 'Type Test Report — Class A/B/C', issuer: 'NABL Accredited Lab', available: false },
+    { type: 'Installation Guide', name: 'Installation & Maintenance Guide', issuer: 'Bharat Electrosafe', available: false },
   ],
   relatedProducts: ['coloured-strip-insulating-mats', 'bi-color-insulating-mats', 'auto-glow-reflective-band-insulating-mats'],
   classType: 'all',
-  hasDatasheet: true,
+  hasDatasheet: false,
 };
 
 /* ────────────────────────────────────────────
@@ -228,14 +229,14 @@ const colouredStripInsulatingMats: ProductData = {
     { icon: 'shield-check', name: 'Industrial Safety Zones', description: 'Safety zone demarcation on manufacturing floors with live equipment' },
   ],
   documents: [
-    { type: 'Datasheet', name: 'Coloured Strip Insulating Mats — Product Datasheet', issuer: 'Bharat Electrosafe', available: true },
-    { type: 'Certificate', name: 'BIS Certification — IS 15652:2006', issuer: 'Bureau of Indian Standards', available: true },
-    { type: 'Test Report', name: 'Type Test Report — Strip Configuration', issuer: 'NABL Accredited Lab', available: true },
-    { type: 'Installation Guide', name: 'Installation Guide — Strip Mat Layouts', issuer: 'Bharat Electrosafe', available: true },
+    { type: 'Datasheet', name: 'Coloured Strip Insulating Mats — Product Datasheet', issuer: 'Bharat Electrosafe', available: false },
+    { type: 'Certificate', name: 'BIS Certification — IS 15652:2006', issuer: 'Bureau of Indian Standards', available: false },
+    { type: 'Test Report', name: 'Type Test Report — Strip Configuration', issuer: 'NABL Accredited Lab', available: false },
+    { type: 'Installation Guide', name: 'Installation Guide — Strip Mat Layouts', issuer: 'Bharat Electrosafe', available: false },
   ],
   relatedProducts: ['electrical-insulating-mats', 'bi-color-insulating-mats', 'auto-glow-reflective-band-insulating-mats'],
   classType: 'all',
-  hasDatasheet: true,
+  hasDatasheet: false,
 };
 
 /* ────────────────────────────────────────────
@@ -313,14 +314,14 @@ const biColorInsulatingMats: ProductData = {
     { icon: 'footprints', name: 'Industrial Walkways', description: 'Busy industrial walkways where operators need assurance of mat thickness' },
   ],
   documents: [
-    { type: 'Datasheet', name: 'Bi-Color Insulating Mats — Product Datasheet', issuer: 'Bharat Electrosafe', available: true },
-    { type: 'Certificate', name: 'BIS Certification — IS 15652:2006', issuer: 'Bureau of Indian Standards', available: true },
-    { type: 'Test Report', name: 'Type Test Report — Bi-Color Layer Integrity', issuer: 'NABL Accredited Lab', available: true },
-    { type: 'Installation Guide', name: 'Installation & Wear Monitoring Guide', issuer: 'Bharat Electrosafe', available: true },
+    { type: 'Datasheet', name: 'Bi-Color Insulating Mats — Product Datasheet', issuer: 'Bharat Electrosafe', available: false },
+    { type: 'Certificate', name: 'BIS Certification — IS 15652:2006', issuer: 'Bureau of Indian Standards', available: false },
+    { type: 'Test Report', name: 'Type Test Report — Bi-Color Layer Integrity', issuer: 'NABL Accredited Lab', available: false },
+    { type: 'Installation Guide', name: 'Installation & Wear Monitoring Guide', issuer: 'Bharat Electrosafe', available: false },
   ],
   relatedProducts: ['electrical-insulating-mats', 'coloured-strip-insulating-mats', 'auto-glow-reflective-band-insulating-mats'],
   classType: 'all',
-  hasDatasheet: true,
+  hasDatasheet: false,
 };
 
 /* ────────────────────────────────────────────
@@ -397,14 +398,14 @@ const autoGlowReflectiveBandMats: ProductData = {
     { icon: 'route', name: 'Industrial Emergency Routes', description: 'Marked escape routes through factories with live electrical equipment' },
   ],
   documents: [
-    { type: 'Datasheet', name: 'Auto-Glow / Reflective Band Mats — Product Datasheet', issuer: 'Bharat Electrosafe', available: true },
-    { type: 'Certificate', name: 'BIS Certification — IS 15652:2006', issuer: 'Bureau of Indian Standards', available: true },
-    { type: 'Test Report', name: 'Glow Duration & Reflective Index Test Report', issuer: 'NABL Accredited Lab', available: true },
-    { type: 'Installation Guide', name: 'Installation Guide — Emergency Pathway Layout', issuer: 'Bharat Electrosafe', available: true },
+    { type: 'Datasheet', name: 'Auto-Glow / Reflective Band Mats — Product Datasheet', issuer: 'Bharat Electrosafe', available: false },
+    { type: 'Certificate', name: 'BIS Certification — IS 15652:2006', issuer: 'Bureau of Indian Standards', available: false },
+    { type: 'Test Report', name: 'Glow Duration & Reflective Index Test Report', issuer: 'NABL Accredited Lab', available: false },
+    { type: 'Installation Guide', name: 'Installation Guide — Emergency Pathway Layout', issuer: 'Bharat Electrosafe', available: false },
   ],
   relatedProducts: ['electrical-insulating-mats', 'coloured-strip-insulating-mats', 'bi-color-insulating-mats'],
   classType: 'all',
-  hasDatasheet: true,
+  hasDatasheet: false,
 };
 
 /* ────────────────────────────────────────────
@@ -417,10 +418,10 @@ const bharatMembrane: ProductData = {
   shortName: 'BM',
   heroSlotId: 'PRODUCT-BM-HERO-01',
   description:
-    'Engineered waterproofing membrane for roof, basement, tunnel, and foundation applications — industrial-grade protection for infrastructure projects.',
+    'PVC Geo-Membrane for tunnel waterproofing, containment lining and barrier protection — IS 15909:2020 certified engineered membrane for civil and environmental applications.',
   introduction:
-    'BharatMembrane is an engineered waterproofing membrane designed for critical infrastructure protection. Unlike our electrical insulating mats, BharatMembrane provides waterproofing and moisture barrier protection for roofs, basements, tunnels, foundations and large-scale infrastructure projects. Its durable construction, flexible application methods, and reliable joining system make it the preferred choice for project engineers and contractors.',
-  badges: ['Waterproofing', 'Engineered Membrane', 'Industrial Grade'],
+    'BharatMembrane is a high-grade PVC Geo-Membrane engineered for tunnel waterproofing, containment lining and barrier protection in civil and environmental engineering applications. Manufactured from premium PVC polymers with chemical resistance, UV stability and mechanical strength for leak-proof performance. Unlike our electrical insulating mats, BharatMembrane provides waterproofing and moisture barrier protection for infrastructure projects.',
+  badges: ['IS 15909:2020', 'PVC Geo-Membrane', 'Civil Engineering', 'Waterproofing'],
   quickFacts: [
     { icon: 'droplets', label: 'Function', value: 'Waterproofing barrier' },
     { icon: 'ruler', label: 'Thickness', value: '1.2mm – 2.0mm' },
@@ -483,14 +484,99 @@ const bharatMembrane: ProductData = {
     { icon: 'building-2', name: 'Infrastructure Projects', description: 'Large-scale infrastructure — bridges, flyovers, water treatment plants' },
   ],
   documents: [
-    { type: 'Datasheet', name: 'BharatMembrane — Product Datasheet', issuer: 'Bharat Electrosafe', available: true },
-    { type: 'Test Report', name: 'Water Penetration & Tensile Test Report', issuer: 'NABL Accredited Lab', available: true },
-    { type: 'Installation Guide', name: 'Installation & Joining Guide', issuer: 'Bharat Electrosafe', available: true },
-    { type: 'Certificate', name: 'ISO 9001 — Quality Management Certification', issuer: 'ISO Certifying Body', available: false },
+    { type: 'Datasheet', name: 'BharatMembrane — Product Datasheet', issuer: 'Bharat Electrosafe', available: false },
+    { type: 'Test Report', name: 'Water Penetration & Tensile Test Report', issuer: 'NABL Accredited Lab', available: false },
+    { type: 'Installation Guide', name: 'Installation & Joining Guide', issuer: 'Bharat Electrosafe', available: false },
+    { type: 'Certificate', name: 'BIS Certification — IS 15909:2020', issuer: 'Bureau of Indian Standards', available: false },
   ],
-  relatedProducts: ['electrical-insulating-mats', 'bi-color-insulating-mats', 'auto-glow-reflective-band-insulating-mats'],
+  relatedProducts: ['electrical-insulating-mats', 'bharat-hydro-seal', 'auto-glow-reflective-band-insulating-mats'],
   classType: 'membrane',
-  hasDatasheet: true,
+  hasDatasheet: false,
+};
+
+/* ────────────────────────────────────────────
+   Product 6: BharatHydro Seal
+   ──────────────────────────────────────────── */
+
+const bharatHydroSeal: ProductData = {
+  slug: 'bharat-hydro-seal',
+  name: 'BharatHydro Seal',
+  shortName: 'BHS',
+  heroSlotId: 'PRODUCT-BHS-HERO-01',
+  description:
+    'Premium water stop solutions for construction and expansion joints — IS 15058-2002 certified PVC and rubber compound water stop profiles.',
+  introduction:
+    'BharatHydro Seal provides premium water stop solutions for construction and expansion joints. Formulated from PVC and rubber compounds to prevent water leakage while offering water-pressure, chemical and environmental resistance, flexibility and long service life. Designed for use in water-retaining structures, underground construction and civil engineering applications.',
+  badges: ['IS 15058-2002', 'PVC & Rubber', 'Construction Joints', 'Water Stop'],
+  quickFacts: [
+    { icon: 'droplets', label: 'Function', value: 'Water stop sealing' },
+    { icon: 'ruler', label: 'Standard', value: 'IS 15058-2002' },
+    { icon: 'building', label: 'Application', value: 'Construction joints' },
+  ],
+  overviewText:
+    'In water-retaining structures and underground construction, preventing water leakage through joints is critical. BharatHydro Seal water stop profiles are embedded in concrete at construction and expansion joints, creating a continuous waterproof barrier. The PVC and rubber compound formulation provides flexibility to accommodate joint movement, chemical resistance for aggressive environments, and long service life for permanent installations.',
+  keyBenefits: [
+    { icon: 'shield', text: 'Construction and expansion joint sealing — prevents water leakage at critical joint locations' },
+    { icon: 'droplets', text: 'Water leakage prevention — continuous barrier embedded in concrete joints' },
+    { icon: 'layers', text: 'PVC and rubber compound formulation — flexibility, durability and chemical resistance' },
+    { icon: 'gauge', text: 'Water pressure resistance — maintains seal under hydrostatic pressure' },
+    { icon: 'flask-conical', text: 'Chemical and environmental resistance — suitable for aggressive soil and water conditions' },
+    { icon: 'move', text: 'Flexibility — accommodates structural movement without losing seal integrity' },
+    { icon: 'timer', text: 'Long service life — designed for permanent installation in critical infrastructure' },
+  ],
+  specifications: {
+    headers: ['Property', 'BHS-PVC', 'BHS-Rubber'],
+    rows: [
+      ['Product Code', 'BES2001', 'BES2002'],
+      ['Standard', 'IS 15058-2002', 'IS 15058-2002'],
+      ['Material', 'PVC Compound', 'Rubber Compound'],
+      ['Water Pressure Resistance', 'Rated per standard', 'Rated per standard'],
+      ['Chemical Resistance', 'High', 'High'],
+      ['Flexibility', 'Good', 'Excellent'],
+      ['Operating Temperature', 'Standard range', 'Standard range'],
+    ],
+  },
+  materialProperties: [
+    { label: 'Base Material', value: 'PVC compound / Rubber compound' },
+    { label: 'Standard', value: 'IS 15058-2002' },
+    { label: 'Water Pressure Resistance', value: 'Rated per IS 15058-2002' },
+    { label: 'Chemical Resistance', value: 'Resistant to common construction chemicals' },
+    { label: 'Flexibility', value: 'Accommodates joint movement' },
+    { label: 'Service Life', value: 'Designed for permanent installation' },
+  ],
+  dimensions: [
+    { label: 'Standard Profiles', value: 'Available per IS 15058-2002 specifications' },
+    { label: 'Custom Dimensions', value: 'Available on request where supported' },
+    { label: 'Width Range', value: 'Per standard profile specifications' },
+    { label: 'Length', value: 'Standard roll lengths' },
+  ],
+  colors: ['Black (PVC)', 'Grey (Rubber)'],
+  surfacePatterns: ['Smooth', 'Ribbed'],
+  installation: [
+    'Position water stop profile at the centre of the construction joint',
+    'Ensure the profile extends continuously across the full joint width',
+    'Secure the profile with tie wires or clips before concrete placement',
+    'Overlap and weld/join profile ends for continuous coverage',
+    'Avoid displacement during concrete vibration and placement',
+    'Inspect joint seal after concrete curing for proper embedment',
+  ],
+  applications: [
+    { icon: 'droplets', name: 'Water Tanks', description: 'Joint sealing in water storage tanks and reservoirs' },
+    { icon: 'waves', name: 'Reservoirs & Dams', description: 'Water stop profiles in dam and reservoir construction joints' },
+    { icon: 'route', name: 'Canals', description: 'Sealing joints in canal and aqueduct construction' },
+    { icon: 'factory', name: 'Sewage Treatment', description: 'Water stop installation in sewage treatment plant construction' },
+    { icon: 'building-2', name: 'Basements', description: 'Underground basement joint waterproofing' },
+    { icon: 'mountain', name: 'Tunnels', description: 'Water stop profiles in tunnel segment joints' },
+  ],
+  documents: [
+    { type: 'Datasheet', name: 'BharatHydro Seal — Product Datasheet', issuer: 'Bharat Electrosafe', available: false },
+    { type: 'Certificate', name: 'BIS Certification — IS 15058-2002', issuer: 'Bureau of Indian Standards', available: false },
+    { type: 'Test Report', name: 'Water Pressure Resistance Test Report', issuer: 'NABL Accredited Lab', available: false },
+    { type: 'Installation Guide', name: 'Installation Guide — Water Stop Profile Embedment', issuer: 'Bharat Electrosafe', available: false },
+  ],
+  relatedProducts: ['bharat-membrane', 'electrical-insulating-mats'],
+  classType: 'hydro',
+  hasDatasheet: false,
 };
 
 /* ────────────────────────────────────────────
@@ -503,8 +589,19 @@ export const products: ProductData[] = [
   biColorInsulatingMats,
   autoGlowReflectiveBandMats,
   bharatMembrane,
+  bharatHydroSeal,
 ];
 
 export function getProductBySlug(slug: string): ProductData | undefined {
   return products.find((p) => p.slug === slug);
 }
+
+export function getProductNames(): string[] {
+  return products.map((p) => p.name);
+}
+
+/** Labels for the contact-form product selector — all six families. */
+export const contactProductOptions = products.map((p) => ({
+  value: p.slug,
+  label: p.name,
+}));

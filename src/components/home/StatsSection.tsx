@@ -14,32 +14,32 @@ interface Stat {
 
 const stats: Stat[] = [
   {
-    value: '25+',
-    digit: '25',
-    suffix: '+',
-    label: 'Years of manufacturing experience',
-    icon: Building2,
-  },
-  {
-    value: '5',
-    digit: '5',
+    value: '6',
+    digit: '6',
     suffix: '',
-    label: 'Certified product families',
+    label: 'Product Families',
     icon: Layers,
   },
   {
-    value: '1000+',
-    digit: '1000',
-    suffix: '+',
-    label: 'Installations across India',
-    icon: MapPin,
+    value: 'A·B·C',
+    digit: 'A·B·C',
+    suffix: '',
+    label: 'Insulation Classes',
+    icon: Zap,
   },
   {
-    value: '3',
-    digit: '3',
+    value: 'IS 15652:2006',
+    digit: '15652',
     suffix: '',
-    label: 'Voltage classes (A, B, C)',
-    icon: Zap,
+    label: 'Certified Standard',
+    icon: Building2,
+  },
+  {
+    value: '11+',
+    digit: '11',
+    suffix: '+',
+    label: 'Countries Served',
+    icon: MapPin,
   },
 ];
 

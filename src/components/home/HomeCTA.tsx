@@ -1,5 +1,6 @@
 'use client';
 
+import { company } from '@/data/company';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { ShieldCheck, Phone, MessageCircle } from 'lucide-react';
@@ -31,12 +32,12 @@ export default function HomeCTA() {
               Request a Quote
             </PrimaryButton>
 
-            <SecondaryButton href="tel:+919999999999">
+            <SecondaryButton href={`tel:${company.phonePrimaryTel}`}>
               <Phone className="h-4 w-4 mr-2" />
               Call Sales
             </SecondaryButton>
 
-            <SecondaryButton href="https://wa.me/919999999999" className="gap-2">
+            <SecondaryButton href={company.whatsapp.href} className="gap-2">
               <MessageCircle className="h-4 w-4 mr-2" />
               WhatsApp
             </SecondaryButton>

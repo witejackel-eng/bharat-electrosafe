@@ -9,9 +9,9 @@ import { ImageFrame } from '@/components/ui/ImageFrame';
 
 const proofItems = [
   'IS 15652:2006',
-  'BIS licence',
-  'Tested documentation',
-  'Custom dimensions',
+  'BIS Licence CM/L:8800129617',
+  'ERDA / NTH Tested',
+  'Conforming to IEC 61111',
 ];
 
 export default function HomeHero() {

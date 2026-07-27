@@ -1,5 +1,6 @@
 'use client';
 
+import { company } from '@/data/company';
 import { useState } from 'react';
 import { MapPin, Mail, Phone, Navigation } from 'lucide-react';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
@@ -22,10 +23,11 @@ export default function OfficeLocation() {
             <div className="flex items-start gap-3">
               <MapPin className="size-5 text-be-yellow-500 shrink-0 mt-1" />
               <div className="text-body text-be-charcoal-800 leading-relaxed">
-                <p className="font-semibold text-be-charcoal-950">Bharat Electrosafe Pvt. Ltd.</p>
-                <p>Industrial Area, Sector XX</p>
-                <p>[City], [State] — XXXXXX</p>
-                <p>India</p>
+                <p className="font-semibold text-be-charcoal-950">{company.name}</p>
+                <p>{company.address.line1}</p>
+                <p>{company.address.line2}</p>
+                <p>{company.address.city}, {company.address.state} — {company.address.pincode}</p>
+                <p>{company.address.country}</p>
               </div>
             </div>
 
@@ -37,18 +39,18 @@ export default function OfficeLocation() {
             {/* Contact links */}
             <div className="flex flex-col gap-3">
               <a
-                href="mailto:info@bharatelectrosafe.com"
+                href={`mailto:${company.email}`}
                 className="flex items-center gap-2 text-body text-be-charcoal-800 hover:text-be-yellow-600 transition-colors"
               >
                 <Mail className="size-4 shrink-0" />
-                <span>info@bharatelectrosafe.com</span>
+                <span>{company.email}</span>
               </a>
               <a
-                href="tel:+91XXXXXXXXXX"
+                href={`tel:${company.phonePrimaryTel}`}
                 className="flex items-center gap-2 text-body text-be-charcoal-800 hover:text-be-yellow-600 transition-colors"
               >
                 <Phone className="size-4 shrink-0" />
-                <span>+91-XXXX-XXXXXX</span>
+                <span>{company.phonePrimary}</span>
               </a>
             </div>
 
@@ -106,10 +108,10 @@ export default function OfficeLocation() {
                     </div>
                     <div className="text-center">
                       <p className="text-card-title text-be-charcoal-950 font-semibold">
-                        Bharat Electrosafe Pvt. Ltd.
+                        {company.name}
                       </p>
                       <p className="text-body text-be-grey-650 mt-1">
-                        Industrial Area, Sector XX, [City], India
+                        {company.address.line1}, {company.address.line2}, {company.address.city}, India
                       </p>
                     </div>
                     <SecondaryButton

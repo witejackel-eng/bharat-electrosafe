@@ -27,6 +27,7 @@ import {
 } from '@/components/ui/accordion';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { cn } from '@/lib/utils';
+import { company } from '@/data/company';
 
 /* ────────────────────────────────────────────
    Product data
@@ -69,6 +70,12 @@ const products: ProductNavItem[] = [
     description: 'Engineered waterproofing membrane',
     href: '/products/bharat-membrane',
     color: 'bg-be-charcoal-800',
+  },
+  {
+    name: 'BharatHydro Seal',
+    description: 'Water stop solutions for construction joints',
+    href: '/products/bharat-hydro-seal',
+    color: 'bg-be-grey-400',
   },
 ];
 
@@ -154,32 +161,32 @@ export function Header() {
           {/* Left: contact info */}
           <div className="flex items-center gap-5 text-metadata text-be-charcoal-800">
             <a
-              href="mailto:info@bharatelectrosafe.com"
+              href={`mailto:${company.email}`}
               className="flex items-center gap-1.5 hover:text-be-yellow-600 transition-colors"
             >
               <Mail className="size-3.5" />
-              <span>info@bharatelectrosafe.com</span>
+              <span>{company.email}</span>
             </a>
             <a
-              href="tel:+91XXXXXXXXXX"
+              href={company.phonePrimaryTel}
               className="flex items-center gap-1.5 hover:text-be-yellow-600 transition-colors"
             >
               <Phone className="size-3.5" />
-              <span>+91-XXXX-XXXXXX</span>
+              <span>{company.phonePrimary}</span>
             </a>
           </div>
 
           {/* Right: social / WhatsApp */}
           <div className="flex items-center gap-3">
             <a
-              href="https://wa.me/91XXXXXXXXXX"
+              href={company.whatsapp.href}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-metadata text-be-charcoal-800 hover:text-be-yellow-600 transition-colors"
               aria-label="Chat on WhatsApp"
             >
               <MessageCircle className="size-3.5" />
-              <span>WhatsApp</span>
+              <span>{company.whatsapp.label}</span>
             </a>
           </div>
         </div>

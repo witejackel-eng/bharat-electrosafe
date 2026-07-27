@@ -1,5 +1,6 @@
 'use client';
 
+import { company } from '@/data/company';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { DocumentCard } from '@/components/ui/DocumentCard';
 import { LogoRail } from '@/components/ui/LogoRail';
@@ -22,12 +23,12 @@ const documents: DocItem[] = [
     type: 'Licence',
     name: 'BIS Certification',
     issuer: 'Bureau of Indian Standards',
-    reference: 'CM/L-XXXXXX',
+    reference: company.certifications.cmL,
   },
   {
     type: 'Test Report',
     name: 'Type Test Report',
-    issuer: 'CPRI / ERDA',
+    issuer: 'ERDA / NTH',
     reference: 'Class A, B & C',
   },
 ];
@@ -37,7 +38,6 @@ const logos = [
   { name: 'CPRI' },
   { name: 'ERDA' },
   { name: 'Make in India' },
-  { name: 'ISO' },
 ];
 
 export default function TrustDocuments() {
