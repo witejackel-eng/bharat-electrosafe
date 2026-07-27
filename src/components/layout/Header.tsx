@@ -1,36 +1,48 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { ProductSystemPanel } from '@/components/navigation/ProductSystemPanel';
-import { MobileDrawer } from '@/components/navigation/MobileDrawer';
-import { QuoteButton } from '@/components/quote/QuoteButton';
-import { QuoteAdminTrigger } from '@/components/quote/QuoteAdminTrigger';
-import { ThemeToggle } from '@/components/theme/ThemeToggle';
-import { LocaleToggle } from '@/components/i18n/LocaleToggle';
-import { SearchTrigger } from '@/components/search/SearchTrigger';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { products } from '@/data/products';
+import { company, contactWhatsApp } from '@/data/company';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
+import { Menu, ChevronDown, Phone, Mail, MessageCircle } from 'lucide-react';
 
-const SCROLL_THRESHOLD = 80;
+/* ── Product navigation items ── */
+const productNavItems = products.map((p) => ({
+  name: p.name,
+  href: `/products/${p.slug}`,
+}));
+
+/* ── Desktop nav items (4 primary) ── */
+const desktopNavItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Products', href: null, hasDropdown: true },
+  { label: 'About Us', href: '/about-us' },
+  { label: 'Contact Us', href: '/contact-us' },
+];
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [loaded, setLoaded] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
-  const [hoveredNav, setHoveredNav] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const productsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const navRef = useRef<HTMLDivElement>(null);
-
-  // Motion 1: Header arrival animation
-  useEffect(() => {
-    const timer = setTimeout(() => setLoaded(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > SCROLL_THRESHOLD);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -38,181 +50,250 @@ export function Header() {
   const handleProductsEnter = useCallback(() => {
     if (productsTimeoutRef.current) clearTimeout(productsTimeoutRef.current);
     setProductsOpen(true);
-    setHoveredNav('products');
   }, []);
 
   const handleProductsLeave = useCallback(() => {
-    productsTimeoutRef.current = setTimeout(() => {
-      setProductsOpen(false);
-      setHoveredNav(null);
-    }, 200);
-  }, []);
-
-  const handleNavEnter = useCallback((item: string) => {
-    setHoveredNav(item);
-    if (item !== 'products') setProductsOpen(false);
-  }, []);
-
-  const handleNavLeave = useCallback(() => {
-    setHoveredNav(null);
+    productsTimeoutRef.current = setTimeout(() => setProductsOpen(false), 200);
   }, []);
 
   return (
-    <header
-      className="fixed z-50"
-      style={{
-        top: scrolled ? '8px' : '16px',
-        left: '50%',
-        transform: `translateX(-50%) translateY(${loaded ? '0' : '-12px'})`,
-        width: 'min(calc(100vw - 32px), 1380px)',
-        opacity: loaded ? 1 : 0,
-        transition: loaded
-          ? 'all 350ms ease-out'
-          : 'opacity 500ms cubic-bezier(0.22, 1, 0.36, 1) 100ms, transform 500ms cubic-bezier(0.22, 1, 0.36, 1) 100ms',
-      }}
-    >
-      <div
-        className="relative flex items-center justify-between transition-all duration-[350ms] ease-out bg-white/80 backdrop-blur-xl border border-border/60 shadow-sm"
-        style={{
-          borderRadius: scrolled ? '12px' : '18px',
-          height: scrolled ? '58px' : '72px',
-          boxShadow: scrolled
-            ? '0 8px 28px rgba(27, 42, 74, 0.12), 0 2px 6px rgba(27, 42, 74, 0.06)'
-            : '0 1px 8px rgba(27, 42, 74, 0.04)',
-          padding: '0 24px',
-        }}
-      >
-        {/* bottom accent line — fades in on scroll for more presence */}
-        <div
-          aria-hidden="true"
-          className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange/40 to-transparent pointer-events-none transition-opacity duration-300"
-          style={{ opacity: scrolled ? 1 : 0 }}
-        />
-        {/* Brand Block */}
-        <div className="flex items-center gap-3 shrink-0">
-          <div
-            className="relative shrink-0 transition-all duration-[350ms]"
-            style={{ width: scrolled ? '28px' : '34px', height: scrolled ? '28px' : '34px' }}
-          >
-            <Image
-              src="/logo-bharat.png"
-              alt="Bharat Electrosafe"
-              fill
-              sizes="34px"
-              className="object-contain"
-              priority
-            />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-semibold text-navy text-sm leading-tight tracking-tight">
-              Bharat Electrosafe
-            </span>
-            <span
-              className="text-[0.65rem] text-steel leading-tight transition-all duration-[350ms] ease-out overflow-hidden"
-              style={{
-                opacity: scrolled ? 0 : 1,
-                maxHeight: scrolled ? '0px' : '16px',
-                marginTop: scrolled ? '0px' : '2px',
-              }}
+    <>
+      {/* ── Top Contact Bar ── */}
+      <div className="bg-yellow-50/80 border-b border-grey-300/50">
+        <div className="container-site flex items-center justify-between py-1.5 text-small-meta text-charcoal-800">
+          <div className="flex items-center gap-4">
+            <a
+              href={`mailto:${company.email}`}
+              className="inline-flex items-center gap-1.5 hover:text-charcoal-950 transition-colors min-h-[28px]"
             >
-              Electrical safety systems
-            </span>
-          </div>
-        </div>
-
-        {/* Desktop Navigation */}
-        <nav
-          ref={navRef}
-          className="hidden md:flex items-center gap-1 relative"
-          onMouseLeave={handleNavLeave}
-        >
-          {/* Products */}
-          <div
-            onMouseEnter={handleProductsEnter}
-            onMouseLeave={handleProductsLeave}
-            className="relative"
-          >
-            <Link
-              href="#products"
-              className="relative px-4 py-2 text-sm font-medium text-navy/80 hover:text-navy transition-colors"
-              onFocus={handleProductsEnter}
-              onBlur={handleProductsLeave}
+              <Mail className="size-3 text-yellow-500" />
+              <span className="hidden sm:inline">{company.email}</span>
+            </a>
+            <a
+              href={`tel:${company.phone.replace(/\s/g, '')}`}
+              className="inline-flex items-center gap-1.5 hover:text-charcoal-950 transition-colors min-h-[28px]"
             >
-              Products
-              <span
-                className="absolute bottom-0 left-4 right-4 h-[2px] bg-orange rounded-full transition-all duration-300"
-                style={{
-                  transform: hoveredNav === 'products' || productsOpen ? 'scaleX(1)' : 'scaleX(0)',
-                  transformOrigin: 'left',
-                }}
-              />
-            </Link>
-
-            {/* Product System Panel */}
-            <div
-              className="absolute left-0"
-              onMouseEnter={handleProductsEnter}
-              onMouseLeave={handleProductsLeave}
-              style={{
-                opacity: productsOpen ? 1 : 0,
-                pointerEvents: productsOpen ? 'auto' : 'none',
-                transform: productsOpen ? 'translateY(0)' : 'translateY(-8px)',
-                transition: 'opacity 200ms ease, transform 200ms ease',
-              }}
-            >
-              <ProductSystemPanel />
-            </div>
+              <Phone className="size-3 text-yellow-500" />
+              {company.phone}
+            </a>
           </div>
-
-          {/* Proof */}
-          <Link
-            href="#proof"
-            className="relative px-4 py-2 text-sm font-medium text-navy/80 hover:text-navy transition-colors"
-            onMouseEnter={() => handleNavEnter('proof')}
-            onMouseLeave={handleNavLeave}
+          <a
+            href={contactWhatsApp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 hover:text-charcoal-950 transition-colors min-h-[28px]"
           >
-            Proof
-            <span
-              className="absolute bottom-0 left-4 right-4 h-[2px] bg-orange rounded-full transition-all duration-300"
-              style={{
-                transform: hoveredNav === 'proof' ? 'scaleX(1)' : 'scaleX(0)',
-                transformOrigin: 'left',
-              }}
-            />
-          </Link>
-
-          {/* Company */}
-          <Link
-            href="#company"
-            className="relative px-4 py-2 text-sm font-medium text-navy/80 hover:text-navy transition-colors"
-            onMouseEnter={() => handleNavEnter('company')}
-            onMouseLeave={handleNavLeave}
-          >
-            Company
-            <span
-              className="absolute bottom-0 left-4 right-4 h-[2px] bg-orange rounded-full transition-all duration-300"
-              style={{
-                transform: hoveredNav === 'company' ? 'scaleX(1)' : 'scaleX(0)',
-                transformOrigin: 'left',
-              }}
-            />
-          </Link>
-        </nav>
-
-        {/* CTA + Mobile Menu */}
-        <div className="flex items-center gap-2">
-          <QuoteAdminTrigger className="hidden md:inline-flex" />
-          <SearchTrigger className="hidden md:inline-flex border border-border/60 bg-white/60 hover:bg-white hover:border-orange/40 text-navy text-xs font-medium h-9 px-3 rounded-lg transition-colors items-center gap-2" />
-          <QuoteButton
-            className="hidden md:inline-flex bg-orange hover:bg-orange-hover text-white font-medium text-sm h-9 px-5 rounded-lg transition-colors"
-          >
-            Request a Quote
-          </QuoteButton>
-          <LocaleToggle className="hidden md:inline-flex" />
-          <ThemeToggle className="hidden md:inline-flex" />
-          <MobileDrawer />
+            <MessageCircle className="size-3 text-yellow-500" />
+            <span className="hidden sm:inline">WhatsApp</span>
+          </a>
         </div>
       </div>
-    </header>
+
+      {/* ── Main Header Bar ── */}
+      <header
+        className={`sticky top-0 z-50 bg-white border-b transition-shadow duration-200 ${
+          scrolled ? 'shadow-sm' : 'shadow-none'
+        }`}
+      >
+        <div className="container-site flex items-center justify-between h-[64px]">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2.5 shrink-0 min-h-[44px]">
+            <div className="relative w-[32px] h-[32px]">
+              <Image
+                src="/logo-bharat.png"
+                alt="Bharat Electrosafe logo"
+                fill
+                sizes="32px"
+                className="object-contain"
+                priority
+              />
+            </div>
+            <span className="font-semibold text-charcoal-950 text-[0.95rem] tracking-tight leading-tight">
+              Bharat Electrosafe
+            </span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {desktopNavItems.map((item) =>
+              item.hasDropdown ? (
+                <div
+                  key={item.label}
+                  className="relative"
+                  onMouseEnter={handleProductsEnter}
+                  onMouseLeave={handleProductsLeave}
+                >
+                  <button
+                    type="button"
+                    className="relative px-4 py-2 text-[0.875rem] font-medium text-charcoal-800 hover:text-charcoal-950 transition-colors inline-flex items-center gap-1 min-h-[44px]"
+                    onFocus={handleProductsEnter}
+                    onBlur={handleProductsLeave}
+                    aria-expanded={productsOpen}
+                    aria-haspopup="true"
+                  >
+                    {item.label}
+                    <ChevronDown
+                      className={`size-3.5 transition-transform duration-200 ${
+                        productsOpen ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+
+                  {/* Products Dropdown */}
+                  {productsOpen && (
+                    <div
+                      className="absolute left-0 top-full pt-2 animate-dropdown"
+                      onMouseEnter={handleProductsEnter}
+                      onMouseLeave={handleProductsLeave}
+                    >
+                      <div className="bg-white border border-grey-300 rounded-md shadow-sm py-2 w-[280px]">
+                        {productNavItems.map((p) => (
+                          <Link
+                            key={p.href}
+                            href={p.href}
+                            className="block px-4 py-2.5 text-[0.875rem] text-charcoal-800 hover:bg-yellow-50 hover:text-charcoal-950 transition-colors min-h-[44px]"
+                            onClick={() => setProductsOpen(false)}
+                          >
+                            {p.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={item.label}
+                  href={item.href!}
+                  className="px-4 py-2 text-[0.875rem] font-medium text-charcoal-800 hover:text-charcoal-950 transition-colors min-h-[44px]"
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
+          </nav>
+
+          {/* Desktop CTA + Mobile Menu */}
+          <div className="flex items-center gap-2">
+            <Link
+              href="/contact-us"
+              className="hidden lg:inline-flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-charcoal-950 font-semibold text-[0.875rem] px-5 py-2 rounded-md transition-colors min-h-[44px]"
+            >
+              Request a Quote
+            </Link>
+
+            {/* Mobile Menu Trigger */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden min-h-[44px] min-w-[44px]"
+              aria-label="Open menu"
+              onClick={() => setMobileOpen(true)}
+            >
+              <Menu className="size-5 text-charcoal-950" />
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      {/* ── Mobile Drawer ── */}
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetContent side="right" className="w-[85vw] max-w-sm bg-warm-white p-0 overflow-y-auto">
+          <SheetHeader className="p-5 pb-0">
+            <SheetTitle className="text-charcoal-950 font-semibold text-lg">
+              Bharat Electrosafe
+            </SheetTitle>
+          </SheetHeader>
+
+          <nav className="flex flex-col p-5 pt-3 gap-1">
+            {/* Home */}
+            <Link
+              href="/"
+              className="py-3 px-2 text-base font-medium text-charcoal-950 hover:text-yellow-600 transition-colors border-b border-grey-300/50 min-h-[44px]"
+              onClick={() => setMobileOpen(false)}
+            >
+              Home
+            </Link>
+
+            {/* Products Accordion */}
+            <Accordion type="single" collapsible className="w-full border-b border-grey-300/50">
+              <AccordionItem value="products" className="border-b-0">
+                <AccordionTrigger className="text-charcoal-950 font-medium text-base py-3 px-2 min-h-[44px]">
+                  Products
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex flex-col gap-1 pl-4">
+                    {productNavItems.map((p) => (
+                      <Link
+                        key={p.href}
+                        href={p.href}
+                        className="py-2 text-[0.875rem] text-charcoal-800 hover:text-yellow-600 transition-colors min-h-[44px]"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {p.name}
+                      </Link>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+            {/* About Us */}
+            <Link
+              href="/about-us"
+              className="py-3 px-2 text-base font-medium text-charcoal-950 hover:text-yellow-600 transition-colors border-b border-grey-300/50 min-h-[44px]"
+              onClick={() => setMobileOpen(false)}
+            >
+              About Us
+            </Link>
+
+            {/* Contact Us */}
+            <Link
+              href="/contact-us"
+              className="py-3 px-2 text-base font-medium text-charcoal-950 hover:text-yellow-600 transition-colors border-b border-grey-300/50 min-h-[44px]"
+              onClick={() => setMobileOpen(false)}
+            >
+              Contact Us
+            </Link>
+
+            {/* Request a Quote */}
+            <Link
+              href="/contact-us"
+              className="mt-4 flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-charcoal-950 font-semibold text-[0.875rem] px-5 py-3 rounded-md transition-colors min-h-[44px]"
+              onClick={() => setMobileOpen(false)}
+            >
+              Request a Quote
+            </Link>
+
+            {/* Contact info */}
+            <div className="mt-4 pt-4 border-t border-grey-300/50 flex flex-col gap-3">
+              <a
+                href={`mailto:${company.email}`}
+                className="inline-flex items-center gap-2 text-[0.875rem] text-charcoal-800 hover:text-yellow-600 transition-colors min-h-[44px]"
+              >
+                <Mail className="size-4 text-yellow-500" />
+                {company.email}
+              </a>
+              <a
+                href={`tel:${company.phone.replace(/\s/g, '')}`}
+                className="inline-flex items-center gap-2 text-[0.875rem] text-charcoal-800 hover:text-yellow-600 transition-colors min-h-[44px]"
+              >
+                <Phone className="size-4 text-yellow-500" />
+                {company.phone}
+              </a>
+              <a
+                href={contactWhatsApp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-[0.875rem] text-charcoal-800 hover:text-yellow-600 transition-colors min-h-[44px]"
+              >
+                <MessageCircle className="size-4 text-yellow-500" />
+                WhatsApp
+              </a>
+            </div>
+          </nav>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 }

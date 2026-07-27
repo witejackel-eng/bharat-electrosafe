@@ -2599,3 +2599,383 @@ Decision: Project was stable → implement mandatory styling improvements and ne
 - LOW: Replace distributor map placeholder with real SVG India map
 - LOW: Add analytics event tracking for section progress indicator
 - LOW: Consider adding a "Careers" section or "Newsroom" section
+
+---
+
+Task ID: 1
+Agent: foundation-layer-builder
+Task: Phase 1 Foundation — Replace navy/orange theme with white-and-yellow, create data models, remove Prisma, clean config
+
+Work Log:
+- Replaced globals.css entirely: removed all navy/orange CSS variables, utility classes (gradient-text, grain-overlay, floating-shape, dot-grid-bg, border-glow, card-tilt, stagger-fade), and keyframes. Replaced with minimal white-and-yellow design system: CSS variables mapped from brand tokens (--white, --warm-white, --yellow-50 through --yellow-600, --charcoal-950/800, --grey-600/300/150). shadcn/ui semantic variables remapped to the new palette. Added typography scale classes (text-hero-h1, text-page-title, text-section-h2, etc.), minimal animations (fade-up-reveal 500ms, accordion, dropdown-fade, slow-logo-drift), @media (prefers-reduced-motion: reduce) to disable non-essential movement. Manrope font variable (--font-manrope). Skip-to-content accessible link class. Custom scrollbar using yellow/charcoal palette. Container-site max-width 1320px.
+- Updated tailwind.config.ts: removed darkMode "class" key (no dark mode), added brand color tokens directly (white, warm-white, yellow-50→600, charcoal-950/800, grey-600/300/150), kept shadcn/ui semantic mapping via CSS variables, added fontFamily sans pointing to --font-manrope, added maxWidth site 1320px, added minimal keyframes/animations matching globals.css.
+- Rewrote layout.tsx: replaced Geist/Geist_Mono fonts with Manrope via next/font/google (variable --font-manrope). Removed ThemeProvider, LanguageInitScript, Toaster. Removed theme init script (no dark mode). Added viewport export with themeColor #FFFEFA. Added <SkipToContent> link. Updated metadata title to "Bharat Electrosafe | Electrical Insulating Mats Manufacturer".
+- Created src/data/products.ts: comprehensive Product data model with ProductSlug union type (5 slugs), Product interface (with optional insulationClasses/membrane fields for polymorphism), InsulationClassSpec (productCode, classLetter, thickness, workingVoltage, proofVoltage, dielectricStrength), MembraneThicknessOption, ClassCardData, SystemGroup interfaces. 5 products: (1) Electrical Insulating Mats with BES1001/A/2mm/3.3kV/10kV/30kV, BES1002/B/2.5mm/11kV/22kV/45kV, BES1003/C/3mm/33kV/36kV/65kV; (2) Coloured Strip Insulating Mats; (3) Bi-Color Insulating Mats; (4) Auto-Glow / Reflective Band Insulating Mats; (5) BharatMembrane (NO insulation fields, has membraneThicknessOptions 1-5mm, membraneApplications for tunnel/basement waterproofing, IS 15909:2020). Added helpers: getProductBySlug, getProductsBySystem, isMatProduct, isMembraneProduct. Added backward-compatible exports (productSystems, insulationClasses, ProductSystem, InsulationClass) for existing components not yet updated.
+- Created src/data/company.ts: verified company data — name "Bharat Electrosafe", email info@bharatelectrosafe.com, phone +91 7617494968, secondary +91 9667171444, address 704/7th Floor I-thum Tower A Plot A-40 Sector-62 Noida-201309 UP India. NO fake founding dates, NO fake customer counts, NO fake awards.
+- Replaced src/data/clients.ts: placeholder structure with ClientEntry interface (id, name, sector, abbreviation, logo path, logoApproved boolean), 15 client entries with logoApproved: false and note that real logos need client approval. Sector labels exported separately.
+- Created src/data/certificates.ts: typed CertificateDocument interface (id, name, category, issuer, standard, referenceNumber, fileType, fileSize, documentUrl, thumbnailUrl, verified, stamp, issueDate). CertificateCategory union type (bis-licence, erda-report, nth-report, iso-9001, iso-45001, msme, startup-india, zed, other). 8 placeholder certificate entries with verified: false and empty documentUrl/referenceNumber/fileSize fields. Category labels mapping. TraceabilityFields preserved.
+- Deleted prisma/schema.prisma and src/lib/db.ts (master prompt says NO database/Prisma).
+- Installed zod@4.4.3 via bun add.
+- Updated next.config.ts: removed ignoreBuildErrors, set reactStrictMode: true, kept devIndicators: false, kept images unoptimized, added allowedDevOrigins for sandbox preview domain.
+- Added backward-compatible exports to products.ts to prevent existing components from crashing (productSystems, insulationClasses, ProductSystem, InsulationClass).
+- Lint passes: 0 errors, 0 warnings.
+- Dev server: GET / 200, page renders correctly with new white-and-yellow theme.
+
+Files Modified:
+1. src/app/globals.css — complete rewrite (white-and-yellow design system)
+2. tailwind.config.ts — complete rewrite (new color mapping)
+3. src/app/layout.tsx — complete rewrite (Manrope, no dark mode)
+4. src/data/products.ts — complete rewrite (5-product model with backward compat)
+5. src/data/clients.ts — complete rewrite (placeholder with logoApproved)
+6. next.config.ts — updated (reactStrictMode, allowedDevOrigins)
+
+Files Created:
+7. src/data/company.ts — verified company information
+8. src/data/certificates.ts — typed certificate document structure
+
+Files Deleted:
+9. prisma/schema.prisma — removed per master prompt
+10. src/lib/db.ts — removed per master prompt
+
+Issues: None. Dev server running cleanly with 200 status. Backward-compatible exports ensure existing components don't crash while waiting for Phase 2 updates.
+
+---
+Task ID: 2
+Agent: homepage-redesigner
+Task: Redesign homepage and navigation per master prompt Sections 3, 10-11, 20
+
+Work Log:
+- Read all foundation files: globals.css (white-and-yellow theme), tailwind.config.ts (brand tokens), layout.tsx (Manrope font), products.ts (5-product model), company.ts (verified data)
+- Read existing page.tsx (16+ sections), Header.tsx (3 nav items with floating capsule design), Footer.tsx (dark navy design), MobileDrawer.tsx, ProductSystemPanel.tsx
+- Read supporting data files: clients.ts (15 client entries), quality.ts (4 quality docs), applications.ts (6 applications)
+
+Rewrites completed:
+1. **Header.tsx** — Complete rewrite from floating capsule to simple sticky header:
+   - Added top contact bar (pale yellow/warm-grey background, charcoal text, yellow accents for icons)
+   - Shows email (info@bharatelectrosafe.com), phone (+91 7617494968), WhatsApp link
+   - Main header: clean white background, sticky, shadow on scroll
+   - Desktop nav: exactly 4 primary items (Home, Products ▼, About Us, Contact Us)
+   - Products dropdown contains exactly 5 products with proper slugs
+   - "Request a Quote" button links to /contact-us (yellow-500 bg, NOT a dialog)
+   - Mobile: self-contained Sheet drawer with Products accordion (5 items), Home, About Us, Contact Us, Request a Quote, email, phone, WhatsApp
+   - NO orange color, NO floating capsule, NO ThemeToggle, NO LocaleToggle, NO SearchTrigger, NO QuoteButton/QuoteAdmin
+
+2. **Footer.tsx** — Complete rewrite from dark navy to warm-white:
+   - Thin yellow-500 top border
+   - warm-white background, charcoal text
+   - 4 columns: Brand+Intro, Navigation (Home/About Us/Contact Us), Products (5 product links), Contact (phone/email/address/WhatsApp)
+   - Legal links: Privacy Policy (/privacy-policy), Terms (/terms)
+   - Copyright: "© 2024 Bharat Electrosafe. All rights reserved."
+   - NO dark navy, NO newsletter, NO location SEO spam, NO large city list
+
+3. **page.tsx** — Simplified from 16+ sections to exactly 6:
+   - Removed ALL old section imports (StatsBar, VoltageCalculator, WhyChooseUs, etc.)
+   - Removed ALL providers (QuoteProvider, QuoteAdminProvider, ProductDetailProvider, SearchProvider, ApplicationDetailProvider)
+   - Removed ALL UI widgets (ScrollProgressBar, StickyCTABar, QuickNav, SectionProgressIndicator, ScrollToTop, CookieConsent, ChatWidget)
+   - Removed Product and FAQPage structured data (kept only Organization + WebSite)
+   - Removed fake data (foundingDate: 1989, fake address/phone)
+   - New structure: Header → main(6 sections) → Footer
+
+New homepage section components:
+4. **HomeHero.tsx** — Section 1:
+   - Eyebrow: "ELECTRICAL INSULATION AND INDUSTRIAL PROTECTION"
+   - H1: "Certified protection for critical electrical environments."
+   - Supporting copy (31 words): "Electrical insulating mats and engineered protection products for control panels, substations, utilities, industry and infrastructure."
+   - 2 CTAs: "View Products" → /products/electrical-insulating-mats, "Request a Quote" → /contact-us
+   - Proof line: IS 15652:2006, BIS licence, Tested documentation, Custom dimensions
+   - Product image on pale-yellow background
+   - NO slider, NO black background, NO four competing CTAs
+
+5. **ProductRange.tsx** — Section 2:
+   - Heading: "Our product range"
+   - 5 product cards from products.ts data model
+   - Each card: product image placeholder, name, description (max 24 words), "View Product" link
+   - Grid: 3+2 desktop, 2+2+1 tablet, 1 column mobile
+   - NO full specifications inside cards
+
+6. **StandardsTrust.tsx** — Section 3:
+   - Heading: "Documentation that supports technical decisions"
+   - 3 featured document cards from qualityDocuments data
+   - Client logo rail: CSS-only infinite scroll, ~45s cycle, grayscale default, full colour on hover
+   - Link to About Us certification section
+   - Combined standards, certificates, and clients in ONE section
+   - NO separate sections for standards, certificates and clients
+
+7. **CompanyCapability.tsx** — Section 4:
+   - Heading: "Built around safety, quality and application support"
+   - 4 proof points (max 18 words each): Certified products, Voltage classes/dimensions, Custom configurations, Technical support
+   - Company intro (35 words)
+   - Factory image placeholder
+   - Link to About Us
+
+8. **IndustriesApplications.tsx** — Section 5:
+   - Heading: "Industries and applications"
+   - 6 items: Power utilities, Substations/switchrooms, Railways/metro, Oil/gas, Manufacturing, Infrastructure/construction
+   - Each: icon, name, one relevant product label
+   - NO long paragraphs
+
+9. **ContactCTA.tsx** — Section 6:
+   - Heading: "Need help selecting the correct product?"
+   - Supporting copy about sharing voltage, product, dimensions, quantity, location
+   - 3 buttons: Request a Quote (/contact-us), Call Sales (tel link), WhatsApp
+
+CSS additions:
+- Added logo-rail-scroll keyframe and .animate-logo-rail class to globals.css
+- Added .animate-logo-rail to reduced-motion override
+
+Lint: clean (no errors)
+Dev server: compiling and rendering successfully (GET / 200)
+
+Stage Summary:
+- Homepage reduced from 16+ sections to exactly 6 per master prompt
+- Header reduced from 3 nav items to exactly 4 primary items
+- Products dropdown contains exactly 5 products with correct slugs
+- Footer redesigned from dark navy to warm-white/pale-yellow
+- All content word limits respected (hero ≤32, product ≤24, section ≤35, proof ≤18)
+- White-and-yellow theme only, Manrope font, no dark mode
+- All touch targets ≥44px, semantic HTML, proper heading hierarchy
+- All contact info clickable (mailto, tel, WhatsApp)
+- Server Components by default, 'use client' only on Header (state)
+
+---
+Task ID: 3
+Agent: product-pages-builder
+Task: Create 5 product detail pages for Bharat Electrosafe website
+
+Work Log:
+- Read worklog.md and all foundation files (products.ts, company.ts, globals.css, tailwind.config.ts)
+- Read existing component structure: Header, Footer, ProductDetailDialog, ProductSystemPanel, Reveal motion system
+- Extended products.ts Product interface with detail-page fields:
+  - overviewText, benefits, galleryImages (for all products)
+  - matMaterialProperties, matDimensions, matDownloads (for insulating mat products)
+  - membranePhysicalProperties, membraneInstallationNotes, membraneDownloads (for BharatMembrane)
+  - Added new interfaces: MaterialProperty, MatDimensionsInfo, ProductGalleryImage, ProductDownload
+  - Updated exploreLink for bi-colour-insulating-mats → /products/bi-color-insulating-mats
+  - Updated exploreLink for bharatmembrane → /products/bharat-membrane
+  - Added getOtherProducts() helper for related products section
+  - Populated all 5 products with per-product detail content following task spec:
+    * Electrical Insulating Mats: Class A/B/C specs table (BES1001/1002/1003), material properties (tensile strength, elongation, leakage current, insulation resistance, flame retardance, working temp), dimensions (1m width, 10/20m lengths, 2/2.5/3mm thicknesses, black/blue colours)
+    * Coloured Strip: hazard-zone demarcation, boundary marking, safety-path identification, custom strip configuration
+    * Bi-Color: dual-layer surface, wear indication, contrasting upper layer, surface-damage visibility
+    * Auto-Glow/Reflective Band: clearly separated Auto-Glow (photoluminescent, power-loss visibility) vs Reflective Band (reflective, illuminated visibility), "does not glow independently" note
+    * BharatMembrane: IS 15909:2020, 1-5mm thickness options, HDPE properties, tunnel/basement/landfill/reservoir/canal/mining applications, thermal welding installation notes
+- Created ProductGallery client component (src/components/products/ProductGallery.tsx):
+  * Main image with zoom-in hint
+  * Thumbnail selection (manual, no auto-playing carousel)
+  * Simple lightbox overlay for enlarged view
+  * 44px touch targets
+- Created ProductPageLayout server component (src/components/products/ProductPageLayout.tsx):
+  * 12 sections per Section 12 spec: Breadcrumb, Hero, Gallery, Overview, Benefits, Specs Table, Material Properties, Dimensions, Applications, Downloads, Related Products, Quote CTA
+  * Responsive accessible tables with caption, headings, units, tabular numerals, mobile scroll
+  * White-and-yellow theme, Manrope font, charcoal text
+  * Proper semantic HTML with aria labels
+  * Request a Quote CTA → /contact-us
+- Created MembranePageLayout server component (src/components/products/MembranePageLayout.tsx):
+  * 9 sections per Section 17 spec: Hero, Overview, Benefits, Standard, Thickness Options, Properties, Applications, Installation/Welding, Quality/Documents, Related Products, Project Enquiry CTA
+  * NO Class A/B/C table, NO working voltage, NO proof voltage, NO dielectric strength
+  * NO electrical insulation material table
+  * Project Enquiry CTA → /contact-us
+- Created 5 page.tsx files, all as Server Components:
+  * src/app/products/electrical-insulating-mats/page.tsx — SEO title "Electrical Insulating Mats – Class A, B and C | Bharat Electrosafe"
+  * src/app/products/coloured-strip-insulating-mats/page.tsx — SEO title "Coloured Strip Insulating Mats | Bharat Electrosafe"
+  * src/app/products/bi-color-insulating-mats/page.tsx — SEO title "Bi-Color Insulating Mats | Bharat Electrosafe"
+  * src/app/products/auto-glow-reflective-band-insulating-mats/page.tsx — SEO title "Auto-Glow and Reflective Band Insulating Mats | Bharat Electrosafe"
+  * src/app/products/bharat-membrane/page.tsx — SEO title "BharatMembrane PVC Geo-Membrane | Bharat Electrosafe"
+  * Each page includes generateMetadata() with unique title, description, canonical, OG, Twitter
+  * Each page includes Product schema structured data (JSON-LD)
+  * Each page includes BreadcrumbList schema structured data (JSON-LD)
+  * Each page includes visual breadcrumb navigation
+- Ran bun run lint: 0 errors, 0 warnings
+- Verified all 5 pages return HTTP 200
+- Verified BharatMembrane page has NO electrical specs (no "Product Specifications" section, no voltage/dielectric content)
+- Verified homepage still works correctly after products.ts update
+
+Stage Summary:
+- 5 product detail pages created and functional
+- 2 layout templates (ProductPageLayout for insulating mats, MembranePageLayout for BharatMembrane)
+- Extended product data model with all per-product detail content
+- ProductGallery client component for image selection and lightbox
+- All pages use white-and-yellow theme, factual language, responsive accessible tables
+- SEO metadata and structured data for each page
+- Backward-compatible exports in products.ts preserved for existing homepage components
+
+---
+Task ID: 5
+Agent: seo-redirects-security
+Task: SEO infrastructure, legacy redirects, security headers, and contact form API
+
+Work Log:
+- Read worklog.md, company.ts, products.ts, next.config.ts, and layout.tsx for context
+- Verified existing product page routes match the 5-product slugs
+- Verified existing API routes (subscribe, quote, chat) for patterns
+
+Files Created:
+1. src/app/sitemap.ts — Dynamic sitemap using MetadataRoute API with all 10 approved routes
+   - Homepage (priority 1.0, weekly)
+   - 5 product pages (priority 0.8-0.9, monthly)
+   - About-us, Contact-us (priority 0.7, monthly)
+   - Privacy-policy, Terms (priority 0.3, yearly)
+   
+2. src/app/robots.ts — Conditional robots.txt using NEXT_PUBLIC_ALLOW_INDEXING
+   - When false: disallow all (staging/preview mode)
+   - When true: allow all (production after client approval)
+   - Sitemap: https://bharatelectrosafe.com/sitemap.xml
+
+3. src/app/api/contact/route.ts — Full contact form API route
+   - Zod validation schema with all required fields (name, email, message, privacyConsent, honeypot)
+   - Honeypot field (website) — silently rejects bots with fake success
+   - IP rate limiting: max 5 submissions per IP per hour (in-memory)
+   - Payload size limit: 10KB max
+   - HTML sanitization of text fields
+   - Privacy consent required (z.literal(true))
+   - Resend email delivery when RESEND_API_KEY + CONTACT_FROM_EMAIL configured
+   - Honest 503 response when email delivery NOT configured (no fake success)
+   - Alternative contact info (email, phone, WhatsApp) in error responses
+   - Safe error messages (no internal details exposed)
+   - GET endpoint for admin inspection of submission log
+
+4. .env.example — Environment variable documentation
+   - RESEND_API_KEY (optional)
+   - CONTACT_TO_EMAIL=info@bharatelectrosafe.com
+   - CONTACT_FROM_EMAIL (optional)
+   - NEXT_PUBLIC_SITE_URL=https://bharatelectrosafe.com
+   - NEXT_PUBLIC_WHATSAPP_NUMBER=917617494968
+   - NEXT_PUBLIC_ALLOW_INDEXING=false (staging default)
+
+Files Modified:
+5. next.config.ts — Added redirects and security headers
+   - 12 permanent 301 redirects for legacy PHP URLs
+   - Security headers: X-Content-Type-Options, X-Frame-Options, Referrer-Policy,
+     Permissions-Policy, X-XSS-Protection, Content-Security-Policy
+   - CSP allows Next.js scripts, Google Fonts, data URIs, self images
+   - HSTS commented out (enable only after HTTPS is live on domain)
+
+6. src/app/layout.tsx — Updated root layout metadata
+   - Added metadataBase: https://bharatelectrosafe.com
+   - Added canonical URL via alternates.canonical
+   - Added robots metadata (conditional based on NEXT_PUBLIC_ALLOW_INDEXING)
+   - Added noindex/nofollow meta tag in <head> when not indexing
+   - Added Open Graph: url, locale (en_IN)
+   - Added Twitter card metadata
+   - Added contact and address structured metadata
+   - Added creator and publisher fields
+
+Verification:
+- bun run lint: PASS (no errors)
+- Dev server restarted successfully after next.config.ts changes
+- All pages rendering correctly (GET / 200)
+
+---
+Task ID: 4
+Agent: inner-pages-builder
+Task: Create inner pages (About Us, Contact Us, Privacy Policy, Terms, 404) for Bharat Electrosafe website
+
+Work Log:
+- Read worklog.md and all foundation data files (company.ts, products.ts, certificates.ts, clients.ts, applications.ts, globals.css, tailwind.config.ts)
+- Read existing layout, Header, Footer, and homepage components for consistent design patterns
+- Created About Us page (src/app/about-us/page.tsx) — Server Component with 12 sections:
+  1. Company introduction with tagline and detailed description
+  2. What Bharat Electrosafe manufactures — 5 product family cards with images
+  3. Company journey — timeline with 5 factual milestones (no invented founding year)
+  4. Mission and values — 4 pillars (Safety, Quality, Application Support, Documentation)
+  5. Leadership — placeholder with "[Leadership information pending client approval]"
+  6. Manufacturing and testing — placeholder images with Factory icon
+  7. Quality and certifications overview — BIS Licensed, Independently Tested, ISO Certified
+  8. Downloadable certificates and reports — 8 certificate cards from certificates.ts data, all showing "Document verification pending"
+  9. Industries served — 6 industries with detailed descriptions and product links
+  10. Awards and recognition — placeholder "[Award details pending client approval]"
+  11. Client/institutional logo rail — CSS-only infinite scroll using clients.ts data
+  12. Contact CTA — yellow background with "Get in touch" link to /contact-us
+- Organization structured data (accurate only — no fake founding date)
+- BreadcrumbList schema + visual breadcrumb
+
+- Created Contact Us page (src/app/contact-us/page.tsx) — mostly Server Component with 6 sections:
+  1. Contact hero with heading and intro
+  2. Contact details — verified email, primary/secondary phone, WhatsApp, address (all clickable)
+  3. General enquiry and quotation form (ContactForm client component)
+  4. Product selection guidance — table with Class A/B/C voltage, thickness, applications
+  5. Click-to-load map — static placeholder with "Open in Google Maps" and "Get directions" buttons
+  6. Alternative contact actions — Call, Email, WhatsApp buttons on yellow background
+- ContactPoint structured data (verified info only)
+- BreadcrumbList schema + visual breadcrumb
+
+- Created ContactForm component (src/components/contact/ContactForm.tsx) — 'use client':
+  - Required fields: Name, Company, Email, Phone, Enquiry type (dropdown), Product (5 approved products), Message
+  - Conditional quotation fields shown when Enquiry type = "Product Quotation":
+    Product class, Operating voltage, Thickness, Width, Length, Quantity, Required colour/strip, Delivery location, Installation requirement
+  - Honeypot field (hidden website_url input)
+  - Privacy consent checkbox with link to /privacy-policy
+  - Client-side validation with error messages
+  - Success state after submission
+  - Form POSTs to /api/contact (handler will be created separately)
+  - Mobile-friendly: one column, 16px+ inputs, large labels, full-width submit, 44px touch targets
+  - Preserves data after validation errors
+
+- Created Privacy Policy page (src/app/privacy-policy/page.tsx) — Server Component:
+  - Information collection, Use of information, Information protection, Contact regarding privacy, Changes to policy
+  - Effective date placeholder
+  - Professional language, white-and-yellow theme
+  - BreadcrumbList schema + visual breadcrumb
+
+- Created Terms page (src/app/terms/page.tsx) — Server Component:
+  - Use of website, Intellectual property, Limitation of liability, Contact regarding terms, Changes to terms
+  - Effective date placeholder
+  - Professional language, white-and-yellow theme
+  - BreadcrumbList schema + visual breadcrumb
+
+- Created 404 page (src/app/not-found.tsx) — Server Component:
+  - Clean professional design with "404" and "Page not found"
+  - Return to homepage button, Contact us (phone), Contact page link
+  - Helpful links section (Homepage, About Us, Contact Us, Products)
+  - No humor or casual tone
+
+- All pages export generateMetadata() with unique SEO titles, descriptions, canonical, OG, Twitter
+- All pages include Header and Footer from layout imports
+- White-and-yellow theme, Manrope font, charcoal text throughout
+- Responsive mobile-first design with 44px touch targets
+- Semantic HTML, accessibility (ARIA labels, focus states, screen reader content)
+- No dark mode implementation
+
+- Ran bun run lint — no errors
+- Compiled all 4 inner pages successfully (dev log shows 200 responses for /about-us, /contact-us, /privacy-policy, /terms)
+
+Stage Summary:
+- 6 files created:
+  - src/app/about-us/page.tsx (12-section About Us page)
+  - src/app/contact-us/page.tsx (6-section Contact Us page)
+  - src/components/contact/ContactForm.tsx (client form component with conditional fields)
+  - src/app/privacy-policy/page.tsx (Privacy Policy page)
+  - src/app/terms/page.tsx (Terms of Use page)
+  - src/app/not-found.tsx (404 page)
+- All pages use consistent design language from homepage
+- No fabricated data — all placeholders clearly marked with "[...pending client approval]"
+- Structured data uses only verified company information
+- Lint passes clean, all pages compile and render successfully
+
+---
+Task ID: 15 (Major Redesign)
+Agent: main-orchestrator
+Task: Faithful Premium Redesign — Complete restructuring per master prompt
+
+Work Log:
+- Read entire 2486-line master prompt specifying the redesign requirements
+- Phase 1: Foundation — Replaced globals.css with white-and-yellow theme, rewrote tailwind.config.ts with brand tokens (white, warm-white, yellow-50→600, charcoal, grey), rewrote layout.tsx (Manrope font, removed dark mode/i18n, added SkipToContent), created product data model with 5 ProductSlug types, created company.ts with verified info, created certificates.ts, deleted prisma/db.ts, installed zod
+- Phase 2: Homepage — Shortened from 16+ sections to exactly 6 (HomeHero, ProductRange, StandardsTrust, CompanyCapability, IndustriesApplications, ContactCTA). Removed all old section components (20+ files deleted). Replaced navy/orange theme with white-and-yellow. Removed providers (QuoteProvider, SearchProvider, etc.)
+- Phase 3: Product Pages — Created 5 product detail pages with reusable ProductPageLayout and MembranePageLayout templates. Electrical insulating mats correctly show Class A/B/C specs (BES1001/002/003). BharatMembrane does NOT show voltage/dielectric data. Auto-Glow page distinguishes photoluminescent vs reflective. Bi-Color explains wear indication. Each page has SEO metadata, breadcrumbs, JSON-LD, responsive tables
+- Phase 4: Inner Pages — Created About Us (12 sections with company journey, certifications placeholder, client logos, leadership placeholder), Contact Us (6 sections with conditional quotation form, honeypot, privacy consent, click-to-load map), Privacy Policy, Terms, 404 page
+- Phase 5: SEO Infrastructure — Created sitemap.ts, robots.ts (conditional noindex for staging), 12 permanent redirects for legacy PHP URLs, security headers (X-Content-Type-Options, X-Frame-Options, Referrer-Policy, CSP, Permissions-Policy, X-XSS-Protection), .env.example, contact form API route with Zod validation, honeypot, IP rate limiting, payload size limit
+- Phase 6: Cleanup — Verified all old unused components were already removed by subagents. Checked imports to confirm only active components remain (6 home sections, header, footer, contact form, 3 product layout components, 11 shadcn/ui primitives)
+- Browser QA — VLM analysis confirmed: white-and-yellow theme correctly applied, 6 homepage sections visible, charcoal text on white/pale-yellow, Bharat yellow-500 accents, product specs tables properly rendered, BharatMembrane correctly excludes electrical data, all routes return 200, lint passes clean, no console errors
+
+Stage Summary:
+- COMPLETE REDESIGN from navy/orange 16-section homepage to white-and-yellow 6-section faithful premium design
+- 10 routes created: /, 5 product pages, /about-us, /contact-us, /privacy-policy, /terms, + 404
+- Header: 4 nav items (Home, Products▼, About Us, Contact Us) + Request a Quote + top contact bar
+- Footer: warm-white background, thin yellow top border, charcoal text, 4 columns (Navigation, Products, Contact, Legal)
+- All routes verified working (200 status codes)
+- Lint passes with 0 errors
+- No console errors or hydration warnings
+- Master prompt compliant: consistent company name, verified contact info, factual technical data, no invented specs/awards/certificates
+- Placeholder images for product galleries (real assets pending client OneDrive download)
+- Certificate documents marked as "verification pending" (real PDFs pending client approval)
+- NEXT_PUBLIC_ALLOW_INDEXING=false for staging (noindex until client approval)

@@ -1,13 +1,75 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* ──────────────────────────────────────────────
+   Bharat Electrosafe — White & Yellow Design System
+   ────────────────────────────────────────────── */
+
 @custom-variant dark (&:is(.dark *));
 
+/* ── Design Tokens ── */
+:root {
+  /* Brand palette */
+  --white: #FFFFFF;
+  --warm-white: #FFFEFA;
+  --yellow-50: #FFFDF2;
+  --yellow-100: #FFF8D8;
+  --yellow-200: #FFED9A;
+  --yellow-400: #FFD22E;
+  --yellow-500: #FFC400;
+  --yellow-600: #DFAE00;
+  --charcoal-950: #222326;
+  --charcoal-800: #37383C;
+  --grey-600: #6C6D70;
+  --grey-300: #D9D9D6;
+  --grey-150: #ECEBE7;
+
+  /* shadcn/ui semantic mapping — white & yellow */
+  --background: var(--warm-white);
+  --foreground: var(--charcoal-950);
+  --card: var(--white);
+  --card-foreground: var(--charcoal-950);
+  --popover: var(--white);
+  --popover-foreground: var(--charcoal-950);
+  --primary: var(--yellow-500);
+  --primary-foreground: var(--charcoal-950);
+  --secondary: var(--yellow-50);
+  --secondary-foreground: var(--charcoal-950);
+  --muted: var(--grey-150);
+  --muted-foreground: var(--grey-600);
+  --accent: var(--yellow-100);
+  --accent-foreground: var(--charcoal-950);
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: var(--grey-300);
+  --input: var(--grey-300);
+  --ring: var(--yellow-500);
+  --radius: 0.5rem;
+
+  /* Chart colors — warm palette */
+  --chart-1: var(--yellow-500);
+  --chart-2: var(--yellow-400);
+  --chart-3: var(--yellow-200);
+  --chart-4: var(--grey-600);
+  --chart-5: var(--charcoal-800);
+
+  /* Sidebar (unused but required by shadcn) */
+  --sidebar: var(--white);
+  --sidebar-foreground: var(--charcoal-950);
+  --sidebar-primary: var(--yellow-500);
+  --sidebar-primary-foreground: var(--charcoal-950);
+  --sidebar-accent: var(--yellow-50);
+  --sidebar-accent-foreground: var(--charcoal-950);
+  --sidebar-border: var(--grey-300);
+  --sidebar-ring: var(--yellow-500);
+}
+
+/* ── Theme inline mapping for Tailwind v4 ── */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-manrope);
+  --font-mono: var(--font-manrope);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -42,837 +104,239 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Bharat Electrosafe Brand Colors */
-  --color-ivory: #F5F0E8;
-  --color-ivory-light: #FAF7F0;
-  --color-navy: #1B2A4A;
-  --color-navy-light: #2D3E5C;
-  --color-navy-dark: #0F1D35;
-  --color-ink: #1A1A2E;
-  --color-orange: #E8611A;
-  --color-orange-light: #F07830;
-  --color-orange-hover: #D45510;
-  --color-orange-soft: rgba(232, 97, 26, 0.08);
-  --color-steel: #6B7280;
-  --color-steel-light: #9CA3AF;
+  /* Custom brand color tokens for Tailwind */
+  --color-white: #FFFFFF;
+  --color-warm-white: #FFFEFA;
+  --color-yellow-50: #FFFDF2;
+  --color-yellow-100: #FFF8D8;
+  --color-yellow-200: #FFED9A;
+  --color-yellow-400: #FFD22E;
+  --color-yellow-500: #FFC400;
+  --color-yellow-600: #DFAE00;
+  --color-charcoal-950: #222326;
+  --color-charcoal-800: #37383C;
+  --color-grey-600: #6C6D70;
+  --color-grey-300: #D9D9D6;
+  --color-grey-150: #ECEBE7;
 }
 
-:root {
-  --radius: 0.625rem;
-  /* Bharat Electrosafe: Warm Ivory Background */
-  --background: #F5F0E8;
-  --foreground: #1B2A4A;
-  --card: #FFFFFF;
-  --card-foreground: #1B2A4A;
-  --popover: #FFFFFF;
-  --popover-foreground: #1B2A4A;
-  /* Deep Navy Primary */
-  --primary: #1B2A4A;
-  --primary-foreground: #F5F0E8;
-  /* Soft Ivory Secondary */
-  --secondary: #FAF7F0;
-  --secondary-foreground: #1B2A4A;
-  --muted: #E8E3D7;
-  --muted-foreground: #6B7280;
-  /* Safety Orange Accent */
-  --accent: #E8611A;
-  --accent-foreground: #FFFFFF;
-  --destructive: #DC2626;
-  --border: #D4CFC2;
-  --input: #D4CFC2;
-  --ring: #E8611A;
-  --chart-1: #1B2A4A;
-  --chart-2: #E8611A;
-  --chart-3: #6B7280;
-  --chart-4: #2D3E5C;
-  --chart-5: #9CA3AF;
-
-  /* ===== Standardized border radius tokens ===== */
-  --radius-card: 16px;
-  --radius-button: 8px;
-  --radius-pill: 9999px;
-  --radius-input: 8px;
-
-  /* ===== Standardized typography scale (font sizes) =====
-     NOTE: --text-body and --text-meta are reserved for WCAG color
-     tokens below, so the matching font-size tokens use a -size suffix. */
-  --text-h1: 2.75rem;        /* 44px */
-  --text-h2: 2.25rem;        /* 36px */
-  --text-h3: 1.5rem;         /* 24px */
-  --text-body-size: 1rem;    /* 16px */
-  --text-caption: 0.875rem;  /* 14px */
-  --text-meta-size: 0.75rem; /* 12px */
-
-  /* ===== WCAG-compliant text color tokens ===== */
-  --text-body: #374151;            /* AA on ivory bg (was steel #6B7280) */
-  --text-meta: #4B5563;            /* AA medium grey */
-  --text-on-dark: #FFFFFF;         /* pure white for dark sections */
-  --text-on-dark-muted: rgba(255, 255, 255, 0.85); /* was /75 — bump to /85 for AA */
+/* ── Base Reset ── */
+*,
+::before,
+::after {
+  border-color: var(--border);
 }
 
-.dark {
-  --background: #0F1D35;
-  --foreground: #F5F0E8;
-  --card: #1B2A4A;
-  --card-foreground: #F5F0E8;
-  --popover: #1B2A4A;
-  --popover-foreground: #F5F0E8;
-  --primary: #F5F0E8;
-  --primary-foreground: #1B2A4A;
-  --secondary: #2D3E5C;
-  --secondary-foreground: #F5F0E8;
-  --muted: #2D3E5C;
-  --muted-foreground: #9CA3AF;
-  --accent: #E8611A;
-  --accent-foreground: #FFFFFF;
-  --destructive: #DC2626;
-  --border: rgba(255, 255, 255, 0.1);
-  --input: rgba(255, 255, 255, 0.15);
-  --ring: #E8611A;
-  --chart-1: #F5F0E8;
-  --chart-2: #E8611A;
-  --chart-3: #9CA3AF;
-  --chart-4: #2D3E5C;
-  --chart-5: #6B7280;
-
-  /* Dark-mode overrides for WCAG text color tokens */
-  --text-body: #D1D5DB;
-  --text-meta: #9CA3AF;
-  --text-on-dark: #1B2A4A;             /* navy text on light bg in dark mode */
-  --text-on-dark-muted: rgba(27, 42, 74, 0.85);
+html {
+  scroll-behavior: smooth;
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'Manrope', var(--font-geist-sans), system-ui, sans-serif;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Manrope', var(--font-geist-sans), system-ui, sans-serif;
-    font-weight: 600;
-    letter-spacing: -0.02em;
+body {
+  font-family: var(--font-manrope), "Manrope", system-ui, sans-serif;
+  color: var(--foreground);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Typography Scale ── */
+.text-hero-h1 {
+  font-size: clamp(2.75rem, 6vw, 5.8rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.text-page-title {
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.text-section-h2 {
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.text-product-h1 {
+  font-size: clamp(2.25rem, 4.5vw, 4.4rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.text-body-lg {
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.text-body {
+  font-size: 1.03125rem;
+  line-height: 1.6;
+}
+
+.text-small-meta {
+  font-size: 0.84375rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+/* ── Layout Container ── */
+.container-site {
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-site {
+    padding-inline: 1.5rem;
   }
 }
 
-/* Custom utility classes for Bharat Electrosafe */
-@layer utilities {
-  /* ===== Standardized button utility classes ===== */
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 h-10 px-5 rounded-lg bg-orange hover:bg-orange-hover text-white text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2;
+@media (min-width: 1024px) {
+  .container-site {
+    padding-inline: 2rem;
   }
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 h-10 px-5 rounded-lg border border-navy/30 hover:border-navy/50 hover:bg-navy/5 text-navy text-sm font-medium transition-colors;
-  }
-  .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 h-10 px-4 rounded-lg text-navy/70 hover:text-navy hover:bg-navy/5 text-sm font-medium transition-colors;
-  }
+}
 
-  /* ===== Standardized card utility classes ===== */
-  .card-default {
-    @apply rounded-2xl border border-border/60 bg-white p-6 transition-all duration-200;
+/* ── Minimal Animations ── */
+@keyframes fade-up-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
   }
-  .card-default:hover {
-    @apply border-orange/30 shadow-md -translate-y-0.5;
-  }
-  .card-dark {
-    @apply rounded-2xl border border-white/10 bg-navy p-6 text-white;
-  }
-
-  .text-eyebrow {
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-  .text-index {
-    font-size: 3.5rem;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    color: var(--muted);
-    line-height: 1;
-  }
-  .text-spec {
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    font-variant-numeric: tabular-nums;
-  }
-  .safety-line {
-    position: relative;
-  }
-  .safety-line::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 2px;
-    height: 100%;
-    background: var(--accent);
-    transform: translateY(-50%);
-  }
-
-  /* ===== Cycle 11 polish utilities ===== */
-
-  /* Balanced text wrapping for headings (cleaner line breaks on multi-line h2/h3) */
-  .text-balance {
-    text-wrap: balance;
-  }
-  .text-pretty {
-    text-wrap: pretty;
-  }
-
-  /* Consistent card hover lift — usable on any card element */
-  .hover-lift {
-    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
-  }
-  .hover-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px -8px rgba(15, 29, 53, 0.12);
-  }
-  .dark .hover-lift:hover {
-    box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.4);
-  }
-
-  /* Small accent bar — reusable decorative element under section eyebrows */
-  .accent-bar {
-    width: 2.5rem;
-    height: 0.125rem;
-    border-radius: 9999px;
-    background: var(--accent);
-    margin-top: 0.75rem;
-    margin-bottom: 1.25rem;
-  }
-
-  /* Hide horizontal scrollbar (used by QuickNav pill bar) but keep scrollable */
-  .scrollbar-hide {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Frosted glass panel — for cards/overlays on dark sections */
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  /* Decorative corner accent — small L-shaped bracket in top-right */
-  .corner-accent {
-    position: relative;
-  }
-  .corner-accent::after {
-    content: '';
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    width: 0.75rem;
-    height: 0.75rem;
-    border-top: 2px solid var(--accent);
-    border-right: 2px solid var(--accent);
-    opacity: 0.6;
-    transition: opacity 200ms ease, transform 200ms ease;
-  }
-  .corner-accent:hover::after {
+  to {
     opacity: 1;
-    transform: translate(2px, -2px);
-  }
-
-  /* Section number badge — large faded number watermark */
-  .section-number {
-    font-size: 8rem;
-    font-weight: 800;
-    line-height: 1;
-    color: var(--accent);
-    opacity: 0.06;
-    font-variant-numeric: tabular-nums;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  /* Primary button with subtle glow shadow */
-  .btn-primary-glow {
-    @apply inline-flex items-center justify-center gap-2 h-11 px-6 rounded-lg bg-orange hover:bg-orange-hover text-white text-sm font-semibold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2;
-    box-shadow: 0 4px 14px -4px rgba(232, 97, 26, 0.4);
-  }
-  .btn-primary-glow:hover {
-    box-shadow: 0 6px 20px -4px rgba(232, 97, 26, 0.5);
-    transform: translateY(-1px);
-  }
-  .btn-primary-glow:active {
     transform: translateY(0);
   }
+}
 
-  /* Underline-on-hover for inline links */
-  .link-underline {
-    position: relative;
-    transition: color 200ms ease;
-  }
-  .link-underline::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -2px;
-    width: 100%;
-    height: 1px;
-    background: currentColor;
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 250ms ease;
-  }
-  .link-underline:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-
-  /* Focus ring for keyboard navigation on cards */
-  .card-focus:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 4px;
-    border-radius: 16px;
-  }
-
-  /* ===== Cycle 12 styling polish utilities ===== */
-
-  /* Animated gradient text — navy → navy-light → orange */
-  .gradient-text {
-    background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-light) 50%, var(--color-orange) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .dark .gradient-text {
-    background: linear-gradient(135deg, #F5F0E8 0%, #9CA3AF 50%, #E8611A 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* Noise/grain texture overlay — adds subtle film grain */
-  .grain-overlay::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Animated dot-grid background pattern */
-  .dot-grid-bg {
-    background-image: radial-gradient(circle, var(--color-navy) 0.5px, transparent 0.5px);
-    background-size: 24px 24px;
-    opacity: 0.04;
-  }
-  .dark .dot-grid-bg {
-    background-image: radial-gradient(circle, rgba(255,255,255,0.15) 0.5px, transparent 0.5px);
-  }
-
-  /* Animated border glow for cards — subtle orange glow on hover */
-  .border-glow {
-    position: relative;
-  }
-  .border-glow::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    background: linear-gradient(135deg, transparent, var(--color-orange), transparent);
+@keyframes accordion-open {
+  from {
     opacity: 0;
-    transition: opacity 300ms ease;
-    z-index: -1;
+    max-height: 0;
   }
-  .border-glow:hover::before {
-    opacity: 0.15;
+  to {
+    opacity: 1;
+    max-height: var(--accordion-content-height, 500px);
   }
+}
 
-  /* Card tilt micro-animation — subtle perspective shift on hover */
-  .card-tilt {
-    transition: transform 200ms ease;
-    transform-style: preserve-3d;
-  }
-  .card-tilt:hover {
-    transform: perspective(800px) rotateY(-1deg) rotateX(1deg) translateY(-2px);
-  }
-
-  /* Staggered fade-in utility for lists */
-  .stagger-fade > * {
+@keyframes dropdown-fade {
+  from {
     opacity: 0;
-    transform: translateY(8px);
-    animation: stagger-item 400ms ease forwards;
+    transform: translateY(-4px);
   }
-  .stagger-fade > *:nth-child(1) { animation-delay: 0ms; }
-  .stagger-fade > *:nth-child(2) { animation-delay: 80ms; }
-  .stagger-fade > *:nth-child(3) { animation-delay: 160ms; }
-  .stagger-fade > *:nth-child(4) { animation-delay: 240ms; }
-  .stagger-fade > *:nth-child(5) { animation-delay: 320ms; }
-  .stagger-fade > *:nth-child(6) { animation-delay: 400ms; }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Floating geometric shapes animation */
-@keyframes float-shape {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-20px) rotate(5deg); }
-  75% { transform: translateY(10px) rotate(-3deg); }
-}
-.floating-shape {
-  position: absolute;
-  opacity: 0.06;
-  pointer-events: none;
-  animation: float-shape 15s ease-in-out infinite;
+@keyframes slow-logo-drift {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
 }
 
-/* Stagger item fade-in keyframe */
-@keyframes stagger-item {
-  to { opacity: 1; transform: translateY(0); }
+.animate-fade-up {
+  animation: fade-up-reveal 500ms ease-out both;
 }
 
-/* Marquee animation */
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+.animate-dropdown {
+  animation: dropdown-fade 200ms ease-out both;
 }
 
-.animate-marquee {
-  animation: marquee 40s linear infinite;
+.animate-logo-drift {
+  animation: slow-logo-drift 8s ease-in-out infinite;
 }
 
-.animate-marquee:hover {
-  animation-play-state: paused;
+/* ── Logo Rail (CSS-only infinite scroll, ~45s cycle) ── */
+@keyframes logo-rail-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
-/* Reduced motion support */
+.animate-logo-rail {
+  animation: logo-rail-scroll 45s linear infinite;
+}
+
+/* ── Reduced Motion ── */
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee {
-    animation: none;
-  }
-  *, *::before, *::after {
+  *,
+  ::before,
+  ::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  .animate-fade-up,
+  .animate-dropdown,
+  .animate-logo-drift,
+  .animate-logo-rail {
+    animation: none !important;
+  }
 }
 
-/* Custom scrollbar */
+/* ── Selection ── */
+::selection {
+  background: var(--yellow-200);
+  color: var(--charcoal-950);
+}
+
+/* ── Focus Visible ── */
+:focus-visible {
+  outline: 2px solid var(--yellow-500);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── Custom Scrollbar ── */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--muted);
-  border-radius: 3px;
+  background: var(--warm-white);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--steel);
-}
-
-/* Selection styling */
-::selection {
-  background: var(--accent);
-  color: white;
-}
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-  /* Reserve space at the bottom for the sticky CTA bar so anchored sections
-     don't get hidden behind it. The bar is ~72px tall + 16px bottom offset. */
-  scroll-padding-bottom: 96px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
-
-/* Focus visible styles */
-*:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  background: var(--grey-300);
   border-radius: 4px;
 }
 
-/* Hide the Next.js dev indicator (the floating "N" badge in bottom-left) */
-nextjs-portal,
-[data-nextjs-router-dev-tools],
-[data-nextjs-dialog-overlay],
-[data-nextjs-dialog] {
-  display: none !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
+::-webkit-scrollbar-thumb:hover {
+  background: var(--grey-600);
 }
 
-/* ============================================================
-   Dark mode overrides
-   Many Bharat components use brand tokens (text-navy, bg-white,
-   bg-ivory-light, text-steel) directly. In dark mode we remap
-   these to theme-aware values so the same markup reads correctly.
-   ============================================================ */
-.dark {
-  --color-ivory: #0F1D35;
-  --color-ivory-light: #1B2A4A;
-  --color-navy: #F5F0E8;       /* swap: navy text → ivory in dark */
-  --color-navy-light: #2D3E5C;
-  --color-navy-dark: #0A1424;
-  --color-steel: #9CA3AF;       /* brighter steel for dark bg */
-  --color-steel-light: #6B7280;
-  --color-orange-soft: rgba(232, 97, 26, 0.16);
-  --color-border: #2D3E5C;
-}
-
-/* Map brand utility classes to dark-mode-appropriate values */
-.dark .text-navy { color: var(--foreground); }
-.dark .text-navy\/80 { color: rgba(245, 240, 232, 0.8); }
-.dark .text-navy\/70 { color: rgba(245, 240, 232, 0.7); }
-.dark .text-navy\/60 { color: rgba(245, 240, 232, 0.6); }
-.dark .text-steel { color: var(--muted-foreground); }
-
-.dark .bg-white { background-color: var(--card); }
-.dark .bg-white\/50 { background-color: rgba(27, 42, 74, 0.5); }
-.dark .bg-white\/80 { background-color: rgba(27, 42, 74, 0.8); }
-.dark .bg-white\/90 { background-color: rgba(27, 42, 74, 0.9); }
-.dark .bg-white\/95 { background-color: rgba(27, 42, 74, 0.95); }
-.dark .bg-ivory { background-color: var(--background); }
-.dark .bg-ivory-light { background-color: var(--card); }
-.dark .bg-background { background-color: var(--background); }
-
-.dark .border-border { border-color: var(--border); }
-.dark .border-border\/40 { border-color: rgba(255, 255, 255, 0.08); }
-.dark .border-border\/60 { border-color: rgba(255, 255, 255, 0.1); }
-
-/* Header: translucent dark surface in dark mode */
-.dark header .bg-white\/80,
-.dark header [class*="bg-white"] {
-  background-color: rgba(15, 29, 53, 0.85) !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-/* White text on navy stays the same; but navy-bg sections need a slightly
-   lighter surface in dark mode for separation. */
-.dark .bg-navy { background-color: #0A1424; }
-.dark .bg-navy-dark { background-color: #060D1A; }
-.dark .bg-navy-light { background-color: #1B2A4A; }
-
-/* Subtle backgrounds that were "bg-muted" need a dark equivalent */
-.dark .bg-muted { background-color: #1B2A4A; }
-
-/* Subtle "shadow-sm" cards in dark mode need a stronger border instead */
-.dark .shadow-sm { box-shadow: none; }
-.dark .hover\:shadow-md:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); }
-
-/* Outline buttons: border + text colors should adapt */
-.dark .border-navy { border-color: var(--foreground); }
-.dark .border-navy\/30 { border-color: rgba(245, 240, 232, 0.3); }
-.dark .text-navy\/70 { color: rgba(245, 240, 232, 0.7); }
-
-/* Gradient from-navy utility used in product selection cards */
-.dark .from-navy { --tw-gradient-from: #1B2A4A var(--tw-gradient-from-position); }
-.dark .to-navy-dark { --tw-gradient-to: #060D1A var(--tw-gradient-to-position); }
-
-/* Dialog / sheet content uses bg-white by default — override to card */
-.dark [role="dialog"][data-state="open"] > *:first-child,
-.dark [data-state="open"] .bg-white {
-  background-color: var(--card) !important;
-}
-
-/* Inputs in dark mode */
-.dark input,
-.dark textarea,
-.dark select {
-  background-color: rgba(255, 255, 255, 0.04);
-  color: var(--foreground);
-}
-.dark input::placeholder,
-.dark textarea::placeholder {
-  color: rgba(245, 240, 232, 0.4);
-}
-.dark input:focus,
-.dark textarea:focus {
-  border-color: var(--accent);
-}
-
-/* Hero mesh background animation */
-@keyframes hero-mesh-1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -20px) scale(1.1); }
-  66% { transform: translate(-20px, 15px) scale(0.9); }
-}
-@keyframes hero-mesh-2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(-25px, 30px) scale(1.15); }
-  66% { transform: translate(20px, -10px) scale(0.85); }
-}
-
-.animate-hero-mesh-1 {
-  animation: hero-mesh-1 20s ease-in-out infinite;
-}
-.animate-hero-mesh-2 {
-  animation: hero-mesh-2 25s ease-in-out infinite;
-}
-
-/* Safety pulse animation */
-@keyframes safety-pulse {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-
-.animate-safety-pulse {
-  background-size: 200% 100%;
-  animation: safety-pulse 3s linear infinite;
-}
-
-/* Shimmer sweep effect */
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-.animate-shimmer {
-  background-size: 200% auto;
-  animation: shimmer 3s linear infinite;
-}
-
-/* Gentle pulse (not as aggressive as animate-ping) */
-@keyframes gentle-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.3; }
-  50% { transform: scale(1.5); opacity: 0; }
-}
-.animate-gentle-pulse {
-  animation: gentle-pulse 3s ease-in-out infinite;
-}
-
-/* Subtle sonar-style pulse ring for the "Recommended" badge — pulses the
-   box-shadow ring only so the label text contrast is never affected. */
-@keyframes badge-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 97, 26, 0.55); }
-  50% { box-shadow: 0 0 0 6px rgba(232, 97, 26, 0); }
-}
-.animate-badge-pulse {
-  animation: badge-pulse 2.2s ease-in-out infinite;
-}
-
-/* Gradient border sweep */
-@keyframes border-sweep {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-
-/* Slow rotation for decorative elements */
-@keyframes slow-rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-.animate-slow-rotate {
-  animation: slow-rotate 60s linear infinite;
-}
-
-/* Sequential pulse for trust dots */
-@keyframes dot-pulse-1 { 0%, 100% { opacity: 1; } 25% { opacity: 0.5; } }
-@keyframes dot-pulse-2 { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-@keyframes dot-pulse-3 { 0%, 100% { opacity: 1; } 75% { opacity: 0.5; } }
-
-.animate-dot-pulse-1 { animation: dot-pulse-1 3s ease-in-out infinite; }
-.animate-dot-pulse-2 { animation: dot-pulse-2 3s ease-in-out infinite; }
-.animate-dot-pulse-3 { animation: dot-pulse-3 3s ease-in-out infinite; }
-
-/* Counter glow effect */
-.counter-glow {
-  text-shadow: 0 0 30px rgba(232, 97, 26, 0.15);
-}
-.dark .counter-glow {
-  text-shadow: 0 0 30px rgba(232, 97, 26, 0.25);
-}
-
-/* Stat progress fill animation */
-@keyframes stat-progress-fill {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-.stat-progress-bar {
-  transform-origin: left;
-  animation: stat-progress-fill 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Voltage Calculator result fade-in animation */
-@keyframes resultFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Animated underline reveal — for section heading accent */
-@keyframes underline-reveal {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-.animate-underline-reveal {
-  transform-origin: left;
-  animation: underline-reveal 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Morphing border — for interactive card outlines */
-@keyframes morph-border {
-  0%, 100% { border-radius: 16px; }
-  50% { border-radius: 20px 12px 20px 12px; }
-}
-.animate-morph-border {
-  animation: morph-border 6s ease-in-out infinite;
-}
-
-/* Breathing glow — soft pulsing glow effect for badges */
-@keyframes breathing-glow {
-  0%, 100% { box-shadow: 0 0 8px rgba(232, 97, 26, 0.1); }
-  50% { box-shadow: 0 0 16px rgba(232, 97, 26, 0.25); }
-}
-.animate-breathing-glow {
-  animation: breathing-glow 3s ease-in-out infinite;
-}
-.dark .animate-breathing-glow {
-  animation: breathing-glow 3s ease-in-out infinite;
-}
-
-/* Diagonal line decoration — animated diagonal slash for card edges */
-.diagonal-line::before {
-  content: '';
+/* ── Skip to Content (accessible) ── */
+.skip-to-content {
   position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: var(--yellow-500);
+  color: var(--charcoal-950);
+  font-weight: 600;
+  border-radius: 0 0 0.5rem 0.5rem;
+  transition: top 200ms ease;
+}
+
+.skip-to-content:focus {
   top: 0;
-  right: 0;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, transparent 50%, rgba(232, 97, 26, 0.05) 50%);
-  transition: width 300ms ease, height 300ms ease, background 300ms ease;
-  pointer-events: none;
-}
-.diagonal-line:hover::before {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, transparent 50%, rgba(232, 97, 26, 0.08) 50%);
-}
-
-/* Gradient separator animation */
-@keyframes gradient-separator {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.animate-gradient-separator {
-  background-size: 200% 100%;
-  animation: gradient-separator 4s ease-in-out infinite;
-}
-
-/* Conic gradient rotating border for avatar */
-@keyframes conic-rotate {
-  from { --conic-angle: 0deg; }
-  to { --conic-angle: 360deg; }
-}
-
-/* Floating particles */
-@keyframes float-particle-1 {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(30px, -20px); }
-  50% { transform: translate(-10px, -40px); }
-  75% { transform: translate(-30px, -15px); }
-}
-@keyframes float-particle-2 {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(-25px, 30px); }
-  50% { transform: translate(20px, 10px); }
-  75% { transform: translate(35px, -25px); }
-}
-@keyframes float-particle-3 {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(15px, 25px); }
-  50% { transform: translate(-30px, -10px); }
-  75% { transform: translate(-15px, 30px); }
-}
-.animate-float-particle-1 { animation: float-particle-1 20s ease-in-out infinite; }
-.animate-float-particle-2 { animation: float-particle-2 25s ease-in-out infinite; }
-.animate-float-particle-3 { animation: float-particle-3 30s ease-in-out infinite; }
-
-/* Pulse glow for traceability image */
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 97, 26, 0); }
-  50% { box-shadow: 0 0 30px 10px rgba(232, 97, 26, 0.08); }
-}
-.animate-pulse-glow {
-  animation: pulse-glow 4s ease-in-out infinite;
-}
-
-/* Shimmer sweep for text */
-@keyframes text-shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-.animate-text-shimmer {
-  background-size: 200% auto;
-  animation: text-shimmer 2s linear 1;
-}
-
-/* Bar fill animation — for Thickness Comparator bars */
-@keyframes bar-fill {
-  from { width: 0%; }
-  to { width: var(--bar-fill-width, 100%); }
-}
-.animate-bar-fill {
-  animation: bar-fill 800ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Add reduced-motion overrides for new animations */
-@media (prefers-reduced-motion: reduce) {
-  .animate-shimmer,
-  .animate-gentle-pulse,
-  .animate-badge-pulse,
-  .animate-slow-rotate,
-  .animate-gradient-separator,
-  .animate-float-particle-1,
-  .animate-float-particle-2,
-  .animate-float-particle-3,
-  .animate-pulse-glow,
-  .animate-text-shimmer,
-  .animate-dot-pulse-1,
-  .animate-dot-pulse-2,
-  .animate-dot-pulse-3,
-  .animate-underline-reveal,
-  .animate-bar-fill,
-  .animate-morph-border,
-  .animate-breathing-glow,
-  .floating-shape,
-  .card-tilt,
-  .border-glow::before,
-  .stagger-fade > * {
-    animation: none !important;
-    transition: none !important;
-  }
-  .card-tilt:hover {
-    transform: none !important;
-  }
-  .stagger-fade > * {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-  .diagonal-line::before {
-    transition: none !important;
-  }
 }
