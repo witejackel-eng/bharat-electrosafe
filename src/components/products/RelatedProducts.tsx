@@ -1,8 +1,8 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { ImageFrame } from '@/components/ui/ImageFrame';
 import { getProductBySlug, products } from '@/data/products';
 import type { ProductData } from '@/data/products';
 import { cn } from '@/lib/utils';
@@ -51,13 +51,14 @@ export function RelatedProducts({ product }: RelatedProductsProps) {
                 accentColors[rp.slug] ?? 'border-be-grey-250'
               )}
             >
-              {/* Image-led card */}
-              <div className="relative">
-                <ImageFrame
-                  slotId={rp.heroSlotId}
+              {/* Image-led card — real product image */}
+              <div className="relative aspect-[16/10] overflow-hidden bg-be-cream">
+                <Image
+                  src={rp.images.thumbnail}
                   alt={`${rp.name} — product image`}
-                  aspectRatio="landscape"
-                  className="border-0 rounded-none"
+                  fill
+                  className="object-contain p-2"
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
 

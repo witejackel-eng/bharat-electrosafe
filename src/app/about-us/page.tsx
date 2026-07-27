@@ -5,13 +5,10 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
 import AboutIntro from '@/components/about/AboutIntro';
-import AboutStats from '@/components/about/AboutStats';
-import ProductOverview from '@/components/about/ProductOverview';
 import CompanyLeadership from '@/components/about/CompanyLeadership';
-import CompanyTimeline from '@/components/about/CompanyTimeline';
-import ManufacturingQuality from '@/components/about/ManufacturingQuality';
-import CertificatesAwardsMedia from '@/components/about/CertificatesAwardsMedia';
-import IndustriesClientsCTA from '@/components/about/IndustriesClientsCTA';
+import ManufacturingValues from '@/components/about/ManufacturingValues';
+import AwardsCertifications from '@/components/about/AwardsCertifications';
+import AboutCTA from '@/components/about/AboutCTA';
 
 export default function AboutUsPage() {
   const revealRef = useRef<boolean>(false);
@@ -45,14 +42,16 @@ export default function AboutUsPage() {
     <div className="min-h-screen flex flex-col bg-be-warm-white">
       <Header />
       <main className="flex-1">
+        {/* 1. Company intro + key facts */}
         <AboutIntro />
-        <AboutStats />
-        <ProductOverview />
+        {/* 2. Leadership */}
         <CompanyLeadership />
-        <CompanyTimeline />
-        <ManufacturingQuality />
-        <CertificatesAwardsMedia />
-        <IndustriesClientsCTA />
+        {/* 3. Manufacturing, values, capability */}
+        <ManufacturingValues />
+        {/* 4. Awards, certifications, org references */}
+        <AwardsCertifications />
+        {/* 5. CTA */}
+        <AboutCTA />
       </main>
       <Footer />
       <BackToTop />

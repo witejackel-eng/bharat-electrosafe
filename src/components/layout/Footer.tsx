@@ -42,10 +42,6 @@ const products: ProductNavItem[] = [
     name: 'BharatMembrane',
     href: '/products/bharat-membrane',
   },
-  {
-    name: 'BharatHydro Seal',
-    href: '/products/bharat-hydro-seal',
-  },
 ];
 
 const navLinks = [
@@ -73,8 +69,8 @@ export function Footer() {
           <div className="flex flex-col gap-4">
             <Link href="/" className="flex items-center gap-2.5" aria-label="Bharat Electrosafe — Home">
               <Image
-                src="/logo.svg"
-                alt="Bharat Electrosafe logo"
+                src="/images/brand/bharat-electrosafe-logo.webp"
+                alt="Bharat Electrosafe"
                 width={32}
                 height={32}
                 priority
@@ -212,8 +208,8 @@ export function Footer() {
           <div className="flex flex-col gap-3">
             <Link href="/" className="flex items-center gap-2.5" aria-label="Bharat Electrosafe — Home">
               <Image
-                src="/logo.svg"
-                alt="Bharat Electrosafe logo"
+                src="/images/brand/bharat-electrosafe-logo.webp"
+                alt="Bharat Electrosafe"
                 width={32}
                 height={32}
                 priority

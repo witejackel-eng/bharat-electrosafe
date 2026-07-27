@@ -39,14 +39,14 @@ export const company = {
     cmL: 'CM/L:8800129617',
     iec: 'IEC 61111',
     membraneStandard: 'IS 15909:2020',
-    hydroStandard: 'IS 15058-2002',
+
   },
 
   // Only qualified, source-supported claims
   stats: [
-    { value: '6', label: 'Product Families' },
+    { value: '5', label: 'Product Families' },
     { value: 'A · B · C', label: 'Insulation Classes' },
-    { value: 'IS 15652:2006', label: 'Certified Standard' },
+    { value: 'IS 15652:2006', label: 'Governing Standard' },
     { value: '11+', label: 'Countries Served' },
   ],
 
