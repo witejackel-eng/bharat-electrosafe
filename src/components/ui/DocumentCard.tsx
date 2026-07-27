@@ -1,6 +1,7 @@
 'use client';
 
 import { Eye, Download } from 'lucide-react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { TechnicalBadge } from './TechnicalBadge';
 import { EmptyMediaFallback } from './EmptyMediaFallback';
@@ -14,6 +15,7 @@ interface DocumentCardProps {
   reference?: string;
   previewUrl?: string;
   downloadUrl?: string;
+  thumbnail?: string;
   className?: string;
 }
 
@@ -24,6 +26,7 @@ export function DocumentCard({
   reference,
   previewUrl,
   downloadUrl,
+  thumbnail,
   className,
 }: DocumentCardProps) {
   return (
@@ -35,7 +38,17 @@ export function DocumentCard({
     >
       {/* Thumbnail area */}
       <div className="relative aspect-[4/3] overflow-hidden">
-        <EmptyMediaFallback label={name} slotId={`doc-${name}`} />
+        {thumbnail ? (
+          <Image
+            src={thumbnail}
+            alt={`${type} — ${name}`}
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          />
+        ) : (
+          <EmptyMediaFallback label={name} slotId={`doc-${name}`} />
+        )}
       </div>
 
       {/* Content */}
