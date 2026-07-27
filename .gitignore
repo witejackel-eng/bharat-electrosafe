@@ -52,3 +52,16 @@ prompt
 server.log
 # Skills directory
 /skills/
+# Proprietary client asset archive and private working files.
+# The archive is the source for scripts/build-assets.mjs; only the
+# sanitised derivatives under public/ are ever committed.
+bharatsafe/
+BharatSafe/
+bharat-safe/
+client-assets-source/
+.private-bharatsafe-audit/
+.client-work/
+private-assets/
+asset-working/
+**/Thumbs.db
+
