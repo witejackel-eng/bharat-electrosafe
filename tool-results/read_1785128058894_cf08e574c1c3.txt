@@ -1,0 +1,1460 @@
+     1→# Z.ai Master Prompt — Bharat Electrosafe Client-Ready Layout and Visual Rebuild
+     2→
+     3→Work directly inside the existing project:
+     4→
+     5→**GitHub repository:**  
+     6→https://github.com/witejackel-eng/bharat-electrosafe
+     7→
+     8→**Current preview:**  
+     9→https://bharat-electrosafe.vercel.app/
+    10→
+    11→**Original website and factual reference:**  
+    12→https://bharatelectrosafe.com/index.php
+    13→
+    14→---
+    15→
+    16→# 1. ROLE
+    17→
+    18→Act as a senior creative director, industrial B2B UX designer, brand-system designer, conversion strategist and production-grade Next.js engineer.
+    19→
+    20→This task is about **layout, visual hierarchy, page composition, responsive art direction and production finishing**.
+    21→
+    22→Do not perform the proprietary `bharatsafe` asset audit in this task.
+    23→
+    24→Claude Code will later inspect, select and allocate the proprietary assets.
+    25→
+    26→Your responsibility now is to make the complete website look polished enough to show the client immediately, using:
+    27→
+    28→1. Assets already present in the public repository
+    29→2. Assets already publicly available on the existing Bharat Electrosafe website
+    30→3. Carefully designed neutral visual fallback blocks only when no usable public image exists
+    31→
+    32→Do not leave broken image boxes.
+    33→
+    34→Do not wait for future assets before completing the design.
+    35→
+    36→Build stable asset slots so Claude can later replace the temporary public images without changing the layout.
+    37→
+    38→---
+    39→
+    40→# 2. CURRENT WEBSITE ASSESSMENT
+    41→
+    42→The current website has a useful white-and-yellow direction, but it still looks like an unfinished development build.
+    43→
+    44→The current screenshots reveal these problems:
+    45→
+    46→- Broken product-card images on the homepage
+    47→- Broken manufacturing image
+    48→- Product cards feel like basic bordered boxes
+    49→- Homepage sections are visually similar and lack hierarchy
+    50→- The header looks generic
+    51→- The footer is functional but not premium
+    52→- The About Us page is too long, too sparse and visually fragmented
+    53→- Leadership cards contain empty or placeholder visuals
+    54→- Manufacturing and testing cards feel like placeholders
+    55→- Certificate cards are small and repetitive
+    56→- Contact page has too much vertical space and weak composition
+    57→- Contact form occupies only a narrow portion of the page
+    58→- Product-selection guidance is visually detached from the form
+    59→- Product page has excessive vertical length
+    60→- Product gallery repeats the same large image
+    61→- Technical content is broken into too many full-width sections
+    62→- Related-product cards are too small and repetitive
+    63→- The product-page final CTA uses a dark section that conflicts with the approved calm white-and-yellow theme
+    64→- Some table headings are visually heavy
+    65→- There is insufficient visual difference between page types
+    66→- The site still feels like a wireframe with real text added
+    67→
+    68→Do not apply another small styling pass.
+    69→
+    70→Recompose the pages into clear, premium, editorially controlled experiences.
+    71→
+    72→---
+    73→
+    74→# 3. PROJECT BOUNDARIES
+    75→
+    76→## Keep the approved structure
+    77→
+    78→Main header:
+    79→
+    80→- Home
+    81→- Products
+    82→- About Us
+    83→- Contact Us
+    84→- Request a Quote button
+    85→
+    86→Products dropdown:
+    87→
+    88→1. Electrical Insulating Mats
+    89→2. Coloured Strip Insulating Mats
+    90→3. Bi-Color Insulating Mats
+    91→4. Auto-Glow / Reflective Band Insulating Mats
+    92→5. BharatMembrane
+    93→
+    94→Approved routes:
+    95→
+    96→```text
+    97→/
+    98→├── /products/electrical-insulating-mats
+    99→├── /products/coloured-strip-insulating-mats
+   100→├── /products/bi-color-insulating-mats
+   101→├── /products/auto-glow-reflective-band-insulating-mats
+   102→├── /products/bharat-membrane
+   103→├── /about-us
+   104→├── /contact-us
+   105→├── /privacy-policy
+   106→├── /terms
+   107→└── custom 404
+   108→```
+   109→
+   110→Do not add more top-level navigation pages.
+   111→
+   112→Do not add more products.
+   113→
+   114→Do not build a CMS.
+   115→
+   116→Do not build an ecommerce checkout.
+   117→
+   118→Do not redesign the business.
+   119→
+   120→---
+   121→
+   122→# 4. DESIGN GOAL
+   123→
+   124→The final website should feel like a custom ₹1 lakh industrial corporate website.
+   125→
+   126→It must communicate:
+   127→
+   128→- Technical competence
+   129→- Product confidence
+   130→- Manufacturing credibility
+   131→- Documentation readiness
+   132→- Safety expertise
+   133→- Professional enquiry handling
+   134→
+   135→The website should feel expensive because of:
+   136→
+   137→- Strong hierarchy
+   138→- Authentic product presentation
+   139→- Refined spacing
+   140→- Consistent typography
+   141→- Controlled yellow usage
+   142→- Excellent mobile composition
+   143→- Clear page storytelling
+   144→- Subtle motion
+   145→- Careful component finishing
+   146→
+   147→It should not feel expensive by adding more sections, shadows, animations or decorative elements.
+   148→
+   149→---
+   150→
+   151→# 5. VISUAL SYSTEM
+   152→
+   153→## 5.1 Colour palette
+   154→
+   155→Maintain the original Bharat Electrosafe white-and-yellow character.
+   156→
+   157→Use:
+   158→
+   159→```css
+   160→--white: #FFFFFF;
+   161→--warm-white: #FFFEF9;
+   162→--cream: #FFFDF3;
+   163→--yellow-50: #FFFBE8;
+   164→--yellow-100: #FFF4BE;
+   165→--yellow-400: #FFD43B;
+   166→--yellow-500: #FFC400;
+   167→--yellow-600: #DFAA00;
+   168→--charcoal-950: #242426;
+   169→--charcoal-800: #38383A;
+   170→--grey-650: #66666A;
+   171→--grey-400: #A9A9A5;
+   172→--grey-250: #D8D7D1;
+   173→--grey-150: #ECEBE5;
+   174→```
+   175→
+   176→Sample the final yellow from the existing approved logo.
+   177→
+   178→## 5.2 Colour rules
+   179→
+   180→- White and warm white should dominate
+   181→- Pale yellow should define sections gently
+   182→- Strong yellow should be used for actions and small accents
+   183→- Charcoal should carry all primary text
+   184→- Grey should carry metadata and borders
+   185→- Avoid large black or navy sections
+   186→- Avoid blue footers
+   187→- Avoid strong gradients
+   188→- Avoid glowing effects
+   189→- Avoid glassmorphism
+   190→- Avoid multiple competing accent colours
+   191→
+   192→## 5.3 Typography
+   193→
+   194→Use one clean sans-serif family.
+   195→
+   196→Preferred:
+   197→
+   198→- Manrope
+   199→- DM Sans
+   200→- Inter
+   201→
+   202→Use one family consistently.
+   203→
+   204→Suggested scale:
+   205→
+   206→```css
+   207→Hero H1:
+   208→clamp(3rem, 6vw, 5.75rem)
+   209→
+   210→Page H1:
+   211→clamp(2.6rem, 5vw, 4.75rem)
+   212→
+   213→Section H2:
+   214→clamp(2.1rem, 4vw, 3.6rem)
+   215→
+   216→Product H1:
+   217→clamp(2.45rem, 4.6vw, 4.3rem)
+   218→
+   219→Card title:
+   220→1.05rem to 1.25rem
+   221→
+   222→Body large:
+   223→1.125rem
+   224→
+   225→Body:
+   226→1rem
+   227→
+   228→Metadata:
+   229→0.8rem to 0.875rem
+   230→```
+   231→
+   232→Do not make all headings oversized.
+   233→
+   234→Control line lengths.
+   235→
+   236→Hero headings should generally remain under 12 words.
+   237→
+   238→## 5.4 Spacing
+   239→
+   240→Use an 8px spacing system.
+   241→
+   242→Desktop:
+   243→
+   244→- Major section padding: 104–144px
+   245→- Supporting section padding: 72–96px
+   246→- Container width: 1280–1360px
+   247→- Page horizontal padding: 32–56px
+   248→
+   249→Tablet:
+   250→
+   251→- Major section padding: 80–104px
+   252→- Horizontal padding: 28–40px
+   253→
+   254→Mobile:
+   255→
+   256→- Major section padding: 64–80px
+   257→- Horizontal padding: 20–24px
+   258→
+   259→Do not leave huge blank areas caused by missing images.
+   260→
+   261→---
+   262→
+   263→# 6. GLOBAL COMPONENT SYSTEM
+   264→
+   265→Create or refine these primitives:
+   266→
+   267→```text
+   268→src/components/ui/
+   269→├── SectionHeader.tsx
+   270→├── Eyebrow.tsx
+   271→├── PrimaryButton.tsx
+   272→├── SecondaryButton.tsx
+   273→├── TextLink.tsx
+   274→├── ImageFrame.tsx
+   275→├── TechnicalBadge.tsx
+   276→├── DocumentCard.tsx
+   277→├── LogoRail.tsx
+   278→├── DataTable.tsx
+   279→├── FeatureList.tsx
+   280→├── PageIntro.tsx
+   281→└── EmptyMediaFallback.tsx
+   282→```
+   283→
+   284→Do not wrap every piece of content in a card.
+   285→
+   286→Use cards only for:
+   287→
+   288→- Products
+   289→- Documents
+   290→- Awards
+   291→- Contact methods
+   292→- Related products
+   293→
+   294→Use spacing and typography for everything else.
+   295→
+   296→---
+   297→
+   298→# 7. ASSET SLOT SYSTEM
+   299→
+   300→Claude will replace assets later.
+   301→
+   302→Create stable slots now.
+   303→
+   304→Every major visual must use a slot ID.
+   305→
+   306→Examples:
+   307→
+   308→```text
+   309→HOME-HERO-01
+   310→HOME-PRODUCT-EIM-01
+   311→HOME-PRODUCT-CSIM-01
+   312→HOME-PRODUCT-BCIM-01
+   313→HOME-PRODUCT-AGRIM-01
+   314→HOME-PRODUCT-BM-01
+   315→HOME-CAPABILITY-01
+   316→ABOUT-LEADERSHIP-01
+   317→ABOUT-MANUFACTURING-01
+   318→ABOUT-TESTING-01
+   319→ABOUT-AWARD-01
+   320→PRODUCT-EIM-HERO-01
+   321→PRODUCT-EIM-GALLERY-01
+   322→PRODUCT-CSIM-HERO-01
+   323→PRODUCT-BCIM-DIAGRAM-01
+   324→PRODUCT-AGRIM-LOWLIGHT-01
+   325→PRODUCT-BM-HERO-01
+   326→```
+   327→
+   328→Create:
+   329→
+   330→```text
+   331→src/data/asset-slots.ts
+   332→docs/ASSET_SLOT_SPECIFICATION.md
+   333→```
+   334→
+   335→Each slot should define:
+   336→
+   337→- Current public fallback path
+   338→- Alt text
+   339→- Desktop aspect ratio
+   340→- Mobile aspect ratio
+   341→- Object position
+   342→- Future replacement category
+   343→
+   344→Do not reference the private `bharatsafe` folder.
+   345→
+   346→## Broken-image rule
+   347→
+   348→No `<img>` or `Image` component may render a broken source.
+   349→
+   350→Before rendering an image:
+   351→
+   352→- Confirm the path exists
+   353→- Provide a public fallback
+   354→- Use a designed `EmptyMediaFallback` only as a final fallback
+   355→
+   356→The fallback should look intentional:
+   357→
+   358→- Pale-yellow field
+   359→- Small product/category label
+   360→- Subtle technical line pattern
+   361→- No word “placeholder”
+   362→- No broken-image icon
+   363→
+   364→---
+   365→
+   366→# 8. HEADER REDESIGN
+   367→
+   368→The current header is too generic.
+   369→
+   370→Create a polished two-level header.
+   371→
+   372→## Top contact strip
+   373→
+   374→Height:
+   375→
+   376→- Approximately 28–32px desktop
+   377→- Hidden or simplified on mobile
+   378→
+   379→Content:
+   380→
+   381→- Email
+   382→- Primary phone
+   383→- WhatsApp
+   384→
+   385→Style:
+   386→
+   387→- Warm-white or pale-yellow
+   388→- Small charcoal text
+   389→- Thin bottom border
+   390→- No black background
+   391→- No heavy icons
+   392→
+   393→## Main header
+   394→
+   395→Height:
+   396→
+   397→- 72–80px desktop
+   398→- 64–72px mobile
+   399→
+   400→Structure:
+   401→
+   402→```text
+   403→[ Logo + name ]        Home   Products ▼   About Us   Contact Us        [ Request a Quote ]
+   404→```
+   405→
+   406→Visual treatment:
+   407→
+   408→- White background
+   409→- Soft bottom border
+   410→- Very subtle shadow after scroll
+   411→- Sticky
+   412→- Compact scroll state
+   413→- No floating glass panel
+   414→- No large rounded capsule header
+   415→- No experimental interaction
+   416→
+   417→## Product dropdown
+   418→
+   419→Create a refined wide dropdown.
+   420→
+   421→Desktop:
+   422→
+   423→- Two or three columns
+   424→- Five products
+   425→- Small thumbnail
+   426→- Product name
+   427→- One-line use
+   428→- View all products not required
+   429→
+   430→Do not render a plain vertical list with thick borders.
+   431→
+   432→Mobile:
+   433→
+   434→- Accordion
+   435→- Clear five product links
+   436→- Large touch targets
+   437→
+   438→---
+   439→
+   440→# 9. HOMEPAGE REDESIGN
+   441→
+   442→The homepage must be client-presentable now.
+   443→
+   444→Use exactly six primary sections.
+   445→
+   446→---
+   447→
+   448→## SECTION 1 — HERO
+   449→
+   450→Create a high-quality editorial hero.
+   451→
+   452→Desktop:
+   453→
+   454→- 55% copy
+   455→- 45% media
+   456→- Minimum height approximately 650–720px
+   457→- Vertically centred
+   458→- Warm-white background
+   459→- Subtle pale-yellow media field
+   460→
+   461→Copy:
+   462→
+   463→Eyebrow:
+   464→
+   465→**ELECTRICAL INSULATION AND INDUSTRIAL PROTECTION**
+   466→
+   467→H1:
+   468→
+   469→**Certified protection for critical electrical environments.**
+   470→
+   471→Supporting text:
+   472→
+   473→**Electrical insulating mats and engineered protection products for control panels, substations, utilities, industry and infrastructure.**
+   474→
+   475→Primary CTA:
+   476→
+   477→**View Products**
+   478→
+   479→Secondary CTA:
+   480→
+   481→**Request a Quote**
+   482→
+   483→Proof line:
+   484→
+   485→- IS 15652:2006
+   486→- BIS licence
+   487→- Tested documentation
+   488→- Custom dimensions
+   489→
+   490→Visual:
+   491→
+   492→- Use current valid public product asset
+   493→- Preserve visible product detail
+   494→- No broken image
+   495→- No generic worker illustration
+   496→- No Class A/B/C text floating randomly over the image
+   497→- If Class labels are used, align them in a restrained technical legend below the image
+   498→
+   499→Mobile:
+   500→
+   501→- Copy first
+   502→- CTA buttons visible before long scroll
+   503→- Media immediately after CTA
+   504→- Proof line wraps cleanly
+   505→
+   506→---
+   507→
+   508→## SECTION 2 — PRODUCT RANGE
+   509→
+   510→Heading:
+   511→
+   512→**Our product range**
+   513→
+   514→Supporting line:
+   515→
+   516→**Five product families, each designed around a specific protection requirement.**
+   517→
+   518→Use a premium editorial 3+2 layout.
+   519→
+   520→Desktop:
+   521→
+   522→- First row: three cards
+   523→- Second row: two wider cards
+   524→- Cards have varied but controlled proportions
+   525→- Images occupy 58–65% of card height
+   526→- Text remains concise
+   527→
+   528→Tablet:
+   529→
+   530→- Two columns
+   531→- Fifth card spans two columns only when visually balanced
+   532→
+   533→Mobile:
+   534→
+   535→- One column
+   536→- Image ratio approximately 16:10 or 4:3
+   537→
+   538→Every card:
+   539→
+   540→- Real current public image or intentional fallback
+   541→- Product name
+   542→- One sentence
+   543→- View Product
+   544→- Subtle yellow line or index
+   545→- Gentle hover image scale
+   546→
+   547→Do not show broken image alt text.
+   548→
+   549→Do not use identical repeated images for three products.
+   550→
+   551→---
+   552→
+   553→## SECTION 3 — DOCUMENTATION AND TRUST
+   554→
+   555→Heading:
+   556→
+   557→**Documentation that supports technical decisions**
+   558→
+   559→Supporting text:
+   560→
+   561→**Standards, licences, testing records and company credentials organised for faster technical evaluation.**
+   562→
+   563→Layout:
+   564→
+   565→Desktop:
+   566→
+   567→- Left: three featured document cards
+   568→- Right or below: moving institutional logo rail
+   569→
+   570→Document cards:
+   571→
+   572→- Larger than current
+   573→- Thumbnail area
+   574→- Document type
+   575→- Name
+   576→- Issuer
+   577→- Reference/standard
+   578→- Preview
+   579→- Download PDF
+   580→- Hide unavailable buttons
+   581→
+   582→Logo rail:
+   583→
+   584→- Slow
+   585→- Accessible
+   586→- Grayscale to colour on hover/focus
+   587→- Names visible on mobile
+   588→- No public disclaimer paragraph
+   589→- Use neutral heading
+   590→
+   591→Do not create a tiny row of acronyms that looks unfinished.
+   592→
+   593→---
+   594→
+   595→## SECTION 4 — CAPABILITY
+   596→
+   597→Heading:
+   598→
+   599→**Built around safety, quality and application support**
+   600→
+   601→Use a balanced split layout.
+   602→
+   603→Left:
+   604→
+   605→- Authentic current public company/manufacturing image or intentional fallback
+   606→
+   607→Right:
+   608→
+   609→- Short company paragraph
+   610→- Four proof points
+   611→- About Us link
+   612→
+   613→Proof points:
+   614→
+   615→- Certified and tested products
+   616→- Classes A, B and C
+   617→- Custom dimensions and configurations
+   618→- Technical documentation and enquiry support
+   619→
+   620→Do not use four generic icon cards followed by a broken image.
+   621→
+   622→---
+   623→
+   624→## SECTION 5 — INDUSTRIES AND APPLICATIONS
+   625→
+   626→Heading:
+   627→
+   628→**Industries and applications**
+   629→
+   630→Use a visual mosaic or compact editorial list.
+   631→
+   632→Applications:
+   633→
+   634→- Power utilities
+   635→- Substations and switchrooms
+   636→- Railways and metro
+   637→- Oil and gas
+   638→- Manufacturing
+   639→- Infrastructure and construction
+   640→
+   641→Desktop:
+   642→
+   643→- Three-column visual/list arrangement
+   644→
+   645→Mobile:
+   646→
+   647→- Two columns only if readable
+   648→- Otherwise one column
+   649→
+   650→Use very short copy.
+   651→
+   652→Do not make six identical bordered text boxes with tiny icons.
+   653→
+   654→---
+   655→
+   656→## SECTION 6 — FINAL CTA
+   657→
+   658→Use a pale-yellow full-width section.
+   659→
+   660→Heading:
+   661→
+   662→**Need help selecting the correct product?**
+   663→
+   664→Copy:
+   665→
+   666→**Share your operating voltage, dimensions, quantity and delivery location.**
+   667→
+   668→Actions:
+   669→
+   670→- Request a Quote
+   671→- Call Sales
+   672→- WhatsApp
+   673→
+   674→No dark footer-like CTA.
+   675→
+   676→No section after this except the footer.
+   677→
+   678→---
+   679→
+   680→# 10. ABOUT US PAGE REDESIGN
+   681→
+   682→The current About Us page is too long and fragmented.
+   683→
+   684→Rebuild it into six primary chapters.
+   685→
+   686→---
+   687→
+   688→## CHAPTER 1 — PAGE INTRO
+   689→
+   690→Desktop:
+   691→
+   692→- 55/45 split
+   693→- Left: page title and concise introduction
+   694→- Right: company/product visual
+   695→
+   696→H1:
+   697→
+   698→**About Bharat Electrosafe**
+   699→
+   700→Supporting paragraph:
+   701→
+   702→Maximum 80–110 words.
+   703→
+   704→Do not begin with a long wall of text.
+   705→
+   706→---
+   707→
+   708→## CHAPTER 2 — WHAT THE COMPANY MANUFACTURES
+   709→
+   710→Show the five approved products in a compact visual overview.
+   711→
+   712→Use:
+   713→
+   714→- One large lead product
+   715→- Four smaller product links
+   716→
+   717→Do not repeat the homepage’s exact card layout.
+   718→
+   719→---
+   720→
+   721→## CHAPTER 3 — COMPANY, MISSION AND LEADERSHIP
+   722→
+   723→Combine:
+   724→
+   725→- Short company journey
+   726→- Mission and values
+   727→- Leadership
+   728→
+   729→Do not create a long vertical timeline unless verified and visually meaningful.
+   730→
+   731→Leadership:
+   732→
+   733→- Three balanced profiles
+   734→- Proper image frames
+   735→- Consistent crop
+   736→- Name
+   737→- Role
+   738→- Short relevant biography
+   739→- No empty circles
+   740→
+   741→Until Claude replaces images:
+   742→
+   743→- Use current public leadership asset if available
+   744→- Otherwise use a refined monogram portrait fallback
+   745→
+   746→No broken image.
+   747→
+   748→---
+   749→
+   750→## CHAPTER 4 — MANUFACTURING, TESTING AND QUALITY
+   751→
+   752→Use one major visual composition.
+   753→
+   754→Desktop:
+   755→
+   756→- Large image
+   757→- Supporting two smaller image slots
+   758→- Short verified copy
+   759→- Three technical proof rows
+   760→
+   761→Do not show three pale placeholder cards with icons.
+   762→
+   763→---
+   764→
+   765→## CHAPTER 5 — CERTIFICATES, AWARDS AND MEDIA
+   766→
+   767→Combine related credibility content.
+   768→
+   769→### Certificates
+   770→
+   771→- Responsive document grid
+   772→- Three columns desktop
+   773→- Two tablet
+   774→- One mobile
+   775→- Larger thumbnails
+   776→- Clear Preview and Download
+   777→- No tiny text
+   778→- No repeated empty icon panels
+   779→
+   780→### Awards
+   781→
+   782→- Two or three real cards
+   783→- Image-led
+   784→- Short factual captions
+   785→
+   786→### Industry Participation & Media
+   787→
+   788→Include:
+   789→
+   790→- Plast India 2026 video
+   791→- Make in India Conclave interview
+   792→
+   793→Use YouTube facade.
+   794→
+   795→No iframe before interaction.
+   796→
+   797→---
+   798→
+   799→## CHAPTER 6 — INDUSTRIES, CLIENTS AND CTA
+   800→
+   801→Show:
+   802→
+   803→- Industries served
+   804→- Client/institutional logo rail
+   805→- Contact CTA
+   806→
+   807→Do not add a separate “Sectors we serve” section after “Industries served” if both repeat the same content.
+   808→
+   809→Merge them.
+   810→
+   811→---
+   812→
+   813→# 11. CONTACT US PAGE REDESIGN
+   814→
+   815→The current Contact page is too vertically long and underuses desktop width.
+   816→
+   817→Rebuild into four chapters.
+   818→
+   819→---
+   820→
+   821→## CHAPTER 1 — PAGE INTRO AND CONTACT METHODS
+   822→
+   823→Desktop:
+   824→
+   825→- 45% intro
+   826→- 55% contact-method grid
+   827→
+   828→Show:
+   829→
+   830→- Email
+   831→- Primary phone
+   832→- Secondary phone
+   833→- WhatsApp
+   834→- Address
+   835→
+   836→Use refined cards with enough whitespace.
+   837→
+   838→Do not use a huge empty hero area.
+   839→
+   840→---
+   841→
+   842→## CHAPTER 2 — ENQUIRY AND QUOTATION
+   843→
+   844→Desktop:
+   845→
+   846→- 7/5 split
+   847→
+   848→Left:
+   849→
+   850→- Form
+   851→
+   852→Right:
+   853→
+   854→- Product-selection guidance
+   855→- Class A/B/C compact comparison
+   856→- Direct call/WhatsApp help
+   857→
+   858→This is better than placing guidance far below the form.
+   859→
+   860→Form width should not remain narrow on desktop.
+   861→
+   862→Use logical two-column fields:
+   863→
+   864→- Name / Company
+   865→- Email / Phone
+   866→- Enquiry type / Product
+   867→
+   868→Message full width.
+   869→
+   870→Conditional fields appear only when needed.
+   871→
+   872→Mobile:
+   873→
+   874→- One column
+   875→- Guidance below form
+   876→
+   877→---
+   878→
+   879→## CHAPTER 3 — OFFICE LOCATION
+   880→
+   881→Desktop:
+   882→
+   883→- 5/7 split
+   884→- Address and directions on left
+   885→- Click-to-load map on right
+   886→
+   887→Do not use a tiny map placeholder floating alone.
+   888→
+   889→---
+   890→
+   891→## CHAPTER 4 — FINAL DIRECT CONTACT CTA
+   892→
+   893→Use pale yellow.
+   894→
+   895→Keep actions:
+   896→
+   897→- Call
+   898→- Email
+   899→- WhatsApp
+   900→
+   901→Do not use a full bright-yellow wall with low contrast.
+   902→
+   903→---
+   904→
+   905→# 12. PRODUCT PAGE REDESIGN
+   906→
+   907→The current product page is too long and repetitive.
+   908→
+   909→Reduce it to eight primary chapters.
+   910→
+   911→---
+   912→
+   913→## CHAPTER 1 — PRODUCT HERO
+   914→
+   915→Desktop:
+   916→
+   917→- 46% content
+   918→- 54% media
+   919→
+   920→Content:
+   921→
+   922→- Breadcrumb
+   923→- Standard badges
+   924→- Product H1
+   925→- Short introduction
+   926→- Three quick facts
+   927→- Request Quote
+   928→- Download Datasheet if real
+   929→
+   930→Media:
+   931→
+   932→- Main product image
+   933→- Two small supporting thumbnails
+   934→- No repeated giant image below
+   935→
+   936→Mobile:
+   937→
+   938→- H1
+   939→- Main image
+   940→- Quick facts
+   941→- CTAs
+   942→
+   943→---
+   944→
+   945→## CHAPTER 2 — PRODUCT OVERVIEW
+   946→
+   947→Use a split layout:
+   948→
+   949→- Application image
+   950→- Overview text
+   951→- Key functional benefits
+   952→
+   953→Do not make Overview and Key Benefits separate large sections with excessive whitespace.
+   954→
+   955→---
+   956→
+   957→## CHAPTER 3 — SPECIFICATIONS
+   958→
+   959→Use a refined technical table.
+   960→
+   961→Style:
+   962→
+   963→- Pale-yellow table header
+   964→- Charcoal text
+   965→- White rows
+   966→- Soft borders
+   967→- No black header
+   968→- Sticky first column only when useful
+   969→- Mobile scroll affordance
+   970→
+   971→---
+   972→
+   973→## CHAPTER 4 — MATERIAL AND DIMENSIONS
+   974→
+   975→Combine:
+   976→
+   977→- Material properties
+   978→- Dimensions
+   979→- Colours
+   980→- Surface patterns
+   981→- Installation
+   982→
+   983→Use:
+   984→
+   985→- Two-column layout desktop
+   986→- Accordion or stacked sections mobile
+   987→
+   988→Do not create two separate long full-width tables unless necessary.
+   989→
+   990→---
+   991→
+   992→## CHAPTER 5 — APPLICATIONS
+   993→
+   994→Use:
+   995→
+   996→- One installed-use image
+   997→- Five concise applications
+   998→- Pale-yellow supporting field
+   999→
+  1000→No oversized empty area.
+  1001→
+  1002→---
+  1003→
+  1004→## CHAPTER 6 — DOCUMENTS
+  1005→
+  1006→Show only real documents.
+  1007→
+  1008→- Datasheet
+  1009→- Certificate
+  1010→- Test report
+  1011→- Installation guide
+  1012→
+  1013→Hide unavailable items.
+  1014→
+  1015→---
+  1016→
+  1017→## CHAPTER 7 — RELATED PRODUCTS
+  1018→
+  1019→Show three related products, not four tiny cards.
+  1020→
+  1021→Use larger image-led cards.
+  1022→
+  1023→Make each visually distinct.
+  1024→
+  1025→---
+  1026→
+  1027→## CHAPTER 8 — QUOTE CTA
+  1028→
+  1029→Use warm-white or pale-yellow.
+  1030→
+  1031→Do not use a black/dark section.
+  1032→
+  1033→Heading:
+  1034→
+  1035→**Request a quote for [Product Name]**
+  1036→
+  1037→Actions:
+  1038→
+  1039→- Request a Quote
+  1040→- Call Sales
+  1041→
+  1042→---
+  1043→
+  1044→# 13. PRODUCT-SPECIFIC PAGE DIFFERENTIATION
+  1045→
+  1046→Do not use exactly the same content composition for all products.
+  1047→
+  1048→## Electrical Insulating Mats
+  1049→
+  1050→Emphasise:
+  1051→
+  1052→- Class A/B/C
+  1053→- Working voltage
+  1054→- Thickness
+  1055→- Surface patterns
+  1056→- Installed electrical environments
+  1057→
+  1058→## Coloured Strip Mats
+  1059→
+  1060→Emphasise:
+  1061→
+  1062→- Boundary marking
+  1063→- Strip configuration
+  1064→- Hazard zoning
+  1065→- Installed pathways
+  1066→
+  1067→## Bi-Color Mats
+  1068→
+  1069→Emphasise:
+  1070→
+  1071→- Contrasting layer
+  1072→- Wear visibility
+  1073→- Colour combinations
+  1074→- Layer diagram
+  1075→
+  1076→## Auto-Glow / Reflective Band
+  1077→
+  1078→Emphasise:
+  1079→
+  1080→- Two variants
+  1081→- Daylight and low-light comparison
+  1082→- Glow versus reflection
+  1083→- Installed emergency guidance
+  1084→
+  1085→## BharatMembrane
+  1086→
+  1087→Use a separate template:
+  1088→
+  1089→1. Hero
+  1090→2. Material and thickness
+  1091→3. Applications
+  1092→4. Properties
+  1093→5. Installation/joining
+  1094→6. Documents
+  1095→7. Project enquiry
+  1096→
+  1097→No electrical table.
+  1098→
+  1099→---
+  1100→
+  1101→# 14. FOOTER REDESIGN
+  1102→
+  1103→Use warm-white or pale-yellow.
+  1104→
+  1105→Desktop:
+  1106→
+  1107→- Four columns
+  1108→- Brand
+  1109→- Navigation
+  1110→- Products
+  1111→- Contact
+  1112→
+  1113→Bottom:
+  1114→
+  1115→- Copyright
+  1116→- Privacy
+  1117→- Terms
+  1118→
+  1119→No blue footer.
+  1120→
+  1121→No large location list.
+  1122→
+  1123→No tiny unreadable text.
+  1124→
+  1125→Mobile:
+  1126→
+  1127→- Clear stacked groups
+  1128→- 16px minimum body text
+  1129→- Sufficient spacing
+  1130→
+  1131→---
+  1132→
+  1133→# 15. MINIMAL MOTION
+  1134→
+  1135→Use a consistent motion system.
+  1136→
+  1137→## Reveal
+  1138→
+  1139→- Opacity 0 → 1
+  1140→- TranslateY 10–14px → 0
+  1141→- 500–600ms
+  1142→- Trigger once
+  1143→
+  1144→## Hover
+  1145→
+  1146→- Image scale 1.015
+  1147→- Card translateY -2px
+  1148→- Arrow translateX 4px
+  1149→- Border becomes yellow
+  1150→
+  1151→## Header
+  1152→
+  1153→- Compact after scroll
+  1154→- Smooth 250–350ms
+  1155→
+  1156→## Logo rail
+  1157→
+  1158→- Slow continuous CSS movement
+  1159→- Pause on hover/focus
+  1160→- Reduced-motion static grid
+  1161→
+  1162→Do not use:
+  1163→
+  1164→- Parallax
+  1165→- Scroll-jacking
+  1166→- Large staggers
+  1167→- Animated counters
+  1168→- 3D
+  1169→- WebGL
+  1170→- Autoplay sliders
+  1171→- Heavy animation library
+  1172→
+  1173→---
+  1174→
+  1175→# 16. RESPONSIVE ART DIRECTION
+  1176→
+  1177→Test all pages.
+  1178→
+  1179→## Mobile
+  1180→
+  1181→- 320×568
+  1182→- 360×800
+  1183→- 390×844
+  1184→- 430×932
+  1185→
+  1186→## Tablet
+  1187→
+  1188→- 600×960
+  1189→- 768×1024
+  1190→- 820×1180
+  1191→- 1024×1366
+  1192→- 1180×820
+  1193→
+  1194→## Desktop
+  1195→
+  1196→- 1280×800
+  1197→- 1440×900
+  1198→- 1920×1080
+  1199→
+  1200→Requirements:
+  1201→
+  1202→- No broken images
+  1203→- No horizontal overflow
+  1204→- Header never collides
+  1205→- Product dropdown works
+  1206→- Mobile drawer works
+  1207→- Tables remain readable
+  1208→- Product gallery works with touch
+  1209→- Form uses 16px inputs
+  1210→- Hero image crop remains useful
+  1211→- Certificate cards are one column on mobile
+  1212→- Footer remains readable
+  1213→- CTA buttons remain at least 44px high
+  1214→- No giant empty spaces
+  1215→
+  1216→---
+  1217→
+  1218→# 17. SEO AND CONTENT SAFETY
+  1219→
+  1220→Keep existing factual content unless clearly wrong.
+  1221→
+  1222→Do not invent new claims.
+  1223→
+  1224→Ensure:
+  1225→
+  1226→- Unique metadata
+  1227→- Correct company name
+  1228→- Correct contact information
+  1229→- Correct canonical paths
+  1230→- Correct product names
+  1231→- Breadcrumbs
+  1232→- Sitemap
+  1233→- Robots
+  1234→- Legacy redirects
+  1235→- Favicon
+  1236→- Open Graph image
+  1237→- Accurate structured data
+  1238→
+  1239→Do not expose future proprietary asset names.
+  1240→
+  1241→Use stable public asset paths.
+  1242→
+  1243→---
+  1244→
+  1245→# 18. SECURITY AND PERFORMANCE
+  1246→
+  1247→Verify:
+  1248→
+  1249→- No TypeScript build ignoring
+  1250→- No lint ignoring
+  1251→- React strict mode
+  1252→- Server-side validation
+  1253→- Rate limiting
+  1254→- Honeypot
+  1255→- Security headers
+  1256→- Safe errors
+  1257→- No private paths
+  1258→- No missing image requests
+  1259→- No unnecessary large client bundle
+  1260→
+  1261→Performance:
+  1262→
+  1263→- `next/image`
+  1264→- Correct `sizes`
+  1265→- Priority only for hero
+  1266→- Lazy loading
+  1267→- One font
+  1268→- No preloaded PDFs
+  1269→- Click-to-load YouTube
+  1270→- Click-to-load map
+  1271→- No duplicate giant images
+  1272→- Server Components by default
+  1273→
+  1274→---
+  1275→
+  1276→# 19. CODE ORGANISATION
+  1277→
+  1278→Recommended new structure:
+  1279→
+  1280→```text
+  1281→src/components/
+  1282→├── home/
+  1283→│   ├── HomeHero.tsx
+  1284→│   ├── ProductRange.tsx
+  1285→│   ├── TrustDocuments.tsx
+  1286→│   ├── CapabilitySection.tsx
+  1287→│   ├── IndustryApplications.tsx
+  1288→│   └── HomeCTA.tsx
+  1289→├── about/
+  1290→│   ├── AboutIntro.tsx
+  1291→│   ├── ProductOverview.tsx
+  1292→│   ├── CompanyLeadership.tsx
+  1293→│   ├── ManufacturingQuality.tsx
+  1294→│   ├── CertificatesAwardsMedia.tsx
+  1295→│   └── IndustriesClientsCTA.tsx
+  1296→├── contact/
+  1297→│   ├── ContactIntro.tsx
+  1298→│   ├── ContactMethods.tsx
+  1299→│   ├── EnquiryQuoteLayout.tsx
+  1300→│   ├── SelectionGuidance.tsx
+  1301→│   └── OfficeLocation.tsx
+  1302→├── products/
+  1303→│   ├── ProductHero.tsx
+  1304→│   ├── ProductOverview.tsx
+  1305→│   ├── ProductSpecifications.tsx
+  1306→│   ├── ProductMaterialDimensions.tsx
+  1307→│   ├── ProductApplications.tsx
+  1308→│   ├── ProductDocuments.tsx
+  1309→│   ├── RelatedProducts.tsx
+  1310→│   └── ProductCTA.tsx
+  1311→├── documents/
+  1312→├── media/
+  1313→├── layout/
+  1314→└── ui/
+  1315→```
+  1316→
+  1317→Do not keep old component boundaries if they force the weak layout.
+  1318→
+  1319→Delete unused old components only after confirming they are no longer referenced.
+  1320→
+  1321→---
+  1322→
+  1323→# 20. IMPLEMENTATION WORKFLOW
+  1324→
+  1325→1. Pull latest repository
+  1326→2. Run current project
+  1327→3. Capture baseline screenshots
+  1328→4. Create branch:
+  1329→
+  1330→```text
+  1331→client-ready-layout-rebuild
+  1332→```
+  1333→
+  1334→5. Fix broken image paths first
+  1335→6. Build global visual primitives
+  1336→7. Rebuild header and footer
+  1337→8. Rebuild homepage
+  1338→9. Rebuild About Us
+  1339→10. Rebuild Contact Us
+  1340→11. Rebuild reusable product layout
+  1341→12. Create separate BharatMembrane layout
+  1342→13. Test mobile and tablet
+  1343→14. Run lint
+  1344→15. Run type-check
+  1345→16. Run production build
+  1346→17. Capture final screenshots
+  1347→18. Push branch
+  1348→19. Open pull request
+  1349→20. Update Vercel preview if access exists
+  1350→
+  1351→---
+  1352→
+  1353→# 21. COMMIT PLAN
+  1354→
+  1355→Suggested commits:
+  1356→
+  1357→```text
+  1358→fix: remove broken media paths and add stable asset fallbacks
+  1359→design: establish refined white and yellow visual system
+  1360→feat: rebuild header footer and responsive navigation
+  1361→feat: rebuild client-ready homepage layout
+  1362→feat: recompose about us company credibility experience
+  1363→feat: redesign contact and quotation journey
+  1364→refactor: simplify and improve product page architecture
+  1365→feat: create dedicated BharatMembrane page layout
+  1366→fix: complete tablet mobile and accessibility polish
+  1367→perf: optimise media loading and remove duplicate payload
+  1368→seo: verify metadata structured data and redirects
+  1369→docs: add asset slots and final visual QA report
+  1370→```
+  1371→
+  1372→---
+  1373→
+  1374→# 22. FINAL ACCEPTANCE CRITERIA
+  1375→
+  1376→The work is complete only when:
+  1377→
+  1378→- No broken image appears anywhere
+  1379→- Homepage looks complete without private assets
+  1380→- Product cards contain visible media
+  1381→- Manufacturing/capability visual is present
+  1382→- About page leadership area looks intentional
+  1383→- Certificate cards look professional
+  1384→- Media participation section is visually integrated
+  1385→- Contact form uses desktop width properly
+  1386→- Product-selection guidance is integrated beside the form
+  1387→- Product page no longer repeats the same giant image twice
+  1388→- Product page is significantly shorter
+  1389→- Technical tables use pale yellow, not black
+  1390→- Related products are larger and fewer
+  1391→- Final product CTA is not dark
+  1392→- Footer matches the white-and-yellow theme
+  1393→- Mobile and tablet feel separately designed
+  1394→- All approved routes work
+  1395→- Lint passes
+  1396→- Type-check passes
+  1397→- Build passes
+  1398→- Vercel preview is ready to show the client
+  1399→
+  1400→---
+  1401→
+  1402→# 23. FINAL REPORT
+  1403→
+  1404→Return:
+  1405→
+  1406→## Layout transformation
+  1407→
+  1408→- Homepage
+  1409→- Header
+  1410→- Footer
+  1411→- About Us
+  1412→- Contact Us
+  1413→- Product pages
+  1414→- BharatMembrane
+  1415→
+  1416→## Broken media fixes
+  1417→
+  1418→List every broken image path corrected.
+  1419→
+  1420→## Asset slots
+  1421→
+  1422→List the slots prepared for Claude’s future proprietary asset integration.
+  1423→
+  1424→## Responsive QA
+  1425→
+  1426→List viewports tested and issues fixed.
+  1427→
+  1428→## Build
+  1429→
+  1430→- Lint
+  1431→- Type-check
+  1432→- Production build
+  1433→
+  1434→## Git
+  1435→
+  1436→- Branch
+  1437→- Commit hashes
+  1438→- Pull request URL
+  1439→
+  1440→## Deployment
+  1441→
+  1442→- Preview URL
+  1443→- Deployment status
+  1444→
+  1445→Only report verified results.
+  1446→
+  1447→---
+  1448→
+  1449→# FINAL EXECUTION INSTRUCTION
+  1450→
+  1451→Do not audit or integrate the private `bharatsafe` folder in this task.
+  1452→
+  1453→Do not wait for Claude.
+  1454→
+  1455→Use the current public repository assets and safe fallbacks to make the full layout client-presentable now.
+  1456→
+  1457→Rebuild the visual hierarchy, page composition, responsive layouts and component finishing.
+  1458→
+  1459→The site must look complete before the final proprietary assets are allocated.
+  1460→
