@@ -36,8 +36,18 @@ export const metadata: Metadata = {
     'Noida',
   ],
   icons: {
-    icon: "/images/brand/bharat-electrosafe-logo.webp",
-    apple: "/images/brand/bharat-electrosafe-logo.webp",
+    icon: [
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/images/brand/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/images/brand/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/images/brand/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      { url: '/images/brand/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/images/brand/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
   },
   alternates: {
     canonical: '/',
