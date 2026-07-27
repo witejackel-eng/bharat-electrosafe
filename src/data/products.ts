@@ -52,6 +52,8 @@ export interface Document {
   available: boolean;
   /** Local path under /public when a genuine document exists. */
   href?: string;
+  /** Thumbnail image path for the document card preview. */
+  thumbnail?: string;
 }
 
 /**
@@ -211,6 +213,7 @@ const matDocuments: Document[] = [
     issuer: 'ERDA',
     available: true,
     href: '/documents/certifications/erda-test-report-2-5mm.pdf',
+    thumbnail: '/images/documents/doc-test-report.webp',
   },
   {
     type: 'Certificate',
@@ -218,18 +221,21 @@ const matDocuments: Document[] = [
     issuer: 'Certification body',
     available: true,
     href: '/documents/certifications/iso-9001-2015-qms.pdf',
+    thumbnail: '/images/documents/doc-certificate.webp',
   },
   {
     type: 'Licence',
     name: 'BIS Licence CM/L:8800129617 — IS 15652:2006',
     issuer: 'Bureau of Indian Standards',
     available: false,
+    thumbnail: '/images/documents/doc-licence.webp',
   },
   {
     type: 'Datasheet',
     name: 'Product datasheet — available on request',
     issuer: 'Bharat Electrosafe',
     available: false,
+    thumbnail: '/images/documents/doc-datasheet.webp',
   },
 ];
 
@@ -855,6 +861,7 @@ const bharatMembrane: ProductData = {
       issuer: 'Certification body',
       available: true,
       href: '/documents/certifications/iso-9001-2015-qms.pdf',
+      thumbnail: '/images/documents/doc-certificate.webp',
     },
     {
       type: 'Certificate',
@@ -862,18 +869,21 @@ const bharatMembrane: ProductData = {
       issuer: 'Certification body',
       available: true,
       href: '/documents/certifications/iso-14001-2015-ems.pdf',
+      thumbnail: '/images/documents/doc-certificate.webp',
     },
     {
       type: 'Approval',
       name: 'BIS approval — IS 15909:2020',
       issuer: 'Bureau of Indian Standards',
       available: false,
+      thumbnail: '/images/documents/doc-approval.webp',
     },
     {
       type: 'Datasheet',
       name: 'Product datasheet — available on request',
       issuer: 'Bharat Electrosafe',
       available: false,
+      thumbnail: '/images/documents/doc-datasheet.webp',
     },
   ],
   relatedProducts: [

@@ -9,10 +9,10 @@ interface ProductDocumentsProps {
 }
 
 export function ProductDocuments({ product }: ProductDocumentsProps) {
-  // Only show documents that are available
-  const availableDocs = product.documents.filter((doc) => doc.available);
+  // Show all documents (available and unavailable — unavailable ones display without download buttons)
+  const docs = product.documents;
 
-  if (availableDocs.length === 0) {
+  if (docs.length === 0) {
     return null;
   }
 
@@ -27,12 +27,13 @@ export function ProductDocuments({ product }: ProductDocumentsProps) {
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {availableDocs.map((doc) => (
+            {docs.map((doc) => (
               <DocumentCard
                 key={doc.name}
                 type={doc.type}
                 name={doc.name}
                 issuer={doc.issuer}
+                thumbnail={doc.thumbnail}
               />
             ))}
           </div>
