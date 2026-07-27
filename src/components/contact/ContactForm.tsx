@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { products } from '@/data/products';
 
-/* ── Product dropdown items (exactly 5 approved products) ── */
+/* ── Product dropdown items, derived from the catalogue ── */
 const productOptions = products.map((p) => ({
   value: p.slug,
   label: p.name,
@@ -15,11 +15,12 @@ const enquiryTypes = [
   { value: 'quotation', label: 'Product Quotation' },
 ];
 
-/* ── Product class options ── */
+/* ── Product class options ──
+   Values must be the bare class letters the API allow-list accepts. */
 const classOptions = [
-  { value: 'class-a', label: 'Class A' },
-  { value: 'class-b', label: 'Class B' },
-  { value: 'class-c', label: 'Class C' },
+  { value: 'A', label: 'Class A' },
+  { value: 'B', label: 'Class B' },
+  { value: 'C', label: 'Class C' },
   { value: 'not-applicable', label: 'Not applicable' },
 ];
 
@@ -44,6 +45,8 @@ interface FormData {
   installationRequirement: string;
   // Privacy consent
   privacyConsent: boolean;
+  /** Honeypot. Hidden from people; bots fill it and are silently dropped. */
+  website: string;
 }
 
 const initialFormData: FormData = {
@@ -64,7 +67,15 @@ const initialFormData: FormData = {
   deliveryLocation: '',
   installationRequirement: '',
   privacyConsent: false,
+  website: '',
 };
+
+/* ── Direct contact routes returned by the API on failure ── */
+interface ContactAlternatives {
+  email: string;
+  phone: string;
+  whatsapp: string;
+}
 
 /* ── Validation errors type ── */
 interface FormErrors {
@@ -76,6 +87,9 @@ interface FormErrors {
   product?: string;
   message?: string;
   privacyConsent?: string;
+  /* The API validates optional quotation fields too, so it can return keys
+     that have no dedicated slot above. */
+  [field: string]: string | undefined;
 }
 
 export function ContactForm() {
@@ -84,6 +98,11 @@ export function ContactForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  /* Direct contact routes the server offers when it cannot take the enquiry. */
+  const [alternatives, setAlternatives] = useState<ContactAlternatives | null>(null);
+  /* Captured once on mount. The server rejects submissions completed faster
+     than a person plausibly could. */
+  const [formLoadedAt] = useState(() => Date.now());
 
   const isQuotation = formData.enquiryType === 'quotation';
 
@@ -159,12 +178,27 @@ export function ContactForm() {
         const res = await fetch('/api/contact', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({ ...formData, formLoadedAt }),
         });
 
+        const data = await res.json().catch(() => null);
+
         if (!res.ok) {
-          const data = await res.json().catch(() => ({ error: 'Submission failed' }));
-          setSubmitError(data.error || 'Submission failed. Please try again.');
+          /* Map any server-side field errors back onto the form so the user
+             can see which input to correct, then show the server's message. */
+          if (data?.errors && typeof data.errors === 'object') {
+            const mapped: FormErrors = {};
+            for (const [field, messages] of Object.entries(data.errors)) {
+              if (Array.isArray(messages) && messages.length > 0) {
+                mapped[field as keyof FormErrors] = String(messages[0]);
+              }
+            }
+            if (Object.keys(mapped).length > 0) setErrors(mapped);
+          }
+          setSubmitError(
+            data?.message ?? 'We could not submit your enquiry. Please contact us directly.'
+          );
+          setAlternatives(data?.alternatives ?? null);
           return;
         }
 
@@ -175,7 +209,7 @@ export function ContactForm() {
         setSubmitting(false);
       }
     },
-    [formData, validate]
+    [formData, formLoadedAt, validate]
   );
 
   /* ── Success state ── */
@@ -202,14 +236,15 @@ export function ContactForm() {
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
       {/* ── Honeypot field (hidden from humans, bots will fill) ── */}
       <div className="absolute opacity-0 h-0 overflow-hidden" aria-hidden="true">
-        <label htmlFor="website_url">Website URL</label>
+        <label htmlFor="website">Website URL</label>
         <input
           type="text"
-          id="website_url"
-          name="website_url"
+          id="website"
+          name="website"
           tabIndex={-1}
           autoComplete="off"
-          defaultValue=""
+          value={formData.website}
+          onChange={handleChange}
         />
       </div>
 
@@ -563,8 +598,43 @@ export function ContactForm() {
 
       {/* ── Submit Error ── */}
       {submitError && (
-        <div className="p-4 border border-destructive/40 rounded-md bg-destructive/5 text-[0.9375rem] text-destructive">
-          {submitError}
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="p-4 border border-destructive/40 rounded-md bg-destructive/5 text-[0.9375rem] text-destructive"
+        >
+          <p>{submitError}</p>
+
+          {/* When the server cannot accept the enquiry it returns the direct
+              contact routes. Surfacing them here means a failed submission
+              never leaves the customer with no way to reach the company. */}
+          {alternatives && (
+            <ul className="mt-3 flex flex-col gap-1.5 text-charcoal-800">
+              <li>
+                <a className="underline hover:no-underline" href={`mailto:${alternatives.email}`}>
+                  {alternatives.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  className="underline hover:no-underline"
+                  href={`tel:${alternatives.phone.replace(/\s/g, '')}`}
+                >
+                  {alternatives.phone}
+                </a>
+              </li>
+              <li>
+                <a
+                  className="underline hover:no-underline"
+                  href={alternatives.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  WhatsApp
+                </a>
+              </li>
+            </ul>
+          )}
         </div>
       )}
 

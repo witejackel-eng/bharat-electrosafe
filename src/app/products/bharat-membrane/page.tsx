@@ -3,15 +3,15 @@
    Route: /products/bharat-membrane
    SEO title: "BharatMembrane PVC Geo-Membrane | Bharat Electrosafe"
 
-   IMPORTANT: This page uses MembranePageLayout — a DIFFERENT template
-   from the insulating-mat products. NO Class A/B/C table, NO working
-   voltage, NO proof voltage, NO dielectric strength, NO electrical
-   insulation material table.
+   IMPORTANT: This page uses EngineeredProductLayout — a DIFFERENT
+   template from the insulating-mat products. NO Class A/B/C table, NO
+   working voltage, NO proof voltage, NO dielectric strength, NO
+   electrical insulation material table.
    ──────────────────────────────────────────────────────────────── */
 
 import type { Metadata } from 'next';
 import { getProductBySlug } from '@/data/products';
-import { MembranePageLayout } from '@/components/products/MembranePageLayout';
+import { EngineeredProductLayout } from '@/components/products/EngineeredProductLayout';
 import { company } from '@/data/company';
 
 const SEO_TITLE = 'BharatMembrane PVC Geo-Membrane | Bharat Electrosafe';
@@ -83,7 +83,7 @@ export default function BharatMembranePage() {
         '@type': 'ListItem',
         position: 2,
         name: 'Products',
-        item: `${company.website}/products/bharat-membrane`,
+        item: `${company.website}/#products`,
       },
       {
         '@type': 'ListItem',
@@ -104,7 +104,7 @@ export default function BharatMembranePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <MembranePageLayout
+      <EngineeredProductLayout
         product={product}
         seoTitle={SEO_TITLE}
         seoDescription={SEO_DESCRIPTION}

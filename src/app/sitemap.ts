@@ -1,70 +1,50 @@
 import { MetadataRoute } from 'next'
+import { products } from '@/data/products'
+import { company } from '@/data/company'
 
-const BASE_URL = 'https://bharatelectrosafe.com'
-
+/* Derived from the product catalogue rather than hand-listed, so a new
+   product can never ship with a missing sitemap entry — which is how
+   BharatHydro Seal went unlisted previously. */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()
+  const base = company.website
+
+  const productEntries: MetadataRoute.Sitemap = products.map((product, index) => ({
+    url: `${base}/products/${product.slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    /* The flagship mat page ranks highest; the rest sit one step below. */
+    priority: index === 0 ? 0.9 : 0.8,
+  }))
 
   return [
     {
-      url: BASE_URL,
+      url: base,
       lastModified: now,
       changeFrequency: 'weekly',
       priority: 1.0,
     },
-    // ── Product Pages ──
+    ...productEntries,
     {
-      url: `${BASE_URL}/products/electrical-insulating-mats`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/products/coloured-strip-insulating-mats`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/products/bi-color-insulating-mats`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/products/auto-glow-reflective-band-insulating-mats`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/products/bharat-membrane`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    // ── Company Pages ──
-    {
-      url: `${BASE_URL}/about-us`,
+      url: `${base}/about-us`,
       lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/contact-us`,
+      url: `${base}/contact-us`,
       lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
-    // ── Legal Pages ──
     {
-      url: `${BASE_URL}/privacy-policy`,
+      url: `${base}/privacy-policy`,
       lastModified: now,
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
-      url: `${BASE_URL}/terms`,
+      url: `${base}/terms`,
       lastModified: now,
       changeFrequency: 'yearly',
       priority: 0.3,

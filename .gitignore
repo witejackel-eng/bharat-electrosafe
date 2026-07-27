@@ -68,8 +68,13 @@ upload/
 vlm-*-analysis.json
 # Proprietary Bharat Electrosafe asset audit (added by asset-readiness work)
 bharatsafe/
+BharatSafe/
+bharat-safe/
+client-assets-source/
 .private-bharatsafe-audit/
 private-assets/
 asset-working/
+.client-work/
 *.private-inventory.csv
 *.private-selection.md
+**/Thumbs.db

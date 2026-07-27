@@ -5,7 +5,6 @@ import { fileURLToPath } from "node:url";
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
-  output: "standalone",
   reactStrictMode: true,
 
   /* Pin the workspace root. Without this, Turbopack walks up the directory
@@ -16,13 +15,16 @@ const nextConfig: NextConfig = {
     root: projectRoot,
   },
   devIndicators: false,
+
+  /* Every image the site renders is a local, sanitised derivative under
+     /public/media, so the optimiser only ever reads from disk. Formats are
+     ordered AVIF-first with a WebP fallback. */
+  /* WebP only: the bundled sharp build in this toolchain has no AVIF
+     encoder, so advertising AVIF here would fail at request time. */
   images: {
-    unoptimized: true,
+    formats: ["image/webp"],
+    deviceSizes: [480, 768, 1024, 1440, 1920],
   },
-  allowedDevOrigins: [
-    "localhost:3000",
-    "preview-chat-cb98e181-7db8-44f2-b1fc-f5f531db8ef1.space-z.ai",
-  ],
 
   /* ── Legacy PHP URL Redirects (permanent 301) ── */
   redirects: async () => [
@@ -56,6 +58,18 @@ const nextConfig: NextConfig = {
     {
       source: "/bharat-membrane.php",
       destination: "/products/bharat-membrane",
+      permanent: true,
+    },
+    /* The legacy path is mixed-case. Next matches `source` case-sensitively,
+       so the lowercase variant is listed too — some clients lowercase paths. */
+    {
+      source: "/BharatHydro-Seal.php",
+      destination: "/products/bharat-hydro-seal",
+      permanent: true,
+    },
+    {
+      source: "/bharathydro-seal.php",
+      destination: "/products/bharat-hydro-seal",
       permanent: true,
     },
     // Company pages

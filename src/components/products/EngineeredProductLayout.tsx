@@ -1,19 +1,19 @@
 /* ────────────────────────────────────────────────────────────────
-   MembranePageLayout — Template for BharatMembrane product page
-   DIFFERENT template from ProductPageLayout — NO Class A/B/C table,
-   NO Working voltage, Proof voltage, Dielectric strength,
-   NO Electrical insulation material table.
+   EngineeredProductLayout — template for products that are not rated
+   to IS 15652 voltage classes: BharatMembrane and BharatHydro Seal.
 
-   Recommended sections (per master prompt Section 17):
-   1. Product hero
-   2. Product overview
-   3. Applicable standard (IS 15909:2020)
-   4. Thickness options
-   5. Material and physical properties
-   6. Applications
-   7. Installation or welding considerations
-   8. Quality and documents
-   9. Project enquiry CTA → /contact-us
+   Deliberately DIFFERENT from ProductPageLayout — no Class A/B/C
+   table, no working/proof voltage, no dielectric strength, and no
+   electrical insulation material table. Rendering one of those on a
+   waterproofing product would imply an electrical rating it does not
+   carry.
+
+   Every product-specific string is supplied through the Product
+   record, so adding another engineered product needs data only.
+
+   Sections: hero → gallery → overview → benefits → standards →
+   variants → properties → applications → notes → documents →
+   related products → enquiry CTA.
    ──────────────────────────────────────────────────────────────── */
 
 import Link from 'next/link';
@@ -49,19 +49,19 @@ import {
   Layers,
 } from 'lucide-react';
 
-interface MembranePageLayoutProps {
+interface EngineeredProductLayoutProps {
   product: Product;
   seoTitle: string;
   seoDescription: string;
   canonicalPath: string;
 }
 
-export function MembranePageLayout({
+export function EngineeredProductLayout({
   product,
   seoTitle,
   seoDescription,
   canonicalPath,
-}: MembranePageLayoutProps) {
+}: EngineeredProductLayoutProps) {
   const otherProducts = getOtherProducts(product.slug);
 
   return (
@@ -119,9 +119,9 @@ export function MembranePageLayout({
                   <ArrowRight className="size-4 ml-2" />
                 </Link>
               </Button>
-              {product.membraneDownloads && product.membraneDownloads[0] && (
+              {product.engineeredDownloads && product.engineeredDownloads[0] && (
                 <Button variant="outline" size="lg" className="border-charcoal-800 text-charcoal-800 hover:bg-charcoal-800 hover:text-white h-12 px-6 rounded-lg" asChild>
-                  <a href={`/downloads/${product.membraneDownloads[0].fileName}`} download>
+                  <a href={`/downloads/${product.engineeredDownloads[0].fileName}`} download>
                     <Download className="size-4 mr-2" />
                     Download Datasheet
                   </a>
@@ -134,7 +134,7 @@ export function MembranePageLayout({
           <div className="animate-fade-up relative w-full aspect-[4/3] rounded-lg overflow-hidden bg-muted" style={{ animationDelay: '100ms' }}>
             <Image
               src={product.image}
-              alt={`${product.name} — PVC geo-membrane product image`}
+              alt={product.heroImageAlt ?? `${product.name} product image`}
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -209,7 +209,7 @@ export function MembranePageLayout({
             <h2 id="standard-heading" className="text-section-h2">Applicable Standard</h2>
           </div>
           <p className="text-body-lg text-grey-600 max-w-3xl">
-            BharatMembrane is BIS approved to IS 15909:2020 and manufactured from high-grade PVC polymers, with compliance to BS, EN and international standards. It is produced under ISO-certified processes at Bharat Electrosafe facilities and backed by in-house and third-party quality testing.
+            {product.standardsNarrative}
           </p>
         </div>
       </section>
@@ -217,12 +217,14 @@ export function MembranePageLayout({
       {/* ──────────────────────────────────────────
          4. Thickness Options
          ────────────────────────────────────────── */}
-      {product.membraneThicknessOptions && product.membraneThicknessOptions.length > 0 && (
+      {product.variantOptions && product.variantOptions.length > 0 && (
         <section aria-labelledby="thickness-heading" className="container-site py-12">
           <div className="animate-fade-up">
-            <h2 id="thickness-heading" className="text-section-h2 mb-6">Thickness Options</h2>
+            <h2 id="thickness-heading" className="text-section-h2 mb-6">
+              {product.variantOptionsTitle ?? 'Available options'}
+            </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-3xl">
-              {product.membraneThicknessOptions.map((opt) => (
+              {product.variantOptions.map((opt) => (
                 <div
                   key={opt.thickness}
                   className="p-4 rounded-lg border border-grey-300 bg-white hover:border-yellow-500/50 transition-colors min-h-[44px]"
@@ -251,7 +253,7 @@ export function MembranePageLayout({
       {/* ──────────────────────────────────────────
          5. Material and Physical Properties
          ────────────────────────────────────────── */}
-      {product.membranePhysicalProperties && product.membranePhysicalProperties.length > 0 && (
+      {product.engineeredProperties && product.engineeredProperties.length > 0 && (
         <section aria-labelledby="properties-heading" className="container-site py-12">
           <div className="animate-fade-up">
             <div className="flex items-center gap-2 mb-3">
@@ -259,13 +261,11 @@ export function MembranePageLayout({
               <h2 id="properties-heading" className="text-section-h2">Material and Physical Properties</h2>
             </div>
             <p className="text-small-meta text-grey-600 mb-6">
-              Material characteristics as published for BharatMembrane PVC geo-membrane.
+              {product.propertiesCaption}
             </p>
             <div className="max-w-full overflow-x-auto rounded-lg border border-grey-300">
               <Table>
-                <TableCaption>
-                  Material and physical properties for BharatMembrane per IS 15909:2020
-                </TableCaption>
+                <TableCaption>{product.propertiesTableSummary}</TableCaption>
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-[45%]">Property</TableHead>
@@ -273,7 +273,7 @@ export function MembranePageLayout({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {product.membranePhysicalProperties.map((prop, i) => (
+                  {product.engineeredProperties.map((prop, i) => (
                     <TableRow key={i}>
                       <TableCell className="font-medium text-charcoal-950">{prop.label}</TableCell>
                       <TableCell className="text-right text-charcoal-800" style={{ fontVariantNumeric: 'tabular-nums' }}>{prop.value}</TableCell>
@@ -289,12 +289,12 @@ export function MembranePageLayout({
       {/* ──────────────────────────────────────────
          6. Applications
          ────────────────────────────────────────── */}
-      {product.membraneApplications && product.membraneApplications.length > 0 && (
+      {product.engineeredApplications && product.engineeredApplications.length > 0 && (
         <section aria-labelledby="applications-heading" className="container-site py-12 bg-yellow-50/50">
           <div className="container-site animate-fade-up">
             <h2 id="applications-heading" className="text-section-h2 mb-6">Applications</h2>
             <ul className="space-y-3 max-w-3xl" role="list">
-              {product.membraneApplications.map((app, i) => (
+              {product.engineeredApplications.map((app, i) => (
                 <li key={i} className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-yellow-500 flex-shrink-0" aria-hidden="true" />
                   <span className="text-body text-charcoal-800">{app}</span>
@@ -313,15 +313,17 @@ export function MembranePageLayout({
       {/* ──────────────────────────────────────────
          7. Installation or Welding Considerations
          ────────────────────────────────────────── */}
-      {product.membraneInstallationNotes && product.membraneInstallationNotes.length > 0 && (
+      {product.engineeredNotes && product.engineeredNotes.length > 0 && (
         <section aria-labelledby="installation-heading" className="container-site py-12">
           <div className="animate-fade-up">
             <div className="flex items-center gap-2 mb-3">
               <Wrench className="size-5 text-yellow-500" aria-hidden="true" />
-              <h2 id="installation-heading" className="text-section-h2">Installation and Welding Considerations</h2>
+              <h2 id="installation-heading" className="text-section-h2">
+                {product.engineeredNotesTitle ?? 'Installation'}
+              </h2>
             </div>
             <ul className="space-y-4 max-w-3xl" role="list">
-              {product.membraneInstallationNotes.map((note, i) => (
+              {product.engineeredNotes.map((note, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-yellow-100 text-xs font-bold text-charcoal-950 flex-shrink-0" style={{ fontVariantNumeric: 'tabular-nums' }}>
                     {i + 1}
@@ -337,12 +339,12 @@ export function MembranePageLayout({
       {/* ──────────────────────────────────────────
          8. Quality and Documents
          ────────────────────────────────────────── */}
-      {product.membraneDownloads && product.membraneDownloads.length > 0 && (
+      {product.engineeredDownloads && product.engineeredDownloads.length > 0 && (
         <section aria-labelledby="quality-heading" className="container-site py-12">
           <div className="animate-fade-up">
             <h2 id="quality-heading" className="text-section-h2 mb-6">Quality and Documents</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {product.membraneDownloads.map((dl) => (
+              {product.engineeredDownloads.map((dl) => (
                 <a
                   key={dl.fileName}
                   href={`/downloads/${dl.fileName}`}
@@ -404,10 +406,10 @@ export function MembranePageLayout({
             Project Enquiry for {product.name}
           </h2>
           <p className="text-body-lg text-grey-300 mb-8 max-w-2xl mx-auto">
-            Contact our technical team for project-specific guidance, thickness recommendations and delivery information for BharatMembrane.
+            {product.enquiryBlurb}
           </p>
           <Button asChild size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-charcoal-950 font-semibold h-12 px-8 rounded-lg text-base">
-            <Link href="/contact-us">
+            <Link href={`/contact-us?product=${product.slug}`}>
               Submit a Project Enquiry
               <ArrowRight className="size-4 ml-2" />
             </Link>
