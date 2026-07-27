@@ -22,7 +22,7 @@ const proofPoints = [
 ];
 
 const companyIntro =
-  'Bharat Electrosafe manufactures electrical insulating mats, visible-safety variants and BharatMembrane geomembranes for Indian utilities, railways and infrastructure.';
+  'Bharat Electrosafe manufactures electrical insulating mats, visible-safety variants and BharatMembrane PVC geo-membranes, with an integrated setup running from compound manufacturing through to the finished product.';
 
 export function CompanyCapability() {
   return (

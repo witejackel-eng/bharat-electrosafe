@@ -6,9 +6,9 @@
 export type ProductSlug =
   | "electrical-insulating-mats"
   | "coloured-strip-insulating-mats"
-  | "bi-colour-insulating-mats"
+  | "bi-color-insulating-mats"
   | "auto-glow-reflective-band-insulating-mats"
-  | "bharatmembrane";
+  | "bharat-membrane";
 
 // ── Insulation Class Specification ──
 export interface InsulationClassSpec {
@@ -49,6 +49,10 @@ export interface MatDimensionsInfo {
 
 // ── Gallery Image (for product detail pages) ──
 export interface ProductGalleryImage {
+  /** Stable slot identifier — see docs/ASSET_SLOT_SPECIFICATION.md.
+   *  `src` currently points at an approved provisional image; when a client
+   *  asset is approved for this slot, only `src` and `alt` change. */
+  slotId?: string;
   src: string;
   alt: string;
 }
@@ -157,11 +161,10 @@ export const products: Product[] = [
       "Insulation resistance of 100,000 MΩ minimum at 500 V with water",
     ],
     galleryImages: [
-      { src: "/images/products/electrical-insulating-mats/hero.jpg", alt: "Electrical insulating mats laid in front of a substation control panel" },
-      { src: "/images/products/electrical-insulating-mats/class-a.jpg", alt: "Class A 2.0 mm insulating mat with anti-skid surface" },
-      { src: "/images/products/electrical-insulating-mats/class-b.jpg", alt: "Class B 2.5 mm insulating mat with embossed voltage marking" },
-      { src: "/images/products/electrical-insulating-mats/class-c.jpg", alt: "Class C 3.0 mm insulating mat in a high-voltage switchyard" },
-      { src: "/images/products/electrical-insulating-mats/anti-skid.jpg", alt: "Close-up of coin-pattern anti-skid surface design" },
+      { slotId: "PRODUCT-EIM-GALLERY-01", src: "/images/electrical-insulation.png", alt: "Electrical insulating mat laid in front of an electrical control panel" },
+      { slotId: "PRODUCT-EIM-GALLERY-02", src: "/images/mat-texture.png", alt: "Close-up of the anti-skid surface texture of an electrical insulating mat" },
+      { slotId: "PRODUCT-EIM-GALLERY-03", src: "/images/product-marking.png", alt: "Embossed class and voltage marking on an electrical insulating mat" },
+      { slotId: "PRODUCT-EIM-GALLERY-04", src: "/images/app-substation.png", alt: "Electrical insulating mat in a substation working area" },
     ],
     insulationClasses: [
       {
@@ -214,11 +217,10 @@ export const products: Product[] = [
       customLength: "Custom length as approved",
       standardColours: ["Black", "Blue"],
     },
-    matDownloads: [
-      { label: "Product Datasheet", fileName: "electrical-insulating-mats-datasheet.pdf", type: "datasheet" },
-      { label: "BIS Licence — IS 15652", fileName: "bis-licence-is15652.pdf", type: "certificate" },
-      { label: "Dielectric Test Report", fileName: "dielectric-test-report.pdf", type: "test-report" },
-    ],
+    // Documents are intentionally empty until real, client-approved files are
+    // published to /public/downloads. The UI hides the section when empty —
+    // never link to a document that does not exist. See docs/ASSET_INTEGRATION_PLAN.md.
+    matDownloads: [],
   },
 
   /* ─── 2. Coloured Strip Insulating Mats ─── */
@@ -242,11 +244,7 @@ export const products: Product[] = [
     ],
     systemGroup: "visible-safety",
     systemIndex: "02",
-    variants: [
-      "Class A – 3.3 kV (Coloured Strip)",
-      "Class B – 11 kV (Coloured Strip)",
-      "Class C – 33 kV (Coloured Strip)",
-    ],
+    variants: ["Class A – 3.3 kV", "Class B – 11 kV", "Class C – 33 kV"],
     exploreLink: "/products/coloured-strip-insulating-mats",
     overviewText:
       "Coloured strip insulating mats integrate high-visibility coloured bands into the standard IS 15652 insulating mat. These bands serve as visual hazard-zone demarcation, providing clear boundary marking and safety-path identification around electrical panels and control-room equipment. The coloured strip does not compromise the mat's electrical insulation performance, which remains fully compliant with IS 15652 for the designated voltage class.",
@@ -258,14 +256,13 @@ export const products: Product[] = [
       "Full IS 15652 dielectric protection maintained",
     ],
     galleryImages: [
-      { src: "/images/products/coloured-strip-insulating-mats/hero.jpg", alt: "Coloured strip insulating mat with yellow hazard band in a control room" },
-      { src: "/images/products/coloured-strip-insulating-mats/strip-detail.jpg", alt: "Close-up of coloured strip band integrated into the mat surface" },
-      { src: "/images/products/coloured-strip-insulating-mats/installed.jpg", alt: "Coloured strip mat installed in a substation walkway" },
-      { src: "/images/products/coloured-strip-insulating-mats/panel-area.jpg", alt: "Coloured strip mat laid around an electrical panel" },
+      { slotId: "PRODUCT-CSIM-GALLERY-01", src: "/images/visible-safety.png", alt: "Coloured strip insulating mat with a high-visibility yellow band" },
+      { slotId: "PRODUCT-CSIM-GALLERY-02", src: "/images/app-control-room.png", alt: "Coloured strip insulating mat in a control-room walkway" },
+      { slotId: "PRODUCT-CSIM-GALLERY-03", src: "/images/app-power-utility.png", alt: "Coloured strip insulating mat laid around electrical panels" },
     ],
     insulationClasses: [
       {
-        productCode: "BES1001-CS",
+        productCode: "BES1001",
         classLetter: "A",
         thickness: "2.0 mm",
         workingVoltage: "3.3 kV",
@@ -273,7 +270,7 @@ export const products: Product[] = [
         dielectricStrength: "30.0 kV",
       },
       {
-        productCode: "BES1002-CS",
+        productCode: "BES1002",
         classLetter: "B",
         thickness: "2.5 mm",
         workingVoltage: "11.0 kV",
@@ -281,7 +278,7 @@ export const products: Product[] = [
         dielectricStrength: "45.0 kV",
       },
       {
-        productCode: "BES1003-CS",
+        productCode: "BES1003",
         classLetter: "C",
         thickness: "3.0 mm",
         workingVoltage: "33.0 kV",
@@ -314,15 +311,12 @@ export const products: Product[] = [
       customLength: "Custom length as approved",
       standardColours: ["Black", "Blue"],
     },
-    matDownloads: [
-      { label: "Product Datasheet", fileName: "coloured-strip-insulating-mats-datasheet.pdf", type: "datasheet" },
-      { label: "BIS Licence — IS 15652", fileName: "bis-licence-is15652.pdf", type: "certificate" },
-    ],
+    matDownloads: [],
   },
 
   /* ─── 3. Bi-Color Insulating Mats ─── */
   {
-    slug: "bi-colour-insulating-mats",
+    slug: "bi-color-insulating-mats",
     name: "Bi-Color Insulating Mats",
     shortName: "Bi-Color Mats",
     description:
@@ -333,38 +327,33 @@ export const products: Product[] = [
     standards: ["IS 15652:2006", "IEC 61111"],
     features: [
       "Two distinct colour zones for clear delineation",
-      "Same electrical insulation as standard Class A/B/C mats",
-      "Durable rubber base with wear-resistant bi-colour surface",
-      "Customisable bi-colour combinations",
+      "Manufactured to IS 15652:2006 for the designated voltage class",
+      "Durable elastomer base with anti-skid embossed surface",
+      "Colour combinations available on request",
       "Suitable for high-traffic industrial floors",
-      "Permanent embossed class and voltage marking",
+      "Resistant to moisture, oil and chemicals",
     ],
     systemGroup: "visible-safety",
     systemIndex: "03",
-    variants: [
-      "Class A – 3.3 kV (Bi-Color)",
-      "Class B – 11 kV (Bi-Color)",
-      "Class C – 33 kV (Bi-Color)",
-    ],
+    variants: ["Class A – 3.3 kV", "Class B – 11 kV", "Class C – 33 kV"],
     exploreLink: "/products/bi-color-insulating-mats",
     overviewText:
-      "Bi-color insulating mats use a dual-layer surface construction where the contrasting upper layer can help make excessive wear, cuts or surface damage more visible, supporting inspection and replacement decisions. This surface-wear indication is the primary functional advantage over single-colour mats: when the upper colour layer is compromised, the underlying colour is revealed, providing a visual signal that the mat may need replacement. Full electrical insulation performance under IS 15652 is maintained for the designated voltage class.",
+      "Bi-Color insulating mats carry a two-tone surface finish that makes safety boundaries easy to read at a glance. The contrasting tones mark approach zones and equipment perimeters clearly in busy industrial areas, while the mat itself is manufactured to the same IS 15652:2006 construction as our standard insulating mats for the designated voltage class.",
     benefits: [
-      "Contrasting upper layer makes excessive wear, cuts or surface damage more visible",
-      "Surface-wear indication supports inspection and replacement decisions",
-      "Dual-layer construction — upper colour reveals underlying colour when worn",
-      "Available in multiple colour combinations for different environments",
-      "Full IS 15652 dielectric protection maintained",
+      "Two-tone surface gives an immediate visual cue for safety boundaries",
+      "Clear demarcation around panels and equipment in high-traffic areas",
+      "Anti-skid embossed surface for secure footing",
+      "Elastomer compound resistant to moisture, oil and chemicals",
+      "Manufactured to IS 15652:2006 for the designated voltage class",
     ],
     galleryImages: [
-      { src: "/images/products/bi-color-insulating-mats/hero.jpg", alt: "Bi-color insulating mat showing two distinct colour zones" },
-      { src: "/images/products/bi-color-insulating-mats/dual-layer.jpg", alt: "Close-up showing dual-layer construction and contrasting surface" },
-      { src: "/images/products/bi-color-insulating-mats/wear-indication.jpg", alt: "Bi-color mat with visible wear revealing underlying colour layer" },
-      { src: "/images/products/bi-color-insulating-mats/installed.jpg", alt: "Bi-color mat installed in an industrial corridor" },
+      { slotId: "PRODUCT-BCIM-GALLERY-01", src: "/images/visible-safety.png", alt: "Bi-Color insulating mat showing two contrasting surface tones" },
+      { slotId: "PRODUCT-BCIM-GALLERY-02", src: "/images/mat-texture.png", alt: "Close-up of the anti-skid embossed surface of a Bi-Color insulating mat" },
+      { slotId: "PRODUCT-BCIM-GALLERY-03", src: "/images/app-manufacturing.png", alt: "Bi-Color insulating mat in an industrial working area" },
     ],
     insulationClasses: [
       {
-        productCode: "BES1001-BC",
+        productCode: "BES1001",
         classLetter: "A",
         thickness: "2.0 mm",
         workingVoltage: "3.3 kV",
@@ -372,7 +361,7 @@ export const products: Product[] = [
         dielectricStrength: "30.0 kV",
       },
       {
-        productCode: "BES1002-BC",
+        productCode: "BES1002",
         classLetter: "B",
         thickness: "2.5 mm",
         workingVoltage: "11.0 kV",
@@ -380,7 +369,7 @@ export const products: Product[] = [
         dielectricStrength: "45.0 kV",
       },
       {
-        productCode: "BES1003-BC",
+        productCode: "BES1003",
         classLetter: "C",
         thickness: "3.0 mm",
         workingVoltage: "33.0 kV",
@@ -413,10 +402,7 @@ export const products: Product[] = [
       customLength: "Custom length as approved",
       standardColours: ["Black", "Blue"],
     },
-    matDownloads: [
-      { label: "Product Datasheet", fileName: "bi-color-insulating-mats-datasheet.pdf", type: "datasheet" },
-      { label: "BIS Licence — IS 15652", fileName: "bis-licence-is15652.pdf", type: "certificate" },
-    ],
+    matDownloads: [],
   },
 
   /* ─── 4. Auto-Glow / Reflective Band Insulating Mats ─── */
@@ -440,11 +426,7 @@ export const products: Product[] = [
     ],
     systemGroup: "visible-safety",
     systemIndex: "04",
-    variants: [
-      "Class A – 3.3 kV (Auto-Glow)",
-      "Class B – 11 kV (Reflective Band)",
-      "Class C – 33 kV (Auto-Glow / Reflective)",
-    ],
+    variants: ["Class A – 3.3 kV", "Class B – 11 kV", "Class C – 33 kV"],
     exploreLink: "/products/auto-glow-reflective-band-insulating-mats",
     overviewText:
       "Auto-Glow and Reflective Band insulating mats are two distinct variants that enhance visibility around electrical equipment in different lighting conditions. The Auto-Glow variant uses a photoluminescent strip that stores ambient light and emits it during low-light or power-loss conditions, guiding personnel toward safe zones. The Reflective Band variant uses a reflective strip that returns light from external sources (torch beams, emergency lighting) to clearly define the mat boundary when illuminated. Both variants maintain full IS 15652 electrical insulation performance. Note: the reflective band does not glow independently — it only becomes visible when light is directed at it.",
@@ -456,14 +438,13 @@ export const products: Product[] = [
       "Full IS 15652 dielectric protection maintained in both variants",
     ],
     galleryImages: [
-      { src: "/images/products/auto-glow-reflective-band-insulating-mats/hero.jpg", alt: "Auto-glow reflective band insulating mat in a substation" },
-      { src: "/images/products/auto-glow-reflective-band-insulating-mats/auto-glow.jpg", alt: "Auto-glow variant emitting stored light in a dark environment" },
-      { src: "/images/products/auto-glow-reflective-band-insulating-mats/reflective-band.jpg", alt: "Reflective band variant illuminated by torch beam in a switchyard" },
-      { src: "/images/products/auto-glow-reflective-band-insulating-mats/comparison.jpg", alt: "Comparison showing Auto-Glow and Reflective Band variants side by side" },
+      { slotId: "PRODUCT-AGRIM-GALLERY-01", src: "/images/visible-safety.png", alt: "Auto-Glow / Reflective Band insulating mat with a high-visibility band" },
+      { slotId: "PRODUCT-AGRIM-LOWLIGHT-01", src: "/images/app-substation.png", alt: "Auto-Glow / Reflective Band insulating mat in a substation working area" },
+      { slotId: "PRODUCT-AGRIM-GALLERY-02", src: "/images/app-power-utility.png", alt: "Auto-Glow / Reflective Band insulating mat in a power utility area" },
     ],
     insulationClasses: [
       {
-        productCode: "BES1001-AG",
+        productCode: "BES1001",
         classLetter: "A",
         thickness: "2.0 mm",
         workingVoltage: "3.3 kV",
@@ -471,7 +452,7 @@ export const products: Product[] = [
         dielectricStrength: "30.0 kV",
       },
       {
-        productCode: "BES1002-RB",
+        productCode: "BES1002",
         classLetter: "B",
         thickness: "2.5 mm",
         workingVoltage: "11.0 kV",
@@ -479,7 +460,7 @@ export const products: Product[] = [
         dielectricStrength: "45.0 kV",
       },
       {
-        productCode: "BES1003-AGR",
+        productCode: "BES1003",
         classLetter: "C",
         thickness: "3.0 mm",
         workingVoltage: "33.0 kV",
@@ -512,92 +493,82 @@ export const products: Product[] = [
       customLength: "Custom length as approved",
       standardColours: ["Black", "Blue"],
     },
-    matDownloads: [
-      { label: "Product Datasheet", fileName: "auto-glow-reflective-band-insulating-mats-datasheet.pdf", type: "datasheet" },
-      { label: "BIS Licence — IS 15652", fileName: "bis-licence-is15652.pdf", type: "certificate" },
-    ],
+    matDownloads: [],
   },
 
   /* ─── 5. BharatMembrane ─── */
   {
-    slug: "bharatmembrane",
+    slug: "bharat-membrane",
     name: "BharatMembrane",
     shortName: "BharatMembrane",
     description:
-      "HDPE geomembrane for containment, waterproofing and civil infrastructure protection.",
+      "PVC geo-membrane for tunnel waterproofing, containment and barrier protection.",
     detailCopy:
-      "BharatMembrane is a high-density polyethylene (HDPE) geomembrane designed for containment, waterproofing and civil infrastructure protection. Available in thicknesses from 1 mm to 5 mm, BharatMembrane provides high puncture resistance, UV stabilisation for exposed applications, and chemical resistance for landfill and industrial containment. Manufactured to IS 15909:2020.",
+      "BharatMembrane is a premium range of PVC geo-membranes developed by Bharat Electrosafe for tunnel waterproofing, containment and barrier protection in civil and environmental engineering applications. Manufactured using high-grade PVC polymers, it is engineered for chemical resistance, UV stability and mechanical strength, and is seamable by thermal welding for leak-proof joints. BIS approved to IS 15909:2020.",
     image: "/images/civil-protection.png",
     standards: ["IS 15909:2020"],
     features: [
-      "HDPE geomembrane for containment and landfill lining",
-      "High puncture and tear resistance",
-      "UV stabilised for exposed applications",
-      "Available in 1 mm to 5 mm thicknesses",
-      "Chemical resistance for industrial containment",
-      "Suitable for tunnel, basement and canal waterproofing",
+      "High-quality PVC geo-membrane",
+      "Excellent puncture and tear resistance",
+      "High resistance to UV radiation, chemicals and weathering",
+      "Seamable using thermal welding techniques for secure joints",
+      "Available in 1 mm to 5 mm thicknesses and project-specific roll sizes",
+      "BIS approved (IS 15909:2020), with compliance to BS, EN and international standards",
     ],
     systemGroup: "civil-protection",
     systemIndex: "05",
-    variants: [
-      "1 mm — Light-duty waterproofing",
-      "2 mm — Standard containment",
-      "3 mm — Heavy-duty landfill lining",
-      "4 mm — Industrial containment",
-      "5 mm — Maximum puncture resistance",
-    ],
+    variants: ["1 mm", "1.5 mm", "2 mm", "2.5 mm", "3 mm", "Up to 5 mm"],
     exploreLink: "/products/bharat-membrane",
     overviewText:
-      "BharatMembrane is a high-density polyethylene (HDPE) geomembrane manufactured to IS 15909:2020. It is designed for containment, waterproofing and civil infrastructure protection. Available in thicknesses from 1 mm to 5 mm, BharatMembrane is used in tunnel waterproofing, basement waterproofing, landfill containment, reservoirs, canals, ponds, mining applications and other civil infrastructure projects where reliable barrier performance is required.",
+      "BharatMembrane is a PVC geo-membrane manufactured to IS 15909:2020, developed for tunnel waterproofing, containment and barrier protection in civil and environmental engineering. Manufactured from high-grade PVC polymers, it is used in tunnel and basement waterproofing, landfill and hazardous-waste containment, water reservoirs, canals and ponds, mining and ash-dyke lining, industrial effluent ponds, and aquaculture and agricultural lining. Roll sizes and thicknesses are supplied to suit project requirements.",
     benefits: [
-      "High puncture and tear resistance for demanding site conditions",
-      "Available in thicknesses from 1 mm to 5 mm for different project requirements",
-      "UV stabilised for exposed applications",
-      "Chemical resistance suitable for landfill and industrial containment",
-      "Weldable seams for continuous, leak-tight installations",
+      "Excellent puncture and tear resistance for demanding site conditions",
+      "Available in thicknesses from 1 mm to 5 mm to suit project requirements",
+      "High resistance to UV radiation, chemicals and weathering",
+      "Thermally weldable seams for continuous, leak-proof installation",
+      "Manufactured under ISO-certified processes at Bharat Electrosafe facilities",
     ],
     galleryImages: [
-      { src: "/images/products/bharat-membrane/hero.jpg", alt: "BharatMembrane HDPE geomembrane roll at a construction site" },
-      { src: "/images/products/bharat-membrane/installation.jpg", alt: "BharatMembrane being installed for tunnel waterproofing" },
-      { src: "/images/products/bharat-membrane/welding.jpg", alt: "Thermal welding of BharatMembrane seams" },
-      { src: "/images/products/bharat-membrane/landfill.jpg", alt: "BharatMembrane laid in a landfill containment area" },
+      { slotId: "PRODUCT-BM-GALLERY-01", src: "/images/civil-protection.png", alt: "BharatMembrane PVC geo-membrane material" },
+      { slotId: "PRODUCT-BM-APPLICATION-01", src: "/images/app-tunnel.png", alt: "BharatMembrane PVC geo-membrane in a tunnel waterproofing application" },
     ],
     // NO insulationClasses, NO workingVoltage, NO proofVoltage, NO dielectricStrength
+    // Thicknesses as published by the client. Application labels are
+    // deliberately not asserted per thickness — selection is project-specific.
     membraneThicknessOptions: [
-      { thickness: "1 mm", label: "Light-duty waterproofing" },
-      { thickness: "1.5 mm", label: "General-purpose waterproofing" },
-      { thickness: "2 mm", label: "Standard containment" },
-      { thickness: "2.5 mm", label: "Medium-duty containment" },
-      { thickness: "3 mm", label: "Heavy-duty landfill lining" },
-      { thickness: "5 mm", label: "Maximum puncture resistance" },
+      { thickness: "1 mm", label: "Available" },
+      { thickness: "1.5 mm", label: "Available" },
+      { thickness: "2 mm", label: "Available" },
+      { thickness: "2.5 mm", label: "Available" },
+      { thickness: "3 mm", label: "Available" },
+      { thickness: "Up to 5 mm", label: "Available" },
     ],
     membraneApplications: [
-      "Tunnel waterproofing",
-      "Basement waterproofing",
-      "Landfill containment",
-      "Reservoirs and ponds",
-      "Canal lining",
-      "Mining applications",
+      "Tunnel and basement waterproofing",
+      "Landfills and hazardous waste containment",
+      "Water reservoirs, canals and ponds",
+      "Mining and ash dyke lining",
+      "Industrial effluent ponds",
+      "Aquaculture and agriculture lining",
     ],
+    // Only properties confirmed by the client's published product page are listed.
+    // Numeric values (density, tensile, puncture) require the BharatMembrane
+    // technical datasheet before publication — see docs/CONTENT_VERIFICATION.md.
     membranePhysicalProperties: [
-      { label: "Material", value: "High-density polyethylene (HDPE)" },
-      { label: "Density", value: "≥ 0.940 g/cm³" },
-      { label: "Carbon black content", value: "2–3% for UV stabilisation" },
-      { label: "Tensile strength at yield", value: "Per IS 15909:2020 requirements" },
-      { label: "Puncture resistance", value: "Per IS 15909:2020 requirements" },
-      { label: " Tear resistance", value: "Per IS 15909:2020 requirements" },
+      { label: "Material", value: "High-grade PVC polymer" },
+      { label: "Standard", value: "IS 15909:2020 (BIS approved)" },
+      { label: "Thickness range", value: "1 mm to 5 mm" },
+      { label: "Chemical resistance", value: "High resistance to chemicals and weathering" },
+      { label: "UV resistance", value: "High resistance to UV radiation" },
+      { label: "Jointing", value: "Seamable by thermal welding" },
     ],
     membraneInstallationNotes: [
-      "Thermal welding (hot wedge or extrusion) for seam joining",
-      "Seam testing by peel and shear methods per project specification",
-      "Substrate preparation — smooth, free of sharp objects and debris",
-      "Anchor trench required at perimeter to prevent wind uplift",
-      "Overlap minimum 100 mm for welded seams",
+      "Seams joined using thermal welding techniques for secure, leak-proof joints",
+      "Roll sizes and thicknesses supplied to suit project requirements",
+      "Custom fabrication available",
+      "Backed by in-house and third-party quality testing",
     ],
-    membraneDownloads: [
-      { label: "Product Datasheet", fileName: "bharatmembrane-datasheet.pdf", type: "datasheet" },
-      { label: "IS 15909:2020 Compliance", fileName: "is-15909-compliance.pdf", type: "certificate" },
-    ],
+    membraneDownloads: [],
   },
 ];
 

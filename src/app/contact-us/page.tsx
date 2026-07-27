@@ -148,7 +148,7 @@ export default function ContactUsPage() {
             </h1>
             <p className="text-body-lg text-grey-600 max-w-[680px]">
               Get in touch for product enquiries, quotations, technical documentation or
-              application support. Our team responds within 1-2 business days.
+              application support.
             </p>
           </div>
         </section>

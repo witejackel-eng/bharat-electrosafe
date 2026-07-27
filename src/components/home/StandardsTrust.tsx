@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, FileText, ShieldCheck } from 'lucide-react';
-import { clients } from '@/data/clients';
-import { qualityDocuments } from '@/data/quality';
+import { accreditationBodies, qualityDocuments } from '@/data/quality';
 
 const featuredDocuments = qualityDocuments.slice(0, 3);
 
@@ -14,7 +13,8 @@ export function StandardsTrust() {
           Documentation that supports technical decisions
         </h2>
         <p className="text-body text-grey-600 mb-10 max-w-[560px]">
-          Verified standard references, testing and certification organisations, downloadable evidence and institutional clients.
+          The standards our products are built to, and the organisations that
+          license, test and certify them.
         </p>
 
         {/* ── Featured Document Cards ── */}
@@ -40,37 +40,56 @@ export function StandardsTrust() {
               <p className="text-[0.875rem] text-grey-600 mb-4">
                 {doc.stamp} — {doc.reference}
               </p>
-              <span className="inline-flex items-center gap-1.5 text-[0.8125rem] text-charcoal-800 font-medium">
-                <FileText className="size-3.5 text-yellow-500" />
-                {doc.fileType} &middot; {doc.fileSize}
-              </span>
+              {doc.documentAvailable && doc.fileName ? (
+                <a
+                  href={`/downloads/${doc.fileName}`}
+                  download
+                  className="inline-flex items-center gap-1.5 text-[0.8125rem] text-charcoal-800 font-medium hover:text-yellow-600 transition-colors"
+                >
+                  <FileText className="size-3.5 text-yellow-500" />
+                  Download PDF
+                </a>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 text-[0.8125rem] text-grey-600">
+                  <FileText className="size-3.5 text-grey-300" />
+                  Copy available on request
+                </span>
+              )}
             </div>
           ))}
         </div>
 
-        {/* ── Client Logo Rail ── */}
+        {/* ── Accreditation Rail ──
+            Shows the bodies that license, test and certify the products.
+            It deliberately does NOT show customer names or logos — those
+            require confirmed relationships and written display permission. */}
         <div className="mb-10">
           <p className="text-small-meta font-semibold uppercase tracking-[0.12em] text-grey-600 mb-6">
-            Trusted by leading institutions
+            Licensed, tested and certified by
           </p>
 
-          {/* CSS-only infinite scroll rail, ~45s cycle */}
-          <div className="relative overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
-            <div
-              className="animate-logo-rail flex gap-10 items-center w-max"
-            >
-              {/* Double the list for seamless looping */}
-              {[...clients, ...clients].map((client, i) => (
-                <div
-                  key={`${client.id}-${i}`}
-                  className="flex items-center justify-center h-[40px] min-w-[100px] px-4 grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100"
+          {/* CSS-only marquee; pauses on hover and stops under reduced motion */}
+          <div
+            className="relative overflow-hidden"
+            style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}
+          >
+            <ul className="animate-logo-rail flex gap-10 items-center w-max" role="list">
+              {/* Duplicated for seamless looping; the copy is hidden from AT */}
+              {[...accreditationBodies, ...accreditationBodies].map((body, i) => (
+                <li
+                  key={`${body.id}-${i}`}
+                  className="flex items-center justify-center h-[40px] min-w-[110px] px-4"
+                  aria-hidden={i >= accreditationBodies.length ? true : undefined}
                 >
-                  <span className="text-[0.75rem] font-semibold text-charcoal-800 tracking-tight">
-                    {client.abbreviation}
+                  <span
+                    className="text-[0.8125rem] font-semibold text-charcoal-800 tracking-tight whitespace-nowrap"
+                    title={body.role}
+                  >
+                    {body.label}
                   </span>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
 
