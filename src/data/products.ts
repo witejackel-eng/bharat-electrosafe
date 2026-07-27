@@ -899,12 +899,168 @@ const bharatMembrane: ProductData = {
    Product Registry
    ──────────────────────────────────────────── */
 
+const BHS = '/media/products/bharat-hydro-seal';
+
+const bharatHydroSeal: ProductData = {
+  slug: 'bharat-hydro-seal',
+  name: 'BharatHydro Seal',
+  shortName: 'Hydro-Seal',
+  images: {
+    thumbnail: `${BHS}/product-01.webp`,
+    hero: `${BHS}/product-02.webp`,
+    details: [
+      `${BHS}/product-03.webp`,
+      `${BHS}/product-04.webp`,
+      `${BHS}/product-05.webp`,
+      `${BHS}/product-06.webp`,
+    ],
+    overview: `${BHS}/product-01.webp`,
+    contextual: [`${BHS}/product-04.webp`, `${BHS}/product-06.webp`],
+    alt: {
+      [`${BHS}/product-01.webp`]:
+        'BharatHydro Seal PVC water stop — centre bulb type for construction joints',
+      [`${BHS}/product-02.webp`]:
+        'BharatHydro Seal water stop profile showing bulb and flange design',
+      [`${BHS}/product-03.webp`]:
+        'BharatHydro Seal PVC water stop installed in concrete construction joint',
+      [`${BHS}/product-04.webp`]:
+        'BharatHydro Seal water stop embedded in concrete expansion joint',
+      [`${BHS}/product-05.webp`]:
+        'BharatHydro Seal water stop cross-section showing internal bulb structure',
+      [`${BHS}/product-06.webp`]:
+        'BharatHydro Seal water stop application in dam and canal construction',
+    },
+  },
+  trustPoints: [
+    'IS 15058-2002',
+    'PVC water stop',
+    'Chemical resistant',
+    'High tensile strength',
+  ],
+  description:
+    'PVC water stop seals to IS 15058-2002 for construction and expansion joints in concrete structures — water tanks, dams, basements, tunnels and sewage treatment plants.',
+  introduction:
+    'BharatHydro Seal, a trusted brand by Bharat Electrosafe Pvt. Ltd., offers high-performance water stop sealing solutions designed to ensure complete protection against water leakage in construction joints. BharatHydro Seal Water Stops are specially designed to prevent the passage of water through construction and expansion joints in concrete structures. Manufactured using high-quality PVC and rubber compounds, these seals provide excellent resistance against water pressure, chemicals and environmental stress.',
+  badges: ['IS 15058-2002', 'PVC Water Stop', 'High tensile strength', 'Chemical resistant'],
+  quickFacts: [
+    { icon: 'droplets', label: 'Function', value: 'Water stop sealing for construction joints' },
+    { icon: 'ruler', label: 'Standard', value: 'IS 15058-2002' },
+    { icon: 'shield', label: 'Material', value: 'PVC and rubber compounds' },
+  ],
+  overviewText:
+    'BharatHydro Seal Water Stops are manufactured under strict quality controls at Bharat Electrosafe facilities using high-grade PVC and rubber compounds. Every profile is designed to create a reliable, water-tight seal at construction and expansion joints, resisting water pressure, chemical exposure and environmental stress. Profiles are available in centre-bulb, dumbbell and ribbed configurations to suit different joint types and movement requirements, and they can be welded at intersections for continuous, leak-proof protection across the entire structure.',
+  keyBenefits: [
+    { icon: 'droplets', text: 'Superior water-tight sealing at construction and expansion joints' },
+    { icon: 'bolt', text: 'High tensile strength and flexibility to accommodate joint movement' },
+    { icon: 'flask-conical', text: 'Resistant to chemicals, corrosion and weather conditions' },
+    { icon: 'hammer', text: 'Easy installation and long service life in demanding environments' },
+    { icon: 'shield-check', text: 'Suitable for high-pressure water retention structures' },
+  ],
+  specifications: {
+    headers: ['Property', 'Specification'],
+    rows: [
+      ['Material', 'High-quality PVC and rubber compound water stop'],
+      ['Standard', 'IS 15058-2002'],
+      ['Profile Types', 'Centre bulb, dumbbell and ribbed configurations'],
+      ['Joint Types', 'Construction joints and expansion joints'],
+      ['Resistance', 'Water pressure, chemicals, corrosion and weathering'],
+      ['Mechanical', 'High tensile strength and flexibility'],
+      ['Jointing Method', 'Weldable at intersections for continuous seals'],
+      ['Service Life', 'Long-lasting performance in demanding environments'],
+    ],
+  },
+  materialProperties: [
+    { label: 'Base Material', value: 'High-quality PVC and rubber compounds' },
+    { label: 'Standard', value: 'IS 15058-2002' },
+    { label: 'Water Resistance', value: 'Superior water-tight sealing' },
+    { label: 'Chemical Resistance', value: 'Resistant to chemicals and corrosion' },
+    { label: 'Weathering Resistance', value: 'Resistant to environmental stress' },
+    { label: 'Tensile Strength', value: 'High' },
+    { label: 'Flexibility', value: 'High — accommodates joint movement' },
+    { label: 'Profile Types', value: 'Centre bulb, dumbbell and ribbed' },
+    { label: 'Jointing', value: 'Weldable at intersections for continuous protection' },
+    { label: 'Manufacturing', value: 'Produced under ISO-certified processes' },
+  ],
+  dimensions: [
+    { label: 'Profile Width', value: 'Available in multiple widths to suit joint requirements' },
+    { label: 'Thickness', value: 'Range of thicknesses for different pressure classes' },
+    { label: 'Custom Fabrication', value: 'Available for project-specific requirements' },
+  ],
+  colors: ['Black'],
+  surfacePatterns: ['Smooth profile', 'Ribbed profile'],
+  installation: [
+    'Confirm the joint type — construction joint or expansion joint — and select the appropriate profile',
+    'Clean the concrete surface at the joint location before positioning the water stop',
+    'Place the water stop centrally in the joint with the bulb aligned to the joint plane',
+    'Secure the water stop in position before pouring the next concrete lift',
+    'Weld intersections and terminations to form a continuous, leak-proof seal',
+    'Inspect the installed water stop for proper alignment before covering',
+  ],
+  applications: [
+    {
+      icon: 'droplets',
+      name: 'Water Tanks & Reservoirs',
+      description: 'Water stop sealing for water storage tanks and reservoir construction joints',
+    },
+    {
+      icon: 'waves',
+      name: 'Dams & Canals',
+      description: 'Sealing expansion and construction joints in dam and canal structures',
+    },
+    {
+      icon: 'trash-2',
+      name: 'Sewage Treatment Plants',
+      description: 'Chemical-resistant water stops for sewage treatment plant construction',
+    },
+    {
+      icon: 'mountain',
+      name: 'Basements & Underground Structures',
+      description: 'Water stop protection for basement and underground construction joints',
+    },
+    {
+      icon: 'person-swim',
+      name: 'Swimming Pools & Tunnels',
+      description: 'Water-tight sealing for swimming pools and tunnel construction',
+    },
+  ],
+  documents: [
+    {
+      type: 'Certificate',
+      name: 'ISO 9001:2015 — Quality Management System',
+      issuer: 'Certification body',
+      available: true,
+      href: '/documents/certifications/iso-9001-2015-qms.pdf',
+      thumbnail: '/images/documents/doc-certificate.webp',
+    },
+    {
+      type: 'Approval',
+      name: 'IS 15058-2002 compliance — Water stop for construction joints',
+      issuer: 'Bureau of Indian Standards',
+      available: false,
+      thumbnail: '/images/documents/doc-approval.webp',
+    },
+    {
+      type: 'Datasheet',
+      name: 'Product datasheet — available on request',
+      issuer: 'Bharat Electrosafe',
+      available: false,
+      thumbnail: '/images/documents/doc-datasheet.webp',
+    },
+  ],
+  relatedProducts: [
+    'bharat-membrane',
+    'electrical-insulating-mats',
+  ],
+  classType: 'membrane',
+};
+
 export const products: ProductData[] = [
   electricalInsulatingMats,
   colouredStripInsulatingMats,
   biColorInsulatingMats,
   autoGlowReflectiveBandMats,
   bharatMembrane,
+  bharatHydroSeal,
 ];
 
 /** Number of active product families — the single source for any "N families"
