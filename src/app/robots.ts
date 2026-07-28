@@ -1,16 +1,24 @@
 /**
- * Next.js 16 Metadata API — robots.
+ * Next.js Metadata API — robots.
  *
- * Indexing is gated by the `NEXT_PUBLIC_ALLOW_INDEXING` environment variable.
- * Defaults to "off" to avoid indexing the site in preview / staging environments.
- * When enabled, the entire site is allowed for crawling and the sitemap URL is exposed.
+ * Indexing is gated by NEXT_PUBLIC_ALLOW_INDEXING. Defaults to off
+ * (false) for local, preview and staging. When enabled (true) only
+ * in the production environment, the entire site is allowed for
+ * crawling and the production sitemap URL is exposed.
+ *
+ * When indexing is disabled, robots.txt disallows all crawling and
+ * page-level metadata emits noindex/nofollow — this prevents search
+ * engines from accidentally indexing non-production URLs.
+ *
+ * robots.txt and page-level robots metadata must agree:
+ * - Production: robots.txt allows all; page metadata allows index.
+ * - Preview/staging: robots.txt disallows all; page metadata noindex.
  */
 
 import type { MetadataRoute } from 'next';
-import { company } from '@/data/company';
+import { siteUrl, allowIndexing } from '@/lib/site-url';
 
-const allowIndexing = process.env.NEXT_PUBLIC_ALLOW_INDEXING === 'true';
-const sitemapUrl = `${company.siteUrl}/sitemap.xml`;
+const sitemapUrl = `${siteUrl}/sitemap.xml`;
 
 export default function robots(): MetadataRoute.Robots {
   if (allowIndexing) {
@@ -22,7 +30,7 @@ export default function robots(): MetadataRoute.Robots {
         },
       ],
       sitemap: sitemapUrl,
-      host: company.siteUrl,
+      host: siteUrl,
     };
   }
 
@@ -33,6 +41,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: '/',
       },
     ],
-    sitemap: sitemapUrl,
+    /* When indexing is disabled, do not expose the sitemap URL —
+       it would point crawlers at pages that are noindex. */
   };
 }

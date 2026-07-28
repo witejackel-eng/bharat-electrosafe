@@ -53,12 +53,16 @@ export const company = {
   ],
 
   social: {
-    linkedin: 'https://www.linkedin.com',
+    /* The generic LinkedIn homepage (linkedin.com) is not Bharat Electrosafe's
+       genuine company page. Omit from structured data until a real profile URL
+       is verified. The field is kept here as a placeholder so the data model
+       does not need to change when one is confirmed. */
+    linkedin: '',
   },
 
   siteUrl:
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ||
-    'https://bharat-electrosafe.vercel.app',
+    'https://bharatelectrosafe.com',
 } as const;
 
 /**

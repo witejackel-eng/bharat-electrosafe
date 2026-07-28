@@ -168,7 +168,7 @@ export function Header() {
               <span>{company.email}</span>
             </a>
             <a
-              href={company.phonePrimaryTel}
+              href={`tel:${company.phonePrimaryTel}`}
               className="flex items-center gap-1.5 hover:text-be-yellow-600 transition-colors"
             >
               <Phone className="size-3.5" />
