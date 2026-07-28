@@ -17,6 +17,7 @@ import { CompareProvider, useCompare } from '@/components/products/CompareContex
 import { CompareToggle } from '@/components/products/CompareToggle';
 import { CompareBar } from '@/components/products/CompareBar';
 import { CompareModal } from '@/components/products/CompareModal';
+import { ProductFinderWizard } from '@/components/products/ProductFinderWizard';
 import {
   productNavigationByCategory,
   productComparisonData,
@@ -142,7 +143,7 @@ function ProductFamilyGrid() {
               {items.map((product) => (
                 <div
                   key={product.slug}
-                  className="hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300"
+                  className="be-card-glow hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300"
                 >
                   <Link
                     href={product.href}
@@ -183,7 +184,7 @@ function ProductFamilyGrid() {
                         {product.description}
                       </p>
                       <div className="mt-2 text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors">
-                        View Product
+                        <span className="be-underline-grow inline-block">View Product</span>
                       </div>
                     </div>
                   </Link>
@@ -307,6 +308,27 @@ function ComparisonTable() {
             </div>
           </Link>
         ))}
+      </div>
+    </SectionShell>
+  );
+}
+
+/* ────────────────────────────────────────────
+   Section 3.5: Interactive Product Finder Wizard
+   ──────────────────────────────────────────── */
+
+function ProductFinderSection() {
+  return (
+    <SectionShell variant="standard" bg="bg-be-cream" topRule>
+      <div className="reveal-up mb-8">
+        <SectionHeader
+          eyebrow="PRODUCT FINDER"
+          title="Not sure which product you need?"
+          supportingText="Answer a few questions and we'll recommend the right product family for your application."
+        />
+      </div>
+      <div className="reveal-up max-w-3xl mx-auto">
+        <ProductFinderWizard />
       </div>
     </SectionShell>
   );
@@ -481,11 +503,13 @@ export default function ProductsClient() {
           <ProductsHero />
           {/* 2. Product family grid */}
           <ProductFamilyGrid />
-          {/* 3. Comparison table */}
+          {/* 3. Interactive product finder wizard */}
+          <ProductFinderSection />
+          {/* 4. Comparison table */}
           <ComparisonTable />
-          {/* 4. Selection guidance */}
+          {/* 5. Selection guidance (static reference) */}
           <SelectionGuidance />
-          {/* 5. Technical help CTA */}
+          {/* 6. Technical help CTA */}
           <TechnicalHelpCTA />
         </main>
         <Footer />

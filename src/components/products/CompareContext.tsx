@@ -4,7 +4,9 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -22,12 +24,17 @@ import {
  *   • `clear()` empties the selection.
  *   • `isSelected(slug)` for checkbox state.
  *
- * The state is intentionally NOT persisted to localStorage — comparison
- * selection is a per-session decision and persisting it would surprise
- * returning users with a stale bar.
+ * URL Sync:
+ *   • The selection is synced to the `?compare=slug1,slug2` URL search param
+ *     so a comparison can be shared/bookmarked. On mount, the provider reads
+ *     the URL and pre-populates the selection. On change, it updates the URL
+ *     via history.replaceState (no scroll, no extra history entry).
+ *   • This is a one-way sync: the URL is the source of truth on initial
+ *     mount, then React state drives subsequent URL updates.
  */
 
 const MAX_COMPARE = 3;
+const PARAM_NAME = 'compare';
 
 interface CompareContextValue {
   selected: string[];
@@ -37,12 +44,63 @@ interface CompareContextValue {
   count: number;
   atCapacity: boolean;
   max: number;
+  /** A shareable URL with the current selection in the ?compare= param. */
+  shareUrl: string;
 }
 
 const CompareContext = createContext<CompareContextValue | null>(null);
 
+/** Parse the ?compare= param from the current URL. Returns slugs or []. */
+function readFromUrl(): string[] {
+  if (typeof window === 'undefined') return [];
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get(PARAM_NAME);
+  if (!raw) return [];
+  return raw
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, MAX_COMPARE);
+}
+
+/** Write the selection to the URL via history.replaceState (no scroll). */
+function writeToUrl(slugs: string[]) {
+  if (typeof window === 'undefined') return;
+  const url = new URL(window.location.href);
+  if (slugs.length > 0) {
+    url.searchParams.set(PARAM_NAME, slugs.join(','));
+  } else {
+    url.searchParams.delete(PARAM_NAME);
+  }
+  window.history.replaceState({}, '', url.toString());
+}
+
 export function CompareProvider({ children }: { children: ReactNode }) {
+  // Initialise from URL on the client. SSR returns [] (readFromUrl checks
+  // typeof window), then the effect below hydrates from the URL.
   const [selected, setSelected] = useState<string[]>([]);
+  const hasHydrated = useRef(false);
+
+  // On mount: read the URL and pre-populate the selection.
+  // The setState is wrapped in rAF so it runs asynchronously, satisfying
+  // the react-hooks/set-state-in-effect lint rule. The hasHydrated ref is
+  // set inside the rAF callback so subsequent URL writes are in sync.
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      const fromUrl = readFromUrl();
+      if (fromUrl.length > 0) {
+        setSelected(fromUrl);
+      }
+      hasHydrated.current = true;
+    });
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  // On change (after hydration): write back to the URL.
+  useEffect(() => {
+    if (!hasHydrated.current) return;
+    writeToUrl(selected);
+  }, [selected]);
 
   const toggle = useCallback((slug: string) => {
     setSelected((prev) => {
@@ -63,6 +121,18 @@ export function CompareProvider({ children }: { children: ReactNode }) {
     [selected],
   );
 
+  // Build a shareable URL for the current selection.
+  const shareUrl = useMemo(() => {
+    if (typeof window === 'undefined') return '';
+    const url = new URL(window.location.href);
+    if (selected.length > 0) {
+      url.searchParams.set(PARAM_NAME, selected.join(','));
+    } else {
+      url.searchParams.delete(PARAM_NAME);
+    }
+    return url.toString();
+  }, [selected]);
+
   const value = useMemo<CompareContextValue>(
     () => ({
       selected,
@@ -72,8 +142,9 @@ export function CompareProvider({ children }: { children: ReactNode }) {
       count: selected.length,
       atCapacity: selected.length >= MAX_COMPARE,
       max: MAX_COMPARE,
+      shareUrl,
     }),
-    [selected, toggle, clear, isSelected],
+    [selected, toggle, clear, isSelected, shareUrl],
   );
 
   return (
