@@ -120,9 +120,12 @@ export function ProductImageCarousel({
     >
       {/* ── Main viewport ──
           Fixed aspect ratio, so the slot is the same size before and after the
-          image arrives and the carousel contributes nothing to CLS. */}
+          image arrives and the carousel contributes nothing to CLS. The
+          min-h fallback ensures the slot has a non-zero height even before
+          the aspect-ratio CSS computes (which silences the Next.js Image
+          "fill and height 0" warning during initial hydration). */}
       <div
-        className="relative aspect-[4/3] sm:aspect-[16/11] lg:aspect-[16/10] overflow-hidden rounded-lg bg-be-warm-white touch-pan-y"
+        className="relative aspect-[4/3] sm:aspect-[16/11] lg:aspect-[16/10] min-h-[240px] sm:min-h-[280px] lg:min-h-[320px] overflow-hidden rounded-lg bg-be-warm-white touch-pan-y"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={() => (pointerStart.current = null)}
