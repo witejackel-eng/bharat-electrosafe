@@ -1,7 +1,7 @@
 # Lighthouse Final Report — Bharat Electrosafe
 
 **Test date:** 2026-07-28
-**Commit SHA:** _(populated after push)_
+**Commit SHA:** `8312be3301e90ac120a8d5c1a5349fbcd67b8fbd`
 **Deployment audited:** Preview deployment at https://bharat-electrosafe.vercel.app/
 **Chrome / Lighthouse:** Stable desktop channel with Agentic Browsing category.
 
