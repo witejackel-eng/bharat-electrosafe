@@ -248,20 +248,26 @@ export function Header() {
   return (
     <header className="relative z-50">
       {/* ── Top Contact Strip (desktop only) ── */}
-      <div className="hidden md:block bg-be-warm-white border-b border-be-grey-250">
+      {/* Dark utility strip sits above the pure-white brand header to give
+          the logo zone maximum contrast and a premium two-tone feel. Text
+          uses be-grey-150 (#ECEBE5) on be-charcoal-950 (#242426) — contrast
+          ≈ 13.4:1, passes WCAG AAA. Hover state lifts to be-yellow-400
+          (#FFD43B, contrast ≈ 9.9:1) so links are still AAA on hover.
+          No bottom border — the dark→white transition is the visual seam. */}
+      <div className="hidden md:block bg-be-charcoal-950">
         <div className="container-site page-horizontal-padding flex items-center justify-between h-8">
           {/* Left: contact info */}
-          <div className="flex items-center gap-5 text-metadata text-be-charcoal-800">
+          <div className="flex items-center gap-5 text-metadata text-be-grey-150">
             <a
               href={`mailto:${company.email}`}
-              className="flex items-center gap-1.5 hover:text-be-yellow-text-hover transition-colors"
+              className="flex items-center gap-1.5 hover:text-be-yellow-400 transition-colors"
             >
               <Mail className="size-3.5" aria-hidden="true" focusable="false" />
               <span>{company.email}</span>
             </a>
             <a
               href={`tel:${company.phonePrimaryTel}`}
-              className="flex items-center gap-1.5 hover:text-be-yellow-text-hover transition-colors"
+              className="flex items-center gap-1.5 hover:text-be-yellow-400 transition-colors"
             >
               <Phone className="size-3.5" aria-hidden="true" focusable="false" />
               <span>{company.phonePrimary}</span>
@@ -274,7 +280,7 @@ export function Header() {
               href={company.whatsapp.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-metadata text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors"
+              className="flex items-center gap-1.5 text-metadata text-be-grey-150 hover:text-be-yellow-400 transition-colors"
               aria-label="Chat on WhatsApp (opens in a new tab)"
             >
               <MessageCircle className="size-3.5" aria-hidden="true" focusable="false" />
@@ -292,7 +298,7 @@ export function Header() {
           which previously caused left-clipping at narrower widths. */}
       <div
         className={cn(
-          'sticky top-0 z-50 bg-be-white border-b border-be-grey-250 transition-all duration-300',
+          'sticky top-0 z-50 bg-be-white border-b border-be-header-border transition-all duration-300',
           scrolled && 'shadow-sm',
           compact ? 'h-16 md:h-[72px]' : 'h-16 md:h-[84px]'
         )}
@@ -303,46 +309,49 @@ export function Header() {
             logo can grow without shifting the nav. */}
         <div className="container-site page-horizontal-padding grid grid-cols-[minmax(190px,1fr)_auto_minmax(190px,1fr)] items-center h-full gap-4">
           {/* ── Column 1: Logo zone (left-aligned) ── */}
-          {/* Dedicated logo area — a very subtle warm-white tint
-              (matching the top contact strip above) lifts the logo
-              off the pure-white header so the wordmark reads as the
-              primary brand element. Treatment is intentionally light:
-              no heavy box, no shadow, no coloured panel — just enough
-              internal padding + a refined 1px right divider (visible
-              from md+) to anchor the brand area visually. */}
+          {/* Pure-white brand area — the logo sits directly on the white
+              header (no warm tint, no card, no shadow) so the blue +
+              yellow artwork reads at maximum clarity. A 1px right divider
+              in --be-logo-divider (#E6E0D4) anchors the brand zone
+              visually without competing with the mark. Focus ring is
+              preserved for keyboard users via ring-offset-be-white. */}
           <div className="flex items-center justify-start">
             <Link
               href="/"
-              className="shrink-0 flex items-center px-2 sm:px-2.5 py-1.5 rounded-md bg-be-warm-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2 focus-visible:ring-offset-be-white transition-shadow"
+              className="shrink-0 flex items-center px-2 sm:px-2.5 py-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2 focus-visible:ring-offset-be-white transition-shadow"
               aria-label="Bharat Electrosafe — Home"
             >
               {/* Intrinsic source dimensions are 1589x580 (aspect ≈ 2.74:1).
-                  Display sizes are CSS-driven and ramp from mobile
-                  (138-140px) up to desktop (168-185px), with a modest
-                  compact state (132-158px) when scrolled. `priority`
-                  because the logo is above the fold on every route.
-                  Source WebP re-encoded at q=100 from the lossless PNG
-                  so the wordmark renders crisply at small display sizes;
-                  Next.js Image further optimizes the served payload per
-                  viewport width and pixel density. */}
+                  Display sizes ramp from mobile (140px, top of the 130–145
+                  range) up to desktop (185px, within 170–190), with a
+                  compact state (138–160px, within 145–160 desktop) when
+                  scrolled. `priority` because the logo is above the fold
+                  on every route.
+                  Source is the lossless PNG master (188KB, 8-bit RGBA) —
+                  the sharpest available transparent asset — and Next.js
+                  Image re-optimizes per viewport width and pixel density
+                  (AVIF/WebP) for the served payload, so PNG-as-source
+                  gives maximum crispness with no client-weight penalty. */}
               <Image
-                src="/images/brand/bharat-electrosafe-logo-full.webp"
+                src="/images/brand/bharat-electrosafe-logo-full.png"
                 alt="Bharat Electrosafe logo"
                 width={1589}
                 height={580}
-                sizes="(max-width: 767px) 140px, (max-width: 1023px) 168px, 185px"
+                sizes="(max-width: 639px) 140px, (max-width: 767px) 142px, (max-width: 1023px) 172px, 185px"
                 className={cn(
-                  'object-contain transition-all duration-300 h-auto w-[138px] sm:w-[140px] md:w-[168px] lg:w-[185px]',
-                  compact && 'w-[132px] sm:w-[134px] md:w-[152px] lg:w-[158px]'
+                  'object-contain transition-all duration-300 h-auto w-[140px] sm:w-[142px] md:w-[172px] lg:w-[185px]',
+                  compact && 'w-[138px] sm:w-[140px] md:w-[156px] lg:w-[160px]'
                 )}
                 priority
               />
             </Link>
             {/* Subtle vertical divider — visible from md+ (was xl-only)
                 so tablet and desktop both get the brand-area anchor.
-                32px tall, 1px neutral grey, 16-32px gap from the logo. */}
+                32px tall, 1px warm-neutral (#E6E0D4), 16-32px gap from
+                the logo. Colour sits between pure white and be-grey-250
+                so it reads as a refined seam rather than a hard rule. */}
             <div
-              className="hidden md:block w-px h-8 bg-be-grey-250 ml-4 sm:ml-6 lg:ml-8"
+              className="hidden md:block w-px h-8 bg-be-logo-divider ml-4 sm:ml-6 lg:ml-8"
               aria-hidden="true"
             />
           </div>
@@ -473,7 +482,7 @@ export function Header() {
                   <SheetTitle className="flex items-center">
                     <Link href="/" onClick={() => setMobileOpen(false)}>
                       <Image
-                        src="/images/brand/bharat-electrosafe-logo-full.webp"
+                        src="/images/brand/bharat-electrosafe-logo-full.png"
                         alt="Bharat Electrosafe logo"
                         width={1589}
                         height={580}
