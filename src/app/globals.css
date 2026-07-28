@@ -250,9 +250,9 @@
     font-weight: 700;
   }
   .text-product-h1 {
-    font-size: clamp(2.45rem, 4.6vw, 4.3rem);
-    line-height: 1.1;
-    letter-spacing: -0.01em;
+    font-size: clamp(2.25rem, 3.8vw, 3.65rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
     font-weight: 700;
   }
   .text-card-title {
@@ -596,6 +596,29 @@
     }
     .home-hero-compact .home-hero-separator {
       margin-bottom: 12px;
+    }
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     Product-hero laptop-height optimisation — tighter spacing on short
+     desktop viewports for product-detail pages.
+     ────────────────────────────────────────────────────────────── */
+  @media (min-width: 1024px) and (max-height: 820px) {
+    .product-hero-compact {
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+    .product-hero-compact .product-hero-carousel {
+      max-height: 340px;
+    }
+    .product-hero-compact .product-hero-h1 {
+      margin-bottom: 10px;
+    }
+    .product-hero-compact .product-hero-intro {
+      margin-bottom: 12px;
+    }
+    .product-hero-compact .product-hero-facts {
+      margin-bottom: 14px;
     }
   }
 

@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils';
 
 export type SectionVariant =
   | 'hero'
+  | 'productHero'
   | 'standard'
   | 'compact'
   | 'connected'
@@ -52,6 +53,7 @@ export interface SectionShellProps {
 
 const variantSpacing: Record<SectionVariant, string> = {
   hero: 'pt-16 md:pt-20 pb-14 md:pb-20',
+  productHero: 'pt-8 md:pt-10 lg:pt-12 pb-10 md:pb-12',
   standard: 'pt-12 md:pt-16 pb-12 md:pb-16',
   compact: 'pt-10 md:pt-14 pb-10 md:pb-14',
   connected: 'pt-0 md:pt-0 pb-12 md:pb-16',
@@ -61,6 +63,7 @@ const variantSpacing: Record<SectionVariant, string> = {
 
 const variantBg: Record<SectionVariant, string> = {
   hero: 'bg-be-warm-white',
+  productHero: 'bg-be-warm-white',
   standard: 'bg-be-white',
   compact: 'bg-be-white',
   connected: 'bg-be-white',
