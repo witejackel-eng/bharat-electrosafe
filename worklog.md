@@ -99,3 +99,18 @@ Stage Summary:
     git checkout 7391d51 -- public/images/brand/bharat-electrosafe-logo-full.webp public/images/brand/bharat-electrosafe-logo-full.png src/components/layout/Header.tsx src/components/layout/Footer.tsx
   then commit + push.
 - Note: new logo's near-square aspect ratio (1.46:1) makes the wordmark small on mobile. If user wants the wordmark larger on mobile, the logo would need to be redesigned as a horizontal banner (icon left + wordmark right) OR the header height increased for mobile.
+
+---
+Task ID: logo-swap-revert
+Agent: Super Z (main)
+Task: Revert the logo swap (user said "revert").
+
+Work Log:
+- Ran `git checkout 7391d51 -- public/images/brand/bharat-electrosafe-logo-full.webp public/images/brand/bharat-electrosafe-logo-full.png src/components/layout/Header.tsx src/components/layout/Footer.tsx` to restore originals.
+- Verified assets are back to the original 1589x580 horizontal banner (PNG 188KB, WebP 92KB).
+- Committed as `revert(logo): restore original Bharat Electrosafe header logo` (commit 39ed7b0).
+- Pushed to origin/main. Vercel will redeploy automatically.
+
+Stage Summary:
+- Site is back to the original Bharat Electrosafe logo in header + footer + mobile nav sheet.
+- The new logo swap commit (8cea06b) is still in git history, so it can be re-applied later if needed via `git cherry-pick 8cea06b` (or by re-running the swap script at /home/z/my-project/scripts/prepare_new_logo.py).
