@@ -11,6 +11,13 @@ import {
   Phone,
   MessageCircle,
   ChevronDown,
+  ArrowRight,
+  Zap,
+  Shield,
+  Eye,
+  Sun,
+  Droplets,
+  Waves,
 } from 'lucide-react';
 import {
   Sheet,
@@ -45,6 +52,27 @@ const categoryOrder: ProductCategory[] = [
 ];
 
 /* ────────────────────────────────────────────
+   Product icon mapping for mega-menu
+   ──────────────────────────────────────────── */
+
+const productIconMap: Record<string, React.ReactNode> = {
+  'electrical-insulating-mats': <Zap className="size-4" />,
+  'coloured-strip-insulating-mats': <Eye className="size-4" />,
+  'bi-color-insulating-mats': <Shield className="size-4" />,
+  'auto-glow-reflective-band-insulating-mats': <Sun className="size-4" />,
+  'bharat-membrane': <Droplets className="size-4" />,
+  'bharat-hydro-seal': <Waves className="size-4" />,
+};
+
+/* ────────────────────────────────────────────
+   Hover-intent delay constants
+   ──────────────────────────────────────────── */
+
+const OPEN_DELAY = 120; // ms before opening on hover
+const CLOSE_DELAY = 200; // ms grace period before closing
+const ESCAPE_KEY = 'Escape';
+
+/* ────────────────────────────────────────────
    Header component
    ──────────────────────────────────────────── */
 
@@ -54,7 +82,10 @@ export function Header() {
   const [compact, setCompact] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const dropdownTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const megaMenuRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
 
   // Check if a product link matches current path
   const isProductActive = pathname.startsWith('/products');
@@ -81,36 +112,127 @@ export function Header() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Dropdown hover handlers with delay
-  const handleDropdownEnter = useCallback(() => {
-    if (dropdownTimeoutRef.current) {
-      clearTimeout(dropdownTimeoutRef.current);
-      dropdownTimeoutRef.current = null;
-    }
-    setDropdownOpen(true);
-  }, []);
-
-  const handleDropdownLeave = useCallback(() => {
-    dropdownTimeoutRef.current = setTimeout(() => {
-      setDropdownOpen(false);
-    }, 180);
-  }, []);
-
-  // Keyboard handler for dropdown (Escape to close)
-  const handleDropdownKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      setDropdownOpen(false);
-    }
-  }, []);
-
-  // Cleanup timeout on unmount
+  // Body scroll lock when mobile menu is open
   useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
     return () => {
-      if (dropdownTimeoutRef.current) {
-        clearTimeout(dropdownTimeoutRef.current);
+      document.body.style.overflow = '';
+    };
+  }, [mobileOpen]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!dropdownOpen) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        megaMenuRef.current &&
+        !megaMenuRef.current.contains(e.target as Node) &&
+        triggerRef.current &&
+        !triggerRef.current.contains(e.target as Node)
+      ) {
+        setDropdownOpen(false);
       }
     };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [dropdownOpen]);
+
+  // Hover-intent handlers with open/close delay
+  const clearOpenTimeout = useCallback(() => {
+    if (openTimeoutRef.current) {
+      clearTimeout(openTimeoutRef.current);
+      openTimeoutRef.current = null;
+    }
   }, []);
+
+  const clearCloseTimeout = useCallback(() => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  }, []);
+
+  const handleDropdownEnter = useCallback(() => {
+    clearCloseTimeout();
+    clearOpenTimeout();
+    openTimeoutRef.current = setTimeout(() => {
+      setDropdownOpen(true);
+    }, OPEN_DELAY);
+  }, [clearCloseTimeout, clearOpenTimeout]);
+
+  const handleDropdownLeave = useCallback(() => {
+    clearOpenTimeout();
+    clearCloseTimeout();
+    closeTimeoutRef.current = setTimeout(() => {
+      setDropdownOpen(false);
+    }, CLOSE_DELAY);
+  }, [clearOpenTimeout, clearCloseTimeout]);
+
+  // Keyboard handler for dropdown
+  const handleDropdownKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === ESCAPE_KEY) {
+      setDropdownOpen(false);
+      // Return focus to the trigger button
+      const triggerBtn = triggerRef.current?.querySelector('[aria-haspopup]');
+      if (triggerBtn instanceof HTMLElement) {
+        triggerBtn.focus();
+      }
+    }
+    // Arrow Down opens the menu
+    if (e.key === 'ArrowDown' && !dropdownOpen) {
+      e.preventDefault();
+      setDropdownOpen(true);
+    }
+  }, [dropdownOpen]);
+
+  // Mega-menu keyboard navigation
+  const handleMegaMenuKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === ESCAPE_KEY) {
+      setDropdownOpen(false);
+      const triggerBtn = triggerRef.current?.querySelector('[aria-haspopup]');
+      if (triggerBtn instanceof HTMLElement) {
+        triggerBtn.focus();
+      }
+    }
+    // Tab trap: focus stays within mega-menu while open
+    if (e.key === 'Tab' && megaMenuRef.current) {
+      const focusable = megaMenuRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button, [tabindex]:not([tabindex="-1"])'
+      );
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }, []);
+
+  // Close dropdown on route change
+  useEffect(() => {
+    setDropdownOpen(false);
+  }, [pathname]);
+
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      clearOpenTimeout();
+      clearCloseTimeout();
+    };
+  }, [clearOpenTimeout, clearCloseTimeout]);
+
+  // Get the electrical insulation and waterproofing items
+  const electricalItems = productNavigationByCategory['electrical-insulation'];
+  const waterproofingItems = productNavigationByCategory['waterproofing-civil-protection'];
 
   return (
     <header className="relative z-50">
@@ -196,8 +318,9 @@ export function Header() {
               Home
             </Link>
 
-            {/* Products: text links to /products, chevron opens dropdown */}
+            {/* Products: text links to /products, chevron opens mega-menu */}
             <div
+              ref={triggerRef}
               className="relative flex items-center"
               onMouseEnter={handleDropdownEnter}
               onMouseLeave={handleDropdownLeave}
@@ -216,7 +339,7 @@ export function Header() {
                 Products
               </Link>
 
-              {/* Separate chevron button to open the dropdown */}
+              {/* Separate chevron button to open the mega-menu */}
               <button
                 type="button"
                 className={cn(
@@ -227,6 +350,7 @@ export function Header() {
                 )}
                 aria-expanded={dropdownOpen}
                 aria-haspopup="true"
+                aria-controls="products-mega-menu"
                 onClick={() => setDropdownOpen((prev) => !prev)}
               >
                 <ChevronDown
@@ -237,71 +361,102 @@ export function Header() {
                 />
               </button>
 
-              {/* Dropdown panel — grouped by category */}
+              {/* ── Mega-Menu Dropdown ── */}
               <AnimatePresence>
                 {dropdownOpen && (
                   <motion.div
+                    ref={megaMenuRef}
+                    id="products-mega-menu"
+                    role="menu"
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.2, ease: 'easeOut' }}
-                    className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-[480px] bg-be-yellow-50 border border-be-grey-250 rounded-xl shadow-lg p-4"
+                    transition={{ duration: 0.18, ease: 'easeOut' }}
+                    className="absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-[700px] max-w-[calc(100vw-32px)] bg-be-white border border-be-grey-250 rounded-xl shadow-xl overflow-hidden"
                     onMouseEnter={handleDropdownEnter}
                     onMouseLeave={handleDropdownLeave}
-                    onKeyDown={handleDropdownKeyDown}
+                    onKeyDown={handleMegaMenuKeyDown}
+                    aria-label="Product categories"
                   >
-                    {/* View all products link */}
-                    <Link
-                      href="/products"
-                      className="flex items-center gap-2 p-2 rounded-lg bg-be-white hover:bg-be-cream transition-colors mb-3 group"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors">
-                        View all products
-                      </div>
-                      <ChevronDown className="size-3 text-be-grey-400 rotate-[-90deg]" />
-                    </Link>
-
-                    {/* Categories */}
-                    {categoryOrder.map((catId) => {
-                      const catInfo = productCategories[catId];
-                      const items = productNavigationByCategory[catId];
-                      return (
-                        <div key={catId} className="mb-3 last:mb-0">
-                          <div className="text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider px-2 mb-1.5">
-                            {catInfo.displayName}
-                          </div>
-                          <div className="flex flex-col gap-1">
-                            {items.map((product) => (
-                              <Link
-                                key={product.slug}
-                                href={product.href}
-                                className="flex items-start gap-3 p-2 rounded-lg bg-be-white hover:bg-be-cream transition-colors group"
-                                onClick={() => setDropdownOpen(false)}
-                              >
-                                {/* Thumbnail */}
-                                <Image
-                                  src={product.thumbnail}
-                                  alt={product.name}
-                                  width={32}
-                                  height={32}
-                                  className="shrink-0 w-8 h-8 rounded-md object-cover"
-                                  sizes="32px"
-                                />
-                                <div className="min-w-0">
-                                  <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors leading-snug">
-                                    {product.name}
-                                  </div>
-                                  <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
-                                    {product.description}
-                                  </div>
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
+                    {/* Two-column layout */}
+                    <div className="flex max-h-[370px]">
+                      {/* Left column: Electrical Insulation (4 products) */}
+                      <div className="flex-1 p-4 border-r border-be-grey-250">
+                        <div className="text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider px-2 mb-2">
+                          {productCategories['electrical-insulation'].displayName}
                         </div>
-                      );
-                    })}
+                        <div className="flex flex-col gap-0.5" role="group" aria-label="Electrical insulation products">
+                          {electricalItems.map((product) => (
+                            <Link
+                              key={product.slug}
+                              href={product.href}
+                              role="menuitem"
+                              className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-be-yellow-50 transition-colors group"
+                              onClick={() => setDropdownOpen(false)}
+                            >
+                              {/* Icon */}
+                              <span className="flex items-center justify-center size-8 rounded-md bg-be-cream text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0">
+                                {productIconMap[product.slug] || <Zap className="size-4" />}
+                              </span>
+                              <div className="min-w-0">
+                                <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors leading-snug">
+                                  {product.name}
+                                </div>
+                                <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
+                                  {product.description}
+                                </div>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Right column: Waterproofing & Civil Protection + View all */}
+                      <div className="w-[280px] p-4 bg-be-cream/40 flex flex-col">
+                        <div className="text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider px-2 mb-2">
+                          {productCategories['waterproofing-civil-protection'].displayName}
+                        </div>
+                        <div className="flex flex-col gap-0.5" role="group" aria-label="Waterproofing and civil protection products">
+                          {waterproofingItems.map((product) => (
+                            <Link
+                              key={product.slug}
+                              href={product.href}
+                              role="menuitem"
+                              className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-be-white transition-colors group"
+                              onClick={() => setDropdownOpen(false)}
+                            >
+                              {/* Icon */}
+                              <span className="flex items-center justify-center size-8 rounded-md bg-be-white text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0">
+                                {productIconMap[product.slug] || <Droplets className="size-4" />}
+                              </span>
+                              <div className="min-w-0">
+                                <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors leading-snug">
+                                  {product.name}
+                                </div>
+                                <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
+                                  {product.description}
+                                </div>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+
+                        {/* View all products link */}
+                        <div className="mt-auto pt-4 border-t border-be-grey-250">
+                          <Link
+                            href="/products"
+                            role="menuitem"
+                            className="flex items-center gap-2 px-2.5 py-2.5 rounded-lg bg-be-yellow-500 hover:bg-be-yellow-600 transition-colors group"
+                            onClick={() => setDropdownOpen(false)}
+                          >
+                            <span className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-white transition-colors">
+                              View all products
+                            </span>
+                            <ArrowRight className="size-4 text-be-charcoal-950 group-hover:text-be-white group-hover:translate-x-0.5 transition-all" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -424,6 +579,9 @@ export function Header() {
                                     )}
                                     onClick={() => setMobileOpen(false)}
                                   >
+                                    <span className="text-be-yellow-500 shrink-0">
+                                      {productIconMap[product.slug] || <Zap className="size-3.5" />}
+                                    </span>
                                     <div className="min-w-0">
                                       <div className="font-medium leading-snug">
                                         {product.name}

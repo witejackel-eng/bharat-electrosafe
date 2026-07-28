@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { TextLink } from '@/components/ui/TextLink';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
+import { SectionShell } from '@/components/ui/SectionShell';
 import { products, productFamilyCount, getImageAlt, getImageFit, productCategories } from '@/data/products';
 
 function ProductCard({ product, index }: { product: typeof products[number]; index: number }) {
@@ -62,40 +63,38 @@ function ProductCard({ product, index }: { product: typeof products[number]; ind
 
 export default function ProductRange() {
   return (
-    <section id="products" className="bg-be-white section-padding-major">
-      <div className="container-site page-horizontal-padding">
-        <div className="reveal-up mb-8">
-          <SectionHeader
-            eyebrow="PRODUCT RANGE"
-            title="Our product range"
-            supportingText={`${productFamilyCount} product families designed for electrical insulation, hazard visibility, waterproofing and civil protection.`}
-          />
+    <SectionShell variant="standard" bg="bg-be-white" topRule>
+      <div className="reveal-up mb-8">
+        <SectionHeader
+          eyebrow="PRODUCT RANGE"
+          title="Our product range"
+          supportingText={`${productFamilyCount} product families designed for electrical insulation, hazard visibility, waterproofing and civil protection.`}
+        />
+      </div>
+
+      {/* Desktop: 3+3 layout with stagger animation */}
+      <div className="stagger-reveal" data-stagger="true">
+        {/* First row: 3 cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
+          {products.slice(0, 3).map((product, i) => (
+            <ProductCard key={product.slug} product={product} index={i} />
+          ))}
         </div>
 
-        {/* Desktop: 3+3 layout with stagger animation */}
-        <div className="stagger-reveal" data-stagger="true">
-          {/* First row: 3 cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
-            {products.slice(0, 3).map((product, i) => (
-              <ProductCard key={product.slug} product={product} index={i} />
-            ))}
-          </div>
-
-          {/* Second row: 3 cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {products.slice(3).map((product, i) => (
-              <ProductCard key={product.slug} product={product} index={3 + i} />
-            ))}
-          </div>
-        </div>
-
-        {/* View all products CTA */}
-        <div className="mt-8 flex justify-center reveal-up">
-          <PrimaryButton href="/products">
-            View All Products
-          </PrimaryButton>
+        {/* Second row: 3 cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {products.slice(3).map((product, i) => (
+            <ProductCard key={product.slug} product={product} index={3 + i} />
+          ))}
         </div>
       </div>
-    </section>
+
+      {/* View all products CTA */}
+      <div className="mt-8 flex justify-center reveal-up">
+        <PrimaryButton href="/products">
+          View All Products
+        </PrimaryButton>
+      </div>
+    </SectionShell>
   );
 }

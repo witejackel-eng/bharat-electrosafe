@@ -7,6 +7,7 @@ import {
   AccordionContent,
 } from '@/components/ui/accordion';
 import { SectionHeader } from '@/components/ui/SectionHeader';
+import { SectionShell } from '@/components/ui/SectionShell';
 import type { ProductData } from '@/data/products';
 import { cn } from '@/lib/utils';
 
@@ -33,9 +34,8 @@ interface ProductMaterialDimensionsProps {
 
 export function ProductMaterialDimensions({ product }: ProductMaterialDimensionsProps) {
   return (
-    <section className="section-padding-supporting bg-be-white">
-      <div className="container-site page-horizontal-padding">
-        <SectionHeader
+    <SectionShell variant="standard" bg="bg-be-white" topRule>
+      <SectionHeader
           eyebrow="Material & Dimensions"
           title="Material Properties & Dimensions"
         />
@@ -186,7 +186,6 @@ export function ProductMaterialDimensions({ product }: ProductMaterialDimensions
             ))}
           </ol>
         </div>
-      </div>
-    </section>
+    </SectionShell>
   );
 }

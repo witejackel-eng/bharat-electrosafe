@@ -24,6 +24,7 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageFrame } from '@/components/ui/ImageFrame';
+import { SectionShell } from '@/components/ui/SectionShell';
 import type { ProductData, Application } from '@/data/products';
 import { getImageAlt, getImageFit } from '@/data/products';
 
@@ -64,9 +65,8 @@ export function ProductApplications({ product }: ProductApplicationsProps) {
     product.images.hero;
 
   return (
-    <section className="section-padding-supporting bg-be-warm-white">
-      <div className="container-site page-horizontal-padding">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
+    <SectionShell variant="standard" bg="bg-be-warm-white" topRule>
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
           {/* Left: installed-use image */}
           <div className="lg:w-[45%]">
             <ImageFrame
@@ -112,8 +112,7 @@ export function ProductApplications({ product }: ProductApplicationsProps) {
               </p>
             </div>
           </div>
-        </div>
       </div>
-    </section>
+    </SectionShell>
   );
 }

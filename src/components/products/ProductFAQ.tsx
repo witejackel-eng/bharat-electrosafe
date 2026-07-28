@@ -1,6 +1,7 @@
 'use client';
 
 import { FAQ, type FAQItem } from '@/components/ui/FAQ';
+import { SectionShell } from '@/components/ui/SectionShell';
 import type { ProductData } from '@/data/products';
 
 interface ProductFAQProps {
@@ -72,15 +73,13 @@ export function ProductFAQ({ product }: ProductFAQProps) {
     : genericQuestions;
 
   return (
-    <section className="section-padding-supporting bg-be-warm-white">
-      <div className="container-site page-horizontal-padding">
-        <FAQ
+    <SectionShell variant="compact" bg="bg-be-warm-white" topRule>
+      <FAQ
           eyebrow="FAQ"
           title={`Questions about ${product.shortName}`}
           items={items}
           className="max-w-3xl"
         />
-      </div>
-    </section>
+    </SectionShell>
   );
 }

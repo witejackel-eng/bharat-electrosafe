@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageFrame } from '@/components/ui/ImageFrame';
+import { SectionShell } from '@/components/ui/SectionShell';
 import { getProductBySlug, getImageAlt, getImageFit } from '@/data/products';
 import type { ProductData } from '@/data/products';
 import { cn } from '@/lib/utils';
@@ -34,9 +35,8 @@ export function RelatedProducts({ product }: RelatedProductsProps) {
   }
 
   return (
-    <section className="section-padding-supporting bg-be-warm-white">
-      <div className="container-site page-horizontal-padding">
-        <SectionHeader
+    <SectionShell variant="standard" bg="bg-be-warm-white" topRule>
+      <SectionHeader
           eyebrow="Related Products"
           title="Explore Related Products"
           supportingText="Other Bharat Electrosafe products that complement or relate to this one."
@@ -96,7 +96,6 @@ export function RelatedProducts({ product }: RelatedProductsProps) {
             View all products
           </Link>
         </div>
-      </div>
-    </section>
+    </SectionShell>
   );
 }

@@ -9,6 +9,7 @@ import { Phone, MessageCircle, Loader2, CheckCircle2 } from 'lucide-react';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { cn } from '@/lib/utils';
+import { SectionShell } from '@/components/ui/SectionShell';
 import {
   Select,
   SelectContent,
@@ -176,42 +177,39 @@ export default function EnquiryQuoteLayout() {
   // Success state: replace form with confirmation
   if (submitted) {
     return (
-      <section className="section-padding-major page-horizontal-padding bg-be-white">
-        <div className="container-site">
-          <div className="max-w-xl mx-auto text-center py-12">
-            <div className="flex items-center justify-center mb-6">
-              <div className="size-16 rounded-full bg-green-100 flex items-center justify-center">
-                <CheckCircle2 className="size-8 text-green-600" />
-              </div>
-            </div>
-            <h2 className="text-section-h2 text-be-charcoal-950 mb-3">
-              Thank you!
-            </h2>
-            <p className="text-body-large text-be-grey-650 mb-2">
-              Your enquiry has been submitted successfully.
-            </p>
-            <p className="text-body text-be-grey-650 mb-8">
-              Our team will respond within 24 business hours. If urgent, feel free to call us directly.
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <PrimaryButton onClick={() => setSubmitted(false)}>
-                Submit Another Enquiry
-              </PrimaryButton>
-              <SecondaryButton href={`tel:${company.phonePrimaryTel}`}>
-                <Phone className="size-4 mr-1.5" />
-                Call Us Now
-              </SecondaryButton>
+      <SectionShell variant="standard" bg="bg-be-white" topRule>
+        <div className="max-w-xl mx-auto text-center py-12">
+          <div className="flex items-center justify-center mb-6">
+            <div className="size-16 rounded-full bg-green-100 flex items-center justify-center">
+              <CheckCircle2 className="size-8 text-green-600" />
             </div>
           </div>
+          <h2 className="text-section-h2 text-be-charcoal-950 mb-3">
+            Thank you!
+          </h2>
+          <p className="text-body-large text-be-grey-650 mb-2">
+            Your enquiry has been submitted successfully.
+          </p>
+          <p className="text-body text-be-grey-650 mb-8">
+            Our team will respond within 24 business hours. If urgent, feel free to call us directly.
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <PrimaryButton onClick={() => setSubmitted(false)}>
+              Submit Another Enquiry
+            </PrimaryButton>
+            <SecondaryButton href={`tel:${company.phonePrimaryTel}`}>
+              <Phone className="size-4 mr-1.5" />
+              Call Us Now
+            </SecondaryButton>
+          </div>
         </div>
-      </section>
+      </SectionShell>
     );
   }
 
   return (
-    <section className="section-padding-major page-horizontal-padding bg-be-white">
-      <div className="container-site">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+    <SectionShell variant="standard" bg="bg-be-white" topRule>
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Left — Contact Form (7/12) */}
           <div className="reveal-up lg:w-7/12">
             <h2 className="text-section-h2 text-be-charcoal-950 mb-2">
@@ -523,7 +521,6 @@ export default function EnquiryQuoteLayout() {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+    </SectionShell>
   );
 }
