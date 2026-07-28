@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, Phone, MessageCircle, MapPin } from 'lucide-react';
+import { Mail, Phone, MessageCircle, MapPin, ArrowRight } from 'lucide-react';
 import {
   Accordion,
   AccordionItem,
@@ -16,6 +16,7 @@ import {
   productCategories,
   ProductCategory,
 } from '@/data/products';
+import { officeMapsDirectionsUrl } from '@/components/contact/ContactIntro';
 
 /* ────────────────────────────────────────────
    Shared data structures (single source)
@@ -30,84 +31,206 @@ const companyLinks = [
   { name: 'Home', href: '/' },
   { name: 'About Us', href: '/about-us' },
   { name: 'Contact Us', href: '/contact-us' },
+  { name: 'View All Products', href: '/products' },
+  { name: 'Request a Quote', href: '/contact-us?type=quote' },
 ];
 
-const enquiryLinks = [
-  { name: 'Request a Quote', href: '/contact-us' },
-  { name: 'Ask for Technical Guidance', href: '/contact-us?type=technical-guidance' },
+/* Footer product labels — shortened where needed to avoid awkward
+   multi-line wrapping. The full official names remain on the product
+   pages themselves. */
+const footerProductLabels: Record<string, string> = {
+  'electrical-insulating-mats': 'Electrical Insulating Mats',
+  'coloured-strip-insulating-mats': 'Coloured Strip Mats',
+  'bi-color-insulating-mats': 'Bi-Color Insulating Mats',
+  'auto-glow-reflective-band-insulating-mats': 'Auto-Glow / Reflective Mats',
+  'bharat-membrane': 'BharatMembrane',
+  'bharat-hydro-seal': 'Bharat Hydro Seal',
+};
+
+/* Shortened address used in column 4 (linked to exact Maps destination). */
+const shortAddressLines = [
+  company.name,
+  company.address.line1,
+  `Sector 62, ${company.address.city} — ${company.address.pincode}`,
 ];
 
 /* ────────────────────────────────────────────
-   Shared sub-components
+   Icon button — shared by brand column
    ──────────────────────────────────────────── */
 
-function BrandSection({ className }: { className?: string }) {
+function IconButton({
+  href,
+  label,
+  children,
+  external,
+}: {
+  href: string;
+  label: string;
+  children: React.ReactNode;
+  external?: boolean;
+}) {
   return (
-    <div className={cn('flex flex-col gap-4', className)}>
+    <a
+      href={href}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
+      aria-label={label}
+      className="size-11 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2"
+    >
+      {children}
+    </a>
+  );
+}
+
+/* ────────────────────────────────────────────
+   Brand column
+   ──────────────────────────────────────────── */
+
+function BrandColumn() {
+  return (
+    <div className="flex flex-col gap-4">
       <Link href="/" aria-label="Bharat Electrosafe — Home">
         <Image
           src="/images/brand/bharat-electrosafe-logo-full.webp"
           alt="Bharat Electrosafe logo"
-          width={160}
-          height={60}
-          className="object-contain w-[140px] h-auto"
+          width={170}
+          height={64}
+          className="object-contain w-[150px] lg:w-[165px] h-auto"
           priority
         />
       </Link>
       <p className="text-sm text-be-grey-650 leading-relaxed max-w-[280px]">
-        Certified electrical insulating mats and engineered protection products for control panels, substations, utilities and industry.
+        Certified electrical insulating mats and engineered protection products for substations, switchrooms, utilities and industry.
       </p>
       <div className="flex items-center gap-3 pt-1">
-        <a
-          href={`mailto:${company.email}`}
-          className="size-11 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
-          aria-label="Email"
-        >
+        <IconButton href={`mailto:${company.email}`} label="Email">
           <Mail className="size-4" />
-        </a>
-        <a
-          href={`tel:${company.phonePrimaryTel}`}
-          className="size-11 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
-          aria-label="Phone"
-        >
+        </IconButton>
+        <IconButton href={`tel:${company.phonePrimaryTel}`} label="Phone">
           <Phone className="size-4" />
-        </a>
-        <a
+        </IconButton>
+        <IconButton
           href={company.whatsapp.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="size-11 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
-          aria-label="WhatsApp"
+          label="WhatsApp"
+          external
         >
           <MessageCircle className="size-4" />
-        </a>
+        </IconButton>
       </div>
     </div>
   );
 }
 
-function ContactSection({ className }: { className?: string }) {
+/* ────────────────────────────────────────────
+   Company column
+   ──────────────────────────────────────────── */
+
+function CompanyColumn() {
   return (
-    <div className={cn('flex flex-col gap-3', className)}>
+    <div className="flex flex-col gap-3">
       <h3 className="text-sm font-semibold text-be-charcoal-950 uppercase tracking-wide">
-        Contact
+        Company
       </h3>
-      <ul className="flex flex-col gap-3">
+      <ul className="flex flex-col gap-2.5">
+        {companyLinks.map((link) => (
+          <li key={link.name}>
+            <Link
+              href={link.href}
+              className="text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
+            >
+              {link.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* ────────────────────────────────────────────
+   Products column — all six families
+   ──────────────────────────────────────────── */
+
+function ProductsColumn() {
+  return (
+    <div className="flex flex-col gap-3">
+      <h3 className="text-sm font-semibold text-be-charcoal-950 uppercase tracking-wide">
+        Products
+      </h3>
+      <Link
+        href="/products"
+        className="text-base text-be-yellow-500 font-semibold hover:text-be-yellow-600 transition-colors"
+      >
+        View All Products
+      </Link>
+      <div className="flex flex-col gap-3">
+        {categoryOrder.map((catId) => {
+          const catInfo = productCategories[catId];
+          const items = productNavigationItems.filter((p) => p.category === catId);
+          return (
+            <div key={catId}>
+              <p className="text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider">
+                {catInfo.displayName}
+              </p>
+              <ul className="flex flex-col gap-1.5 mt-1.5">
+                {items.map((product) => (
+                  <li key={product.slug}>
+                    <Link
+                      href={product.href}
+                      className="text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
+                    >
+                      {footerProductLabels[product.slug] ?? product.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ────────────────────────────────────────────
+   Contact and Enquiries column
+   Yellow quote CTA at top, compact rows below.
+   ──────────────────────────────────────────── */
+
+function ContactEnquiriesColumn() {
+  return (
+    <div className="flex flex-col gap-4">
+      <Link
+        href="/contact-us?type=quote"
+        className="inline-flex items-center justify-center gap-2 min-h-[44px] rounded-lg bg-be-yellow-500 text-be-charcoal-950 font-semibold shadow-sm hover:bg-be-yellow-600 hover:-translate-y-0.5 transition-all px-5 py-3 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2 w-fit"
+      >
+        Request a Quote
+        <ArrowRight className="size-4" />
+      </Link>
+
+      <Link
+        href="/contact-us?type=technical-guidance"
+        className="text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
+      >
+        Ask for Technical Guidance
+      </Link>
+
+      <ul className="flex flex-col">
         <li>
           <a
             href={`mailto:${company.email}`}
-            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
+            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
           >
-            <Mail className="size-4 shrink-0" />
-            <span>{company.email}</span>
+            <Mail className="size-4 shrink-0 text-be-yellow-600" aria-hidden />
+            <span className="break-words">{company.email}</span>
           </a>
         </li>
         <li>
           <a
             href={`tel:${company.phonePrimaryTel}`}
-            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
+            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
           >
-            <Phone className="size-4 shrink-0" />
+            <Phone className="size-4 shrink-0 text-be-yellow-600" aria-hidden />
             <span>{company.phonePrimary}</span>
           </a>
         </li>
@@ -116,18 +239,28 @@ function ContactSection({ className }: { className?: string }) {
             href={company.whatsapp.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
+            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
           >
-            <MessageCircle className="size-4 shrink-0" />
-            <span>{company.whatsapp.label}</span>
+            <MessageCircle className="size-4 shrink-0 text-be-yellow-600" aria-hidden />
+            <span>WhatsApp</span>
           </a>
         </li>
-        <li className="flex items-start gap-2 text-base text-be-grey-650">
-          <MapPin className="size-4 shrink-0 mt-1" />
-          <span>
-            {company.address.line1}, {company.address.line2},<br />
-            {company.address.city}, {company.address.state} — {company.address.pincode}
-          </span>
+        <li>
+          <a
+            href={officeMapsDirectionsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-start gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-b border-be-grey-150"
+          >
+            <MapPin className="size-4 shrink-0 mt-1 text-be-yellow-600" aria-hidden />
+            <span>
+              {shortAddressLines.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </span>
+          </a>
         </li>
       </ul>
     </div>
@@ -139,130 +272,77 @@ function ContactSection({ className }: { className?: string }) {
    ──────────────────────────────────────────── */
 
 export function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="bg-be-warm-white">
       {/* ── Yellow accent top border ── */}
       <div className="h-[3px] bg-be-yellow-500" />
 
       {/* ── Main footer content ── */}
-      <div className="container-site page-horizontal-padding section-padding-supporting">
-        {/* Desktop: four-column grid */}
-        <div className="hidden md:grid md:grid-cols-4 gap-8">
-          {/* Column 1 — Brand */}
-          <BrandSection />
-
-          {/* Separator */}
-          <div className="hidden lg:block border-l border-be-grey-250/60 mx-1" />
-
-          {/* Column 2 — Company */}
-          <div className="flex flex-col gap-3">
-            <h3 className="text-sm font-semibold text-be-charcoal-950 uppercase tracking-wide">
-              Company
-            </h3>
-            <ul className="flex flex-col gap-2.5">
-              {companyLinks.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+      <div className="container-site page-horizontal-padding pt-12 pb-10 lg:pt-14 lg:pb-12">
+        {/* ────────── Desktop / tablet layout ──────────
+            - md (768–1024px): deliberate 2-column grid
+              Row 1: Brand | Contact and Enquiries
+              Row 2: Company | Products
+            - lg (≥1024px): single-row 4-column grid with
+              explicit proportions and border separators
+              applied to columns 2/3/4 (not as grid children).
+            Exactly four direct grid children at lg, no separator divs. */}
+        <div className="hidden md:grid md:grid-cols-2 md:gap-x-10 md:gap-y-12 lg:grid-cols-[1.1fr_0.65fr_1.2fr_1.1fr] lg:gap-x-12 lg:gap-y-0">
+          {/* Row 1, Col 1 — Brand (lg: col 1) */}
+          <div className="lg:pr-8">
+            <BrandColumn />
           </div>
 
-          {/* Separator */}
-          <div className="hidden lg:block border-l border-be-grey-250/60 mx-1" />
-
-          {/* Column 3 — Products */}
-          <div className="flex flex-col gap-3">
-            <h3 className="text-sm font-semibold text-be-charcoal-950 uppercase tracking-wide">
-              Products
-            </h3>
-            <ul className="flex flex-col gap-2.5">
-              <li>
-                <Link
-                  href="/products"
-                  className="text-base text-be-yellow-500 font-semibold hover:text-be-yellow-600 transition-colors"
-                >
-                  View All Products
-                </Link>
-              </li>
-              {categoryOrder.map((catId) => {
-                const catInfo = productCategories[catId];
-                const items = productNavigationItems.filter((p) => p.category === catId);
-                return (
-                  <li key={catId}>
-                    <span className="text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider">
-                      {catInfo.displayName}
-                    </span>
-                    <ul className="flex flex-col gap-1.5 mt-1">
-                      {items.map((product) => (
-                        <li key={product.slug}>
-                          <Link
-                            href={product.href}
-                            className="text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
-                          >
-                            {product.name}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                );
-              })}
-            </ul>
+          {/* Row 1, Col 2 — Contact and Enquiries (lg: col 4)
+              On md, this occupies row 1 col 2; on lg, it moves to col 4.
+              Border-left applied directly to the column (not a separator div). */}
+          <div className="md:pl-4 lg:pl-8 lg:order-4 lg:border-l lg:border-be-grey-250/60">
+            <ContactEnquiriesColumn />
           </div>
 
-          {/* Separator */}
-          <div className="hidden lg:block border-l border-be-grey-250/60 mx-1" />
+          {/* Row 2, Col 1 — Company (lg: col 2) */}
+          <div className="lg:pl-8 lg:order-2 lg:border-l lg:border-be-grey-250/60">
+            <CompanyColumn />
+          </div>
 
-          {/* Column 4 — Enquiry + Contact */}
-          <div className="flex flex-col gap-6">
-            {/* Enquiry links */}
-            <div className="flex flex-col gap-3">
-              <h3 className="text-sm font-semibold text-be-charcoal-950 uppercase tracking-wide">
-                Enquiry
-              </h3>
-              <ul className="flex flex-col gap-2.5">
-                {enquiryLinks.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      href={link.href}
-                      className="text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Contact info */}
-            <ContactSection />
+          {/* Row 2, Col 2 — Products (lg: col 3) */}
+          <div className="md:pl-4 lg:pl-8 lg:order-3 lg:border-l lg:border-be-grey-250/60">
+            <ProductsColumn />
           </div>
         </div>
 
-        {/* Mobile: stacked groups with accordion */}
+        {/* ────────── Mobile layout (<768px) ──────────
+            1. Brand
+            2. Description (inside BrandColumn)
+            3. Email / phone / WhatsApp icons (inside BrandColumn)
+            4. Request a Quote button
+            5. Accordions: Company, Products, Contact
+            6. Legal bottom bar */}
         <div className="md:hidden flex flex-col gap-6">
-          {/* Brand at top */}
-          <BrandSection />
+          <BrandColumn />
 
-          {/* Accordion sections */}
+          <Link
+            href="/contact-us?type=quote"
+            className="inline-flex items-center justify-center gap-2 min-h-[44px] rounded-lg bg-be-yellow-500 text-be-charcoal-950 font-semibold shadow-sm hover:bg-be-yellow-600 transition-all px-5 py-3 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2"
+          >
+            Request a Quote
+            <ArrowRight className="size-4" />
+          </Link>
+
           <Accordion type="single" collapsible defaultValue="company">
             <AccordionItem value="company">
               <AccordionTrigger className="text-base font-semibold text-be-charcoal-950 py-3 min-h-[44px]">
                 Company
               </AccordionTrigger>
               <AccordionContent>
-                <ul className="flex flex-col gap-2.5 pb-2">
+                <ul className="flex flex-col gap-1.5 pb-2">
                   {companyLinks.map((link) => (
                     <li key={link.name}>
                       <Link
                         href={link.href}
-                        className="text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-1 min-h-[44px] inline-flex items-center"
+                        className="text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] inline-flex items-center"
                       >
                         {link.name}
                       </Link>
@@ -277,59 +357,37 @@ export function Footer() {
                 Products
               </AccordionTrigger>
               <AccordionContent>
-                <ul className="flex flex-col gap-2.5 pb-2">
-                  <li>
-                    <Link
-                      href="/products"
-                      className="text-base text-be-yellow-500 font-semibold hover:text-be-yellow-600 transition-colors py-1 min-h-[44px] inline-flex items-center"
-                    >
-                      View All Products
-                    </Link>
-                  </li>
+                <div className="flex flex-col gap-3 pb-2">
+                  <Link
+                    href="/products"
+                    className="text-base text-be-yellow-500 font-semibold hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] inline-flex items-center"
+                  >
+                    View All Products
+                  </Link>
                   {categoryOrder.map((catId) => {
                     const catInfo = productCategories[catId];
                     const items = productNavigationItems.filter((p) => p.category === catId);
                     return (
-                      <li key={catId}>
-                        <span className="text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider py-1">
+                      <div key={catId}>
+                        <p className="text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider py-1">
                           {catInfo.displayName}
-                        </span>
+                        </p>
                         <ul className="flex flex-col gap-1.5 mt-1">
                           {items.map((product) => (
                             <li key={product.slug}>
                               <Link
                                 href={product.href}
-                                className="text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-1 min-h-[44px] inline-flex items-center"
+                                className="text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] inline-flex items-center"
                               >
-                                {product.name}
+                                {footerProductLabels[product.slug] ?? product.name}
                               </Link>
                             </li>
                           ))}
                         </ul>
-                      </li>
+                      </div>
                     );
                   })}
-                </ul>
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="enquiry">
-              <AccordionTrigger className="text-base font-semibold text-be-charcoal-950 py-3 min-h-[44px]">
-                Enquiry
-              </AccordionTrigger>
-              <AccordionContent>
-                <ul className="flex flex-col gap-2.5 pb-2">
-                  {enquiryLinks.map((link) => (
-                    <li key={link.name}>
-                      <Link
-                        href={link.href}
-                        className="text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-1 min-h-[44px] inline-flex items-center"
-                      >
-                        {link.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                </div>
               </AccordionContent>
             </AccordionItem>
 
@@ -338,22 +396,22 @@ export function Footer() {
                 Contact
               </AccordionTrigger>
               <AccordionContent>
-                <ul className="flex flex-col gap-3 pb-2">
+                <ul className="flex flex-col pb-2">
                   <li>
                     <a
                       href={`mailto:${company.email}`}
-                      className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors min-h-[44px]"
+                      className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
                     >
-                      <Mail className="size-4 shrink-0" />
-                      <span>{company.email}</span>
+                      <Mail className="size-4 shrink-0 text-be-yellow-600" aria-hidden />
+                      <span className="break-words">{company.email}</span>
                     </a>
                   </li>
                   <li>
                     <a
                       href={`tel:${company.phonePrimaryTel}`}
-                      className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors min-h-[44px]"
+                      className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
                     >
-                      <Phone className="size-4 shrink-0" />
+                      <Phone className="size-4 shrink-0 text-be-yellow-600" aria-hidden />
                       <span>{company.phonePrimary}</span>
                     </a>
                   </li>
@@ -362,18 +420,28 @@ export function Footer() {
                       href={company.whatsapp.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors min-h-[44px]"
+                      className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
                     >
-                      <MessageCircle className="size-4 shrink-0" />
-                      <span>{company.whatsapp.label}</span>
+                      <MessageCircle className="size-4 shrink-0 text-be-yellow-600" aria-hidden />
+                      <span>WhatsApp</span>
                     </a>
                   </li>
-                  <li className="flex items-start gap-2 text-base text-be-grey-650 py-2">
-                    <MapPin className="size-4 shrink-0 mt-1" />
-                    <span>
-                      {company.address.line1}, {company.address.line2},<br />
-                      {company.address.city}, {company.address.state} — {company.address.pincode}
-                    </span>
+                  <li>
+                    <a
+                      href={officeMapsDirectionsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-start gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-b border-be-grey-150"
+                    >
+                      <MapPin className="size-4 shrink-0 mt-1 text-be-yellow-600" aria-hidden />
+                      <span>
+                        {shortAddressLines.map((line) => (
+                          <span key={line} className="block">
+                            {line}
+                          </span>
+                        ))}
+                      </span>
+                    </a>
                   </li>
                 </ul>
               </AccordionContent>
@@ -382,17 +450,15 @@ export function Footer() {
         </div>
       </div>
 
-      {/* ── Bottom bar with yellow tint ── */}
+      {/* ── Bottom bar — no duplicated certification info ── */}
       <div className="border-t border-be-grey-250 bg-be-yellow-50/50">
-        <div className="container-site page-horizontal-padding py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div className="container-site page-horizontal-padding py-3.5 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-metadata text-be-grey-650 text-center sm:text-left">
-          &copy; {new Date().getFullYear()} {company.name}. All rights reserved. | IS 15652:2006 | CM/L:8800129617
+            &copy; {currentYear} {company.name}. All rights reserved.
           </p>
-          <div className="flex items-center gap-4">
-            <span className="text-metadata text-be-grey-650">
-              IS 15652:2006 | CM/L:8800129617 | Made in India
-            </span>
-          </div>
+          <p className="text-metadata text-be-grey-650 text-center sm:text-right">
+            IS 15652:2006 · BIS Licence CM/L:8800129617 · Made in India
+          </p>
         </div>
       </div>
     </footer>
