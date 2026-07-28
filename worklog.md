@@ -257,3 +257,115 @@ Recommended next-phase priorities:
 3. Consider a product-finder wizard (guided quiz: voltage → environment → application → recommended product) as the next user-facing feature.
 4. Performance audit: measure CLS from the marquee animation and the compare modal open/close.
 5. Add structured-data review for the new BreadcrumbList JSON-LD (ensure no duplicate schema on product detail pages).
+
+---
+Task ID: QA-POLISH-3
+Agent: Z.ai Code (main session)
+Task: QA-driven polish round 3 — assess project status, perform testing/QA via agent-browser, independently select work focus (fix bugs or add features), improve styling details, add functionality, update worklog.
+
+Work Log:
+- Read existing worklog.md; confirmed prior QA-POLISH-2 round (sticky header fix, client logo image warning fix, product comparison tool, premium sheen/focus-visible styling, breadcrumb JSON-LD) was complete and pushed as 605ebb7 + 1148663.
+- Restarted dev server (it had stopped); verified all routes return expected codes (/, /products, /about-us, /contact-us, all 5 product detail pages = 200; /products/bharat-hydro-seal = 404).
+- Performed QA with agent-browser. Site was stable — no critical bugs found in the previous round's work. The scroll-behavior warning was already fixed; the "fill and height 0" carousel warning only appeared during HMR/stale sessions, not on fresh loads.
+- Identified one minor LCP performance warning: bi-color-insulating-mats/card.webp detected as LCP on homepage — should be loading="eager" / priority.
+- Independently selected work focus: implement the Product Finder Wizard (top recommended next-phase item from QA-POLISH-2) + URL-shareable compare state (second recommended item) + more premium styling.
+
+Implemented:
+
+1. Product Finder Wizard (NEW FEATURE — src/components/products/ProductFinderWizard.tsx)
+   - 3-question guided quiz: primary need → operating voltage → environment
+   - Smart flow: waterproofing path skips voltage question (only 2 steps)
+   - Recommendation engine maps (need, voltage, environment) → product slug
+     • Electrical safety + LV → Electrical Insulating Mats (Class A)
+     • Electrical safety + MV → Electrical Insulating Mats (Class B)
+     • Electrical safety + HV → Electrical Insulating Mats (Class C)
+     • Hazard visibility → Coloured Strip (secondary: Bi-Color)
+     • Low-light/emergency → Auto-Glow / Reflective Band
+     • Waterproofing → BharatMembrane
+   - Result card: product image, "BEST MATCH" badge, reasoning text,
+     "View product" + "Ask our team" CTAs, optional "Also consider" section
+   - Accessibility: role="region", progressbar with aria-valuenow, aria-pressed
+     on options, aria-live="polite" result region, focus moves to result heading
+   - Keyboard: Enter advances when canAdvance, Back button, Start over
+   - Premium styling: gradient top accent, progress bar, animated step
+     transitions (fade-in via key change), be-result-reveal staggered animation
+   - Integrated into /products as Section 3 (between product grid and comparison table)
+
+2. URL-Shareable Compare State (ENHANCEMENT — CompareContext.tsx)
+   - CompareContext now syncs selection to ?compare=slug1,slug2 URL param
+   - On mount: reads URL and pre-populates selection (rAF-deferred for lint)
+   - On change: writes to URL via history.replaceState (no scroll, no extra entry)
+   - shareUrl computed from current selection for clipboard copy
+   - CompareBar: new "Share" button (visible at 2+ selected) copies URL to
+     clipboard with navigator.clipboard.writeText + execCommand fallback
+   - "Copied!" confirmation with aria-live="polite", auto-resets after 2s
+   - Verified: URL updates to ?compare=electrical-insulating-mats,coloured-strip-insulating-mats;
+     reloading the URL restores the selection (2 chips, 2 checked toggles)
+
+3. ProductImageCarousel Fix (BUG FIX)
+   - Added min-h-[240px] sm:min-h-[280px] lg:min-h-[320px] to the aspect-ratio
+     container so the slot has non-zero height before CSS computes, silencing
+     the Next.js Image "fill and height 0" warning during initial hydration.
+
+4. LCP Priority Fix (PERFORMANCE)
+   - ProductRange: added priority={isAboveFold} to the first 3 product card
+     images (index 0-2) so they load eagerly and don't get flagged as late-LCP.
+
+5. Premium Styling (5 new CSS utilities in globals.css)
+   - be-card-glow: soft yellow radial glow that appears on hover for product
+     cards. Pairs with hover-card-lift. Disabled for reduced-motion.
+   - be-underline-grow: animated underline that grows from left on hover/focus.
+     Applied to "View Product" text on homepage + /products cards.
+   - be-step-badge: gradient-filled numbered circle for wizard/process steps.
+   - be-result-reveal: staggered fade-and-rise for wizard results. 3 children
+     animate in sequence (0ms, 120ms, 240ms). Applied to wizard result section.
+   - be-pulse-attention: gentle 2-pulse animation to draw attention to new
+     features. Stops after 2 iterations.
+   - Applied be-card-glow to: homepage ProductRange cards, /products grid cards
+   - Applied be-underline-grow to: "View Product" text on both card variants
+   - Applied be-result-reveal to: wizard result section
+   - Applied be-premium-sheen to: CompareBar "Compare now" button
+
+Verification Results:
+- All routes 200; /products/bharat-hydro-seal 404.
+- bun run lint — clean (exit 0).
+- bun run typecheck — clean (exit 0).
+- Wizard: 4 options on step 1, clicking "Operator protection" → Continue →
+  "What is your working voltage?" → select MV → Continue → "What is your
+  environment?" → select indoor → "See recommendation" → result: "Electrical
+  Insulating Mats" with reasoning "Class B, 2.5 mm protect operators near
+  medium-voltage equipment up to 11 kV".
+- Wizard waterproofing path: selecting "Waterproofing & containment" → Continue
+  correctly SKIPS voltage → goes to environment → result: "BharatMembrane".
+- Compare URL sync: selecting 2 products updates URL to
+  ?compare=electrical-insulating-mats,coloured-strip-insulating-mats.
+- Compare URL persistence: reloading the URL restores selection (2 chips, 2 checked).
+- Share button: clicking shows "Copied!" confirmation. Visible at 2+ selected.
+- Mobile (390px): no horizontal overflow; wizard renders; compare toggles render.
+- Compare bar navy confirmed via pixel sampling: (13, 42, 86).
+
+Stage Summary:
+- Committed as bab47f1 and pushed to origin/main (1148663..bab47f1).
+- 7 files changed, 818 insertions, 21 deletions.
+- 1 new component: ProductFinderWizard (538 lines).
+- 6 files modified: globals.css, ProductsClient, ProductRange, CompareBar,
+  CompareContext, ProductImageCarousel.
+- No critical bugs remain. All prior work preserved and stable.
+
+Unresolved / Risks:
+- Dev server (Next.js 16 Turbopack) remains unstable in the sandbox under
+  combined dev + browser load. Restarts cleanly with nohup. Production unaffected.
+- ProductImageCarousel warning may still appear during HMR (hot module reload)
+  but not on fresh page loads. The min-height fix addresses the initial render.
+- Leadership portraits remain low-resolution (source limitation; treated in prior round).
+
+Recommended next-phase priorities:
+1. Add the product finder wizard to the homepage (compact variant) so visitors
+   can find products without navigating to /products.
+2. Consider A/B testing the wizard against the static SelectionGuidance section
+   to measure engagement and conversion.
+3. Add structured data (FAQPage or HowTo) for the wizard questions/answers for SEO.
+4. Performance audit: measure CLS from the wizard step transitions and the
+   be-result-reveal staggered animation.
+5. Consider adding "Add to compare" from within the wizard result card so users
+   can compare the recommended product against alternatives in one click.
