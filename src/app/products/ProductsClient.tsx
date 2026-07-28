@@ -18,6 +18,7 @@ import {
   productComparisonData,
   productCategories,
   productFamilyCount,
+  imageFitClass,
   ProductCategory,
 } from '@/data/products';
 
@@ -108,10 +109,15 @@ function ProductFamilyGrid() {
                   {/* Image area */}
                   <div className="relative w-full overflow-hidden bg-be-cream aspect-[4/3]">
                     <Image
-                      src={product.thumbnail}
-                      alt={product.name}
+                      src={product.thumbnail.src}
+                      alt={product.thumbnail.alt}
                       fill
-                      className="object-contain p-3"
+                      className={imageFitClass(product.thumbnail)}
+                      style={
+                        product.thumbnail.position
+                          ? { objectPosition: product.thumbnail.position }
+                          : undefined
+                      }
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                     />
                     <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/10 transition-colors duration-300" />

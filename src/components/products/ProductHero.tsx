@@ -1,7 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import Image from 'next/image';
+import { useMemo } from 'react';
 import {
   Zap,
   Ruler,
@@ -26,8 +25,8 @@ import { TechnicalBadge } from '@/components/ui/TechnicalBadge';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { SectionShell } from '@/components/ui/SectionShell';
+import { ProductImageCarousel } from '@/components/products/ProductImageCarousel';
 import type { ProductData } from '@/data/products';
-import { getImageAlt, getImageFit } from '@/data/products';
 
 /* ── Icon mapping ── */
 
@@ -59,20 +58,6 @@ interface ProductHeroProps {
 }
 
 export function ProductHero({ product }: ProductHeroProps) {
-  /* ── Gallery state ── */
-  // Build the list of gallery images: hero always first, then up to 2 details
-  const galleryImages = useMemo(() => {
-    const images = [product.images.hero];
-    product.images.details.slice(0, 2).forEach((src) => {
-      if (!images.includes(src)) images.push(src);
-    });
-    return images;
-  }, [product.images.hero, product.images.details]);
-
-  const [activeIndex, setActiveIndex] = useState(0);
-  const activeSrc = galleryImages[activeIndex];
-  const thumbnails = galleryImages.slice(1); // detail images as thumbnails
-
   const breadcrumbItems = useMemo(
     () => [
       { label: 'Home', href: '/' },
@@ -81,8 +66,6 @@ export function ProductHero({ product }: ProductHeroProps) {
     ],
     [product.name]
   );
-
-  const activeFit = getImageFit(product, activeSrc);
 
   return (
     <SectionShell variant="hero" bg="bg-be-warm-white">
@@ -142,121 +125,20 @@ export function ProductHero({ product }: ProductHeroProps) {
           </div>
         </div>
 
-        {/* ── Media side (54%) ── */}
-        <div className="lg:w-[54%] order-first lg:order-last">
-          {/* ── Desktop gallery: main + vertical thumbnail rail ── */}
-          {thumbnails.length > 0 ? (
-            <div className="hidden lg:grid grid-cols-[minmax(0,3fr)_minmax(110px,1fr)] gap-3 rounded-lg">
-              {/* Main image */}
-              <div className="relative overflow-hidden rounded-lg aspect-[4/3]">
-                <Image
-                  src={activeSrc}
-                  alt={getImageAlt(product, activeSrc)}
-                  fill
-                  className={activeFit === 'contain' ? 'object-contain p-3' : 'object-cover'}
-                  sizes="(max-width: 768px) 100vw, 54vw"
-                  priority
-                />
-              </div>
-
-              {/* Vertical thumbnail rail */}
-              <div className="grid grid-rows-2 gap-3">
-                {thumbnails.map((thumbSrc, idx) => {
-                  const thumbFit = getImageFit(product, thumbSrc);
-                  const thumbAlt = getImageAlt(product, thumbSrc);
-                  const isActive = activeIndex === idx + 1;
-                  return (
-                    <button
-                      key={thumbSrc}
-                      type="button"
-                      onClick={() => setActiveIndex(idx + 1)}
-                      aria-label={`View: ${thumbAlt}`}
-                      className={`
-                        relative overflow-hidden rounded-lg aspect-auto focus-ring
-                        transition-opacity duration-200 ease-out
-                        ${isActive
-                          ? 'ring-2 ring-be-yellow-500 ring-offset-2 ring-offset-be-warm-white'
-                          : 'opacity-80 hover:opacity-100'
-                        }
-                      `}
-                    >
-                      <Image
-                        src={thumbSrc}
-                        alt={thumbAlt}
-                        fill
-                        className={thumbFit === 'contain' ? 'object-contain p-2' : 'object-cover'}
-                        sizes="110px"
-                        loading="lazy"
-                      />
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ) : (
-            /* No thumbnails — single full-width hero image (desktop) */
-            <div className="hidden lg:block relative overflow-hidden rounded-lg aspect-[4/3]">
-              <Image
-                src={product.images.hero}
-                alt={getImageAlt(product, product.images.hero)}
-                fill
-                className={getImageFit(product, product.images.hero) === 'contain' ? 'object-contain p-3' : 'object-cover'}
-                sizes="(max-width: 768px) 100vw, 54vw"
-                priority
-              />
-            </div>
-          )}
-
-          {/* ── Mobile: primary image + compact thumbnail row ── */}
-          <div className="lg:hidden">
-            {/* Primary image */}
-            <div className="relative overflow-hidden rounded-lg aspect-[4/3]">
-              <Image
-                src={activeSrc}
-                alt={getImageAlt(product, activeSrc)}
-                fill
-                className={activeFit === 'contain' ? 'object-contain p-3' : 'object-cover'}
-                sizes="100vw"
-                priority
-              />
-            </div>
-
-            {/* Compact thumbnail row */}
-            {thumbnails.length > 0 && (
-              <div className="flex gap-2 mt-2">
-                {thumbnails.map((thumbSrc, idx) => {
-                  const thumbFit = getImageFit(product, thumbSrc);
-                  const thumbAlt = getImageAlt(product, thumbSrc);
-                  const isActive = activeIndex === idx + 1;
-                  return (
-                    <button
-                      key={thumbSrc}
-                      type="button"
-                      onClick={() => setActiveIndex(idx + 1)}
-                      aria-label={`View: ${thumbAlt}`}
-                      className={`
-                        relative overflow-hidden rounded-md h-[72px] w-[96px] focus-ring
-                        transition-opacity duration-200 ease-out
-                        ${isActive
-                          ? 'ring-2 ring-be-yellow-500 ring-offset-1 ring-offset-be-warm-white'
-                          : 'opacity-80 hover:opacity-100'
-                        }
-                      `}
-                    >
-                      <Image
-                        src={thumbSrc}
-                        alt={thumbAlt}
-                        fill
-                        className={thumbFit === 'contain' ? 'object-contain p-1' : 'object-cover'}
-                        sizes="96px"
-                        loading="lazy"
-                      />
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+        {/* ── Media side (54%) ──
+            One carousel for every breakpoint. The previous markup shipped a
+            desktop gallery and a mobile gallery side by side in the DOM, so
+            each device downloaded a priority hero it never displayed. */}
+        {/* w-full because the row is `items-start`, so stacked children size
+            to their own content rather than stretching — without it the
+            thumbnail strip's intrinsic width sets the column width on mobile.
+            min-w-0 then lets that strip scroll instead of pushing the page
+            wider than the viewport. */}
+        <div className="w-full min-w-0 lg:w-[54%] order-first lg:order-last">
+          <ProductImageCarousel
+            images={product.images.gallery}
+            productName={product.name}
+          />
         </div>
       </div>
 

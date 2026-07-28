@@ -26,7 +26,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageFrame } from '@/components/ui/ImageFrame';
 import { SectionShell } from '@/components/ui/SectionShell';
 import type { ProductData, Application } from '@/data/products';
-import { getImageAlt, getImageFit } from '@/data/products';
+import { getHeroImage } from '@/data/products';
 
 /* ── Icon mapping ── */
 
@@ -59,10 +59,11 @@ interface ProductApplicationsProps {
 }
 
 export function ProductApplications({ product }: ProductApplicationsProps) {
-  const applicationSrc =
-    product.images.application ??
-    product.images.details[product.images.details.length - 1] ??
-    product.images.hero;
+  /* Where the client has no genuine in-situ photograph, this falls back to
+     the strongest product view rather than to whatever image happened to be
+     last in the gallery — which is how a brand logo and a scanned drawing
+     ended up illustrating "Where It's Used". */
+  const application = product.images.application ?? getHeroImage(product);
 
   return (
     <SectionShell variant="standard" bg="bg-be-warm-white" topRule>
@@ -70,10 +71,10 @@ export function ProductApplications({ product }: ProductApplicationsProps) {
           {/* Left: installed-use image */}
           <div className="lg:w-[45%]">
             <ImageFrame
-              src={applicationSrc}
-              alt={getImageAlt(product, applicationSrc)}
+              src={application.src}
+              alt={application.alt}
               aspectRatio="landscape"
-              fit={getImageFit(product, applicationSrc)}
+              fit={application.fit}
             />
           </div>
 

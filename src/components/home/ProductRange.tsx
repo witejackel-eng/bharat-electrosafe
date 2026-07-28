@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SectionShell } from '@/components/ui/SectionShell';
-import { products, productFamilyCount, getImageAlt, getImageFit, productCategories } from '@/data/products';
+import { products, productFamilyCount, imageFitClass, productCategories } from '@/data/products';
 
 function ProductCard({ product, index }: { product: typeof products[number]; index: number }) {
-  const src = product.images.thumbnail;
+  /* The one approved card image, from central product data — never a
+     detail shot or a hero picked locally by this component. */
+  const thumbnail = product.images.thumbnail;
   const catInfo = productCategories[product.category];
 
   return (
@@ -32,10 +34,15 @@ function ProductCard({ product, index }: { product: typeof products[number]; ind
       {/* Image area — square images use a squarer ratio on mobile */}
       <div className="relative w-full overflow-hidden bg-be-cream aspect-[4/3] md:aspect-[16/10]">
         <Image
-          src={src}
-          alt={getImageAlt(product, src)}
+          src={thumbnail.src}
+          alt={thumbnail.alt}
           fill
-          className={getImageFit(product, src) === 'contain' ? 'object-contain p-3 md:p-2' : 'object-cover group-hover:scale-105 transition-transform duration-300'}
+          className={`${imageFitClass(thumbnail, 'p-3 md:p-2')} ${
+            thumbnail.fit === 'cover'
+              ? 'group-hover:scale-105 transition-transform duration-300'
+              : ''
+          }`}
+          style={thumbnail.position ? { objectPosition: thumbnail.position } : undefined}
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
         {/* Dark overlay on hover */}

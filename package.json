@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test:a11y": "playwright test --config=playwright.config.ts"
+    "test:a11y": "playwright test --config=playwright.config.ts",
+    "build:product-gallery": "node scripts/build-product-gallery.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

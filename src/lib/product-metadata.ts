@@ -65,20 +65,29 @@ const productTitles: Record<string, ProductTitleSet> = {
   },
 };
 
-/** OG image paths per product slug — uses product-specific hero where available. */
+/**
+ * Social-card image per product.
+ *
+ * Chosen separately from the on-page hero because a social card is a wide
+ * landscape crop: a portrait or square asset gets letterboxed or cut. Every
+ * entry below is landscape, and every one shows the product — the previous
+ * BharatMembrane card was the brand logo on a black field, which told a reader
+ * nothing about a geomembrane.
+ */
 const productOgImages: Record<string, string> = {
   'electrical-insulating-mats':
-    '/media/products/electrical-insulating-mats/product-02.webp',
+    '/media/products/electrical-insulating-mats/gallery/01-blue-coin-mat.webp',
   'coloured-strip-insulating-mats':
-    '/media/products/coloured-strip-insulating-mats/product-04.webp',
+    '/media/products/coloured-strip-insulating-mats/gallery/01-yellow-strip-hexa-mat.webp',
+  /* The bi-colour set is square; the widest of them crops most gracefully. */
   'bi-color-insulating-mats':
-    '/media/products/bi-color-insulating-mats/hero.webp',
+    '/media/products/bi-color-insulating-mats/gallery/04-layer-cross-section.webp',
   'auto-glow-reflective-band-insulating-mats':
-    '/media/products/auto-glow-reflective-band-insulating-mats/product-06.webp',
+    '/media/products/auto-glow-reflective-band-insulating-mats/gallery/01-reflective-bands-daylight.webp',
   'bharat-membrane':
-    '/media/products/bharat-membrane/product-logo.webp',
+    '/media/products/bharat-membrane/gallery/01-tunnel-membrane-lining.webp',
   'bharat-hydro-seal':
-    '/media/products/bharat-hydro-seal/product-02.webp',
+    '/media/products/bharat-hydro-seal/gallery/01-ribbed-water-stop-profile.webp',
 };
 
 /**
