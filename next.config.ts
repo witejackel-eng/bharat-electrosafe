@@ -19,8 +19,12 @@ const cspHeader = [
   "img-src 'self' data: https:",
   "font-src 'self'",
   "connect-src 'self'",
-  /* The About page embeds two company YouTube videos, click-to-load and via
-     the no-cookie host. Nothing else may be framed. */
+  /* The About page embeds two company YouTube videos via the no-cookie
+     host (click-to-load). The Contact Us page no longer uses any iframe
+     for the map — the static SVG preview is a plain clickable link that
+     opens Google Maps in a new tab, which works around ad-blockers,
+     privacy extensions and corporate firewalls that were blocking the
+     OpenStreetMap embed. Nothing else may be framed. */
   "frame-src 'self' https://www.youtube-nocookie.com",
   "object-src 'none'",
   "base-uri 'self'",
