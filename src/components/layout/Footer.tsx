@@ -31,8 +31,6 @@ const companyLinks = [
   { name: 'Home', href: '/' },
   { name: 'About Us', href: '/about-us' },
   { name: 'Contact Us', href: '/contact-us' },
-  { name: 'View All Products', href: '/products' },
-  { name: 'Request a Quote', href: '/contact-us?type=quote' },
 ];
 
 /* Footer product labels — shortened where needed to avoid awkward
@@ -47,7 +45,9 @@ const footerProductLabels: Record<string, string> = {
   'bharat-hydro-seal': 'Bharat Hydro Seal',
 };
 
-/* Shortened address used in column 4 (linked to exact Maps destination). */
+/* Shortened footer address used in column 4 + mobile Contact accordion.
+   Linked to the exact Google Maps destination. The full address remains
+   on the Contact page itself. */
 const shortAddressLines = [
   company.name,
   company.address.line1,
@@ -88,7 +88,7 @@ function IconButton({
 
 function BrandColumn() {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3.5">
       <Link href="/" aria-label="Bharat Electrosafe — Home">
         <Image
           src="/images/brand/bharat-electrosafe-logo-full.webp"
@@ -102,7 +102,7 @@ function BrandColumn() {
       <p className="text-sm text-be-grey-650 leading-relaxed max-w-[280px]">
         Certified electrical insulating mats and engineered protection products for substations, switchrooms, utilities and industry.
       </p>
-      <div className="flex items-center gap-3 pt-1">
+      <div className="flex items-center gap-3 pt-0.5">
         <IconButton href={`mailto:${company.email}`} label="Email">
           <Mail className="size-4" />
         </IconButton>
@@ -131,7 +131,7 @@ function CompanyColumn() {
       <h3 className="text-sm font-semibold text-be-charcoal-950 uppercase tracking-wide">
         Company
       </h3>
-      <ul className="flex flex-col gap-2.5">
+      <ul className="flex flex-col gap-2">
         {companyLinks.map((link) => (
           <li key={link.name}>
             <Link
@@ -163,7 +163,7 @@ function ProductsColumn() {
       >
         View All Products
       </Link>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2.5">
         {categoryOrder.map((catId) => {
           const catInfo = productCategories[catId];
           const items = productNavigationItems.filter((p) => p.category === catId);
@@ -172,7 +172,7 @@ function ProductsColumn() {
               <p className="text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider">
                 {catInfo.displayName}
               </p>
-              <ul className="flex flex-col gap-1.5 mt-1.5">
+              <ul className="flex flex-col gap-1.5 mt-1">
                 {items.map((product) => (
                   <li key={product.slug}>
                     <Link
@@ -199,7 +199,7 @@ function ProductsColumn() {
 
 function ContactEnquiriesColumn() {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3.5">
       <Link
         href="/contact-us?type=quote"
         className="inline-flex items-center justify-center gap-2 min-h-[44px] rounded-lg bg-be-yellow-500 text-be-charcoal-950 font-semibold shadow-sm hover:bg-be-yellow-600 hover:-translate-y-0.5 transition-all px-5 py-3 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2 w-fit"
@@ -219,7 +219,7 @@ function ContactEnquiriesColumn() {
         <li>
           <a
             href={`mailto:${company.email}`}
-            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
+            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-1.5 min-h-[44px] border-t border-be-grey-150"
           >
             <Mail className="size-4 shrink-0 text-be-yellow-600" aria-hidden />
             <span className="break-words">{company.email}</span>
@@ -228,7 +228,7 @@ function ContactEnquiriesColumn() {
         <li>
           <a
             href={`tel:${company.phonePrimaryTel}`}
-            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
+            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-1.5 min-h-[44px] border-t border-be-grey-150"
           >
             <Phone className="size-4 shrink-0 text-be-yellow-600" aria-hidden />
             <span>{company.phonePrimary}</span>
@@ -239,7 +239,7 @@ function ContactEnquiriesColumn() {
             href={company.whatsapp.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
+            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-1.5 min-h-[44px] border-t border-be-grey-150"
           >
             <MessageCircle className="size-4 shrink-0 text-be-yellow-600" aria-hidden />
             <span>WhatsApp</span>
@@ -250,7 +250,7 @@ function ContactEnquiriesColumn() {
             href={officeMapsDirectionsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-start gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-b border-be-grey-150"
+            className="flex items-start gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors py-1.5 min-h-[44px] border-t border-b border-be-grey-150"
           >
             <MapPin className="size-4 shrink-0 mt-1 text-be-yellow-600" aria-hidden />
             <span>
@@ -280,7 +280,7 @@ export function Footer() {
       <div className="h-[3px] bg-be-yellow-500" />
 
       {/* ── Main footer content ── */}
-      <div className="container-site page-horizontal-padding pt-12 pb-10 lg:pt-14 lg:pb-12">
+      <div className="container-site page-horizontal-padding pt-11 pb-9 lg:pt-12 lg:pb-10">
         {/* ────────── Desktop / tablet layout ──────────
             - md (768–1024px): deliberate 2-column grid
               Row 1: Brand | Contact and Enquiries
@@ -320,7 +320,7 @@ export function Footer() {
             4. Request a Quote button
             5. Accordions: Company, Products, Contact
             6. Legal bottom bar */}
-        <div className="md:hidden flex flex-col gap-6">
+        <div className="md:hidden flex flex-col gap-5">
           <BrandColumn />
 
           <Link
@@ -337,7 +337,7 @@ export function Footer() {
                 Company
               </AccordionTrigger>
               <AccordionContent>
-                <ul className="flex flex-col gap-1.5 pb-2">
+                <ul className="flex flex-col gap-1 pb-2">
                   {companyLinks.map((link) => (
                     <li key={link.name}>
                       <Link
@@ -357,7 +357,7 @@ export function Footer() {
                 Products
               </AccordionTrigger>
               <AccordionContent>
-                <div className="flex flex-col gap-3 pb-2">
+                <div className="flex flex-col gap-2.5 pb-2">
                   <Link
                     href="/products"
                     className="text-base text-be-yellow-500 font-semibold hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] inline-flex items-center"
@@ -372,7 +372,7 @@ export function Footer() {
                         <p className="text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider py-1">
                           {catInfo.displayName}
                         </p>
-                        <ul className="flex flex-col gap-1.5 mt-1">
+                        <ul className="flex flex-col gap-1 mt-0.5">
                           {items.map((product) => (
                             <li key={product.slug}>
                               <Link

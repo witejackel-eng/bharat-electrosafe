@@ -196,12 +196,14 @@ export default function EnquiryQuoteLayout() {
   if (submitted) {
     return (
       <div className="reveal-up flex flex-col">
-        <h2 className="text-section-h2 text-be-charcoal-950 mb-2">
-          Send Us an Enquiry
-        </h2>
-        <p className="text-body-large text-be-grey-650 mb-8">
-          Fill in the form below and our team will respond within 24 business hours.
-        </p>
+        <div className="flex flex-col gap-2 mb-6">
+          <h2 className="text-section-h2 text-be-charcoal-950">
+            Send Us an Enquiry
+          </h2>
+          <p className="text-body-large text-be-grey-650">
+            Fill in the form below and our team will respond within 24 business hours.
+          </p>
+        </div>
         <div className="max-w-xl rounded-lg border border-be-grey-250 bg-be-cream p-8 text-center flex flex-col items-center gap-4">
           <div className="size-14 rounded-full bg-green-100 flex items-center justify-center">
             <CheckCircle2 className="size-7 text-green-600" />
@@ -234,7 +236,8 @@ export default function EnquiryQuoteLayout() {
 
   return (
     <div className="reveal-up flex flex-col">
-      <div className="flex flex-col gap-2 mb-7">
+      {/* Heading → supporting text → form spacing tightened */}
+      <div className="flex flex-col gap-2 mb-6">
         <h2 className="text-section-h2 text-be-charcoal-950">
           Send Us an Enquiry
         </h2>
@@ -257,7 +260,7 @@ export default function EnquiryQuoteLayout() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
         {/* Honeypot field (hidden from users) */}
         <div className="sr-only" aria-hidden="true">
           <input type="text" {...register('_honeypot')} tabIndex={-1} autoComplete="off" />
@@ -503,8 +506,8 @@ export default function EnquiryQuoteLayout() {
           </div>
         )}
 
-        {/* Submit + response-time note */}
-        <div className="flex flex-col gap-2 mt-1">
+        {/* Submit + response-time note + privacy reassurance */}
+        <div className="flex flex-col gap-1.5 mt-1">
           <PrimaryButton
             type="submit"
             className={cn('w-full sm:w-auto', isSubmitting && 'opacity-70 pointer-events-none')}
@@ -519,6 +522,9 @@ export default function EnquiryQuoteLayout() {
           </PrimaryButton>
           <p className="text-metadata text-be-grey-650">
             We normally respond within one business day.
+          </p>
+          <p className="text-metadata text-be-grey-400">
+            Your details are used only to respond to this enquiry.
           </p>
         </div>
       </form>
