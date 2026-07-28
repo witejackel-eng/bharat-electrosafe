@@ -301,6 +301,32 @@ export function localBusinessSchema() {
 }
 
 /* ────────────────────────────────────────────
+   ItemList schema — homepage product range
+   Surfaces the homepage's product range as an ItemList so search engines can
+   understand the site's product catalogue structure. Each entry links to the
+   real product page and carries the product name — no fabricated SKUs, prices
+   or availability.
+   ──────────────────────────────────────────── */
+
+export function homepageItemListSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    '@id': `${siteUrl}/#product-list`,
+    name: 'Bharat Electrosafe product range',
+    description:
+      'Electrical insulating mats and engineered protection products manufactured to IS 15652:2006 and IS 15909:2020.',
+    numberOfItems: products.length,
+    itemListElement: products.map((product, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: product.name,
+      url: buildUrl(`/products/${product.slug}`),
+    })),
+  };
+}
+
+/* ────────────────────────────────────────────
    JSON-LD serialisation helper
    Safely escapes < characters to prevent XSS in script tags.
    ──────────────────────────────────────────── */

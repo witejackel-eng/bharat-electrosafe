@@ -1269,4 +1269,123 @@
       transition: none;
     }
   }
+
+  /* ──────────────────────────────────────────────────────────────
+     FILTER CHIP — pill-style toggle used by the TechnicalResources
+     library and other filterable lists. Active state inverts to
+     charcoal-950 with yellow count badge; inactive state stays neutral
+     with a yellow hover ring.
+     ────────────────────────────────────────────────────────────── */
+  .be-filter-chip {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .be-filter-chip::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+      rgba(255, 196, 0, 0.18),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.28s ease-out;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .be-filter-chip:hover::after {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .be-filter-chip::after {
+      transition: none;
+    }
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     RESOURCE TILE — wrapper for DocumentCard when used in the
+     TechnicalResources library. Adds a subtle top-edge yellow accent
+     on hover that frames the document like a filed paper tab, and a
+     soft inner highlight that lifts the card off the cream background.
+     ────────────────────────────────────────────────────────────── */
+  .be-resource-tile {
+    position: relative;
+    transition: transform 0.28s ease-out, box-shadow 0.28s ease-out,
+      border-color 0.28s ease-out;
+  }
+  .be-resource-tile::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--be-yellow-500),
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 0.28s ease-out;
+    pointer-events: none;
+  }
+  .be-resource-tile:hover {
+    transform: translateY(-3px);
+    border-color: var(--be-yellow-400);
+    box-shadow:
+      0 14px 30px -16px rgba(36, 36, 38, 0.18),
+      0 4px 8px -4px rgba(36, 36, 38, 0.08);
+  }
+  .be-resource-tile:hover::before {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .be-resource-tile,
+    .be-resource-tile:hover {
+      transform: none;
+      transition: none;
+    }
+    .be-resource-tile::before {
+      transition: none;
+    }
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     INDUSTRY PICKER — accent ring + glow when an industry chip is
+     active. Pairs with the InteractiveIndustries component to make
+     the selected chip feel like a "filed tab" against the results
+     panel below it.
+     ────────────────────────────────────────────────────────────── */
+  .be-industry-active-glow {
+    box-shadow:
+      0 0 0 1px var(--be-charcoal-950),
+      0 14px 30px -16px rgba(36, 36, 38, 0.4);
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     HORIZONTAL SCROLLBAR — refined thin scrollbar styling for
+     filter chip rails and other horizontally-scrolling containers
+     on desktop. Subtle thumb, transparent track.
+     ────────────────────────────────────────────────────────────── */
+  .be-scroll-x {
+    scrollbar-width: thin;
+    scrollbar-color: var(--be-grey-250) transparent;
+  }
+  .be-scroll-x::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+  .be-scroll-x::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .be-scroll-x::-webkit-scrollbar-thumb {
+    background: var(--be-grey-250);
+    border-radius: 999px;
+  }
+  .be-scroll-x::-webkit-scrollbar-thumb:hover {
+    background: var(--be-grey-400);
+  }
 }
