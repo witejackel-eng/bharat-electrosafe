@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '48x48' },
-      { url: '/images/brand/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/images/brand/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/images/brand/favicon-32-be.png', sizes: '32x32', type: 'image/png' },
+      { url: '/images/brand/favicon-48-be.png', sizes: '48x48', type: 'image/png' },
     ],
     apple: [
       { url: '/images/brand/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: '#FFC400',
+  themeColor: '#00275B',
   width: 'device-width',
   initialScale: 1,
 };

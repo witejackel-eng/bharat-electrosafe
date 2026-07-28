@@ -13,14 +13,14 @@ const FULL_TITLE = `${PAGE_TITLE} | Bharat Electrosafe`;
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description:
-    'Explore six product families for electrical insulation, hazard visibility, waterproofing and construction-joint protection. Compare features and find the right product for your application.',
+    'Explore five product families for electrical insulation, hazard visibility and waterproofing. Compare features and find the right product for your application.',
   alternates: {
     canonical: buildUrl('/products'),
   },
   openGraph: {
     title: FULL_TITLE,
     description:
-      'Explore six product families for electrical insulation, hazard visibility, waterproofing and construction-joint protection.',
+      'Explore five product families for electrical insulation, hazard visibility and waterproofing.',
     url: buildUrl('/products'),
     type: 'website',
     images: [
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: FULL_TITLE,
     description:
-      'Explore six product families for electrical insulation, hazard visibility, waterproofing and construction-joint protection.',
+      'Explore five product families for electrical insulation, hazard visibility and waterproofing.',
     images: ['/brand/og-bharat-electrosafe.png'],
   },
   robots: allowIndexing

@@ -101,9 +101,7 @@ export function websiteSchema() {
  * Product-specific `additionalProperty` values.
  * Electrical mats use IS 15652:2006 properties.
  * BharatMembrane uses geomembrane properties.
- * Bharat Hydro Seal uses water-stop properties.
- * BharatMembrane and Bharat Hydro Seal do NOT inherit electrical-insulating-mat
- * properties.
+ * BharatMembrane does NOT inherit electrical-insulating-mat properties.
  */
 function productAdditionalProperties(product: ProductData) {
   const slug = product.slug;
@@ -130,14 +128,6 @@ function productAdditionalProperties(product: ProductData) {
       { '@type': 'PropertyValue', name: 'Standard', value: 'IS 15909:2020' },
       { '@type': 'PropertyValue', name: 'Seam Method', value: 'Wedge welding' },
       { '@type': 'PropertyValue', name: 'Application Type', value: 'Geomembrane' },
-    );
-  } else if (slug === 'bharat-hydro-seal') {
-    // Bharat Hydro Seal — construction-joint sealing properties
-    props.push(
-      { '@type': 'PropertyValue', name: 'Product Type', value: 'PVC Water Stop' },
-      { '@type': 'PropertyValue', name: 'Material', value: 'PVC' },
-      { '@type': 'PropertyValue', name: 'Application', value: 'Construction-joint sealing' },
-      { '@type': 'PropertyValue', name: 'Profile Availability', value: 'Multiple profiles' },
     );
   }
 

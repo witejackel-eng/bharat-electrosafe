@@ -33,13 +33,15 @@ export interface Leader {
   imagePosition?: string;
   /** 2–3 concise factual expertise labels derived from the biography. */
   expertise?: string[];
+  /** A short, approved statement of the leader’s current focus. */
+  leadershipFocus?: string;
 }
 
 export const leaders: Leader[] = [
   {
     name: 'Vishnu Gupta',
     role: 'Co-Founder & Director',
-    image: '/media/leadership/vishnu-gupta.webp',
+    image: '/media/leadership/vishnu-gupta-treated.webp',
     imageAlt: 'Vishnu Gupta, Co-Founder and Director of Bharat Electrosafe',
     shortBio:
       'Chartered Accountant and entrepreneur leading Bharat Electrosafe’s manufacturing and compliance direction.',
@@ -50,11 +52,12 @@ export const leaders: Leader[] = [
     ],
     imagePosition: 'center 25%',
     expertise: ['Finance', 'Manufacturing', 'Compliance'],
+    leadershipFocus: 'Directing the company’s financial governance, BIS compliance and manufacturing scale-up.',
   },
   {
     name: 'Krishan Kumar Khandelwal',
     role: 'Co-Founder & Director',
-    image: '/media/leadership/krishan-kumar.webp',
+    image: '/media/leadership/krishan-kumar-treated.webp',
     imageAlt: 'Krishan Kumar Khandelwal, Co-Founder and Director of Bharat Electrosafe',
     shortBio:
       'Business strategist overseeing production, quality assurance and partner engagement.',
@@ -65,11 +68,12 @@ export const leaders: Leader[] = [
     ],
     imagePosition: 'center 20%',
     expertise: ['Operations', 'Quality assurance', 'Partner engagement'],
+    leadershipFocus: 'Managing production, vendor development and after-sales coordination.',
   },
   {
     name: 'Priyanka Garg',
     role: 'Entrepreneur | Co-Founder & Director',
-    image: '/media/leadership/priyanka-garg.webp',
+    image: '/media/leadership/priyanka-garg-treated.webp',
     imageAlt: 'Priyanka Garg, Entrepreneur, Co-Founder and Director of Bharat Electrosafe',
     shortBio:
       'Rubber and polymer industry leader directing strategy, exports and international trade.',
@@ -80,6 +84,7 @@ export const leaders: Leader[] = [
     ],
     imagePosition: 'center 30%',
     expertise: ['Polymer industry', 'Exports', 'International trade'],
+    leadershipFocus: 'Driving the company’s export growth and international trade development.',
   },
 ];
 

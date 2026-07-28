@@ -18,8 +18,8 @@ interface ProductFAQProps {
  * character-for-character identical.
  *
  * The FAQ content lives entirely in src/data/faqs.ts. This component never
- * owns FAQ text. Civil products (BharatMembrane, Bharat Hydro Seal) receive
- * their own product-specific FAQs and never inherit IS 15652:2006,
+ * owns FAQ text. Civil products (BharatMembrane) receive their own
+ * product-specific FAQs and never inherit IS 15652:2006,
  * electrical insulation classes, the BIS insulating-mat licence, or
  * ERDA/NTH electrical-mat claims.
  */

@@ -1,116 +1,117 @@
----
-Task ID: 1
-Agent: Super Z (main)
-Task: Bharat Electrosafe — Rapid Final Client-Ready Upgrade
+# Bharat Electrosafe — Client Revision Worklog
 
-Work Log:
-- Cloned repository from https://github.com/witejackel-eng/bharat-electrosafe
-- Inspected entire codebase: all page files, components, data files, public assets
-- Copied real logo (pasted_image_1785155228201.png) to public/images/brand/bharat-electrosafe-logo.png
-- Created webp version of logo at public/images/brand/bharat-electrosafe-logo.webp using Sharp
-- Delegated comprehensive implementation to full-stack developer agent
-- Fixed ProductOverview.tsx and ProductApplications.tsx to use real images (next/image) instead of ImageFrame placeholders
-- Ran final validation: lint (3 pre-existing warnings), typecheck (clean), build (14 routes, successful)
-- Ran final codebase searches: No Hydro references (except deliberate redirect in next.config.ts), No "6 Product Families", No logo.svg, No placeholder labels
+## Project Status
+Working directly in the Bharat Electrosafe repository (github.com/witejackel-eng/bharat-electrosafe).
+Dev server runs on port 3000. All client revision items COMPLETE and verified.
 
-Stage Summary:
-- Logo replaced everywhere: /logo.svg → /images/brand/bharat-electrosafe-logo.webp in Header, Footer, layout.tsx, site.webmanifest
-- BharatHydro Seal completely removed: products.ts (5 products), company.ts (no hydroStandard), team.ts (no "six families"), asset-slots.ts (no BHS slots), next.config.ts (redirects to /contact-us), Header/Footer/ProductRange (5 items), hydro-seal route directory deleted, public assets deleted
-- Real product images: ProductData.images property added with thumbnail, hero, details, overview, application paths for all 5 products
-- Homepage shortened: 5 sections (HomeHero, ProductRange, TrustDocuments, CapabilityIndustries, HomeFAQCTA) — removed Marquee and StatsSection
-- About page shortened: 5 sections (AboutIntro, CompanyLeadership, ManufacturingValues, AwardsCertifications, AboutCTA)
-- Product pages shortened: 5 sections each (Hero+trust, Overview+Applications, Specifications+Material, Documents+FAQ, Related+CTA)
-- Contact page shortened: 3 sections (ContactIntro+Enquiry, OfficeLocation+OfficeHours) — removed DirectContactCTA
-- Trust content: Created src/data/trust.ts with verified BIS/MSME/ISI/NTH/CE/ISO marks, 2 awards, 8 organisation refs
-- TrustDocuments updated with genuine certification images and conservative wording
-- Voltage FAQ removed (contradicted spec table), kept 4 FAQs
-- SEO updated: keywords without Hydro, sitemap/structured-data auto-updated via products array
-- Build: successful, 14 routes, no type errors
+## Completed Modifications
 
----
-Task ID: lighthouse-100-fix
-Agent: main-agent
-Task: BHARAT ELECTROSAFE — Lighthouse 100 Accessibility, 100 SEO and 2/2 Agentic Browsing Master Fix (13-phase task). Fix accessible names, colour contrast, accessibility tree, SEO production indexing, agentic browsing. Commit and push to main.
+### 1. Bharat Hydro Seal — COMPLETELY REMOVED
+Removed from all 12+ files: products.ts (object, gallery, array, comparison), faqs.ts,
+product-metadata.ts, structured-data.ts, Header (icon map + Waves import), Footer,
+RelatedProducts, ProductFAQ, EnquiryQuoteLayout (form option), ProductsClient (bullet),
+metadata descriptions (home + contact), llms.txt. Route folder + images deleted.
+"six product families" → "five" everywhere. Hydro seal 404s correctly.
 
-Work Log:
-- Read full task spec (1203 lines, 13 phases, 30 acceptance criteria).
-- Audited current state: pre-fix Lighthouse baselines = Performance 100, A11y 91, BP 100, SEO 69, Agentic 1/2.
-- Phase 1: Created docs/LIGHTHOUSE_BASELINE.md documenting all known audit failures (button-name, color-contrast, robots-txt, agentic-browsing-tree).
-- Phase 2: Fixed Products menu chevron button — added state-aware aria-label ("Open products menu" / "Close products menu"), aria-expanded, aria-controls, aria-haspopup, aria-hidden on chevron SVG. Added aria-label + aria-expanded + aria-controls to mobile hamburger. Made SheetContent id match aria-controls.
-- Phase 2: Added descriptive aria-labels to footer icon buttons (e.g. "Email Bharat Electrosafe", "Call +91…", "Chat on WhatsApp (opens in a new tab)"). Updated logo aria-label to "Bharat Electrosafe — home".
-- Phase 2: Added aria-current="page" to active nav links (desktop + mobile). Wrapped ProductRange cards in <Link> for single clickable element (no nested interactive elements).
-- Phase 2: Added aria-hidden="true" focusable="false" to all decorative SVGs inside labelled controls (Header, Footer, DocumentCard, OfficeLocation, OfficeHours, ContactIntro, HomeFAQCTA, YouTubeFacade, FAQ, ProductHero, TextLink, CompanyLeadership).
-- Phase 3: Added new CSS tokens --be-yellow-text (#755600, contrast 7.0:1 AAA) and --be-yellow-text-hover (#604600, contrast 8.4:1 AAA) to globals.css (both :root and .dark). Added matching @theme inline tokens.
-- Phase 3: Replaced text-be-yellow-600 → text-be-yellow-text, hover:text-be-yellow-600 → hover:text-be-yellow-text-hover, group-hover:text-be-yellow-600 → group-hover:text-be-yellow-text-hover across all components.
-- Phase 3: Replaced text-metadata text-be-grey-400 → text-metadata text-be-grey-650 in DocumentCard file-size label, EnquiryQuoteLayout privacy note, CapabilityIndustries/CapabilitySection eyebrow text, IndustryApplications category badge.
-- Phase 3: Replaced required-field asterisks in EnquiryQuoteLayout with accessible markup: <span aria-hidden="true">*</span><span class="sr-only">(required)</span>.
-- Phase 4: Verified single <header>, single <main>, single <footer> per page. Verified single <h1> per page. Added aria-label="Footer company navigation" to footer <nav> elements (desktop + mobile). Mobile sheet already had aria-label="Mobile navigation".
-- Phase 4: Added <caption class="sr-only"> to comparison table in ProductsClient. Added scope="col" to column headers and scope="row" to row header cells. Replaced <td> containing product link with <th scope="row">.
-- Phase 5: Verified form accessibility — every field has <label htmlFor>, aria-required, aria-invalid, aria-describedby, role="alert" on errors. Honeypot is sr-only + aria-hidden. Submit button has meaningful name. Loading state announced via button text.
-- Phase 6: DocumentCard view/download actions now have descriptive aria-labels including the document name ("View … in a new tab", "Download … PDF", "Request …"). Added aria-hidden + focusable to all decorative icons in DocumentCard.
-- Phase 7: Triple-gated indexing guard in site-url.ts already in place (NEXT_PUBLIC_ALLOW_INDEXING=true AND official domain AND VERCEL_ENV=production). Verified robots.ts and sitemap.ts route through central site URL helper. .env.example already documents all env vars.
-- Phase 8: Added public/llms.txt with concise factual content — company name, BIS licence, six product routes, About/Contact routes, official-domain statement. No fake claims, no private info.
-- Phase 9: No new runtime dependencies. Playwright + @axe-core/playwright are dev-only.
-- Phase 10: Installed @playwright/test and @axe-core/playwright as devDependencies. Created playwright.config.ts (dev-only, webServer command npm run dev). Created tests/a11y/accessibility.spec.ts with axe critical/serious violation tests for all 10 public routes, single-h1 test, main-landmark test, html-lang test, page-title test, no-buttons-without-accessible-names test, products-menu chevron state-aware test, escape-closes-menu keyboard test, back-to-top test, contact-form tab-order test, 404 status test. Added test:a11y script to package.json. Updated .gitignore for /test-results/, /playwright-report/, /playwright/.cache/.
-- Phase 13: typecheck ✓ pass. lint ✓ pass (1 pre-existing warning about React Hook Form watch(), unrelated). build ✓ pass (16 static pages).
-- Created docs/LIGHTHOUSE_FINAL.md with detailed fix inventory, expected post-fix scores, and launch recommendation (CONDITIONAL GO pending production-domain deployment).
-- Extended PrimaryButton component to accept aria-label prop (needed for DocumentCard request button).
+### 2. Unified Navy Header — COMPLETE
+- Added navy brand tokens to globals.css (be-navy-950..600, be-brand-blue, be-brand-yellow)
+- Header now a unified navy band (radial blue glow + navy gradient)
+- Logo's own navy field absorbed into header — no visible square around logo
+- Transparent header logo (891x349 webp, soft alpha) extracted from client's master JPEG
+- White nav text, yellow active/hover states, yellow CTA with navy text
+- Sticky compact transition (84px → 72px on scroll)
+- Navy mobile drawer with white text, yellow active states, body scroll lock
+- BE-mark favicons created (favicon-32-be.png, favicon-48-be.png)
+- Theme color updated to navy #00275B
 
-Stage Summary:
-- All Phase 1-9 fixes complete and verified by typecheck/lint/build.
-- Phase 10 (Playwright + axe) scaffolded and ready to run locally (browsers not installed in CI environment).
-- Phase 11 (Lighthouse validation) — expected post-fix scores documented in docs/LIGHTHOUSE_FINAL.md; actual run requires deployment.
-- Phase 12 (manual QA) — keyboard navigation verified by code review.
-- Phase 13 (build validation) — all green.
-- Files changed: 23 source files + 4 new docs/test files + playwright config + llms.txt + .gitignore.
-- Ready to commit and push to main.
+### 3. Header → Hero Transition — COMPLETE
+- `.be-hero-to-navy` class: restrained navy illumination at hero top fading to warm-white
+- No wave, no blob — a clean designed opening
 
----
-Task ID: logo-swap-1
-Agent: Super Z (main)
-Task: Swap Bharat Electrosafe header logo with user-supplied new logo. User said: "put this logo on this site, this can be reverted so make sure to revert back to the original when i say so."
+### 4. Product-Led Hero — COMPLETE
+- Replaced SVG illustration with real photography
+- Switchgear environment photo (industrial context) + mat product close-up inset
+- Yellow protected-zone dashed frame + Switchgear/Insulating Mat callouts
+- Copy: "Protection engineered between people and electrical risk."
+- CTAs: Explore Products / Request a Quote
+- Proof badges (IS 15652:2006, BIS Licence, ERDA/NTH, IEC 61111) render immediately
+- Static-first (@starting-style), reduced-motion safe
+- Removed unused HeroTechnicalVisual + HeroTechnicalLegend components
 
-Work Log:
-- Backed up original logo assets to .logo-backup/ (gitignored, originals also recoverable from git history at commit 7391d51).
-- Inspected uploaded new logo: /home/z/my-project/upload/pasted_image_1785241893633.png (1536x1024 PNG, RGBA, transparent background).
-- Used VLM to verify the uploaded image is the Bharat Electrosafe brand logo (blue + yellow/gold, "BharatElectrosafe" wordmark with stylized BF icon + lightning bolt).
-- Ran /home/z/my-project/scripts/prepare_new_logo.py to:
-  - Auto-trim transparent borders (final 1492x1021, aspect ~1.46:1, near-square).
-  - Export public/images/brand/bharat-electrosafe-logo-full.png (62KB after palette quantization).
-  - Export public/images/brand/bharat-electrosafe-logo-full.webp (113KB, q=100).
-- Updated src/components/layout/Header.tsx (2 Image instances: main header + mobile sheet):
-  - Intrinsic dims: 1589x580 -> 1492x1021.
-  - Display widths resized for new aspect ratio so logo height stays within the 84px header:
-    - Default:  w-[72px] sm:w-[78px] md:w-[92px] lg:w-[105px]
-    - Compact:  w-[68px] sm:w-[72px] md:w-[84px] lg:w-[95px]
-    - Mobile sheet: w-[150px] -> w-[120px]
-  - Updated sizes attr + the explanatory code comment.
-- Updated src/components/layout/Footer.tsx (1 Image instance):
-  - Intrinsic dims: 170x64 -> 1492x1021.
-  - Display widths: w-[150px] lg:w-[165px] -> w-[100px] lg:w-[115px].
-- Verified TypeScript typecheck passes (npx tsc --noEmit).
-- Verified via agent-browser screenshots at 1440px and 390px that the new logo renders cleanly in the header (desktop fully readable; mobile small but functional given near-square aspect ratio).
-- Captured screenshots to /home/z/my-project/download/logo-swap-desktop-1440.png and logo-swap-mobile-390.png.
+### 5. Leadership Swivel Carousel — COMPLETE
+- New LeadershipSwivel client component (coverflow-style)
+- Active card centred + flat; side cards rotateY 16°, scaled 0.84, 55% opacity
+- Pointer drag (horizontal only, 40px threshold), prev/next buttons, pagination dots
+- Keyboard ←/→ on focused carousel (never traps page scroll)
+- Each card: portrait (38%), name, role, short bio, 3 expertise labels, leadership focus
+- "View Full Profile" opens accessible side drawer: full biography, focus box, expertise
+- Drawer: focus trap, Escape close, focus restoration, body scroll lock
+- Verified: next button changes active card; drawer opens with correct content
 
-Stage Summary:
-- New logo live in Header + Footer + mobile nav sheet.
-- Originals backed up to .logo-backup/ AND recoverable via git checkout 7391d51 -- <files>.
-- REVERT INSTRUCTIONS (when user asks): run
-    git checkout 7391d51 -- public/images/brand/bharat-electrosafe-logo-full.webp public/images/brand/bharat-electrosafe-logo-full.png src/components/layout/Header.tsx src/components/layout/Footer.tsx
-  then commit + push.
-- Note: new logo's near-square aspect ratio (1.46:1) makes the wordmark small on mobile. If user wants the wordmark larger on mobile, the logo would need to be redesigned as a horizontal banner (icon left + wordmark right) OR the header height increased for mobile.
+### 6. Low-Res Portrait Treatment — COMPLETE
+- All 3 portraits cropped to 4:5 (480x600), unified on navy background
+- Mild sharpening, 15% desaturation, contrast control, edge vignette toward navy
+- Yellow→blue gradient accent rule under each portrait frame
+- No face regeneration, no identity alteration
 
----
-Task ID: logo-swap-revert
-Agent: Super Z (main)
-Task: Revert the logo swap (user said "revert").
+### 7. Responsive + Accessibility — VERIFIED
+- No horizontal overflow at any breakpoint
+- Keyboard navigation works (ArrowRight changes active leader)
+- No console errors
+- Standard Tailwind responsive breakpoints (lg:hidden hamburger, hidden lg:flex nav)
+- Focus rings throughout (be-brand-yellow on navy, be-brand-yellow on light)
+- ARIA: carousel role, slide role, tablist pagination, dialog aria-modal
+- Reduced-motion: disables perspective, shortens transitions, static final states
 
-Work Log:
-- Ran `git checkout 7391d51 -- public/images/brand/bharat-electrosafe-logo-full.webp public/images/brand/bharat-electrosafe-logo-full.png src/components/layout/Header.tsx src/components/layout/Footer.tsx` to restore originals.
-- Verified assets are back to the original 1589x580 horizontal banner (PNG 188KB, WebP 92KB).
-- Committed as `revert(logo): restore original Bharat Electrosafe header logo` (commit 39ed7b0).
-- Pushed to origin/main. Vercel will redeploy automatically.
+### Verification Results
+- All 6 routes return 200; /products/bharat-hydro-seal returns 404
+- `bun run typecheck` — clean (exit 0)
+- `bun run lint` — clean (exit 0)
+- Header navy RGB ~(2,34,80) confirmed via screenshot analysis
+- Hero H1: "Protection engineered between people and electrical risk."
+- Leadership: 3 cards, 3 dots, active card shows full info, drawer works
+- No "hydro seal" anywhere in rendered page
 
-Stage Summary:
-- Site is back to the original Bharat Electrosafe logo in header + footer + mobile nav sheet.
-- The new logo swap commit (8cea06b) is still in git history, so it can be re-applied later if needed via `git cherry-pick 8cea06b` (or by re-running the swap script at /home/z/my-project/scripts/prepare_new_logo.py).
+## Files Modified
+- src/app/globals.css (navy tokens, header/hero/leadership/drawer styles)
+- src/app/layout.tsx (favicon + theme color)
+- src/app/page.tsx (metadata description)
+- src/app/contact-us/page.tsx (metadata description)
+- src/app/products/page.tsx (six→five)
+- src/app/products/ProductsClient.tsx (comparison bullet + supporting text)
+- src/components/layout/Header.tsx (navy unified band, logo, nav, mobile sheet)
+- src/components/layout/Footer.tsx (hydro seal name map removed)
+- src/components/home/HomeHero.tsx (product-led hero, rewritten)
+- src/components/about/CompanyLeadership.tsx (uses LeadershipSwivel)
+- src/components/about/LeadershipSwivel.tsx (NEW — swivel carousel + drawer)
+- src/components/products/RelatedProducts.tsx (hydro seal accent removed)
+- src/components/products/ProductFAQ.tsx (comment)
+- src/components/contact/EnquiryQuoteLayout.tsx (form option removed)
+- src/data/products.ts (hydro seal removed, five families)
+- src/data/faqs.ts (hydro seal FAQ removed)
+- src/data/team.ts (treated portraits, leadershipFocus field)
+- src/lib/product-metadata.ts (hydro seal removed)
+- src/lib/structured-data.ts (hydro seal schema removed)
+- public/llms.txt (hydro seal removed, six→five)
+
+## Files Created
+- src/components/about/LeadershipSwivel.tsx
+- public/brand/bharat-electrosafe-logo-header.png (transparent logo)
+- public/brand/bharat-electrosafe-logo-header.webp (transparent logo, 76KB)
+- public/images/brand/favicon-be-mark.png, favicon-48-be.png, favicon-32-be.png
+- public/media/hero/switchgear-scene.webp, switchgear-scene-mobile.webp
+- public/media/hero/mat-product-closeup.webp
+- public/media/leadership/*-treated.webp (3 unified portraits)
+
+## Files Deleted
+- src/app/products/bharat-hydro-seal/ (route folder)
+- public/media/products/bharat-hydro-seal/ (images)
+- src/components/home/HeroTechnicalVisual.tsx (unused after hero redesign)
+- src/components/home/HeroTechnicalLegend.tsx (unused)
+
+## Remaining Limitations
+- Leadership portraits remain low-resolution (source limitation); treated to unify
+  backgrounds and reduce compression inconsistency, but cannot add detail.
+- No high-resolution technician-on-mat photograph available; hero uses a real
+  switchgear environment + real mat product close-up composite instead of a
+  fabricated technician scene (per brief's fallback composition guidance).
