@@ -4,6 +4,7 @@ import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { TechnicalBadge } from '@/components/ui/TechnicalBadge';
 import { SectionShell } from '@/components/ui/SectionShell';
 import HeroTechnicalVisual from '@/components/home/HeroTechnicalVisual';
+import HeroTechnicalLegend from '@/components/home/HeroTechnicalLegend';
 
 const proofItems = [
   'IS 15652:2006',
@@ -78,6 +79,8 @@ export default function HomeHero() {
         {/* Technical visual — ~45%, aligned toward the right edge */}
         <div className="w-full lg:w-[45%] lg:ml-auto">
           <HeroTechnicalVisual />
+          {/* Mobile legend — complete four-term reference, hidden on desktop */}
+          <HeroTechnicalLegend />
         </div>
       </div>
     </SectionShell>
