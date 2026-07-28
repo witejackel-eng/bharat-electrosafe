@@ -64,3 +64,38 @@ Stage Summary:
 - Phase 13 (build validation) — all green.
 - Files changed: 23 source files + 4 new docs/test files + playwright config + llms.txt + .gitignore.
 - Ready to commit and push to main.
+
+---
+Task ID: logo-swap-1
+Agent: Super Z (main)
+Task: Swap Bharat Electrosafe header logo with user-supplied new logo. User said: "put this logo on this site, this can be reverted so make sure to revert back to the original when i say so."
+
+Work Log:
+- Backed up original logo assets to .logo-backup/ (gitignored, originals also recoverable from git history at commit 7391d51).
+- Inspected uploaded new logo: /home/z/my-project/upload/pasted_image_1785241893633.png (1536x1024 PNG, RGBA, transparent background).
+- Used VLM to verify the uploaded image is the Bharat Electrosafe brand logo (blue + yellow/gold, "BharatElectrosafe" wordmark with stylized BF icon + lightning bolt).
+- Ran /home/z/my-project/scripts/prepare_new_logo.py to:
+  - Auto-trim transparent borders (final 1492x1021, aspect ~1.46:1, near-square).
+  - Export public/images/brand/bharat-electrosafe-logo-full.png (62KB after palette quantization).
+  - Export public/images/brand/bharat-electrosafe-logo-full.webp (113KB, q=100).
+- Updated src/components/layout/Header.tsx (2 Image instances: main header + mobile sheet):
+  - Intrinsic dims: 1589x580 -> 1492x1021.
+  - Display widths resized for new aspect ratio so logo height stays within the 84px header:
+    - Default:  w-[72px] sm:w-[78px] md:w-[92px] lg:w-[105px]
+    - Compact:  w-[68px] sm:w-[72px] md:w-[84px] lg:w-[95px]
+    - Mobile sheet: w-[150px] -> w-[120px]
+  - Updated sizes attr + the explanatory code comment.
+- Updated src/components/layout/Footer.tsx (1 Image instance):
+  - Intrinsic dims: 170x64 -> 1492x1021.
+  - Display widths: w-[150px] lg:w-[165px] -> w-[100px] lg:w-[115px].
+- Verified TypeScript typecheck passes (npx tsc --noEmit).
+- Verified via agent-browser screenshots at 1440px and 390px that the new logo renders cleanly in the header (desktop fully readable; mobile small but functional given near-square aspect ratio).
+- Captured screenshots to /home/z/my-project/download/logo-swap-desktop-1440.png and logo-swap-mobile-390.png.
+
+Stage Summary:
+- New logo live in Header + Footer + mobile nav sheet.
+- Originals backed up to .logo-backup/ AND recoverable via git checkout 7391d51 -- <files>.
+- REVERT INSTRUCTIONS (when user asks): run
+    git checkout 7391d51 -- public/images/brand/bharat-electrosafe-logo-full.webp public/images/brand/bharat-electrosafe-logo-full.png src/components/layout/Header.tsx src/components/layout/Footer.tsx
+  then commit + push.
+- Note: new logo's near-square aspect ratio (1.46:1) makes the wordmark small on mobile. If user wants the wordmark larger on mobile, the logo would need to be redesigned as a horizontal banner (icon left + wordmark right) OR the header height increased for mobile.

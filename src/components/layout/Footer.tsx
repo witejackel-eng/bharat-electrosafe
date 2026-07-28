@@ -91,9 +91,10 @@ function BrandColumn() {
         <Image
           src="/images/brand/bharat-electrosafe-logo-full.webp"
           alt="Bharat Electrosafe logo"
-          width={170}
-          height={64}
-          className="object-contain w-[150px] lg:w-[165px] h-auto"
+          width={1492}
+          height={1021}
+          sizes="(max-width: 1023px) 100px, 115px"
+          className="object-contain w-[100px] lg:w-[115px] h-auto"
           priority
         />
       </Link>
