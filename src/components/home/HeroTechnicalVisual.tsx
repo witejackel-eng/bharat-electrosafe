@@ -143,10 +143,7 @@ export default function HeroTechnicalVisual() {
     <div
       role="img"
       aria-label="Technical illustration of a technician standing on an anti-skid electrical insulating mat while operating switchgear. The mat defines the operator standing area and forms an insulating barrier between the operator and the floor."
-      className="relative w-full overflow-hidden"
-      style={{
-        height: 'clamp(400px, 70vw, 520px)',
-      }}
+      className="relative w-full overflow-hidden h-[340px] sm:h-[380px] md:h-[420px] lg:h-[440px] xl:h-[470px] 2xl:h-[480px]"
     >
       {/* ── Layer 1: stage background ─────────────────────────────── */}
       <div

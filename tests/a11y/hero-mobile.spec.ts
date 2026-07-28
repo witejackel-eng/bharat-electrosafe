@@ -53,13 +53,14 @@ for (const vp of mobileViewports) {
     });
 
     test('Both CTA buttons are visible and within viewport', async ({ page }) => {
-      const viewProducts = page.locator('a[href="/products"]').filter({ hasText: 'View Products' });
+      // Scope to main to avoid matching header CTA
+      const viewProducts = page.locator('main a[href="/products"]').filter({ hasText: 'View Products' });
       await expect(viewProducts).toBeVisible();
       const box1 = await viewProducts.boundingBox();
       expect(box1).not.toBeNull();
       expect(box1!.x + box1!.width).toBeLessThanOrEqual(vp.width + 1);
 
-      const requestQuote = page.locator('a[href="/contact-us"]').filter({ hasText: 'Request a Quote' });
+      const requestQuote = page.locator('main a[href="/contact-us"]').filter({ hasText: 'Request a Quote' });
       await expect(requestQuote).toBeVisible();
       const box2 = await requestQuote.boundingBox();
       expect(box2).not.toBeNull();
@@ -67,10 +68,12 @@ for (const vp of mobileViewports) {
     });
 
     test('All four proof badges are present', async ({ page }) => {
-      await expect(page.locator('text=IS 15652:2006')).toBeVisible();
-      await expect(page.locator('text=BIS Licence CM/L:8800129617')).toBeVisible();
-      await expect(page.locator('text=ERDA / NTH Tested')).toBeVisible();
-      await expect(page.locator('text=Conforming to IEC 61111')).toBeVisible();
+      // Scope to hero section to avoid matching product cards and footer
+      const heroSection = page.locator('main section').first();
+      await expect(heroSection.locator('text=IS 15652:2006').first()).toBeVisible();
+      await expect(heroSection.locator('text=BIS Licence CM/L:8800129617').first()).toBeVisible();
+      await expect(heroSection.locator('text=ERDA / NTH Tested').first()).toBeVisible();
+      await expect(heroSection.locator('text=Conforming to IEC 61111').first()).toBeVisible();
     });
 
     test('All four technical legend items are present on mobile', async ({ page }) => {
