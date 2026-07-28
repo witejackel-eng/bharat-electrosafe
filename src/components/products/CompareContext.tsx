@@ -48,7 +48,7 @@ interface CompareContextValue {
   shareUrl: string;
 }
 
-const CompareContext = createContext<CompareContextValue | null>(null);
+export const CompareContext = createContext<CompareContextValue | null>(null);
 
 /** Parse the ?compare= param from the current URL. Returns slugs or []. */
 function readFromUrl(): string[] {

@@ -180,3 +180,55 @@ export function FAQStructuredData({ faqs, path }: FAQStructuredDataProps) {
     />
   );
 }
+
+/* ────────────────────────────────────────────
+   Product Finder Wizard: HowTo schema
+   Surfaces the wizard's guided questions as a HowTo so search engines
+   can understand the "find the right product" process. No fabricated
+   data — the steps mirror the actual wizard questions and the result
+   links to real product pages.
+   ──────────────────────────────────────────── */
+
+export function ProductFinderHowToStructuredData() {
+  const howTo = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to choose the right electrical insulating mat',
+    description:
+      'A guided process for selecting the correct Bharat Electrosafe product family based on your primary safety requirement, operating voltage and environment.',
+    totalTime: 'PT3M',
+    step: [
+      {
+        '@type': 'HowToStep',
+        position: 1,
+        name: 'Identify your primary need',
+        text: 'Determine whether your requirement is operator protection near live electrical equipment, hazard zone demarcation, low-light or emergency visibility, or waterproofing and containment.',
+      },
+      {
+        '@type': 'HowToStep',
+        position: 2,
+        name: 'Determine your working voltage',
+        text: 'For electrical safety mats, identify the operating voltage: low voltage up to 3.3 kV (Class A), medium voltage up to 11 kV (Class B), or high voltage up to 33 kV (Class C). This determines the insulation class required.',
+      },
+      {
+        '@type': 'HowToStep',
+        position: 3,
+        name: 'Consider your environment',
+        text: 'Confirm the installation environment — indoor substation or switchroom, outdoor or exposed area, emergency exit routes, or construction, tunnel and civil sites — to validate the product suitability.',
+      },
+      {
+        '@type': 'HowToStep',
+        position: 4,
+        name: 'Confirm against project specification',
+        text: 'Verify the recommended product against your project specification, applicable standards (IS 15652:2006, IEC 61111) and any site-specific acceptance criteria before procurement.',
+      },
+    ],
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(howTo) }}
+    />
+  );
+}

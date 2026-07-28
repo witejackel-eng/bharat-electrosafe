@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { allowIndexing, buildUrl } from '@/lib/site-url';
-import { FAQStructuredData } from '@/components/structured-data';
+import { FAQStructuredData, ProductFinderHowToStructuredData } from '@/components/structured-data';
 import { homeFaqs } from '@/data/faqs';
 import HomeClient from './HomeClient';
 
@@ -48,6 +48,7 @@ export default function Home() {
   return (
     <>
       <FAQStructuredData path="/" faqs={homeFaqs} />
+      <ProductFinderHowToStructuredData />
       <HomeClient />
     </>
   );

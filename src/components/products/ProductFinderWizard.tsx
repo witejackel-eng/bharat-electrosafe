@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect, useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -18,8 +18,10 @@ import {
   Sparkles,
   Check,
   Lightbulb,
+  GitCompare,
 } from 'lucide-react';
-import { products, getProductBySlug, imageFitClass, productCategories } from '@/data/products';
+import { getProductBySlug, imageFitClass, productCategories } from '@/data/products';
+import { CompareContext } from '@/components/products/CompareContext';
 import { cn } from '@/lib/utils';
 
 /**
@@ -187,13 +189,20 @@ function recommend(
   }
 }
 
-export function ProductFinderWizard() {
+export function ProductFinderWizard({ variant = 'full' }: { variant?: 'full' | 'compact' }) {
+  const compact = variant === 'compact';
   const [step, setStep] = useState(0);
   const [need, setNeed] = useState<Need | null>(null);
   const [voltage, setVoltage] = useState<Voltage | null>(null);
   const [environment, setEnvironment] = useState<Environment | null>(null);
   const [completed, setCompleted] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
+
+  // Null-safe compare access: the wizard renders inside CompareProvider on
+  // /products and on the homepage HomeProductFinder section. Using useContext
+  // directly (instead of useCompare) lets it degrade gracefully if a future
+  // route mounts it without a provider — the add-to-compare button is hidden.
+  const compare = useContext(CompareContext);
 
   const isWaterproofing = need === 'waterproofing';
   // Waterproofing skips voltage (step 1) — only 2 questions
@@ -273,32 +282,38 @@ export function ProductFinderWizard() {
 
   return (
     <div
-      className="relative rounded-2xl border border-be-grey-250 bg-be-warm-white overflow-hidden shadow-sm"
+      className={cn(
+        'relative border border-be-grey-250 bg-be-warm-white overflow-hidden shadow-sm',
+        compact ? 'rounded-xl' : 'rounded-2xl',
+      )}
       role="region"
       aria-label="Product finder wizard"
     >
       {/* Decorative top accent */}
       <div className="h-1.5 bg-gradient-to-r from-be-yellow-500 via-be-brand-yellow to-be-yellow-500" aria-hidden="true" />
 
-      <div className="p-5 sm:p-8 md:p-10">
+      <div className={compact ? 'p-5 sm:p-6' : 'p-5 sm:p-8 md:p-10'}>
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="flex items-center justify-center size-10 rounded-lg bg-be-yellow-50 shrink-0">
-            <Lightbulb className="size-5 text-be-yellow-text" aria-hidden="true" focusable="false" />
+        <div className={cn('flex items-center gap-3', compact ? 'mb-4' : 'mb-6')}>
+          <div className={cn(
+            'flex items-center justify-center rounded-lg bg-be-yellow-50 shrink-0',
+            compact ? 'size-8' : 'size-10',
+          )}>
+            <Lightbulb className={cn('text-be-yellow-text', compact ? 'size-4' : 'size-5')} aria-hidden="true" focusable="false" />
           </div>
           <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-be-charcoal-950">
+            <h2 className={cn('font-bold text-be-charcoal-950', compact ? 'text-lg' : 'text-xl sm:text-2xl')}>
               Find the right product
             </h2>
             <p className="text-sm text-be-grey-650">
-              Answer 3 quick questions and we&apos;ll recommend the best match.
+              Answer {compact ? 'a few' : '3 quick'} questions and we&apos;ll recommend the best match.
             </p>
           </div>
         </div>
 
         {/* Progress bar */}
         {!completed && (
-          <div className="mb-8" role="progressbar" aria-valuenow={step + 1} aria-valuemin={1} aria-valuemax={effectiveSteps.length} aria-label={`Question ${step + 1} of ${effectiveSteps.length}`}>
+          <div className={compact ? 'mb-5' : 'mb-8'} role="progressbar" aria-valuenow={step + 1} aria-valuemin={1} aria-valuemax={effectiveSteps.length} aria-label={`Question ${step + 1} of ${effectiveSteps.length}`}>
             <div className="flex items-center justify-between mb-2">
               <span className="text-metadata text-be-grey-650 font-semibold uppercase tracking-wide">
                 Step {step + 1} of {effectiveSteps.length}
@@ -318,13 +333,14 @@ export function ProductFinderWizard() {
 
         {/* Step content — animated via key change */}
         {!completed ? (
-          <div key={step} className="animate-[fade-in_0.3s_ease-out] motion-reduce:animate-none">
+          <div key={step} className="be-fade-in-up">
             {step === 0 && (
               <QuestionStep
                 question="What is your primary need?"
                 options={needOptions}
                 selected={need}
                 onSelect={(id) => setNeed(id as Need)}
+                compact={compact}
               />
             )}
             {step === 1 && !isWaterproofing && (
@@ -334,6 +350,7 @@ export function ProductFinderWizard() {
                 options={voltageOptions}
                 selected={voltage}
                 onSelect={(id) => setVoltage(id as Voltage)}
+                compact={compact}
               />
             )}
             {(step === 1 && isWaterproofing || step === 2) && (
@@ -342,6 +359,7 @@ export function ProductFinderWizard() {
                 options={environmentOptions}
                 selected={environment}
                 onSelect={(id) => setEnvironment(id as Environment)}
+                compact={compact}
               />
             )}
           </div>
@@ -364,15 +382,15 @@ export function ProductFinderWizard() {
 
             {primaryProduct && (
               <div className="rounded-xl border-2 border-be-yellow-500/40 bg-be-white overflow-hidden shadow-sm">
-                <div className="flex flex-col sm:flex-row gap-5 p-5">
+                <div className={cn('flex flex-col sm:flex-row gap-5', compact ? 'p-4' : 'p-5')}>
                   {/* Image */}
-                  <div className="relative w-full sm:w-48 shrink-0 aspect-[4/3] overflow-hidden rounded-lg bg-be-cream">
+                  <div className={cn('relative w-full shrink-0 aspect-[4/3] overflow-hidden rounded-lg bg-be-cream', compact ? 'sm:w-36' : 'sm:w-48')}>
                     <Image
                       src={primaryProduct.images.gallery[0]?.src ?? primaryProduct.images.thumbnail.src}
                       alt={primaryProduct.images.gallery[0]?.alt ?? primaryProduct.images.thumbnail.alt}
                       fill
                       className={imageFitClass(primaryProduct.images.gallery[0] ?? primaryProduct.images.thumbnail)}
-                      sizes="192px"
+                      sizes={compact ? '144px' : '192px'}
                     />
                   </div>
                   {/* Details */}
@@ -386,7 +404,7 @@ export function ProductFinderWizard() {
                         {productCategories[primaryProduct.category].displayName}
                       </span>
                     </div>
-                    <h4 className="text-lg font-bold text-be-charcoal-950 mb-2">
+                    <h4 className={cn('font-bold text-be-charcoal-950 mb-2', compact ? 'text-base' : 'text-lg')}>
                       {primaryProduct.name}
                     </h4>
                     <p className="text-sm text-be-charcoal-800 leading-relaxed mb-4">
@@ -400,6 +418,35 @@ export function ProductFinderWizard() {
                         View product
                         <ArrowRight className="size-4" aria-hidden="true" focusable="false" />
                       </Link>
+                      {/* Add to compare — only when a CompareProvider is mounted.
+                          Shows a checkmark + "Added" state when already selected. */}
+                      {compare && (
+                        <button
+                          type="button"
+                          onClick={() => compare.toggle(primaryProduct.slug)}
+                          disabled={!compare.isSelected(primaryProduct.slug) && compare.atCapacity}
+                          aria-pressed={compare.isSelected(primaryProduct.slug)}
+                          className={cn(
+                            'inline-flex items-center gap-1.5 rounded-md border px-4 py-2 text-sm font-semibold transition-colors focus-ring disabled:opacity-50 disabled:pointer-events-none',
+                            compare.isSelected(primaryProduct.slug)
+                              ? 'border-be-yellow-500 bg-be-yellow-50 text-be-yellow-text'
+                              : 'border-be-grey-250 text-be-charcoal-800 hover:border-be-yellow-400 hover:text-be-charcoal-950',
+                          )}
+                          title={!compare.isSelected(primaryProduct.slug) && compare.atCapacity ? `Compare is full (${compare.max} max). Remove one to add this.` : undefined}
+                        >
+                          {compare.isSelected(primaryProduct.slug) ? (
+                            <>
+                              <Check className="size-4" aria-hidden="true" focusable="false" />
+                              Added to compare
+                            </>
+                          ) : (
+                            <>
+                              <GitCompare className="size-4" aria-hidden="true" focusable="false" />
+                              Add to compare
+                            </>
+                          )}
+                        </button>
+                      )}
                       <Link
                         href="/contact-us?type=technical-guidance"
                         className="inline-flex items-center gap-1.5 rounded-md border border-be-grey-250 px-4 py-2 text-sm font-semibold text-be-charcoal-800 hover:border-be-yellow-400 hover:text-be-charcoal-950 transition-colors focus-ring"
@@ -480,18 +527,20 @@ function QuestionStep({
   options,
   selected,
   onSelect,
+  compact = false,
 }: {
   question: string;
   hint?: string;
   options: Option[];
   selected: string | null;
   onSelect: (id: string) => void;
+  compact?: boolean;
 }) {
   return (
     <div>
-      <h3 className="text-lg font-bold text-be-charcoal-950 mb-1">{question}</h3>
+      <h3 className={cn('font-bold text-be-charcoal-950 mb-1', compact ? 'text-base' : 'text-lg')}>{question}</h3>
       {hint && <p className="text-sm text-be-grey-650 mb-4">{hint}</p>}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className={cn('grid gap-3', compact ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2')}>
         {options.map((opt) => {
           const Icon = opt.icon;
           const isSelected = selected === opt.id;
@@ -502,7 +551,8 @@ function QuestionStep({
               onClick={() => onSelect(opt.id)}
               aria-pressed={isSelected}
               className={cn(
-                'group flex items-start gap-3 rounded-lg border p-4 text-left transition-all duration-200 focus-ring',
+                'group flex items-start gap-3 rounded-lg border text-left transition-all duration-200 focus-ring',
+                compact ? 'p-3' : 'p-4',
                 isSelected
                   ? 'border-be-yellow-500 bg-be-yellow-50/60 shadow-sm'
                   : 'border-be-grey-250 bg-be-white hover:border-be-yellow-400 hover:bg-be-cream/40 hover:shadow-sm',
@@ -510,13 +560,14 @@ function QuestionStep({
             >
               <span
                 className={cn(
-                  'flex items-center justify-center size-9 rounded-md shrink-0 transition-colors',
+                  'flex items-center justify-center rounded-md shrink-0 transition-colors',
+                  compact ? 'size-8' : 'size-9',
                   isSelected
                     ? 'bg-be-yellow-500 text-be-charcoal-950'
                     : 'bg-be-cream text-be-grey-550 group-hover:bg-be-yellow-100 group-hover:text-be-yellow-text',
                 )}
               >
-                <Icon className="size-4.5" aria-hidden="true" focusable="false" />
+                <Icon className={compact ? 'size-4' : 'size-4.5'} aria-hidden="true" focusable="false" />
               </span>
               <span className="flex-1 min-w-0">
                 <span className="block text-sm font-bold text-be-charcoal-950">

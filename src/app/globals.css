@@ -1203,4 +1203,70 @@
   @media (prefers-reduced-motion: reduce) {
     .be-pulse-attention { animation: none; }
   }
+
+  /* ──────────────────────────────────────────────────────────────
+     FADE-IN-UP — a gentle rise-and-fade used for wizard step
+     transitions and section reveals. Richer than the plain fade-in
+     because it adds a small upward motion that signals forward
+     progress through the wizard.
+     ────────────────────────────────────────────────────────────── */
+  @keyframes be-fade-in-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .be-fade-in-up {
+    animation: be-fade-in-up 0.32s ease-out;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .be-fade-in-up { animation: none; }
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     STEP CONNECTOR — a vertical accent that connects numbered step
+     badges in a vertical timeline. Applied to the container; each
+     direct child .be-step-badge gets a yellow line drawn from its
+     bottom edge down to the next sibling. Only visible on viewports
+     where steps stack vertically (below md).
+     ────────────────────────────────────────────────────────────── */
+  .be-step-connector {
+    position: relative;
+  }
+  .be-step-connector > li::before {
+    content: "";
+    position: absolute;
+    left: 1rem;
+    top: 3rem;
+    bottom: -1.5rem;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      var(--be-yellow-400),
+      var(--be-yellow-100)
+    );
+    opacity: 0.6;
+  }
+  .be-step-connector > li:last-child::before {
+    display: none;
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     TILE HOVER LIFT — a refined lift for the process step cards and
+     similar informational tiles. Subtler than hover-card-lift: only
+     2px translate + soft shadow, so the connecting timeline stays
+     aligned. Disabled for reduced-motion.
+     ────────────────────────────────────────────────────────────── */
+  .be-tile-lift {
+    transition: transform 0.28s ease-out, box-shadow 0.28s ease-out,
+      border-color 0.28s ease-out;
+  }
+  .be-tile-lift:hover {
+    transform: translateY(-2px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .be-tile-lift,
+    .be-tile-lift:hover {
+      transform: none;
+      transition: none;
+    }
+  }
 }

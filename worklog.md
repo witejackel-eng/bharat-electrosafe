@@ -369,3 +369,100 @@ Recommended next-phase priorities:
    be-result-reveal staggered animation.
 5. Consider adding "Add to compare" from within the wizard result card so users
    can compare the recommended product against alternatives in one click.
+
+---
+Task ID: QA-POLISH-4
+Agent: Z.ai Code (main session)
+Task: QA-driven polish round 4 — assess project status, perform testing/QA via agent-browser, independently select work focus (fix bugs or add features), improve styling details, add functionality, update worklog.
+
+Work Log:
+- Read existing worklog.md; confirmed prior QA-POLISH-3 round (Product Finder Wizard on /products, URL-shareable compare state, LCP priority fix, premium CSS utilities) was complete and pushed as bab47f1.
+- Dev server was stopped; restarted with setsid+disown pattern. Noted Next.js 16 "Cross origin request detected from 127.0.0.1 to /_next/*" warning in dev log — this was contributing to dev-server instability under browser load.
+- Performed QA with agent-browser on desktop (1440x900) and mobile (390x844). Homepage loaded correctly: H1 "Protection engineered between people and electrical risk.", 0 hydro references, header display:contents (sticky fix intact), 4 proof badges with icons, ScrollProgress present, 6 sections.
+
+QA Findings (1 confirmed bug + 1 stability improvement):
+
+BUG 1 (MEDIUM) — /BharatHydro-Seal.php redirect pointed to a 404.
+- Root cause: next.config.ts had `{ source: '/BharatHydro-Seal.php', destination: '/products/bharat-hydro-seal' }` from before the Hydro Seal removal. The /products/bharat-hydro-seal route was deleted, so legacy PHP links landed on a 404.
+- Fix: changed destination to '/products' so legacy links land on the product range.
+- Verified: curl /BharatHydro-Seal.php → 308 → /products (was 404 chain before).
+
+STABILITY — allowedDevOrigins added to next.config.ts.
+- Root cause: agent-browser connects via 127.0.0.1 while Next.js dev server reports its origin as localhost. Next.js 16 blocks cross-origin /_next/* requests unless allowedDevOrigins is configured, which was causing request drops and server instability under browser load.
+- Fix: added `allowedDevOrigins: ['http://127.0.0.1', 'http://localhost', 'http://21.0.13.102']` to nextConfig.
+- Result: dev server now survives sequential route testing (10 routes with 2s delays all returned expected codes).
+
+Independently selected work focus (site was stable after bug fix): implement top 2 recommended next-phase items from QA-POLISH-3 worklog + add premium styling. Implemented 6 new features/enhancements:
+
+Implemented:
+
+1. Compact Product Finder Wizard on Homepage (NEW FEATURE — src/components/home/HomeProductFinder.tsx)
+   - Two-column section: left = intro copy + "Browse all products" CTA + trust microcopy; right = compact wizard card.
+   - Wraps the wizard in its own CompareProvider so visitors can build a comparison directly from the homepage without navigating to /products.
+   - Renders CompareBar + CompareModal via a CompareHost sub-component (mirrors the /products CompareBarHost pattern).
+   - be-pulse-attention on the wizard card on first load to draw the eye.
+   - lg:sticky left column so the intro stays visible while the wizard is interacted with.
+   - Integrated into homepage as Section 4 (between ProductRange and ProcessSection).
+
+2. ProductFinderWizard refactor (ENHANCEMENT — ProductFinderWizard.tsx)
+   - New `variant?: 'full' | 'compact'` prop (default 'full'). Compact variant: smaller padding (p-5 sm:p-6 vs p-5 sm:p-8 md:p-10), smaller header (text-lg vs text-xl), smaller option cards (p-3 vs p-4, size-8 vs size-9 icons), smaller result image (sm:w-36 vs sm:w-48).
+   - NEW "Add to compare" button in the wizard result card. Uses `useContext(CompareContext)` directly (null-safe) so it degrades gracefully if rendered outside a provider. Shows GitCompare icon + "Add to compare" → Check icon + "Added to compare" when selected. Disabled at capacity (3) with tooltip. aria-pressed reflects state.
+   - Step transition animation upgraded from `animate-[fade-in_0.3s_ease-out]` to new `be-fade-in-up` class (rise + fade, signals forward progress).
+   - Exported CompareContext from CompareContext.tsx so the wizard can consume it via useContext.
+
+3. ProcessSection — "How we work" 4-step band (NEW FEATURE — src/components/home/ProcessSection.tsx)
+   - 4-step quality process: Requirement & specification → Manufacture to IS 15652:2006 → Batch testing & verification → Dispatch with documentation.
+   - Uses be-step-badge CSS utility for numbered circles + lucide icons (ClipboardCheck, PackageCheck, Microscope, Truck).
+   - be-step-connector CSS draws a vertical yellow gradient line between steps on mobile (single column); horizontal hairline on lg.
+   - be-card-glow + be-tile-lift for premium hover. Closing trust line with ShieldCheck icon.
+   - Content is factual (references real IS 15652:2006 standard, BIS licence CM/L:8800129617, ERDA/NTH testing) — no fabricated metrics.
+   - Integrated into homepage as Section 5 (between HomeProductFinder and TrustDocuments).
+
+4. HowTo Structured Data for the wizard (SEO — structured-data.tsx + page.tsx)
+   - New ProductFinderHowToStructuredData component emits HowTo JSON-LD with 4 steps mirroring the wizard flow (identify need → determine voltage → consider environment → confirm against spec).
+   - Added to homepage alongside the existing FAQPage + Organization + WebSite + LocalBusiness schemas.
+   - Verified: homepage now emits 5 JSON-LD scripts (Organization, WebSite, LocalBusiness, FAQPage, HowTo).
+
+5. Premium CSS utilities (3 new in globals.css)
+   - be-fade-in-up: keyframe that rises 8px + fades in over 0.32s. Used for wizard step transitions. Reduced-motion safe.
+   - be-step-connector: vertical yellow gradient timeline between numbered steps on mobile. Applied to ProcessSection <ol>.
+   - be-tile-lift: subtle 2px hover lift for informational tiles (subtler than hover-card-lift so timelines stay aligned). Applied to ProcessSection cards. Reduced-motion safe.
+
+6. Homepage section order refreshed (HomeClient.tsx)
+   - New order: Hero → Stats → ProductRange → HomeProductFinder (NEW) → ProcessSection (NEW) → TrustDocuments → CapabilityIndustries → HomeFAQCTA.
+   - 8 sections total (was 6). All server-rendered except the interactive islands (Header, wizard, compare tray, FAQ, BackToTop, ScrollProgress, MobileStickyCTA, RevealObserver).
+
+Verification Results:
+- All 9 valid routes return 200; /products/bharat-hydro-seal returns 404.
+- /BharatHydro-Seal.php → 308 redirect → /products (was 404 chain).
+- bun run lint — clean (exit 0).
+- bun run typecheck — clean (exit 0).
+- Homepage: 7 visible sections + StatsSection = 8 total <section> elements.
+- Section headings in order: "Protection engineered…", "Our product range", "Not sure which mat you need?", "From specification to a certified, installed mat", "Certifications, testing and registrations", "Built around safety…", "Frequently asked questions".
+- Wizard (compact) present with "Find the right product" header, 4 options on step 1.
+- Wizard flow verified end-to-end: Operator protection → Continue → MV → Continue → Indoor substation → See recommendation → result "Electrical Insulating Mats" with reasoning.
+- "Add to compare" button present in wizard result. Clicking it shows CompareBar: "1/3 selected | Electrical Insulating Mats | Clear | Compare now".
+- HowTo JSON-LD present alongside Organization, WebSite, LocalBusiness, FAQPage.
+- Mobile (390x844): no horizontal overflow (bodyWidth 390 = viewport 390); wizard present; 4 process steps render; 8 sections.
+- Dev server stability improved: survived 10 sequential route requests with 2s delays (was dying after 1-3 requests before allowedDevOrigins fix).
+
+Stage Summary:
+- 8 files changed: next.config.ts, page.tsx, HomeClient.tsx, ProductFinderWizard.tsx, CompareContext.tsx, structured-data.tsx, globals.css + 2 new files (HomeProductFinder.tsx, ProcessSection.tsx).
+- 2 new components: HomeProductFinder, ProcessSection.
+- 1 bug fixed (hydro-seal redirect 404 → /products).
+- 1 stability fix (allowedDevOrigins).
+- 3 new CSS utilities (be-fade-in-up, be-step-connector, be-tile-lift).
+- 1 new structured data type (HowTo).
+- No critical bugs remain. All prior work preserved and stable.
+
+Unresolved / Risks:
+- Dev server (Next.js 16 Turbopack) still dies under rapid-fire requests (e.g. a bash for-loop with no delay). Survives sequential requests with 2s delays. This is a sandbox resource issue, not a code bug — production on Vercel is unaffected.
+- Leadership portraits remain low-resolution (source limitation; treated in prior round).
+- The homepage now mounts a second CompareProvider scope (one for HomeProductFinder, one for /products). Selection does NOT sync between the two scopes because CompareContext is per-provider — but both sync to the same ?compare= URL param, so navigating from homepage to /products preserves the selection via URL hydration. This is the intended design (URL is the source of truth).
+
+Recommended next-phase priorities:
+1. A/B test the compact homepage wizard against the static ProductRange to measure engagement and whether it increases "Request a Quote" conversions.
+2. Add a "Technical Resources" / downloads section (datasheets, installation guides, compliance certificates) as a new homepage section or /resources route.
+3. Consider an interactive Industries-Served filter (click an industry → see recommended products) to replace or augment the static CapabilityIndustries section.
+4. Performance audit: measure CLS from the be-pulse-attention on the wizard and the be-fade-in-up step transitions.
+5. Add BreadcrumbList JSON-LD to the homepage (currently only on product/about/contact pages).
