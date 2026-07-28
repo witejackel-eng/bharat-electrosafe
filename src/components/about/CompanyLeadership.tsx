@@ -1,16 +1,33 @@
-'use client';
-
 import Image from 'next/image';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { FeatureList } from '@/components/ui/FeatureList';
 import { SectionShell } from '@/components/ui/SectionShell';
+import { LeaderProfileCard } from '@/components/about/LeaderProfileCard';
 import { leaders } from '@/data/team';
 import { ShieldCheck, BadgeCheck, HeadsetIcon, FileText } from 'lucide-react';
+
+/**
+ * CompanyLeadership — Server Component.
+ *
+ * Contains four content blocks on the About page:
+ *   1. "Our Journey" — company overview
+ *   2. "Our Mission" + "Our Values" — two side-by-side cards
+ *   3. "Leadership" — three large editorial profile cards
+ *
+ * The leadership section was redesigned from small 64px circular avatars
+ * to substantial editorial cards with large 4:3 portraits, full
+ * multi-paragraph biographies, and factual expertise labels. All
+ * biographical content comes from src/data/team.ts — no content is
+ * duplicated or invented here.
+ *
+ * The existing `.reveal-up` classes on the Journey/Mission/Values blocks
+ * are driven by the shared <RevealObserver /> mounted in the page shell.
+ * The leadership cards use @starting-style CSS animations (no JS needed).
+ */
 
 export default function CompanyLeadership() {
   return (
     <SectionShell variant="standard" bg="bg-be-warm-white" topRule>
-      {/* Company journey */}
+      {/* ── Company journey ─────────────────────────────────────── */}
       <div className="reveal-up mb-12">
         <SectionHeader
           eyebrow="Our Journey"
@@ -19,7 +36,7 @@ export default function CompanyLeadership() {
         />
       </div>
 
-      {/* Mission + Values */}
+      {/* ── Mission + Values ────────────────────────────────────── */}
       <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 mb-16">
         {/* Mission statement */}
         <div className="lg:w-1/2 reveal-up">
@@ -59,32 +76,36 @@ export default function CompanyLeadership() {
         </div>
       </div>
 
-      {/* Leadership */}
+      {/* ── Leadership ────────────────────────────────────────────
+          Editorial 3-card section. Each leader receives equal visual
+          importance. On desktop (lg+): 3 equal columns. On tablet (md):
+          2 columns with the third card spanning both columns and centred.
+          On mobile: 1 column, full-width cards.
+
+          All biographical content comes from src/data/team.ts. The
+          component does not duplicate or rewrite any profile text. */}
       <div className="reveal-up">
         <SectionHeader
           eyebrow="Leadership"
-          title="Our leadership team"
-          supportingText="Experienced professionals guiding our commitment to quality and customer service."
+          title="The people guiding Bharat Electrosafe"
+          supportingText="Meet the leaders directing the company’s manufacturing, finance, quality, operations, partnerships and international development."
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          {leaders.map((leader) => (
-            <div key={leader.name} className="flex items-start gap-4 p-4 rounded-lg border border-be-grey-250 bg-be-white">
-              <div className="shrink-0 size-16 rounded-full overflow-hidden bg-be-cream">
-                <Image
-                  src={leader.image}
-                  alt={leader.name}
-                  width={64}
-                  height={64}
-                  className="w-full h-full object-cover"
-                  sizes="64px"
-                />
-              </div>
-              <div className="min-w-0">
-                <h4 className="text-base font-semibold text-be-charcoal-950">{leader.name}</h4>
-                <p className="text-sm text-be-yellow-text font-medium">{leader.role}</p>
-                <p className="text-sm text-be-grey-650 mt-1 leading-relaxed">{leader.shortBio}</p>
-              </div>
-            </div>
+
+        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-7 lg:mt-10 lg:grid-cols-3 lg:gap-8">
+          {leaders.map((leader, i) => (
+            <LeaderProfileCard
+              key={leader.name}
+              leader={leader}
+              /* On tablet (md, 2-col grid) the third card spans both
+                 columns and is centred so it doesn't sit awkwardly on
+                 the far left. On desktop (lg, 3-col grid) it returns
+                 to a normal single-column span. */
+              className={
+                i === 2
+                  ? 'md:col-span-2 md:max-w-md md:justify-self-center lg:col-span-1 lg:max-w-none lg:justify-self-stretch'
+                  : ''
+              }
+            />
           ))}
         </div>
       </div>
