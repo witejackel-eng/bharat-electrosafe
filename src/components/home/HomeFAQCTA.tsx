@@ -1,4 +1,3 @@
-'use client';
 
 import { company } from '@/data/company';
 import { FAQ, type FAQItem } from '@/components/ui/FAQ';

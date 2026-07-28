@@ -355,7 +355,7 @@ export default function EnquiryQuoteLayout() {
         {/* Row 3: Enquiry type | Product interest */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="enquiryType" className="text-sm font-medium text-be-charcoal-800">
+            <label id="enquiryType-label" htmlFor="enquiryType" className="text-sm font-medium text-be-charcoal-800">
               Enquiry Type <span className="text-be-yellow-text" aria-hidden="true">*</span><span className="sr-only"> (required)</span>
             </label>
             <Select
@@ -364,6 +364,9 @@ export default function EnquiryQuoteLayout() {
               disabled={isSubmitting}
             >
               <SelectTrigger
+                id="enquiryType"
+                aria-labelledby="enquiryType-label"
+                aria-describedby={errors.enquiryType ? 'enquiryType-error' : undefined}
                 className={cn(
                   'h-11 w-full rounded-lg border bg-be-white text-base',
                   'border-be-grey-250 focus:border-be-yellow-500',
@@ -387,7 +390,7 @@ export default function EnquiryQuoteLayout() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="productInterest" className="text-sm font-medium text-be-charcoal-800">
+            <label id="productInterest-label" htmlFor="productInterest" className="text-sm font-medium text-be-charcoal-800">
               Product Interest
             </label>
             <Select
@@ -396,6 +399,8 @@ export default function EnquiryQuoteLayout() {
               disabled={isSubmitting}
             >
               <SelectTrigger
+                id="productInterest"
+                aria-labelledby="productInterest-label"
                 className={cn(
                   'h-11 w-full rounded-lg border border-be-grey-250 bg-be-white text-base focus:border-be-yellow-500',
                   isSubmitting && fieldDisabledClass

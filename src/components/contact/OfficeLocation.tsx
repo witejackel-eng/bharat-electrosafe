@@ -55,7 +55,7 @@ export default function OfficeLocation() {
           rel="noopener noreferrer"
           className="flex items-start gap-3 text-body text-be-charcoal-800 leading-relaxed hover:text-be-yellow-text-hover transition-colors min-h-[44px] py-1"
         >
-          <MapPin className="size-5 text-be-yellow-500 shrink-0 mt-1" aria-hidden="true" focusable="false" />
+          <MapPin className="size-5 text-be-yellow-text shrink-0 mt-1" aria-hidden="true" focusable="false" />
           <div>
             <p className="font-semibold text-be-charcoal-950">{company.name}</p>
             <p>{company.address.line1}</p>
@@ -71,14 +71,14 @@ export default function OfficeLocation() {
             href={`mailto:${company.email}`}
             className="flex items-center gap-2 text-body text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
           >
-            <Mail className="size-4 text-be-yellow-500" aria-hidden="true" focusable="false" />
+            <Mail className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />
             {company.email}
           </a>
           <a
             href={`tel:${company.phonePrimaryTel}`}
             className="flex items-center gap-2 text-body text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
           >
-            <Phone className="size-4 text-be-yellow-500" aria-hidden="true" focusable="false" />
+            <Phone className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />
             {company.phonePrimary}
           </a>
         </div>
@@ -129,7 +129,7 @@ export default function OfficeLocation() {
           {/* Bottom-centre CTA — primary affordance */}
           <div className="absolute inset-x-0 bottom-0 flex justify-center pb-5 pointer-events-none">
             <span className="inline-flex items-center gap-2 rounded-full bg-be-charcoal-950/90 text-be-warm-white px-5 py-2.5 text-sm font-semibold shadow-lg group-hover:bg-be-charcoal-950 group-hover:scale-[1.02] transition-all">
-              <MapPin className="size-4 text-be-yellow-400" aria-hidden="true" focusable="false" />
+              <MapPin className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />
               View on Google Maps
               <ExternalLink className="size-3.5 ml-0.5 opacity-80" aria-hidden="true" focusable="false" />
             </span>

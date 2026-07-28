@@ -1,4 +1,3 @@
-'use client';
 
 import { company } from '@/data/company';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';

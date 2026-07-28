@@ -1,4 +1,3 @@
-'use client';
 
 import { FAQ, type FAQItem } from '@/components/ui/FAQ';
 import { homeFaqs } from '@/data/faqs';

@@ -4,7 +4,10 @@ import { useState, useEffect, useRef, useCallback, startTransition } from 'react
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+/* Framer Motion removed — the mega-menu now uses CSS transitions for
+   show/hide. This eliminates the framer-motion runtime from every route's
+   client bundle. The Header is the only component that previously imported
+   framer-motion on the homepage path. */
 import {
   Menu,
   Mail,
@@ -381,17 +384,15 @@ export function Header() {
               </button>
 
               {/* ── Mega-Menu Dropdown ── */}
-              <AnimatePresence>
-                {dropdownOpen && (
-                  <motion.div
+              {/* CSS-only show/hide — no Framer Motion. The menu is kept in
+                  the DOM only while open so closed-state links are not in the
+                  tab sequence or accessibility tree. */}
+              {dropdownOpen && (
+                  <div
                     ref={megaMenuRef}
                     id="products-mega-menu"
                     role="menu"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.18, ease: 'easeOut' }}
-                    className="absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-[700px] max-w-[calc(100vw-32px)] bg-be-white border border-be-grey-250 rounded-xl shadow-xl overflow-hidden"
+                    className="absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-[700px] max-w-[calc(100vw-32px)] bg-be-white border border-be-grey-250 rounded-xl shadow-xl overflow-hidden animate-mega-menu-in"
                     onMouseEnter={handleDropdownEnter}
                     onMouseLeave={handleDropdownLeave}
                     onKeyDown={handleMegaMenuKeyDown}
@@ -418,7 +419,7 @@ export function Header() {
                                 {productIconMap[product.slug] || <Zap className="size-4" />}
                               </span>
                               <div className="min-w-0">
-                                <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover-hover transition-colors leading-snug">
+                                <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors leading-snug">
                                   {product.name}
                                 </div>
                                 <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
@@ -449,7 +450,7 @@ export function Header() {
                                 {productIconMap[product.slug] || <Droplets className="size-4" />}
                               </span>
                               <div className="min-w-0">
-                                <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover-hover transition-colors leading-snug">
+                                <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors leading-snug">
                                   {product.name}
                                 </div>
                                 <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
@@ -476,9 +477,8 @@ export function Header() {
                         </div>
                       </div>
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                  </div>
+              )}
             </div>
 
             <Link

@@ -1,6 +1,3 @@
-'use client';
-
-import { useEffect, useRef } from 'react';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
@@ -15,40 +12,31 @@ const proofItems = [
   'Conforming to IEC 61111',
 ];
 
+/**
+ * HomeHero — Server Component.
+ *
+ * The hero is above the fold and must be server-rendered so its H1, copy,
+ * CTAs and proof badges appear in the initial HTML without waiting for
+ * hydration. No IntersectionObserver, no opacity-zero initial states, no
+ * Framer Motion. The proof badges render immediately visible.
+ *
+ * The companion HeroTechnicalVisual is also a static Server Component
+ * (pure SVG/CSS, no animation, no client JS).
+ */
 export default function HomeHero() {
-  const staggerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!staggerRef.current) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-    observer.observe(staggerRef.current);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <SectionShell variant="hero" bg="bg-be-warm-white">
       <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14 min-h-[480px] lg:min-h-[560px]">
         {/* Copy — ~55% */}
-        <div className="w-full lg:w-[55%] flex flex-col justify-center reveal-up relative">
+        <div className="w-full lg:w-[55%] flex flex-col justify-center relative">
           {/* Vertical yellow decorative bar — ties to the mat's yellow edge */}
-          <div className="hidden lg:block absolute -left-6 top-0 bottom-0 w-1 bg-be-yellow-500 rounded-full" />
+          <div className="hidden lg:block absolute -left-6 top-0 bottom-0 w-1 bg-be-yellow-500 rounded-full" aria-hidden="true" />
 
-          {/* Eyebrow with animated underline */}
+          {/* Eyebrow with animated underline (CSS-only, reduced-motion safe) */}
           <div className="mb-6 relative">
             <Eyebrow>
               ELECTRICAL INSULATION AND INDUSTRIAL PROTECTION
             </Eyebrow>
-            {/* Animated yellow underline that slides in */}
             <div className="mt-2 h-0.5 bg-be-yellow-500 rounded animate-slide-in" style={{ width: '80px' }} />
           </div>
 
@@ -77,10 +65,10 @@ export default function HomeHero() {
           </div>
 
           {/* Subtle horizontal separator */}
-          <div className="w-full h-px bg-be-grey-250 mb-6" />
+          <div className="w-full h-px bg-be-grey-250 mb-6" aria-hidden="true" />
 
-          {/* Proof line — staggered reveal */}
-          <div ref={staggerRef} className="stagger-reveal flex flex-wrap gap-2">
+          {/* Proof line — visible immediately, no JS reveal */}
+          <div className="flex flex-wrap gap-2">
             {proofItems.map((item) => (
               <TechnicalBadge key={item} label={item} />
             ))}
