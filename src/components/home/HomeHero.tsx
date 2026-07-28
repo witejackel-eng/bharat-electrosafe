@@ -39,35 +39,35 @@ export default function HomeHero() {
     <SectionShell
       variant="hero"
       bg="bg-be-warm-white"
-      className="home-hero-compact pt-10 md:pt-12 lg:pt-14 pb-10 md:pb-12 lg:pb-14"
+      className="home-hero-compact pt-10 md:pt-14 lg:pt-16 pb-10 md:pb-14 lg:pb-16"
     >
-      <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-10 min-h-0 lg:min-h-[460px]">
-        {/* Copy — 53% on desktop */}
-        <div className="w-full lg:w-[53%] flex flex-col justify-center relative">
+      <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-11 min-h-0 lg:min-h-[540px]">
+        {/* Copy — 52% on desktop */}
+        <div className="w-full lg:w-[52%] flex flex-col justify-center relative">
           {/* Vertical yellow decorative bar — ties to the mat's yellow edge */}
           <div className="hidden lg:block absolute -left-6 top-0 bottom-0 w-1 bg-be-yellow-500 rounded-full" aria-hidden="true" />
 
           {/* Eyebrow with animated underline (CSS-only, reduced-motion safe) */}
-          <div className="home-hero-eyebrow mb-4 relative">
+          <div className="home-hero-eyebrow mb-5 relative">
             <Eyebrow>
               ELECTRICAL INSULATION AND INDUSTRIAL PROTECTION
             </Eyebrow>
             <div className="mt-2 h-0.5 bg-be-yellow-500 rounded animate-slide-in" style={{ width: '80px' }} />
           </div>
 
-          <h1 className="home-hero-heading text-home-hero-h1 text-be-charcoal-950 mb-4">
+          <h1 className="home-hero-heading text-home-hero-h1 text-be-charcoal-950 mb-5">
             Certified protection
             <br className="hidden lg:block" /> for critical electrical environments.
           </h1>
 
-          <p className="home-hero-paragraph text-body-large text-be-grey-650 max-w-xl mb-5">
+          <p className="home-hero-paragraph text-body-large text-be-grey-650 max-w-xl mb-6">
             Electrical insulating mats create a protective standing surface
             for personnel working around switchgear, control panels and
             substations.
           </p>
 
           {/* CTA buttons */}
-          <div className="home-hero-ctas flex flex-wrap gap-4 mb-4">
+          <div className="home-hero-ctas flex flex-wrap gap-4 mb-5">
             <PrimaryButton
               href="/products"
               size="lg"
@@ -80,7 +80,7 @@ export default function HomeHero() {
           </div>
 
           {/* Subtle horizontal separator */}
-          <div className="home-hero-separator w-full h-px bg-be-grey-250 mb-4" aria-hidden="true" />
+          <div className="home-hero-separator w-full h-px bg-be-grey-250 mb-5" aria-hidden="true" />
 
           {/* Proof line — visible immediately, no JS reveal */}
           <div className="flex flex-wrap gap-2">
@@ -90,8 +90,8 @@ export default function HomeHero() {
           </div>
         </div>
 
-        {/* Technical visual — 47% on desktop, aligned toward the right edge */}
-        <div className="w-full lg:w-[47%] lg:ml-auto">
+        {/* Technical visual — 48% on desktop, aligned toward the right edge */}
+        <div className="w-full lg:w-[48%] lg:ml-auto">
           <HeroTechnicalVisual />
           {/* Mobile legend — complete four-term reference, hidden on desktop */}
           <HeroTechnicalLegend />
