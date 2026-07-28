@@ -18,16 +18,14 @@
  *   6. Protected-zone yellow dashed boundary (hugging mat outline)
  *   7. Hazard line (floor-level, blue-grey, approaches from left, fades
  *      at mat boundary — conveys "insulating barrier contains the risk")
- *   8. HTML callouts (max 4: ELECTRICAL SWITCHGEAR, OPERATOR STANDING
- *      AREA, INSULATING BARRIER, ANTI-SKID SURFACE) with SVG leader lines
+ *   8. HTML callouts (desktop: 4 positioned labels with leader lines;
+ *      mobile: 3 concise inline labels)
  *
- * Story sequence (CSS-only, one-shot, ~1.6s total, reduced-motion safe):
- *   Step 1 (0–0.3s):   Cabinet + grid + floor fade in
- *   Step 2 (0.2–0.5s): Mat fades in
- *   Step 3 (0.4–0.7s): Operator fades in
- *   Step 4 (0.6–1.3s): Protected-zone boundary fades in around mat
- *   Step 5 (0.9–1.4s): Callouts fade in
- *   Step 6 (1.1–1.6s): Hazard line appears, then fades at mat boundary
+ * Responsive label strategy:
+ *   Desktop (1024px+): Four overlay callouts with leader lines.
+ *   Tablet (768–1023px): Four overlay callouts, slightly reduced.
+ *   Mobile (<768px): Three short object labels inside the visual,
+ *     plus a HeroTechnicalLegend below with all four complete terms.
  *
  * Static-first guarantee: every element's DEFAULT computed state is its
  * FINAL state. Entry animations use @starting-style (transitions) and
@@ -52,22 +50,24 @@
 /* ------------------------------------------------------------------ */
 type Callout = {
   id: string;
-  /** Desktop label. */
+  /** Label text — consistent across all viewports. */
   label: string;
-  /** Mobile label (if different). When omitted, `label` is used at all sizes. */
-  mobileLabel?: string;
   /** Position of the label box on the stage (Tailwind classes). */
   style: string;
   /** Anchor point the leader line connects to (percent of stage, 0–100). */
   anchor: { x: number; y: number };
-  /** Hide on mobile (default false). */
-  hideOnMobile?: boolean;
+  /** Show on desktop and tablet (≥768px) only. Hidden on mobile. */
+  desktopOnly?: boolean;
   /** Leader-line label endpoint direction. */
   isRight?: boolean;
   isTop?: boolean;
 };
 
-const callouts: Callout[] = [
+/**
+ * Desktop/tablet callouts — all four technical terms shown with leader
+ * lines.  `desktopOnly: true` means the label only appears ≥768px.
+ */
+const desktopCallouts: Callout[] = [
   {
     id: 'switchgear',
     label: 'ELECTRICAL SWITCHGEAR',
@@ -79,14 +79,12 @@ const callouts: Callout[] = [
   {
     id: 'operator',
     label: 'OPERATOR STANDING AREA',
-    mobileLabel: 'INSULATING MAT',
     style: 'bottom-[26%] left-[3%]',
     anchor: { x: 47, y: 80 },
   },
   {
     id: 'barrier',
     label: 'INSULATING BARRIER',
-    mobileLabel: 'PROTECTED AREA',
     style: 'bottom-[6%] right-[3%]',
     anchor: { x: 80, y: 92 },
     isRight: true,
@@ -96,8 +94,47 @@ const callouts: Callout[] = [
     label: 'ANTI-SKID SURFACE',
     style: 'top-[46%] left-[3%]',
     anchor: { x: 28, y: 80 },
-    hideOnMobile: true,
     isTop: true,
+  },
+];
+
+/**
+ * Mobile inline labels — three concise object labels placed inside the
+ * SVG coordinate space. These are short enough to fit without overlap.
+ * The fourth concept (Anti-Skid Surface) is covered in the legend below.
+ */
+type MobileLabel = {
+  id: string;
+  /** Short label that fits inside the mobile illustration. */
+  shortLabel: string;
+  /** SVG coordinate for the label anchor point (viewBox 0–640, 0–520). */
+  x: number;
+  y: number;
+  /** Text anchor alignment. */
+  anchor?: 'start' | 'middle' | 'end';
+};
+
+const mobileLabels: MobileLabel[] = [
+  {
+    id: 'switchgear',
+    shortLabel: 'ELECTRICAL SWITCHGEAR',
+    x: 424,
+    y: 98,
+    anchor: 'middle',
+  },
+  {
+    id: 'operator',
+    shortLabel: 'OPERATOR',
+    x: 310,
+    y: 258,
+    anchor: 'middle',
+  },
+  {
+    id: 'mat',
+    shortLabel: 'INSULATING MAT',
+    x: 320,
+    y: 330,
+    anchor: 'middle',
   },
 ];
 
@@ -105,8 +142,11 @@ export default function HeroTechnicalVisual() {
   return (
     <div
       role="img"
-      aria-label="Technical illustration of an electrical technician standing on an insulating mat while operating switchgear. The mat forms a protected standing surface between the operator and the floor."
-      className="relative w-full h-[340px] sm:h-[420px] lg:h-[520px] overflow-hidden"
+      aria-label="Technical illustration of a technician standing on an anti-skid electrical insulating mat while operating switchgear. The mat defines the operator standing area and forms an insulating barrier between the operator and the floor."
+      className="relative w-full overflow-hidden"
+      style={{
+        height: 'clamp(400px, 70vw, 520px)',
+      }}
     >
       {/* ── Layer 1: stage background ─────────────────────────────── */}
       <div
@@ -138,7 +178,7 @@ export default function HeroTechnicalVisual() {
       <svg
         className="absolute inset-0 h-full w-full"
         viewBox="0 0 640 520"
-        preserveAspectRatio="xMidYMid slice"
+        preserveAspectRatio="xMidYMid meet"
         aria-hidden="true"
       >
         <defs>
@@ -478,70 +518,111 @@ export default function HeroTechnicalVisual() {
           <line x1="106" y1="448" x2="114" y2="456" />
           <line x1="114" y1="448" x2="106" y2="456" />
         </g>
+
+        {/* ── Mobile inline labels — visible only below 768px ──── */}
+        {mobileLabels.map((ml) => (
+          <g key={`ml-${ml.id}`} className="md:hidden htv-step htv-step-5">
+            {/* Small connecting line from label to element */}
+            <line
+              x1={ml.x}
+              y1={ml.y + 4}
+              x2={ml.x}
+              y2={ml.y + 14}
+              stroke="#A9A9A5"
+              strokeWidth="1"
+              opacity="0.5"
+            />
+            {/* Yellow anchor dot */}
+            <circle
+              cx={ml.x}
+              cy={ml.y + 14}
+              r="2.5"
+              fill="#FFC400"
+              stroke="#242426"
+              strokeWidth="0.8"
+            />
+            {/* Label background pill */}
+            <rect
+              x={ml.anchor === 'middle' ? ml.x - 60 : ml.x - 4}
+              y={ml.y - 12}
+              width={ml.anchor === 'middle' ? 120 : 128}
+              height="16"
+              rx="3"
+              fill="rgba(255,254,249,0.88)"
+              stroke="#D8D7D1"
+              strokeWidth="0.6"
+            />
+            {/* Label text */}
+            <text
+              x={ml.x}
+              y={ml.y}
+              textAnchor={ml.anchor || 'start'}
+              fontSize="9"
+              fontWeight="600"
+              fill="#38383A"
+              fontFamily="sans-serif"
+              letterSpacing="0.08em"
+            >
+              {ml.shortLabel}
+            </text>
+          </g>
+        ))}
       </svg>
 
-      {/* ── Layer 8: HTML callouts with SVG leader lines ─────────── */}
+      {/* ── Layer 8: Desktop/tablet HTML callouts with leader lines ─ */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Leader lines (SVG overlay, container-percent coordinate system) */}
         <svg
-          className="absolute inset-0 h-full w-full"
+          className="absolute inset-0 h-full w-full hidden md:block"
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
           aria-hidden="true"
         >
-          {callouts
-            .filter((c) => !c.hideOnMobile)
-            .map((c) => {
-              const ax = c.anchor.x;
-              const ay = c.anchor.y;
-              const lx = c.isRight ? ax + 5 : ax - 5;
-              const ly = c.isTop ? ay + 4 : ay - 4;
-              return (
-                <g key={`ll-${c.id}`}>
-                  <line
-                    x1={ax}
-                    y1={ay}
-                    x2={lx}
-                    y2={ly}
-                    stroke="#A9A9A5"
-                    strokeWidth="0.4"
-                    vectorEffect="non-scaling-stroke"
-                    opacity="0.6"
-                  />
-                  <circle
-                    cx={c.anchor.x}
-                    cy={c.anchor.y}
-                    r="0.8"
-                    fill="#FFC400"
-                    stroke="#242426"
-                    strokeWidth="0.3"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                </g>
-              );
-            })}
+          {desktopCallouts.map((c) => {
+            const ax = c.anchor.x;
+            const ay = c.anchor.y;
+            const lx = c.isRight ? ax + 5 : ax - 5;
+            const ly = c.isTop ? ay + 4 : ay - 4;
+            return (
+              <g key={`ll-${c.id}`}>
+                <line
+                  x1={ax}
+                  y1={ay}
+                  x2={lx}
+                  y2={ly}
+                  stroke="#A9A9A5"
+                  strokeWidth="0.4"
+                  vectorEffect="non-scaling-stroke"
+                  opacity="0.6"
+                />
+                <circle
+                  cx={c.anchor.x}
+                  cy={c.anchor.y}
+                  r="0.8"
+                  fill="#FFC400"
+                  stroke="#242426"
+                  strokeWidth="0.3"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </g>
+            );
+          })}
         </svg>
 
         {/* Callout labels — HTML overlays positioned with Tailwind.
-            Desktop shows full label; mobile shows shortened label.
-            Each label has a subtle cream background pill so it stays
-            legible against any visual element it overlaps. */}
-        {callouts.map((c) => (
+            All four labels use their full verified terminology.
+            Visible on desktop and tablet (≥768px), hidden on mobile. */}
+        {desktopCallouts.map((c) => (
           <div
             key={c.id}
-            className={`absolute ${c.style} flex items-center gap-1.5 htv-step htv-step-5 ${
-              c.hideOnMobile ? 'hidden md:flex' : 'flex'
-            } rounded-sm px-1.5 py-0.5 bg-be-warm-white/85 backdrop-blur-[1px] border border-be-grey-250/60`}
+            className={`absolute ${c.style} hidden md:flex items-center gap-1.5 htv-step htv-step-5 rounded-sm px-1.5 py-0.5 bg-be-warm-white/85 backdrop-blur-[1px] border border-be-grey-250/60`}
           >
             <span
               className="h-1.5 w-1.5 rounded-full shrink-0 bg-be-yellow-500"
               aria-hidden="true"
             />
-            <span className="whitespace-nowrap font-semibold uppercase tracking-[0.12em] text-be-charcoal-800 text-[0.625rem] sm:text-[0.6875rem] md:text-[0.625rem]">
-              <span className="hidden md:inline">{c.label}</span>
-              {c.mobileLabel ? (
-                <span className="md:hidden">{c.mobileLabel}</span>
-              ) : null}
+            <span className="whitespace-nowrap font-semibold uppercase tracking-[0.12em] text-be-charcoal-800 text-[0.625rem]">
+              {c.label}
             </span>
           </div>
         ))}
