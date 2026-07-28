@@ -365,10 +365,18 @@
 
   /* Mega-menu entrance — replaces Framer Motion. One-shot fade + slight
      upward slide. Reduced-motion users see no animation (the menu still
-     appears, just instantly). */
+     appears, just instantly).
+
+     IMPORTANT: only animate opacity + transform: translateY here. The
+     horizontal centering is handled by Tailwind's `-translate-x-1/2`
+     utility, which in Tailwind v4 sets the CSS `translate` property
+     (separate from `transform`). If we also set `transform:
+     translateX(-50%)` in these keyframes, the two shifts COMPOUND
+     (translate + transform are both applied) and the menu ends up at
+     -100% instead of -50%, clipping the left edge of the viewport. */
   @keyframes mega-menu-in {
-    0% { opacity: 0; transform: translateX(-50%) translateY(8px); }
-    100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    0% { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
   }
   .animate-mega-menu-in {
     animation: mega-menu-in 0.18s ease-out forwards;

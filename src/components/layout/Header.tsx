@@ -285,44 +285,65 @@ export function Header() {
       </div>
 
       {/* ── Main Header Bar ── */}
+      {/* The sticky bar is the positioning context for the Products
+          mega-menu. Rendering the menu as a child of this sticky bar
+          (instead of inside the small Products trigger) lets us centre it
+          on the header container / viewport rather than on the trigger,
+          which previously caused left-clipping at narrower widths. */}
       <div
         className={cn(
           'sticky top-0 z-50 bg-be-white border-b border-be-grey-250 transition-all duration-300',
           scrolled && 'shadow-sm',
-          compact ? 'h-16 md:h-[72px]' : 'h-16 md:h-20'
+          compact ? 'h-16 md:h-[72px]' : 'h-16 md:h-[84px]'
         )}
       >
-        <div
-          className={cn(
-            'container-site page-horizontal-padding flex items-center justify-between h-full transition-all duration-300',
-            compact ? 'gap-3' : 'gap-6'
-          )}
-        >
-          {/* Logo */}
-          <Link
-            href="/"
-            className="shrink-0"
-            aria-label="Bharat Electrosafe — Home"
-          >
-            <Image
-              src="/images/brand/bharat-electrosafe-logo-full.webp"
-              alt="Bharat Electrosafe logo"
-              width={160}
-              height={60}
-              className={cn(
-                'object-contain transition-all duration-300 h-auto',
-                compact ? 'w-[85px]' : 'w-[110px]'
-              )}
-              priority
+        {/* 3-column CSS Grid: logo | nav | CTA.
+            minmax(190px,1fr) on both sides keeps the navigation
+            mathematically centred regardless of logo / CTA width, so the
+            logo can grow without shifting the nav. */}
+        <div className="container-site page-horizontal-padding grid grid-cols-[minmax(190px,1fr)_auto_minmax(190px,1fr)] items-center h-full gap-4">
+          {/* ── Column 1: Logo (left-aligned) ── */}
+          <div className="flex items-center justify-start">
+            <Link
+              href="/"
+              className="shrink-0 flex items-center"
+              aria-label="Bharat Electrosafe — Home"
+            >
+              {/* Intrinsic source dimensions are 1589x580 (aspect ≈ 2.74:1).
+                  Display sizes are CSS-driven and ramp from mobile (125-145px)
+                  up to desktop (155-180px). `priority` because the logo is
+                  above the fold on every route. */}
+              <Image
+                src="/images/brand/bharat-electrosafe-logo-full.webp"
+                alt="Bharat Electrosafe logo"
+                width={1589}
+                height={580}
+                sizes="(max-width: 767px) 135px, (max-width: 1023px) 155px, 180px"
+                className={cn(
+                  'object-contain transition-all duration-300 h-auto w-[125px] sm:w-[135px] md:w-[155px] lg:w-[180px]',
+                  compact && 'w-[120px] sm:w-[125px] md:w-[145px] lg:w-[155px]'
+                )}
+                priority
+              />
+            </Link>
+            {/* Subtle vertical divider — only on wide desktop (xl+)
+                so it never crowds tablet / mobile. 40px gap from the
+                logo, 36px tall, 1px neutral grey. */}
+            <div
+              className="hidden xl:block w-px h-9 bg-be-grey-250 ml-10"
+              aria-hidden="true"
             />
-          </Link>
+          </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
+          {/* ── Column 2: Desktop Navigation (centred) ── */}
+          {/* Desktop nav shows at lg+ (≥1024px). At md (768-1023) the
+              horizontal budget is too tight for logo + 4 nav items + CTA,
+              so we keep the mobile sheet through tablet. */}
+          <nav className="hidden lg:flex items-center justify-center gap-1.5" aria-label="Main navigation">
             <Link
               href="/"
               className={cn(
-                'px-4 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
+                'px-3.5 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
                 pathname === '/' ? 'text-be-yellow-text border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
               )}
               aria-current={pathname === '/' ? 'page' : undefined}
@@ -330,10 +351,12 @@ export function Header() {
               Home
             </Link>
 
-            {/* Products: text links to /products, chevron opens mega-menu */}
+            {/* Products: text links to /products, chevron opens mega-menu.
+                The mega-menu itself is rendered below as a child of the
+                sticky bar so it can be centred on the header container. */}
             <div
               ref={triggerRef}
-              className="relative flex items-center"
+              className="flex items-center"
               onMouseEnter={handleDropdownEnter}
               onMouseLeave={handleDropdownLeave}
               onKeyDown={handleDropdownKeyDown}
@@ -382,109 +405,12 @@ export function Header() {
                   focusable="false"
                 />
               </button>
-
-              {/* ── Mega-Menu Dropdown ── */}
-              {/* CSS-only show/hide — no Framer Motion. The menu is kept in
-                  the DOM only while open so closed-state links are not in the
-                  tab sequence or accessibility tree. */}
-              {dropdownOpen && (
-                  <div
-                    ref={megaMenuRef}
-                    id="products-mega-menu"
-                    role="menu"
-                    className="absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-[700px] max-w-[calc(100vw-32px)] bg-be-white border border-be-grey-250 rounded-xl shadow-xl overflow-hidden animate-mega-menu-in"
-                    onMouseEnter={handleDropdownEnter}
-                    onMouseLeave={handleDropdownLeave}
-                    onKeyDown={handleMegaMenuKeyDown}
-                    aria-label="Product categories"
-                  >
-                    {/* Two-column layout */}
-                    <div className="flex max-h-[370px]">
-                      {/* Left column: Electrical Insulation (4 products) */}
-                      <div className="flex-1 p-4 border-r border-be-grey-250">
-                        <div className="text-[0.7rem] font-semibold text-be-grey-650 uppercase tracking-wider px-2 mb-2">
-                          {productCategories['electrical-insulation'].displayName}
-                        </div>
-                        <div className="flex flex-col gap-0.5" role="group" aria-label="Electrical insulation products">
-                          {electricalItems.map((product) => (
-                            <Link
-                              key={product.slug}
-                              href={product.href}
-                              role="menuitem"
-                              className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-be-yellow-50 transition-colors group"
-                              onClick={() => setDropdownOpen(false)}
-                            >
-                              {/* Icon */}
-                              <span className="flex items-center justify-center size-8 rounded-md bg-be-cream text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0" aria-hidden="true">
-                                {productIconMap[product.slug] || <Zap className="size-4" />}
-                              </span>
-                              <div className="min-w-0">
-                                <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors leading-snug">
-                                  {product.name}
-                                </div>
-                                <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
-                                  {product.description}
-                                </div>
-                              </div>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Right column: Waterproofing & Civil Protection + View all */}
-                      <div className="w-[280px] p-4 bg-be-cream/40 flex flex-col">
-                        <div className="text-[0.7rem] font-semibold text-be-grey-650 uppercase tracking-wider px-2 mb-2">
-                          {productCategories['waterproofing-civil-protection'].displayName}
-                        </div>
-                        <div className="flex flex-col gap-0.5" role="group" aria-label="Waterproofing and civil protection products">
-                          {waterproofingItems.map((product) => (
-                            <Link
-                              key={product.slug}
-                              href={product.href}
-                              role="menuitem"
-                              className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-be-white transition-colors group"
-                              onClick={() => setDropdownOpen(false)}
-                            >
-                              {/* Icon */}
-                              <span className="flex items-center justify-center size-8 rounded-md bg-be-white text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0" aria-hidden="true">
-                                {productIconMap[product.slug] || <Droplets className="size-4" />}
-                              </span>
-                              <div className="min-w-0">
-                                <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors leading-snug">
-                                  {product.name}
-                                </div>
-                                <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
-                                  {product.description}
-                                </div>
-                              </div>
-                            </Link>
-                          ))}
-                        </div>
-
-                        {/* View all products link */}
-                        <div className="mt-auto pt-4 border-t border-be-grey-250">
-                          <Link
-                            href="/products"
-                            role="menuitem"
-                            className="flex items-center gap-2 px-2.5 py-2.5 rounded-lg bg-be-yellow-500 hover:bg-be-yellow-600 transition-colors group"
-                            onClick={() => setDropdownOpen(false)}
-                          >
-                            <span className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-white transition-colors">
-                              View all products
-                            </span>
-                            <ArrowRight className="size-4 text-be-charcoal-950 group-hover:text-be-white group-hover:translate-x-0.5 transition-all" aria-hidden="true" focusable="false" />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              )}
             </div>
 
             <Link
               href="/about-us"
               className={cn(
-                'px-4 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
+                'px-3.5 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
                 pathname === '/about-us' ? 'text-be-yellow-text border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
               )}
               aria-current={pathname === '/about-us' ? 'page' : undefined}
@@ -495,7 +421,7 @@ export function Header() {
             <Link
               href="/contact-us"
               className={cn(
-                'px-4 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
+                'px-3.5 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
                 pathname === '/contact-us' ? 'text-be-yellow-text border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
               )}
               aria-current={pathname === '/contact-us' ? 'page' : undefined}
@@ -504,9 +430,15 @@ export function Header() {
             </Link>
           </nav>
 
-          {/* Right side: CTA + Mobile menu */}
-          <div className="flex items-center gap-3">
-            <PrimaryButton href="/contact-us" className="hidden md:inline-flex text-sm px-5 py-2.5">
+          {/* ── Column 3: CTA + Mobile menu (right-aligned) ── */}
+          <div className="flex items-center justify-end gap-3">
+            {/* Quote CTA — visually slightly less heavy than the logo so
+                the brand reads as the dominant element. Touch target stays
+                at 44px. Yellow fill is preserved. */}
+            <PrimaryButton
+              href="/contact-us"
+              className="hidden lg:inline-flex text-sm px-4 py-2 shadow-sm hover:shadow-sm hover:translate-y-0"
+            >
               Request a Quote
             </PrimaryButton>
 
@@ -515,7 +447,7 @@ export function Header() {
               <SheetTrigger asChild>
                 <button
                   type="button"
-                  className="md:hidden inline-flex items-center justify-center size-11 rounded-md text-be-charcoal-950 hover:bg-be-grey-150 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+                  className="lg:hidden inline-flex items-center justify-center size-11 rounded-md text-be-charcoal-950 hover:bg-be-grey-150 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
                   aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
                   aria-expanded={mobileOpen}
                   aria-controls="mobile-navigation-sheet"
@@ -531,9 +463,10 @@ export function Header() {
                       <Image
                         src="/images/brand/bharat-electrosafe-logo-full.webp"
                         alt="Bharat Electrosafe logo"
-                        width={120}
-                        height={46}
-                        className="object-contain w-[120px] h-auto"
+                        width={1589}
+                        height={580}
+                        sizes="140px"
+                        className="object-contain w-[140px] h-auto"
                       />
                     </Link>
                   </SheetTitle>
@@ -669,6 +602,106 @@ export function Header() {
             </Sheet>
           </div>
         </div>
+
+        {/* ── Products Mega-Menu ──
+            Rendered as a child of the sticky bar (the positioning
+            context) so it can be centred on the header container rather
+            than on the small Products trigger. CSS-only show/hide — no
+            Framer Motion. The menu is kept in the DOM only while open so
+            closed-state links are not in the tab sequence or the
+            accessibility tree. */}
+        {dropdownOpen && (
+          <div
+            ref={megaMenuRef}
+            id="products-mega-menu"
+            role="menu"
+            className="absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-[720px] max-w-[calc(100vw-32px)] bg-be-white border border-be-grey-250 rounded-xl shadow-xl overflow-hidden animate-mega-menu-in"
+            onMouseEnter={handleDropdownEnter}
+            onMouseLeave={handleDropdownLeave}
+            onKeyDown={handleMegaMenuKeyDown}
+            aria-label="Product categories"
+          >
+            {/* Two-column layout */}
+            <div className="flex max-h-[370px]">
+              {/* Left column: Electrical Insulation (4 products) */}
+              <div className="flex-1 p-4 border-r border-be-grey-250">
+                <div className="text-[0.7rem] font-semibold text-be-grey-650 uppercase tracking-wider px-2 mb-2">
+                  {productCategories['electrical-insulation'].displayName}
+                </div>
+                <div className="flex flex-col gap-0.5" role="group" aria-label="Electrical insulation products">
+                  {electricalItems.map((product) => (
+                    <Link
+                      key={product.slug}
+                      href={product.href}
+                      role="menuitem"
+                      className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-be-yellow-50 transition-colors group"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      {/* Icon */}
+                      <span className="flex items-center justify-center size-8 rounded-md bg-be-cream text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0" aria-hidden="true">
+                        {productIconMap[product.slug] || <Zap className="size-4" />}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors leading-snug">
+                          {product.name}
+                        </div>
+                        <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
+                          {product.description}
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right column: Waterproofing & Civil Protection + View all */}
+              <div className="w-[280px] p-4 bg-be-cream/40 flex flex-col">
+                <div className="text-[0.7rem] font-semibold text-be-grey-650 uppercase tracking-wider px-2 mb-2">
+                  {productCategories['waterproofing-civil-protection'].displayName}
+                </div>
+                <div className="flex flex-col gap-0.5" role="group" aria-label="Waterproofing and civil protection products">
+                  {waterproofingItems.map((product) => (
+                    <Link
+                      key={product.slug}
+                      href={product.href}
+                      role="menuitem"
+                      className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-be-white transition-colors group"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      {/* Icon */}
+                      <span className="flex items-center justify-center size-8 rounded-md bg-be-white text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0" aria-hidden="true">
+                        {productIconMap[product.slug] || <Droplets className="size-4" />}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors leading-snug">
+                          {product.name}
+                        </div>
+                        <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
+                          {product.description}
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+
+                {/* View all products link */}
+                <div className="mt-auto pt-4 border-t border-be-grey-250">
+                  <Link
+                    href="/products"
+                    role="menuitem"
+                    className="flex items-center gap-2 px-2.5 py-2.5 rounded-lg bg-be-yellow-500 hover:bg-be-yellow-600 transition-colors group"
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    <span className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-white transition-colors">
+                      View all products
+                    </span>
+                    <ArrowRight className="size-4 text-be-charcoal-950 group-hover:text-be-white group-hover:translate-x-0.5 transition-all" aria-hidden="true" focusable="false" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );
