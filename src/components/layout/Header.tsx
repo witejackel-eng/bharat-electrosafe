@@ -316,26 +316,24 @@ export function Header() {
               className="shrink-0 flex items-center px-2 sm:px-2.5 py-1.5 rounded-md bg-be-warm-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2 focus-visible:ring-offset-be-white transition-shadow"
               aria-label="Bharat Electrosafe — Home"
             >
-              {/* Intrinsic source dimensions are 1492x1021 (aspect ≈ 1.46:1).
-                  New logo is near-square (icon + wordmark), so display
-                  widths are smaller than the previous horizontal banner
-                  to keep the logo height within the 84px header.
-                  Display sizes ramp from mobile (72-78px) up to desktop
-                  (92-105px), with a modest compact state (68-95px) when
-                  scrolled. `priority` because the logo is above the fold
-                  on every route. Source WebP re-encoded at q=100 from the
-                  lossless PNG so the wordmark renders crisply at small
-                  display sizes; Next.js Image further optimizes the
-                  served payload per viewport width and pixel density. */}
+              {/* Intrinsic source dimensions are 1589x580 (aspect ≈ 2.74:1).
+                  Display sizes are CSS-driven and ramp from mobile
+                  (138-140px) up to desktop (168-185px), with a modest
+                  compact state (132-158px) when scrolled. `priority`
+                  because the logo is above the fold on every route.
+                  Source WebP re-encoded at q=100 from the lossless PNG
+                  so the wordmark renders crisply at small display sizes;
+                  Next.js Image further optimizes the served payload per
+                  viewport width and pixel density. */}
               <Image
                 src="/images/brand/bharat-electrosafe-logo-full.webp"
                 alt="Bharat Electrosafe logo"
-                width={1492}
-                height={1021}
-                sizes="(max-width: 767px) 78px, (max-width: 1023px) 92px, 105px"
+                width={1589}
+                height={580}
+                sizes="(max-width: 767px) 140px, (max-width: 1023px) 168px, 185px"
                 className={cn(
-                  'object-contain transition-all duration-300 h-auto w-[72px] sm:w-[78px] md:w-[92px] lg:w-[105px]',
-                  compact && 'w-[68px] sm:w-[72px] md:w-[84px] lg:w-[95px]'
+                  'object-contain transition-all duration-300 h-auto w-[138px] sm:w-[140px] md:w-[168px] lg:w-[185px]',
+                  compact && 'w-[132px] sm:w-[134px] md:w-[152px] lg:w-[158px]'
                 )}
                 priority
               />
@@ -477,10 +475,10 @@ export function Header() {
                       <Image
                         src="/images/brand/bharat-electrosafe-logo-full.webp"
                         alt="Bharat Electrosafe logo"
-                        width={1492}
-                        height={1021}
-                        sizes="120px"
-                        className="object-contain w-[120px] h-auto"
+                        width={1589}
+                        height={580}
+                        sizes="150px"
+                        className="object-contain w-[150px] h-auto"
                       />
                     </Link>
                   </SheetTitle>
