@@ -1,160 +1,170 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
+import Image from 'next/image';
 
 /**
  * HeroTechnicalVisual
  *
- * A custom, lightweight 2.5D technical illustration of a Bharat Electrosafe
- * electrical insulating mat system. Built entirely with inline SVG + CSS + HTML
- * overlays — no Canvas, WebGL, video or extra dependencies.
+ * A premium "electrical safety in action" engineering illustration built as a
+ * hybrid of real product photography and lightweight SVG/CSS technical layers.
  *
- * The illustration communicates:
- *  - Electrical insulation (charcoal insulating mat, protective contour field)
- *  - Industrial protection (heavy-duty layered thickness, anti-skid coin surface)
- *  - Engineered manufacturing (measurement ticks, construction marks, grid)
- *  - Certified safety (BIS LICENSED annotation, switchgear schematic)
- *  - The Bharat Electrosafe yellow / charcoal / warm-white identity
+ * Layer stack (back → front):
+ *   1. Warm-cream stage background with clipped corner + radial highlight
+ *   2. SVG isometric floor plane, engineering grid, hazard-zone boundary,
+ *      faint electrical contour field, measurement nodes
+ *   3. SVG simplified switchgear cabinet (charcoal/grey, premium, simplified)
+ *   4. REAL Bharat Electrosafe insulating-mat photo (photo-surface-01.webp —
+ *      black, coin-pattern anti-skid) via next/image, set on the floor plane
+ *      with a CSS perspective transform so it reads as unrolled toward the
+ *      viewer. A yellow safety-edge accent ties the visual to the brand.
+ *   5. HTML technical callouts (BIS LICENSED, CLASS A · B · C, ANTI-SKID
+ *      SAFETY SURFACE, PROTECTED WORKING ZONE) with thin SVG leader lines.
  *
- * All colours reuse the existing brand tokens (var(--be-*)). Motion is
- * restricted to a one-shot entrance reveal and fully respects
- * prefers-reduced-motion. With motion disabled the hero still renders complete.
+ * The real product photo carries the product realism; SVG supplies the
+ * industrial context, depth and technical annotation. No Canvas, WebGL,
+ * video or new dependencies. Framer Motion provides one-shot entrance only;
+ * prefers-reduced-motion renders the complete illustration immediately.
+ *
+ * All colours reuse the existing be-* brand tokens.
  */
 
 /* ------------------------------------------------------------------ */
-/* Mat geometry — single source of truth for the SVG path coordinates. */
-/* The flat mat is a 3/4 perspective parallelogram; the right end rolls */
-/* up into a cylinder whose coiled cross-section faces the viewer.     */
+/* Callout configuration — HTML overlays with leader-line anchors.     */
 /* ------------------------------------------------------------------ */
-const A = { x: 108, y: 252 }; // back-left
-const B = { x: 405, y: 236 }; // back-right (meets roll)
-const C = { x: 440, y: 326 }; // front-right (meets roll)
-const D = { x: 146, y: 352 }; // front-left
-
-// Anti-skid coin pattern — perspective grid projected onto the mat surface.
-const COLS = 7;
-const ROWS = 5;
-const coins = Array.from({ length: ROWS * COLS }, (_, k) => {
-  const i = Math.floor(k / COLS); // depth row (back -> front)
-  const j = k % COLS; // width col (left -> right)
-  const t = j / (COLS - 1);
-  const s = i / (ROWS - 1);
-  const bx = A.x + (B.x - A.x) * t;
-  const by = A.y + (B.y - A.y) * t;
-  const fx = D.x + (C.x - D.x) * t;
-  const fy = D.y + (C.y - D.y) * t;
-  return {
-    x: bx + (fx - bx) * s,
-    y: by + (fy - by) * s,
-    r: 2.1 + s * 0.9,
-  };
-});
-
-// Measurement ticks along the bottom construction line.
-const ticks = Array.from({ length: 11 }, (_, k) => 120 + k * 31);
-
-type Annotation = {
+type Callout = {
   id: string;
   label: string;
-  className: string;
-  dotClass: string;
-  dotFirst: boolean; // true = dot on the left (product is left of label)
-  hideOnMobile: boolean;
+  /** Position of the label box on the stage (percent). */
+  style: string;
+  /** Anchor point the leader line connects to (percent of stage). */
+  anchor: { x: string; y: string };
+  /** Leader line goes from label to anchor. */
+  hideOnMobile?: boolean;
+  /** Secondary (smaller) callout style. */
+  secondary?: boolean;
 };
 
-const annotations: Annotation[] = [
+const callouts: Callout[] = [
   {
     id: 'bis',
     label: 'BIS LICENSED',
-    className: 'top-[6%] right-[4%]',
-    dotClass: 'bg-be-yellow-500',
-    dotFirst: true,
+    style: 'top-[5%] right-[5%]',
+    anchor: { x: '72%', y: '30%' },
     hideOnMobile: false,
   },
   {
     id: 'class',
     label: 'CLASS A · B · C',
-    className: 'top-[44%] left-[2%]',
-    dotClass: 'bg-be-charcoal-800',
-    dotFirst: false,
+    style: 'top-[16%] left-[3%]',
+    anchor: { x: '40%', y: '34%' },
     hideOnMobile: false,
   },
   {
     id: 'skid',
-    label: 'ANTI-SKID SURFACE',
-    className: 'bottom-[9%] right-[6%]',
-    dotClass: 'bg-be-charcoal-800',
-    dotFirst: true,
+    label: 'ANTI-SKID SAFETY SURFACE',
+    style: 'bottom-[18%] right-[5%]',
+    anchor: { x: '58%', y: '68%' },
     hideOnMobile: true,
+  },
+  {
+    id: 'zone',
+    label: 'PROTECTED WORKING ZONE',
+    style: 'bottom-[6%] left-[4%]',
+    anchor: { x: '34%', y: '78%' },
+    hideOnMobile: true,
+    secondary: true,
   },
 ];
 
 export default function HeroTechnicalVisual() {
   const reduce = useReducedMotion();
 
-  // Motion presets -------------------------------------------------------
+  /* ---------------------------------------------------------------- */
+  /* Motion presets — one-shot entrance only.                          */
+  /* ---------------------------------------------------------------- */
+  const switchgearMotion = reduce
+    ? { initial: { opacity: 1, y: 0 }, animate: { opacity: 1, y: 0 } }
+    : {
+        initial: { opacity: 0, y: 8 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, amount: 0.3 },
+        transition: { duration: 0.7, ease: 'easeOut' as const },
+      };
+
+  const matMotion = reduce
+    ? { initial: { opacity: 1, y: 0 }, animate: { opacity: 1, y: 0 } }
+    : {
+        initial: { opacity: 0, y: 16 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, amount: 0.3 },
+        transition: { duration: 0.75, delay: 0.12, ease: 'easeOut' as const },
+      };
+
   const envMotion = reduce
     ? { initial: { opacity: 1 }, animate: { opacity: 1 } }
     : {
         initial: { opacity: 0 },
         whileInView: { opacity: 1 },
         viewport: { once: true, amount: 0.3 },
-        transition: { duration: 0.7, delay: 0.15, ease: 'easeOut' as const },
+        transition: { duration: 0.7, delay: 0.28, ease: 'easeOut' as const },
       };
 
-  const envMotion2 = reduce
+  const contourMotion = reduce
+    ? { initial: { pathLength: 1, opacity: 0.18 }, animate: { pathLength: 1, opacity: 0.18 } }
+    : {
+        initial: { pathLength: 0, opacity: 0 },
+        whileInView: { pathLength: 1, opacity: 0.18 },
+        viewport: { once: true, amount: 0.3 },
+        transition: {
+          pathLength: { duration: 2, ease: 'easeInOut' as const },
+          opacity: { duration: 0.5 },
+        },
+      };
+
+  const hazardMotion = reduce
+    ? { initial: { pathLength: 1, opacity: 0.5 }, animate: { pathLength: 1, opacity: 0.5 } }
+    : {
+        initial: { pathLength: 0, opacity: 0 },
+        whileInView: { pathLength: 1, opacity: 0.5 },
+        viewport: { once: true, amount: 0.3 },
+        transition: {
+          pathLength: { duration: 1.4, delay: 0.4, ease: 'easeInOut' as const },
+          opacity: { duration: 0.4, delay: 0.4 },
+        },
+      };
+
+  const stripMotion = reduce
     ? { initial: { opacity: 1 }, animate: { opacity: 1 } }
     : {
         initial: { opacity: 0 },
         whileInView: { opacity: 1 },
         viewport: { once: true, amount: 0.3 },
-        transition: { duration: 0.7, delay: 0.32, ease: 'easeOut' as const },
+        transition: { duration: 0.6, delay: 0.5 },
       };
 
-  const matMotion = reduce
-    ? { initial: { opacity: 1, y: 0 }, animate: { opacity: 1, y: 0 } }
-    : {
-        initial: { opacity: 0, y: 12 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, amount: 0.3 },
-        transition: { duration: 0.7, ease: 'easeOut' as const },
-      };
-
-  const contourMotion = reduce
-    ? {
-        initial: { pathLength: 1, opacity: 0.16 },
-        animate: { pathLength: 1, opacity: 0.16 },
-      }
-    : {
-        initial: { pathLength: 0, opacity: 0 },
-        whileInView: { pathLength: 1, opacity: 0.16 },
-        viewport: { once: true, amount: 0.3 },
-        transition: {
-          pathLength: { duration: 2.2, ease: 'easeInOut' as const },
-          opacity: { duration: 0.5 },
-        },
-      };
-
-  const ann = (delay: number) =>
+  const calloutMotion = (delay: number) =>
     reduce
       ? { initial: { opacity: 1 }, animate: { opacity: 1 } }
       : {
-          initial: { opacity: 0, y: 6 },
+          initial: { opacity: 0, y: 5 },
           whileInView: { opacity: 1, y: 0 },
           viewport: { once: true, amount: 0.3 },
-          transition: { duration: 0.5, delay },
+          transition: { duration: 0.45, delay },
         };
 
   return (
-    <div className="relative w-full h-[340px] sm:h-[400px] lg:h-[500px] overflow-hidden">
-      {/* Stage background — warm cream, clipped top-right corner (stepped
-          detail), subtle radial highlight. Merges with the warm-white hero
-          instead of reading as a separate card. */}
+    <div className="relative w-full h-[320px] sm:h-[420px] lg:h-[520px] overflow-hidden">
+      {/* ── Layer 1: stage background ─────────────────────────────── */}
+      {/* The stage blends into the warm-white hero via a soft cream wash that
+          fades out toward the edges — no hard card frame. */}
       <div
-        className="absolute inset-0 bg-be-cream"
+        className="absolute inset-0"
         style={{
           clipPath:
-            'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%)',
+            'polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 0 100%)',
+          background:
+            'linear-gradient(135deg, rgba(255,253,243,0) 0%, rgba(255,253,243,0.55) 30%, rgba(255,253,243,0.9) 60%, rgba(255,253,243,0.5) 100%)',
         }}
         aria-hidden="true"
       >
@@ -162,228 +172,291 @@ export default function HeroTechnicalVisual() {
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(circle at 50% 46%, var(--be-yellow-50), transparent 62%)',
+              'radial-gradient(ellipse at 62% 36%, rgba(255,251,232,0.7), transparent 62%)',
           }}
         />
       </div>
+      {/* One subtle bottom hairline only — keeps a technical boundary without
+          framing the illustration as a card. */}
+      <div className="absolute left-6 bottom-0 right-6 h-px bg-be-grey-250/60" aria-hidden="true" />
 
-      {/* Selective 1px neutral borders — left + bottom only, so the stage
-          never reads as an ordinary rounded card. */}
-      <div
-        className="absolute left-0 top-0 bottom-0 w-px bg-be-grey-250"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute left-0 bottom-0 right-0 h-px bg-be-grey-250"
-        aria-hidden="true"
-      />
-
-      {/* Technical illustration ---------------------------------------- */}
+      {/* ── Layers 2–3: SVG technical environment + switchgear ─────── */}
       <svg
         className="absolute inset-0 h-full w-full"
-        viewBox="0 0 640 500"
-        preserveAspectRatio="xMidYMid meet"
-        role="img"
-        aria-label="Technical illustration of a Bharat Electrosafe electrical insulating mat — charcoal anti-skid mat partly rolled, with yellow safety edge, layered construction, and a protective contour field, annotated as BIS licensed, Class A B C, anti-skid surface."
+        viewBox="0 0 640 520"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden="true"
       >
         <defs>
           {/* Faint engineering grid */}
-          <pattern
-            id="heroGrid"
-            width="40"
-            height="40"
-            patternUnits="userSpaceOnUse"
-          >
-            <path
-              d="M40 0 H0 V40"
-              fill="none"
-              stroke="var(--be-charcoal-950)"
-              strokeOpacity="0.05"
-              strokeWidth="1"
-            />
+          <pattern id="htvGrid" width="36" height="36" patternUnits="userSpaceOnUse">
+            <path d="M36 0 H0 V36" fill="none" stroke="#242426" strokeOpacity="0.045" strokeWidth="1" />
           </pattern>
-          {/* Soft shadow filter for grounding the product */}
-          <filter id="heroSoft" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="6" />
+          {/* Floor perspective gradient */}
+          <linearGradient id="htvFloor" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#FFFDF3" />
+            <stop offset="1" stopColor="#F2EFE6" />
+          </linearGradient>
+          {/* Switchgear body gradient (charcoal, matte metal) */}
+          <linearGradient id="htvCab" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#38383A" />
+            <stop offset="1" stopColor="#2a2a2c" />
+          </linearGradient>
+          <linearGradient id="htvCabSide" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#2a2a2c" />
+            <stop offset="1" stopColor="#1f1f21" />
+          </linearGradient>
+          {/* Soft shadow filter */}
+          <filter id="htvSoft" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="7" />
           </filter>
         </defs>
 
-        {/* Grid wash across the whole stage (decorative) */}
-        <g aria-hidden="true">
-          <rect x="0" y="0" width="640" height="500" fill="url(#heroGrid)" />
+        {/* Floor plane — isometric trapezoid receding to upper-right */}
+        <polygon points="40,470 600,470 470,300 170,300" fill="url(#htvFloor)" opacity="0.7" />
+        <rect x="0" y="0" width="640" height="520" fill="url(#htvGrid)" />
+
+        {/* Floor perspective lines converging toward the switchgear base */}
+        <g stroke="#242426" strokeOpacity="0.06" strokeWidth="1">
+          <line x1="170" y1="300" x2="40" y2="470" />
+          <line x1="280" y1="300" x2="230" y2="470" />
+          <line x1="370" y1="300" x2="400" y2="470" />
+          <line x1="470" y1="300" x2="600" y2="470" />
         </g>
 
-        {/* Environment: schematic + grid (staggered reveal, group 1) */}
-        <motion.g aria-hidden="true" {...envMotion}>
-          {/* Switchgear / control-panel schematic, upper-left */}
-          <g stroke="var(--be-charcoal-800)" strokeOpacity="0.12" fill="none" strokeWidth="1">
-            <rect x="44" y="58" width="86" height="92" />
-            <line x1="44" y1="78" x2="130" y2="78" />
-            <line x1="60" y1="78" x2="60" y2="132" />
-            <line x1="84" y1="78" x2="84" y2="132" />
-            <line x1="108" y1="78" x2="108" y2="132" />
+        {/* ── Layer 3: switchgear cabinet (upper-right, simplified) ── */}
+        <motion.g {...switchgearMotion}>
+          {/* Cabinet base shadow on floor */}
+          <ellipse cx="430" cy="300" rx="96" ry="12" fill="#242426" opacity="0.12" filter="url(#htvSoft)" />
+          {/* Cabinet body — tall, three-quarter view (front face + side face) */}
+          {/* Side face (right, darker) */}
+          <polygon points="500,110 542,92 542,296 500,300" fill="url(#htvCabSide)" />
+          {/* Front face */}
+          <rect x="348" y="110" width="152" height="190" fill="url(#htvCab)" />
+          {/* Top face (isometric sliver) */}
+          <polygon points="348,110 500,110 542,92 390,92" fill="#4a4a44" />
+          {/* Panel door split line */}
+          <line x1="424" y1="110" x2="424" y2="300" stroke="#1f1f21" strokeWidth="1.5" />
+          {/* Vents (horizontal slats, upper front) */}
+          <g stroke="#1f1f21" strokeWidth="2" opacity="0.7">
+            <line x1="360" y1="128" x2="414" y2="128" />
+            <line x1="360" y1="135" x2="414" y2="135" />
+            <line x1="360" y1="142" x2="414" y2="142" />
+            <line x1="434" y1="128" x2="488" y2="128" />
+            <line x1="434" y1="135" x2="488" y2="135" />
+            <line x1="434" y1="142" x2="488" y2="142" />
           </g>
-          {/* Connection node on schematic */}
-          <g stroke="var(--be-charcoal-800)" strokeOpacity="0.28" strokeWidth="1">
-            <line x1="83" y1="146" x2="91" y2="146" />
-            <line x1="87" y1="142" x2="87" y2="150" />
+          {/* Indicator lights (two small LEDs) */}
+          <circle cx="372" cy="158" r="3" fill="#FFC400" />
+          <circle cx="372" cy="158" r="1.4" fill="#FFF4BE" />
+          <circle cx="386" cy="158" r="3" fill="#3a3a3a" stroke="#1f1f21" strokeWidth="0.5" />
+          {/* Small gauges / meters */}
+          <rect x="440" y="152" width="40" height="20" rx="2" fill="#1f1f21" />
+          <circle cx="450" cy="162" r="4" fill="#4a4a44" stroke="#666668" strokeWidth="0.5" />
+          <circle cx="470" cy="162" r="4" fill="#4a4a44" stroke="#666668" strokeWidth="0.5" />
+          {/* Door handles */}
+          <rect x="416" y="200" width="4" height="40" rx="2" fill="#666668" />
+          <rect x="428" y="200" width="4" height="40" rx="2" fill="#666668" />
+          {/* Warning triangle (high voltage) on front */}
+          <g transform="translate(392,218)">
+            <polygon points="16,0 32,28 0,28" fill="#FFC400" stroke="#242426" strokeWidth="1.5" />
+            <text x="16" y="24" textAnchor="middle" fontSize="18" fontWeight="700" fill="#242426" fontFamily="sans-serif">!</text>
           </g>
-          <circle cx="87" cy="146" r="3" fill="var(--be-cream)" stroke="var(--be-charcoal-800)" strokeOpacity="0.3" strokeWidth="1" />
+          {/* Side vents */}
+          <g stroke="#1f1f21" strokeWidth="1.5" opacity="0.6">
+            <line x1="510" y1="120" x2="536" y2="108" />
+            <line x1="510" y1="135" x2="536" y2="123" />
+            <line x1="510" y1="150" x2="536" y2="138" />
+          </g>
+          {/* Base plinth */}
+          <rect x="344" y="298" width="160" height="6" fill="#1f1f21" />
+          <polygon points="500,298 542,294 542,300 500,304" fill="#1a1a1c" />
         </motion.g>
 
-        {/* Environment: measurement ticks + hazard line + nodes (group 2) */}
-        <motion.g aria-hidden="true" {...envMotion2}>
-          {/* Measurement / construction ticks */}
-          <g stroke="var(--be-charcoal-800)" strokeOpacity="0.18" strokeWidth="1">
-            <line x1="120" y1="418" x2="430" y2="418" />
-            {ticks.map((x) => (
-              <line key={x} x1={x} y1="413" x2={x} y2="423" />
-            ))}
-          </g>
-          {/* Restrained yellow hazard-zone line (diagonal) */}
-          <line
-            x1="96"
-            y1="402"
-            x2="470"
-            y2="394"
-            stroke="var(--be-yellow-500)"
-            strokeOpacity="0.4"
-            strokeWidth="1.5"
-            strokeDasharray="7 5"
-          />
-          {/* Connection nodes */}
-          <g stroke="var(--be-charcoal-800)" strokeOpacity="0.28" strokeWidth="1">
-            <line x1="429" y1="414" x2="435" y2="422" />
-            <line x1="429" y1="422" x2="435" y2="414" />
-          </g>
-          <circle cx="432" cy="418" r="3" fill="var(--be-cream)" stroke="var(--be-charcoal-800)" strokeOpacity="0.3" strokeWidth="1" />
-        </motion.g>
-
-        {/* Protective contour field — one very slow initial draw */}
+        {/* ── Layer 2b: hazard-zone boundary + electrical contour ── */}
+        {/* Protective electrical contour field around the mat working zone */}
         <motion.ellipse
-          cx="295"
-          cy="300"
-          rx="255"
-          ry="135"
+          cx="300"
+          cy="395"
+          rx="250"
+          ry="80"
           fill="none"
-          stroke="var(--be-charcoal-800)"
+          stroke="#242426"
           strokeWidth="1.5"
-          strokeDasharray="5 7"
-          aria-hidden="true"
+          strokeDasharray="4 6"
           {...contourMotion}
         />
+        {/* Yellow hazard-zone boundary (dashed, around the mat) */}
+        <motion.path
+          d="M70,440 Q120,470 300,470 Q470,470 540,440"
+          fill="none"
+          stroke="#FFC400"
+          strokeWidth="2"
+          strokeDasharray="8 5"
+          strokeLinecap="round"
+          {...hazardMotion}
+        />
 
-        {/* Soft grounding shadows under the product */}
-        <g aria-hidden="true">
-          <ellipse cx="275" cy="388" rx="215" ry="18" fill="#242426" opacity="0.09" filter="url(#heroSoft)" />
-          <ellipse cx="438" cy="342" rx="58" ry="12" fill="#242426" opacity="0.1" filter="url(#heroSoft)" />
-        </g>
-
-        {/* The product — insulating mat system -------------------------- */}
-        <motion.g {...matMotion}>
-          {/* Mat top surface (charcoal, matte) */}
-          <path
-            d={`M${A.x},${A.y} L${B.x},${B.y} L${C.x},${C.y} L${D.x},${D.y} Z`}
-            fill="var(--be-charcoal-950)"
-          />
-
-          {/* Anti-skid coin pattern on the top surface */}
-          <g aria-hidden="true">
-            {coins.map((c, idx) => (
-              <circle
-                key={idx}
-                cx={c.x}
-                cy={c.y}
-                r={c.r}
-                fill="var(--be-charcoal-800)"
-                fillOpacity="0.5"
-                stroke="var(--be-grey-400)"
-                strokeOpacity="0.18"
-                strokeWidth="0.5"
-              />
-            ))}
+        {/* Measurement nodes (desktop only, faint) */}
+        <motion.g {...envMotion} className="hidden sm:block">
+          <g stroke="#242426" strokeOpacity="0.2" strokeWidth="1">
+            <line x1="90" y1="478" x2="510" y2="478" />
           </g>
-
-          {/* Mat thickness / layered construction (front face) */}
-          <path
-            d={`M${D.x},${D.y} L${C.x},${C.y} L${C.x + 6},${C.y + 18} L${D.x + 6},${D.y + 18} Z`}
-            fill="var(--be-charcoal-800)"
-          />
-          {/* Layer lines within the thickness */}
-          <g
-            stroke="var(--be-charcoal-950)"
-            strokeOpacity="0.55"
-            strokeWidth="1"
-            aria-hidden="true"
-          >
-            <line x1={D.x + 2} y1={D.y + 6} x2={C.x + 2} y2={C.y + 6} />
-            <line x1={D.x + 4} y1={D.y + 12} x2={C.x + 4} y2={C.y + 12} />
-          </g>
-
-          {/* Yellow safety / identification edge — the strong diagonal accent */}
-          <line
-            x1={D.x}
-            y1={D.y}
-            x2={C.x}
-            y2={C.y}
-            stroke="var(--be-yellow-500)"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-          />
-          {/* Subdued yellow framing on the back edge */}
-          <line
-            x1={A.x}
-            y1={A.y}
-            x2={B.x}
-            y2={B.y}
-            stroke="var(--be-yellow-500)"
-            strokeOpacity="0.45"
-            strokeWidth="2"
-          />
-
-          {/* Rolled end — cylinder body (right side, above mat plane) */}
-          <path
-            d="M405,236 Q442,222 476,216 L476,328 Q460,330 440,326 Z"
-            fill="var(--be-charcoal-800)"
-          />
-          {/* Yellow identification stripe wrapping the roll (subtle) */}
-          <path
-            d="M446,224 L452,223 L452,327 L446,328 Z"
-            fill="var(--be-yellow-500)"
-            fillOpacity="0.8"
-          />
-
-          {/* Coiled cross-section end cap (faces viewer) */}
-          <ellipse cx="476" cy="272" rx="17" ry="56" fill="var(--be-charcoal-950)" />
-          <g
-            fill="none"
-            stroke="var(--be-charcoal-800)"
-            strokeOpacity="0.7"
-            strokeWidth="1"
-            aria-hidden="true"
-          >
-            <ellipse cx="476" cy="272" rx="12" ry="40" />
-            <ellipse cx="476" cy="272" rx="7" ry="24" />
-            <ellipse cx="476" cy="272" rx="3" ry="10" />
-          </g>
-          <circle cx="476" cy="272" r="2" fill="var(--be-charcoal-800)" />
+          {[120, 200, 280, 360, 440, 480].map((x) => (
+            <line key={x} x1={x} y1="474" x2={x} y2="482" stroke="#242426" strokeOpacity="0.2" strokeWidth="1" />
+          ))}
+          <circle cx="90" cy="478" r="2.5" fill="#FFFDF3" stroke="#242426" strokeOpacity="0.3" strokeWidth="1" />
+          <circle cx="510" cy="478" r="2.5" fill="#FFFDF3" stroke="#242426" strokeOpacity="0.3" strokeWidth="1" />
         </motion.g>
       </svg>
 
-      {/* HTML annotation overlays — sharp, responsive text -------------- */}
-      <div className="absolute inset-0 pointer-events-none">
-        {annotations.map((a, idx) => (
-          <motion.div
-            key={a.id}
-            className={`absolute ${a.className} flex items-center gap-1.5 ${
-              a.dotFirst ? 'flex-row' : 'flex-row-reverse'
-            } ${a.hideOnMobile ? 'hidden sm:flex' : 'flex'}`}
-            {...ann(0.6 + idx * 0.12)}
+      {/* ── Layer 4: real insulating-mat photo on the floor plane ── */}
+      {/* CSS perspective gives the flat product photo depth so it reads as
+          lying on the floor, unrolled toward the viewer. The real photo
+          (photo-surface-01.webp — black, coin-pattern) carries the product
+          realism; SVG above supplies the industrial context. */}
+      <motion.div
+        className="absolute inset-0 flex items-end justify-center"
+        {...matMotion}
+      >
+        <div
+          className="relative"
+          style={{
+            perspective: '900px',
+            perspectiveOrigin: '50% 20%',
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          {/* Contact shadow beneath the mat — grounds it on the floor */}
+          <div
+            className="absolute left-1/2 bottom-[8%] -translate-x-1/2"
+            style={{
+              width: '66%',
+              height: '36px',
+              background:
+                'radial-gradient(ellipse, rgba(36,36,38,0.38) 10%, rgba(36,36,38,0.18) 45%, transparent 75%)',
+              filter: 'blur(8px)',
+            }}
+            aria-hidden="true"
+          />
+          {/* The real mat — rotated onto the floor plane */}
+          <div
+            className="absolute left-1/2 bottom-[10%] -translate-x-1/2"
+            style={{
+              width: '70%',
+              maxWidth: '460px',
+              transformStyle: 'preserve-3d',
+              transform: 'rotateX(52deg)',
+              transformOrigin: '50% 100%',
+            }}
           >
-            <span className={`h-1.5 w-1.5 rounded-full ${a.dotClass}`} />
-            <span className="h-px w-4 sm:w-5 bg-be-grey-400" />
-            <span className="text-[0.6rem] sm:text-[0.625rem] uppercase tracking-[0.14em] font-semibold text-be-charcoal-800 whitespace-nowrap">
-              {a.label}
+            <Image
+              src="/media/products/electrical-insulating-mats/photo-surface-01.webp"
+              alt="Bharat Electrosafe electrical insulating mat — black rubber with circular anti-skid coin pattern, installed in front of switchgear"
+              width={1600}
+              height={900}
+              sizes="(max-width: 768px) 90vw, (max-width: 1280px) 48vw, 540px"
+              className="block w-full h-auto rounded-[2px] shadow-xl"
+              style={{ objectFit: 'cover', aspectRatio: '16 / 9' }}
+              priority
+            />
+            {/* Yellow safety-edge accent along the front (leading) edge —
+                a brand tie-in, not a fabricated product spec. */}
+            <motion.div
+              className="absolute left-0 right-0 -bottom-[3px] h-[5px] rounded-full"
+              style={{
+                background: 'linear-gradient(90deg, transparent, #FFC400 18%, #FFC400 82%, transparent)',
+              }}
+              {...stripMotion}
+              aria-hidden="true"
+            />
+          </div>
+        </div>
+      </motion.div>
+
+      {/* ── Layer 5: HTML callouts with SVG leader lines ─────────── */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Leader lines (SVG overlay) */}
+        <svg
+          className="absolute inset-0 h-full w-full hidden sm:block"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          {callouts
+            .filter((c) => !c.hideOnMobile)
+            .map((c) => {
+              // Each callout's label box sits at its style position; the leader
+              // runs from the anchor toward the nearest label edge. We draw a
+              // short elbow connector from the anchor outward.
+              const ax = parseFloat(c.anchor.x);
+              const ay = parseFloat(c.anchor.y);
+              // Label endpoint — a point just inside the label box edge.
+              const isRight = c.style.includes('right');
+              const isTop = c.style.includes('top-[5%]') || c.style.includes('top-[16%]');
+              const lx = isRight ? ax + 8 : ax - 8;
+              const ly = isTop ? ay + 6 : ay - 6;
+              return (
+                <motion.line
+                  key={`line-${c.id}`}
+                  x1={ax}
+                  y1={ay}
+                  x2={lx}
+                  y2={ly}
+                  stroke="#A9A9A5"
+                  strokeWidth="0.4"
+                  vectorEffect="non-scaling-stroke"
+                  initial={reduce ? { opacity: 0.6 } : { opacity: 0 }}
+                  whileInView={reduce ? undefined : { opacity: 0.6 }}
+                  viewport={reduce ? undefined : { once: true, amount: 0.3 }}
+                  transition={reduce ? undefined : { duration: 0.4, delay: 0.7 }}
+                />
+              );
+            })}
+          {/* Anchor dots */}
+          {callouts
+            .filter((c) => !c.hideOnMobile)
+            .map((c) => (
+              <motion.circle
+                key={`dot-${c.id}`}
+                cx={parseFloat(c.anchor.x)}
+                cy={parseFloat(c.anchor.y)}
+                r="0.8"
+                fill="#FFC400"
+                stroke="#242426"
+                strokeWidth="0.3"
+                vectorEffect="non-scaling-stroke"
+                initial={reduce ? { opacity: 1 } : { opacity: 0, scale: 0 }}
+                whileInView={reduce ? undefined : { opacity: 1, scale: 1 }}
+                viewport={reduce ? undefined : { once: true, amount: 0.3 }}
+                transition={reduce ? undefined : { duration: 0.3, delay: 0.65 }}
+              />
+            ))}
+        </svg>
+
+        {/* Callout labels */}
+        {callouts.map((c, idx) => (
+          <motion.div
+            key={c.id}
+            className={`absolute ${c.style} flex items-center gap-1.5 ${
+              c.hideOnMobile ? 'hidden sm:flex' : 'flex'
+            }`}
+            {...calloutMotion(0.7 + idx * 0.1)}
+          >
+            <span
+              className={`h-1.5 w-1.5 rounded-full shrink-0 ${
+                c.secondary ? 'bg-be-charcoal-800' : 'bg-be-yellow-500'
+              }`}
+            />
+            <span
+              className={`whitespace-nowrap font-semibold uppercase tracking-[0.13em] text-be-charcoal-800 ${
+                c.secondary
+                  ? 'text-[0.55rem] sm:text-[0.6rem]'
+                  : 'text-[0.6rem] sm:text-[0.625rem]'
+              }`}
+            >
+              {c.label}
             </span>
           </motion.div>
         ))}
