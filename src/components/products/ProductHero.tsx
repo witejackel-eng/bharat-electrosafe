@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import {
   Zap,
@@ -16,7 +16,6 @@ import {
   Building,
   Shield,
   Download,
-  ShieldCheck,
   FileText,
   Truck,
   Headphones,
@@ -60,6 +59,20 @@ interface ProductHeroProps {
 }
 
 export function ProductHero({ product }: ProductHeroProps) {
+  /* ── Gallery state ── */
+  // Build the list of gallery images: hero always first, then up to 2 details
+  const galleryImages = useMemo(() => {
+    const images = [product.images.hero];
+    product.images.details.slice(0, 2).forEach((src) => {
+      if (!images.includes(src)) images.push(src);
+    });
+    return images;
+  }, [product.images.hero, product.images.details]);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeSrc = galleryImages[activeIndex];
+  const thumbnails = galleryImages.slice(1); // detail images as thumbnails
+
   const breadcrumbItems = useMemo(
     () => [
       { label: 'Home', href: '/' },
@@ -69,67 +82,120 @@ export function ProductHero({ product }: ProductHeroProps) {
     [product.name]
   );
 
+  const activeFit = getImageFit(product, activeSrc);
+
   return (
-    <>
-      <SectionShell variant="hero" bg="bg-be-warm-white">
-        {/* Breadcrumb */}
-        <Breadcrumb items={breadcrumbItems} className="mb-6" />
+    <SectionShell variant="hero" bg="bg-be-warm-white">
+      {/* Breadcrumb */}
+      <Breadcrumb items={breadcrumbItems} className="mb-5 lg:mb-6" />
 
-        {/* Desktop: 46/54 split */}
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
-          {/* ── Content side (46%) ── */}
-          <div className="lg:w-[46%] flex flex-col gap-6">
-            {/* Technical badges */}
-            <div className="flex flex-wrap gap-2">
-              {product.badges.map((badge) => (
-                <TechnicalBadge key={badge} label={badge} />
-              ))}
-            </div>
-
-            {/* H1 */}
-            <h1 className="text-product-h1 text-be-charcoal-950">{product.name}</h1>
-
-            {/* Introduction */}
-            <p className="text-body-large text-be-grey-650 leading-relaxed">
-              {product.introduction}
-            </p>
-
-            {/* Quick facts */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-              {product.quickFacts.map((fact) => {
-                const Icon = iconMap[fact.icon] ?? Shield;
-                return (
-                  <div key={fact.label} className="flex items-center gap-3">
-                    <span className="flex items-center justify-center size-9 rounded-md bg-be-yellow-50 shrink-0">
-                      <Icon className="size-4 text-be-yellow-600" />
-                    </span>
-                    <div>
-                      <div className="text-metadata text-be-grey-650 font-medium">{fact.label}</div>
-                      <div className="text-body font-semibold text-be-charcoal-950">{fact.value}</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* CTA buttons */}
-            <div className="flex flex-wrap gap-3 pt-2">
-              <PrimaryButton href="/contact-us" size="lg">
-                Request a Quote
-              </PrimaryButton>
-              {product.hasDatasheet && (
-                <SecondaryButton href="#documents">
-                  <Download className="size-4 mr-1.5" />
-                  Download Datasheet
-                </SecondaryButton>
-              )}
-            </div>
+      {/* Desktop: 46/54 split */}
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 items-start">
+        {/* ── Content side (46%) ── */}
+        <div className="lg:w-[46%] flex flex-col">
+          {/* Technical badges */}
+          <div className="flex flex-wrap gap-2 mb-4 lg:mb-5">
+            {product.badges.map((badge) => (
+              <TechnicalBadge key={badge} label={badge} />
+            ))}
           </div>
 
-          {/* ── Media side (54%) ── */}
-          <div className="lg:w-[54%] flex flex-col gap-4 order-first lg:order-last">
-            {/* Main hero image */}
-            <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg">
+          {/* H1 */}
+          <h1 className="text-product-h1 text-be-charcoal-950 mb-4 lg:mb-5">
+            {product.name}
+          </h1>
+
+          {/* Introduction */}
+          <p className="text-body-large text-be-grey-650 leading-relaxed mb-5 lg:mb-6">
+            {product.introduction}
+          </p>
+
+          {/* Quick facts */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-6 lg:mb-7">
+            {product.quickFacts.map((fact) => {
+              const Icon = iconMap[fact.icon] ?? Shield;
+              return (
+                <div key={fact.label} className="flex items-center gap-3">
+                  <span className="flex items-center justify-center size-9 rounded-md bg-be-yellow-50 shrink-0">
+                    <Icon className="size-4 text-be-yellow-600" />
+                  </span>
+                  <div>
+                    <div className="text-metadata text-be-grey-650 font-medium">{fact.label}</div>
+                    <div className="text-body font-semibold text-be-charcoal-950">{fact.value}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* CTA buttons */}
+          <div className="flex flex-wrap gap-3">
+            <PrimaryButton href="/contact-us" size="lg">
+              Request a Quote
+            </PrimaryButton>
+            {product.hasDatasheet && (
+              <SecondaryButton href="#documents">
+                <Download className="size-4 mr-1.5" />
+                Download Datasheet
+              </SecondaryButton>
+            )}
+          </div>
+        </div>
+
+        {/* ── Media side (54%) ── */}
+        <div className="lg:w-[54%] order-first lg:order-last">
+          {/* ── Desktop gallery: main + vertical thumbnail rail ── */}
+          {thumbnails.length > 0 ? (
+            <div className="hidden lg:grid grid-cols-[minmax(0,3fr)_minmax(110px,1fr)] gap-3 rounded-lg">
+              {/* Main image */}
+              <div className="relative overflow-hidden rounded-lg aspect-[4/3]">
+                <Image
+                  src={activeSrc}
+                  alt={getImageAlt(product, activeSrc)}
+                  fill
+                  className={activeFit === 'contain' ? 'object-contain p-3' : 'object-cover'}
+                  sizes="(max-width: 768px) 100vw, 54vw"
+                  priority
+                />
+              </div>
+
+              {/* Vertical thumbnail rail */}
+              <div className="grid grid-rows-2 gap-3">
+                {thumbnails.map((thumbSrc, idx) => {
+                  const thumbFit = getImageFit(product, thumbSrc);
+                  const thumbAlt = getImageAlt(product, thumbSrc);
+                  const isActive = activeIndex === idx + 1;
+                  return (
+                    <button
+                      key={thumbSrc}
+                      type="button"
+                      onClick={() => setActiveIndex(idx + 1)}
+                      aria-label={`View: ${thumbAlt}`}
+                      className={`
+                        relative overflow-hidden rounded-lg aspect-auto focus-ring
+                        transition-opacity duration-200 ease-out
+                        ${isActive
+                          ? 'ring-2 ring-be-yellow-500 ring-offset-2 ring-offset-be-warm-white'
+                          : 'opacity-80 hover:opacity-100'
+                        }
+                      `}
+                    >
+                      <Image
+                        src={thumbSrc}
+                        alt={thumbAlt}
+                        fill
+                        className={thumbFit === 'contain' ? 'object-contain p-2' : 'object-cover'}
+                        sizes="110px"
+                        loading="lazy"
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            /* No thumbnails — single full-width hero image (desktop) */
+            <div className="hidden lg:block relative overflow-hidden rounded-lg aspect-[4/3]">
               <Image
                 src={product.images.hero}
                 alt={getImageAlt(product, product.images.hero)}
@@ -139,51 +205,83 @@ export function ProductHero({ product }: ProductHeroProps) {
                 priority
               />
             </div>
+          )}
 
-            {/* Supporting detail views */}
-            {product.images.details.length > 0 && (
-              <div className="flex flex-row gap-4">
-                {product.images.details.slice(0, 2).map((detailSrc) => (
-                  <div key={detailSrc} className="relative w-1/2 aspect-[16/10] overflow-hidden rounded-lg">
-                    <Image
-                      src={detailSrc}
-                      alt={getImageAlt(product, detailSrc)}
-                      fill
-                      className={getImageFit(product, detailSrc) === 'contain' ? 'object-contain p-2' : 'object-cover'}
-                      sizes="(max-width: 768px) 50vw, 27vw"
-                    />
-                  </div>
-                ))}
+          {/* ── Mobile: primary image + compact thumbnail row ── */}
+          <div className="lg:hidden">
+            {/* Primary image */}
+            <div className="relative overflow-hidden rounded-lg aspect-[4/3]">
+              <Image
+                src={activeSrc}
+                alt={getImageAlt(product, activeSrc)}
+                fill
+                className={activeFit === 'contain' ? 'object-contain p-3' : 'object-cover'}
+                sizes="100vw"
+                priority
+              />
+            </div>
+
+            {/* Compact thumbnail row */}
+            {thumbnails.length > 0 && (
+              <div className="flex gap-2 mt-2">
+                {thumbnails.map((thumbSrc, idx) => {
+                  const thumbFit = getImageFit(product, thumbSrc);
+                  const thumbAlt = getImageAlt(product, thumbSrc);
+                  const isActive = activeIndex === idx + 1;
+                  return (
+                    <button
+                      key={thumbSrc}
+                      type="button"
+                      onClick={() => setActiveIndex(idx + 1)}
+                      aria-label={`View: ${thumbAlt}`}
+                      className={`
+                        relative overflow-hidden rounded-md h-[72px] w-[96px] focus-ring
+                        transition-opacity duration-200 ease-out
+                        ${isActive
+                          ? 'ring-2 ring-be-yellow-500 ring-offset-1 ring-offset-be-warm-white'
+                          : 'opacity-80 hover:opacity-100'
+                        }
+                      `}
+                    >
+                      <Image
+                        src={thumbSrc}
+                        alt={thumbAlt}
+                        fill
+                        className={thumbFit === 'contain' ? 'object-contain p-1' : 'object-cover'}
+                        sizes="96px"
+                        loading="lazy"
+                      />
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
         </div>
-      </SectionShell>
+      </div>
 
-      {/* Product-specific trust strip — mat claims never appear on the membrane. */}
-      <div className="container-site page-horizontal-padding -mt-4 md:-mt-6">
-        <ul className="flex flex-wrap gap-x-6 gap-y-3 rounded-lg border border-be-yellow-100 bg-be-yellow-50 px-5 py-4">
-          {product.trustPoints.map((point) => (
-            <li key={point} className="flex items-center gap-2">
-              <Shield className="size-4 shrink-0 text-be-yellow-600" />
+      {/* ── Trust strip — inside the same SectionShell ── */}
+      <ul className="flex flex-wrap gap-x-6 gap-y-3 rounded-lg border border-be-yellow-100 bg-be-yellow-50 px-5 py-4 mt-8 lg:mt-8">
+        {product.trustPoints.map((point) => (
+          <li key={point} className="flex items-center gap-2">
+            <Shield className="size-4 shrink-0 text-be-yellow-600" />
+            <span className="text-metadata font-semibold uppercase tracking-wide text-be-charcoal-950">
+              {point}
+            </span>
+          </li>
+        ))}
+        {staticTrustIndicators.map((item) => {
+          const Icon = item.icon;
+          return (
+            <li key={item.label} className="flex items-center gap-2">
+              <Icon className="size-4 shrink-0 text-be-yellow-600" />
               <span className="text-metadata font-semibold uppercase tracking-wide text-be-charcoal-950">
-                {point}
+                {item.label}
               </span>
             </li>
-          ))}
-          {staticTrustIndicators.map((item) => {
-            const Icon = item.icon;
-            return (
-              <li key={item.label} className="flex items-center gap-2">
-                <Icon className="size-4 shrink-0 text-be-yellow-600" />
-                <span className="text-metadata font-semibold uppercase tracking-wide text-be-charcoal-950">
-                  {item.label}
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </>
+          );
+        })}
+      </ul>
+    </SectionShell>
   );
 }

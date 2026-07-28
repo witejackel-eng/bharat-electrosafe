@@ -14,7 +14,6 @@ import { RelatedProducts } from '@/components/products/RelatedProducts';
 import { ProductCTA } from '@/components/products/ProductCTA';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { DataTable } from '@/components/ui/DataTable';
-import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { SectionShell } from '@/components/ui/SectionShell';
 import { ProductData } from '@/data/products';
 
@@ -45,17 +44,6 @@ export default function BMClient({ product }: { product: ProductData }) {
     <div className="min-h-screen flex flex-col bg-be-warm-white">
       <Header />
       <main className="flex-1">
-        {/* Breadcrumb */}
-        <div className="container-site page-horizontal-padding pt-5">
-          <Breadcrumb
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'Products', href: '/products' },
-              { label: product.name },
-            ]}
-          />
-        </div>
-
         {/* 1. Hero + trust indicators */}
         <ProductHero product={product} />
 
