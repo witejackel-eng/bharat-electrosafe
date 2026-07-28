@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
+import { MobileStickyCTA } from '@/components/ui/MobileStickyCTA';
 import { ProductHero } from '@/components/products/ProductHero';
 import { ProductOverview } from '@/components/products/ProductOverview';
 import { ProductMaterialDimensions } from '@/components/products/ProductMaterialDimensions';
@@ -79,6 +80,7 @@ export default function BMClient({ product }: { product: ProductData }) {
       </main>
       <Footer />
       <BackToTop />
+      <MobileStickyCTA />
     </div>
   );
 }

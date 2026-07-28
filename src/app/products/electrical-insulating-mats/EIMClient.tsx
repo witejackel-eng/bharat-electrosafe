@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
+import { MobileStickyCTA } from '@/components/ui/MobileStickyCTA';
 import { ProductHero } from '@/components/products/ProductHero';
 import { ProductOverview } from '@/components/products/ProductOverview';
 import { ProductApplications } from '@/components/products/ProductApplications';
@@ -54,6 +55,7 @@ export default function EIMClient({ product }: { product: ProductData }) {
       </main>
       <Footer />
       <BackToTop />
+      <MobileStickyCTA />
     </div>
   );
 }

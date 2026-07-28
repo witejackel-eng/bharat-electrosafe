@@ -32,13 +32,18 @@ export function LogoRail({ logos, className }: LogoRailProps) {
             className="flex shrink-0 items-center justify-center w-40 h-20 px-4 grayscale hover:grayscale-0 transition-all duration-300"
           >
             {logo.src ? (
-              <Image
-                src={logo.src}
-                alt={logo.name}
-                width={140}
-                height={60}
-                className="object-contain max-h-12 w-auto"
-              />
+              /* Relative sized container + `fill` preserves the intrinsic
+                 aspect ratio without CSS width/height overrides (which
+                 previously triggered the Next.js image warning). */
+              <span className="relative flex h-12 w-32 items-center justify-center">
+                <Image
+                  src={logo.src}
+                  alt={logo.name}
+                  fill
+                  className="object-contain"
+                  sizes="128px"
+                />
+              </span>
             ) : (
               <span className="text-sm text-be-grey-650 font-semibold text-center hover:text-be-charcoal-800 hover:underline underline-offset-4 transition-all duration-300">
                 {logo.name}

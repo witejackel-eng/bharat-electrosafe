@@ -254,7 +254,15 @@ export function Header() {
   const waterproofingItems = productNavigationByCategory['waterproofing-civil-protection'];
 
   return (
-    <header className="relative z-50">
+    /* `display: contents` lets the <header> element provide semantics without
+       generating a box. This is essential: the inner sticky bar (next sibling)
+       can only stick within the height of its containing block. If the header
+       generated a box, its height would equal just the contact strip + bar
+       (~104px), and the sticky bar would scroll off after ~0px. With
+       `contents`, the sticky bar's containing block becomes the page flex
+       column (min-h-screen, tall), so it sticks correctly for the full page.
+       The <header> element remains in the accessibility tree. */
+    <header className="contents z-50">
       {/* ── Top Contact Strip (desktop only) ── */}
       {/* Navy utility strip continues the header's navy band upward, so the
           logo zone and contact strip read as one designed composition rather
