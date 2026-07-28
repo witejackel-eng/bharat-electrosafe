@@ -46,9 +46,9 @@ export default function HomeHero() {
           </h1>
 
           <p className="text-body-large text-be-grey-650 max-w-xl mb-8">
-            Electrical insulating mats and engineered protection products for
-            control panels, substations, utilities, industry and
-            infrastructure.
+            Electrical insulating mats create a protective standing surface
+            for personnel working around switchgear, control panels and
+            substations.
           </p>
 
           {/* CTA buttons */}
