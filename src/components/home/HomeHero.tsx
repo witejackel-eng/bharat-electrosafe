@@ -23,37 +23,51 @@ const proofItems = [
  *
  * The companion HeroTechnicalVisual is also a static Server Component
  * (pure SVG/CSS, no animation, no client JS).
+ *
+ * Sizing strategy (desktop compression):
+ *   - Homepage-specific .text-home-hero-h1 (smaller than global text-hero-h1)
+ *   - Compact section padding via className override (not changing SectionShell)
+ *   - Reduced min-height (lg:min-h-[460px] instead of 560px)
+ *   - Tightened internal vertical rhythm
+ *   - Rebalanced columns (53%/47% with gap-10)
+ *   - Laptop-height media query (.home-hero-compact) for ≤820px viewports
+ *
+ * Mobile remains fully stacked with all content intact.
  */
 export default function HomeHero() {
   return (
-    <SectionShell variant="hero" bg="bg-be-warm-white">
-      <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14 min-h-[480px] lg:min-h-[560px]">
-        {/* Copy — ~55% */}
-        <div className="w-full lg:w-[55%] flex flex-col justify-center relative">
+    <SectionShell
+      variant="hero"
+      bg="bg-be-warm-white"
+      className="home-hero-compact pt-10 md:pt-12 lg:pt-14 pb-10 md:pb-12 lg:pb-14"
+    >
+      <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-10 min-h-0 lg:min-h-[460px]">
+        {/* Copy — 53% on desktop */}
+        <div className="w-full lg:w-[53%] flex flex-col justify-center relative">
           {/* Vertical yellow decorative bar — ties to the mat's yellow edge */}
           <div className="hidden lg:block absolute -left-6 top-0 bottom-0 w-1 bg-be-yellow-500 rounded-full" aria-hidden="true" />
 
           {/* Eyebrow with animated underline (CSS-only, reduced-motion safe) */}
-          <div className="mb-6 relative">
+          <div className="home-hero-eyebrow mb-4 relative">
             <Eyebrow>
               ELECTRICAL INSULATION AND INDUSTRIAL PROTECTION
             </Eyebrow>
             <div className="mt-2 h-0.5 bg-be-yellow-500 rounded animate-slide-in" style={{ width: '80px' }} />
           </div>
 
-          <h1 className="text-hero-h1 text-be-charcoal-950 mb-6">
+          <h1 className="home-hero-heading text-home-hero-h1 text-be-charcoal-950 mb-4">
             Certified protection
             <br className="hidden lg:block" /> for critical electrical environments.
           </h1>
 
-          <p className="text-body-large text-be-grey-650 max-w-xl mb-8">
+          <p className="home-hero-paragraph text-body-large text-be-grey-650 max-w-xl mb-5">
             Electrical insulating mats create a protective standing surface
             for personnel working around switchgear, control panels and
             substations.
           </p>
 
           {/* CTA buttons */}
-          <div className="flex flex-wrap gap-4 mb-6">
+          <div className="home-hero-ctas flex flex-wrap gap-4 mb-4">
             <PrimaryButton
               href="/products"
               size="lg"
@@ -66,7 +80,7 @@ export default function HomeHero() {
           </div>
 
           {/* Subtle horizontal separator */}
-          <div className="w-full h-px bg-be-grey-250 mb-6" aria-hidden="true" />
+          <div className="home-hero-separator w-full h-px bg-be-grey-250 mb-4" aria-hidden="true" />
 
           {/* Proof line — visible immediately, no JS reveal */}
           <div className="flex flex-wrap gap-2">
@@ -76,8 +90,8 @@ export default function HomeHero() {
           </div>
         </div>
 
-        {/* Technical visual — ~45%, aligned toward the right edge */}
-        <div className="w-full lg:w-[45%] lg:ml-auto">
+        {/* Technical visual — 47% on desktop, aligned toward the right edge */}
+        <div className="w-full lg:w-[47%] lg:ml-auto">
           <HeroTechnicalVisual />
           {/* Mobile legend — complete four-term reference, hidden on desktop */}
           <HeroTechnicalLegend />

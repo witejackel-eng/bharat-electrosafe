@@ -217,6 +217,16 @@
     letter-spacing: -0.02em;
     font-weight: 700;
   }
+  /* Homepage-specific H1 — slightly smaller than the global hero-h1 to
+     compress the hero into a single viewport on common laptop screens
+     (1366x768, 1280x800). Used only on HomeHero; other pages keep
+     text-hero-h1 untouched. */
+  .text-home-hero-h1 {
+    font-size: clamp(2.875rem, 4.7vw, 4.75rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+  }
   .text-page-h1 {
     font-size: clamp(2.6rem, 5vw, 4.75rem);
     line-height: 1.1;
@@ -558,6 +568,34 @@
     }
     .htv-hazard-draw {
       opacity: 0.18;
+    }
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     Laptop-height optimisation — slightly tighter hero spacing on
+     short desktop viewports (1366x768, 1280x720, 1440x800). Does not
+     affect tall monitors or mobile/tablet. Applied only to the
+     homepage hero via the .home-hero-compact class.
+     ────────────────────────────────────────────────────────────── */
+  @media (min-width: 1024px) and (max-height: 820px) {
+    .home-hero-compact {
+      padding-top: 36px;
+      padding-bottom: 36px;
+    }
+    .home-hero-compact .home-hero-eyebrow {
+      margin-bottom: 12px;
+    }
+    .home-hero-compact .home-hero-heading {
+      margin-bottom: 12px;
+    }
+    .home-hero-compact .home-hero-paragraph {
+      margin-bottom: 16px;
+    }
+    .home-hero-compact .home-hero-ctas {
+      margin-bottom: 12px;
+    }
+    .home-hero-compact .home-hero-separator {
+      margin-bottom: 12px;
     }
   }
 
