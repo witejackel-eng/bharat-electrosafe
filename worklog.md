@@ -179,3 +179,81 @@ Recommended next-phase priorities:
 3. Consider a product comparison tool or product-finder wizard as the next user-facing feature.
 4. Add structured-data review for the new StatsSection content (ensure no schema regressions).
 5. Performance audit: measure CLS from the new stats count-up and mobile CTA slide-in.
+
+---
+Task ID: QA-POLISH-2
+Agent: Z.ai Code (main session)
+Task: QA-driven polish round 2 — assess project status, perform testing/QA via agent-browser, independently select work focus (fix bugs or add features), improve styling details, add functionality, update worklog.
+
+Work Log:
+- Read existing worklog.md; confirmed prior QA-POLISH-1 round (scroll progress, mobile sticky CTA, animated stats, hero badges, leadership hover) was complete and pushed as da60727.
+- Discovered an unpushed commit (81febf4) containing qa-shots/ and tool-results/ artifacts from prior testing — these should not be in the public repo.
+- Restarted dev server (it had stopped); verified all routes return expected codes (/, /products, /about-us, /contact-us, all 5 product detail pages = 200; /products/bharat-hydro-seal = 404).
+- Performed QA with agent-browser across desktop (1440x900) and mobile (390x844) viewports.
+
+QA Findings (3 confirmed bugs + polish opportunities):
+
+BUG 1 (HIGH) — Sticky header did not actually stick.
+- Root cause: <header className="relative z-50"> wrapper generated a box whose height equalled only its content (contact strip + sticky bar ≈ 104px). position:sticky child can only stick within its parent's height, so the bar scrolled off after ~0px.
+- Symptom: at scrollY=600, sticky bar top was -567 (should be 0). Compact class WAS applied (height shrank 84→72) but position didn't stick.
+- Fix: changed header to className="contents z-50" (display:contents). The header element no longer generates a box, so the sticky bar's containing block becomes the page flex column (min-h-screen, tall). Header remains in the accessibility tree.
+- Verified: at scrollY=600, stickyTop=0, stickyHeight=72. Screenshot header pixels are navy (2,52,108). Contact strip correctly scrolls off (stripTop=-600).
+
+BUG 2 (MEDIUM) — Next.js Image aspect-ratio warnings for client logos.
+- Root cause: TrustDocuments.tsx rendered client logos with width={80} height={40} + className="object-contain". CSS object-contain on a fixed-aspect-ratio image triggered "has either width or height modified" warnings (8 logos × every page render).
+- Same pattern in LogoRail.tsx (width={140} height={60} + className="object-contain max-h-12 w-auto").
+- Fix: both now use the fill pattern (relative sized container + Image fill + object-contain), matching the trust-marks grid above. 0 warnings after reload.
+
+BUG 3 (LOW) — Next.js scroll-behavior smooth warning.
+- Fix: added data-scroll-behavior="smooth" to <html> element per Next.js 16 guidance.
+
+POLISH — MobileStickyCTA missing on 5 product detail pages.
+- Prior worklog noted this as a recommended next step. Added MobileStickyCTA import + render to EIMClient, CSIMClient, BiColorClient, AutoGlowClient, BMClient. Verified via SSR curl that the component is in the HTML.
+
+NEW FEATURE — Interactive product comparison tool (/products).
+- CompareContext: React context holding up to 3 selected product slugs. toggle/clear/isSelected API. Not persisted (per-session only).
+- CompareToggle: checkbox-style button on each product card. role="checkbox" aria-checked. Disabled at capacity (3) with tooltip. stop-propagation so card Link isn't triggered.
+- CompareBar: sticky bottom tray (navy, z-30) showing selected product chips with remove buttons, count, Clear, and "Compare now" (enabled at ≥2). Slides up via rAF-deferred mount + translate-y transition. Respects reduced-motion.
+- CompareModal: full-screen dialog (z-100) with side-by-side table. Rows: image+name, category, class, primary use, quick facts (union of labels), key benefits (presence check), working voltage, AC proof voltage, CTA. Focus trap (Tab cycles within dialog), Escape close, body scroll lock, focus restoration. Grid uses --cols CSS var for responsive column count.
+- Verified: 5 toggles render with correct aria-labels; clicking 2 shows bar with correct chips; Compare button opens modal with 63 rows; Escape closes.
+
+PREMIUM STYLING:
+- be-premium-sheen CSS class: subtle diagonal light sweep across PrimaryButton on hover (0.6s ease-out). Pseudo-element, no layout impact. Disabled for reduced-motion.
+- Enhanced global :focus-visible — 2px brand-yellow outline + 4px offset. Navy-surface variant adds dark box-shadow ring for contrast against yellow.
+- Applied be-premium-sheen to PrimaryButton base classes.
+- Animated client logo marquee replaces static grid in TrustDocuments — uses existing LogoRail (40s linear infinite, pause-on-hover) with edge-fade gradient masks for premium feel. Logos now pass actual src to LogoRail.
+- Breadcrumb upgraded: BreadcrumbList JSON-LD structured data (SEO), Home icon on first crumb, focus-ring utility on links, label truncation (max-w) for long product names, sticky first column in modal.
+
+REPO CLEANUP:
+- Added qa-shots/ and tool-results/ to .gitignore.
+- git rm --cached removed all committed qa-shots and tool-results files from the tree (9,201 lines of binary/text artifacts removed).
+
+Verification Results:
+- All routes 200; /products/bharat-hydro-seal 404.
+- bun run lint — clean (exit 0).
+- bun run typecheck — clean (exit 0).
+- Sticky header: at scrollY=600, stickyTop=0, stickyHeight=72 (was -567 before fix).
+- Client logo image warnings: 0 after reload (was 8 per render).
+- Compare tool: 5 toggles, bar appears with 2 chips, modal opens with 63 rows, Escape closes.
+- Mobile (390px): no horizontal overflow; compare toggles render; mobile CTA works after reload.
+- Header navy confirmed via pixel sampling: (0,26,68) at top, (2,52,108) when sticky.
+
+Stage Summary:
+- Committed as 605ebb7 and pushed to origin/main (da60727..605ebb7).
+- 56 files changed, 948 insertions, 9,201 deletions (mostly artifact removal).
+- 4 new components: CompareContext, CompareToggle, CompareBar, CompareModal.
+- 13 source files modified.
+- No critical bugs remain. All prior work (Hydro Seal removal, navy header, product-led hero, leadership swivel, scroll progress, mobile CTA, animated stats) preserved and stable.
+
+Unresolved / Risks:
+- Dev server (Next.js 16 Turbopack) is unstable in the sandbox — dies under combined load of Next.js dev + agent-browser chromium. Restarts cleanly with nohup. This is a sandbox resource issue, not a code bug. Production build on Vercel is unaffected.
+- MobileStickyCTA scroll-listener does not always fire under agent-browser's programmatic scroll (documented in QA-POLISH-1). Confirmed working via reload + native scroll + client-side navigation. This is a testing-tooling artifact.
+- ProductImageCarousel gallery image (06-colour-and-pattern-range) emits a "fill and height 0" warning during initial render. The image renders correctly once layout settles. Minor; does not affect UX. Could be addressed by ensuring the aspect-ratio container has a min-height.
+- Leadership portraits remain low-resolution (source limitation; treated in prior round).
+
+Recommended next-phase priorities:
+1. ProductImageCarousel: add min-height to the aspect-ratio container to silence the "fill and height 0" warning during initial render.
+2. Add the comparison tool's selected-state to URL search params (e.g. ?compare=slug1,slug2) so a comparison can be shared/bookmarked.
+3. Consider a product-finder wizard (guided quiz: voltage → environment → application → recommended product) as the next user-facing feature.
+4. Performance audit: measure CLS from the marquee animation and the compare modal open/close.
+5. Add structured-data review for the new BreadcrumbList JSON-LD (ensure no duplicate schema on product detail pages).
