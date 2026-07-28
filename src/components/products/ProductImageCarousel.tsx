@@ -122,7 +122,7 @@ export function ProductImageCarousel({
           Fixed aspect ratio, so the slot is the same size before and after the
           image arrives and the carousel contributes nothing to CLS. */}
       <div
-        className="relative aspect-[4/3] overflow-hidden rounded-lg bg-be-warm-white touch-pan-y"
+        className="relative aspect-[4/3] sm:aspect-[16/11] lg:aspect-[16/10] overflow-hidden rounded-lg bg-be-warm-white touch-pan-y"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={() => (pointerStart.current = null)}
@@ -138,7 +138,7 @@ export function ProductImageCarousel({
                 index === active ? 'opacity-100' : 'opacity-0'
               }`}
               style={image.position ? { objectPosition: image.position } : undefined}
-              sizes="(min-width: 1024px) 54vw, 100vw"
+              sizes="(min-width: 1024px) 52vw, 100vw"
               priority={index === 0}
               /* Only the slide on screen is exposed; the rest are held at
                  opacity 0 purely so the cross-fade has something to fade. */
@@ -174,7 +174,7 @@ export function ProductImageCarousel({
           Fixed minimum height so a one-line caption and a two-line caption do
           not move the thumbnails. Both are hidden from assistive technology
           because the live region below says the same thing once. */}
-      <div className="mt-2 flex min-h-10 items-start justify-between gap-4" aria-hidden="true">
+      <div className="mt-1.5 flex min-h-8 items-start justify-between gap-4" aria-hidden="true">
         <p className="text-metadata text-be-grey-650">{current.caption ?? ''}</p>
         {count > 1 && (
           <p className="text-metadata shrink-0 tabular-nums text-be-grey-650">
@@ -205,7 +205,7 @@ export function ProductImageCarousel({
               onClick={() => show(index)}
               aria-current={index === active ? 'true' : undefined}
               aria-label={`View image ${index + 1}: ${image.caption ?? image.alt}`}
-              className={`relative h-16 w-20 shrink-0 snap-start overflow-hidden rounded-md border transition-opacity focus-ring sm:h-[72px] sm:w-24 ${
+              className={`relative h-14 w-[72px] shrink-0 snap-start overflow-hidden rounded-md border transition-opacity focus-ring sm:h-16 sm:w-20 ${
                 index === active
                   ? 'border-be-yellow-500 ring-2 ring-be-yellow-500'
                   : 'border-be-grey-200 opacity-75 hover:opacity-100'
