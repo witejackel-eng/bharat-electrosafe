@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -26,7 +26,7 @@ const contactSchema = z.object({
   company: z.string().optional(),
   email: z.string().email('Please enter a valid email'),
   phone: z.string().optional(),
-  enquiryType: z.enum(['general', 'product-info', 'quote', 'support'], {
+  enquiryType: z.enum(['general', 'product-info', 'quote', 'support', 'datasheet'], {
     message: 'Please select an enquiry type',
   }),
   productInterest: z.string().optional(),
@@ -48,6 +48,7 @@ const enquiryTypes = [
   { value: 'product-info', label: 'Product Information' },
   { value: 'quote', label: 'Request Quote' },
   { value: 'support', label: 'Technical Support' },
+  { value: 'datasheet', label: 'Product Datasheet Request' },
 ];
 
 const productInterests = [
@@ -59,6 +60,44 @@ const productInterests = [
 ];
 
 /* ────────────────────────────────────────────
+   URL prefill helper
+   Reads query params set by "Request datasheet" / "Request document" links.
+   ──────────────────────────────────────────── */
+function readPrefillFromUrl(): {
+  enquiryType: ContactFormData['enquiryType'] | undefined;
+  message: string;
+  productInterest: string | undefined;
+} {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const subject = params.get('subject');
+    const product = params.get('product');
+    const message = params.get('message');
+
+    let enquiryType: ContactFormData['enquiryType'] | undefined = undefined;
+    if (subject === 'Product Datasheet Request') {
+      enquiryType = 'datasheet';
+    }
+
+    let productInterest: string | undefined;
+    if (product) {
+      const known = productInterests.find(
+        (p) => p.label.toLowerCase() === product.toLowerCase()
+      );
+      if (known) productInterest = known.value;
+    }
+
+    return {
+      enquiryType,
+      message: message ?? '',
+      productInterest,
+    };
+  } catch {
+    return { enquiryType: undefined, message: '', productInterest: undefined };
+  }
+}
+
+/* ────────────────────────────────────────────
    EnquiryQuoteLayout component
    ──────────────────────────────────────────── */
 
@@ -67,11 +106,19 @@ export default function EnquiryQuoteLayout() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(false);
 
+  /* Read query params on first client render so the form starts with the
+     prefilled values. This avoids effect-timing issues with the controlled
+     Radix Select, which needs the value present on the initial render. */
+  const prefilled = typeof window !== 'undefined'
+    ? readPrefillFromUrl()
+    : { enquiryType: undefined, message: '', productInterest: undefined };
+
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -80,9 +127,9 @@ export default function EnquiryQuoteLayout() {
       company: '',
       email: '',
       phone: '',
-      enquiryType: undefined,
-      productInterest: undefined,
-      message: '',
+      enquiryType: prefilled.enquiryType,
+      productInterest: prefilled.productInterest,
+      message: prefilled.message,
       operatingVoltage: '',
       requiredDimensions: '',
       quantity: '',
@@ -93,6 +140,15 @@ export default function EnquiryQuoteLayout() {
 
   const enquiryType = watch('enquiryType');
   const isQuoteRequest = enquiryType === 'quote';
+
+  /* If the prefilled message was loaded, keep it in sync in case the user
+     navigates again. The enquiry type + product are already set via
+     defaultValues above. */
+  useEffect(() => {
+    if (prefilled.message) {
+      setValue('message', prefilled.message, { shouldValidate: true });
+    }
+  }, [prefilled.message, setValue]);
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);

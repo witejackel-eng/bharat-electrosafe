@@ -12,7 +12,7 @@ export default function TrustDocuments() {
       <div className="absolute top-0 left-0 right-0 h-[80px] bg-gradient-to-b from-be-cream to-transparent pointer-events-none" />
 
       <div className="container-site page-horizontal-padding">
-        <div className="reveal-up mb-12">
+        <div className="reveal-up mb-8">
           <SectionHeader
             eyebrow="CERTIFICATIONS & TESTING"
             title="Certifications, testing and registrations"
@@ -21,7 +21,7 @@ export default function TrustDocuments() {
         </div>
 
         {/* Trust marks grid */}
-        <div className="reveal-up grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 mb-10 pb-6 border-b-[3px] border-be-yellow-500/30">
+        <div className="reveal-up grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8 pb-5 border-b-[3px] border-be-yellow-500/30">
           {primaryTrustMarks.map((mark) => (
             <div key={mark.label} className="flex flex-col items-center gap-2 p-4 rounded-lg border border-be-grey-250 bg-be-white hover:border-be-yellow-400 transition-colors duration-300">
               <span className="relative flex h-14 w-full items-center justify-center">
@@ -50,7 +50,7 @@ export default function TrustDocuments() {
         </div>
 
         {/* Trust facts row */}
-        <div className="reveal-up flex flex-wrap items-center justify-center gap-6 mb-10">
+        <div className="reveal-up flex flex-wrap items-center justify-center gap-4 mb-8">
           {scaleFacts.map((fact) => (
             <div key={fact.label} className="flex items-center gap-2 px-4 py-2 rounded-md bg-be-yellow-50 border border-be-yellow-400/30">
               <span className="text-sm font-semibold text-be-charcoal-950">{fact.value}</span>
@@ -60,11 +60,11 @@ export default function TrustDocuments() {
         </div>
 
         {/* Organisation logo rail — conservative wording */}
-        <div className="reveal-up mb-8">
-          <p className="text-sm text-be-grey-650 font-semibold uppercase tracking-wider mb-4 text-center">
+        <div className="reveal-up mb-2">
+          <p className="text-sm text-be-grey-650 font-semibold uppercase tracking-wider mb-3 text-center">
             {organisationReferenceHeading}
           </p>
-          <p className="text-metadata text-be-grey-650 text-center mb-4">{organisationReferenceNote}</p>
+          <p className="text-metadata text-be-grey-650 text-center mb-3">{organisationReferenceNote}</p>
           <div className="flex flex-wrap items-center justify-center gap-6">
             {organisationReferences.map((org) => (
               <div key={org.name} className="flex items-center justify-center p-3 rounded-lg border border-be-grey-250 bg-be-white/60">

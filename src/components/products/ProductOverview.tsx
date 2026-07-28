@@ -69,7 +69,7 @@ export function ProductOverview({ product }: ProductOverviewProps) {
   return (
     <section className="section-padding-supporting bg-be-white">
       <div className="container-site page-horizontal-padding">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
           {/* Left: Application image */}
           <div className="lg:w-[45%] order-first lg:order-last">
             <ImageFrame

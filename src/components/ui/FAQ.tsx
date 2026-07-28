@@ -55,7 +55,7 @@ export function FAQ({
   return (
     <div className={cn('w-full', className)}>
       {showHeader && (
-        <div className="reveal-up mb-10 max-w-2xl">
+        <div className="reveal-up mb-6 max-w-2xl">
           <SectionHeader
             eyebrow={eyebrow}
             title={title ?? ''}
@@ -77,7 +77,7 @@ export function FAQ({
               value={`item-${index}`}
               className="group border border-be-grey-250 last:border-b rounded-lg bg-be-white px-5 transition-colors duration-200 hover:border-be-yellow-400 data-[state=open]:bg-be-yellow-50/50 data-[state=open]:border-be-yellow-400"
             >
-              <AccordionTrigger className="hover:no-underline py-5 [&>svg:last-child]:hidden">
+              <AccordionTrigger className="hover:no-underline py-4 [&>svg:last-child]:hidden">
                 <span className="text-card-title text-be-charcoal-950 text-left flex-1 pr-4">
                   {item.question}
                 </span>
@@ -86,7 +86,7 @@ export function FAQ({
                 </span>
               </AccordionTrigger>
               <AccordionContent>
-                <p className="text-body text-be-grey-650 leading-relaxed pb-5 pr-8">
+                <p className="text-body text-be-grey-650 leading-relaxed pb-4 pr-8">
                   {item.answer}
                 </p>
               </AccordionContent>

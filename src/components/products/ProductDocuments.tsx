@@ -9,7 +9,6 @@ interface ProductDocumentsProps {
 }
 
 export function ProductDocuments({ product }: ProductDocumentsProps) {
-  // Show all documents (available and unavailable — unavailable ones display without download buttons)
   const docs = product.documents;
 
   if (docs.length === 0) {
@@ -19,7 +18,7 @@ export function ProductDocuments({ product }: ProductDocumentsProps) {
   return (
     <section id="documents" className="section-padding-supporting bg-be-white">
       <div className="container-site page-horizontal-padding">
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-8">
           <SectionHeader
             eyebrow="Documents & Certifications"
             title="Documentation"
@@ -33,7 +32,10 @@ export function ProductDocuments({ product }: ProductDocumentsProps) {
                 type={doc.type}
                 name={doc.name}
                 issuer={doc.issuer}
+                kind={doc.kind}
+                href={doc.href}
                 thumbnail={doc.thumbnail}
+                productName={product.name}
               />
             ))}
           </div>

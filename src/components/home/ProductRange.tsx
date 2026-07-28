@@ -32,7 +32,7 @@ function ProductCard({ product, index }: { product: typeof products[number]; ind
       </div>
 
       {/* Text content */}
-      <div className="flex flex-col gap-2 p-5">
+      <div className="flex flex-col gap-2 p-4">
         <h3 className="text-card-title text-be-charcoal-950">
           {product.name}
         </h3>
@@ -56,7 +56,7 @@ export default function ProductRange() {
   return (
     <section id="products" className="bg-be-white section-padding-major">
       <div className="container-site page-horizontal-padding">
-        <div className="reveal-up mb-12">
+        <div className="reveal-up mb-8">
           <SectionHeader
             eyebrow="PRODUCT RANGE"
             title="Our product range"
@@ -67,14 +67,14 @@ export default function ProductRange() {
         {/* Desktop: 3+3 layout with stagger animation */}
         <div className="stagger-reveal" data-stagger="true">
           {/* First row: 3 cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
             {products.slice(0, 3).map((product, i) => (
               <ProductCard key={product.slug} product={product} index={i} />
             ))}
           </div>
 
           {/* Second row: 3 cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {products.slice(3, 6).map((product, i) => (
               <ProductCard key={product.slug} product={product} index={3 + i} />
             ))}

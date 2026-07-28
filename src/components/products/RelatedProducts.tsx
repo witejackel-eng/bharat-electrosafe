@@ -41,7 +41,7 @@ export function RelatedProducts({ product }: RelatedProductsProps) {
           supportingText="Other Bharat Electrosafe products that complement or relate to this one."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-6">
           {related.map((rp) => (
             <Link
               key={rp.slug}
@@ -64,7 +64,7 @@ export function RelatedProducts({ product }: RelatedProductsProps) {
               </div>
 
               {/* Content */}
-              <div className="flex flex-col gap-2 p-5">
+              <div className="flex flex-col gap-2 p-4">
                 <h3 className="text-card-title text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors">
                   {rp.name}
                 </h3>

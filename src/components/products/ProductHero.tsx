@@ -70,13 +70,13 @@ export function ProductHero({ product }: ProductHeroProps) {
 
   return (
     <>
-      <section className="section-padding-major bg-be-warm-white">
+      <section className="hero-padding bg-be-warm-white">
         <div className="container-site page-horizontal-padding">
           {/* Breadcrumb */}
           <Breadcrumb items={breadcrumbItems} className="mb-6" />
 
           {/* Desktop: 46/54 split */}
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
             {/* ── Content side (46%) ── */}
             <div className="lg:w-[46%] flex flex-col gap-6">
               {/* Technical badges */}
@@ -162,7 +162,7 @@ export function ProductHero({ product }: ProductHeroProps) {
       </section>
 
       {/* Product-specific trust strip — mat claims never appear on the membrane. */}
-      <div className="container-site page-horizontal-padding mt-10">
+      <div className="container-site page-horizontal-padding mt-8">
         <ul className="flex flex-wrap gap-x-6 gap-y-3 rounded-lg border border-be-yellow-100 bg-be-yellow-50 px-5 py-4">
           {product.trustPoints.map((point) => (
             <li key={point} className="flex items-center gap-2">

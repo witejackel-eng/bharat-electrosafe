@@ -47,7 +47,7 @@ export default function HomeFAQCTA() {
         </div>
 
         {/* CTA section merged below FAQ */}
-        <div className="mt-12 flex flex-col items-center text-center gap-6 max-w-2xl mx-auto reveal-up">
+        <div className="mt-8 flex flex-col items-center text-center gap-5 max-w-2xl mx-auto reveal-up">
           {/* Decorative shield icon */}
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-be-yellow-50 border border-be-yellow-400/30 text-be-yellow-600 shadow-sm">
             <ShieldCheck className="h-7 w-7" />

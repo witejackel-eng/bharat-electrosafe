@@ -27,7 +27,7 @@ export default function CapabilityIndustries() {
   return (
     <section id="capability" className="bg-be-warm-white section-padding-major">
       <div className="container-site page-horizontal-padding">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 reveal-up">
+        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 reveal-up">
           {/* Left — Image */}
           <div className="w-full lg:w-1/2">
             <div className="rounded-lg overflow-hidden">
@@ -43,7 +43,7 @@ export default function CapabilityIndustries() {
           </div>
 
           {/* Right — Content */}
-          <div className="w-full lg:w-1/2 flex flex-col gap-6">
+          <div className="w-full lg:w-1/2 flex flex-col gap-5">
             <SectionHeader
               eyebrow="CAPABILITY"
               title="Built around safety, quality and application support"
