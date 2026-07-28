@@ -29,7 +29,7 @@ export default function OfficeHours() {
           aria-hidden
           className="flex h-9 w-9 items-center justify-center rounded-md bg-be-yellow-50 border border-be-yellow-100"
         >
-          <Clock className="h-4 w-4 text-be-yellow-600" />
+          <Clock className="h-4 w-4 text-be-yellow-text" aria-hidden="true" focusable="false" />
         </span>
         <h3 className="text-card-title text-be-charcoal-950">Office Hours</h3>
       </div>

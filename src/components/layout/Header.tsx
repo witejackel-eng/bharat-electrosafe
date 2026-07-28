@@ -251,16 +251,16 @@ export function Header() {
           <div className="flex items-center gap-5 text-metadata text-be-charcoal-800">
             <a
               href={`mailto:${company.email}`}
-              className="flex items-center gap-1.5 hover:text-be-yellow-600 transition-colors"
+              className="flex items-center gap-1.5 hover:text-be-yellow-text-hover transition-colors"
             >
-              <Mail className="size-3.5" />
+              <Mail className="size-3.5" aria-hidden="true" focusable="false" />
               <span>{company.email}</span>
             </a>
             <a
               href={`tel:${company.phonePrimaryTel}`}
-              className="flex items-center gap-1.5 hover:text-be-yellow-600 transition-colors"
+              className="flex items-center gap-1.5 hover:text-be-yellow-text-hover transition-colors"
             >
-              <Phone className="size-3.5" />
+              <Phone className="size-3.5" aria-hidden="true" focusable="false" />
               <span>{company.phonePrimary}</span>
             </a>
           </div>
@@ -271,10 +271,10 @@ export function Header() {
               href={company.whatsapp.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-metadata text-be-charcoal-800 hover:text-be-yellow-600 transition-colors"
-              aria-label="Chat on WhatsApp"
+              className="flex items-center gap-1.5 text-metadata text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors"
+              aria-label="Chat on WhatsApp (opens in a new tab)"
             >
-              <MessageCircle className="size-3.5" />
+              <MessageCircle className="size-3.5" aria-hidden="true" focusable="false" />
               <span>{company.whatsapp.label}</span>
             </a>
           </div>
@@ -319,9 +319,10 @@ export function Header() {
             <Link
               href="/"
               className={cn(
-                'px-4 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-600',
-                pathname === '/' ? 'text-be-yellow-600 border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
+                'px-4 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
+                pathname === '/' ? 'text-be-yellow-text border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
               )}
+              aria-current={pathname === '/' ? 'page' : undefined}
             >
               Home
             </Link>
@@ -338,27 +339,35 @@ export function Header() {
               <Link
                 href="/products"
                 className={cn(
-                  'px-2 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-600',
+                  'px-2 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
                   isProductActive
-                    ? 'text-be-yellow-600'
+                    ? 'text-be-yellow-text'
                     : 'text-be-charcoal-800'
                 )}
+                aria-current={isProductActive ? 'page' : undefined}
               >
                 Products
               </Link>
 
-              {/* Separate chevron button to open the mega-menu */}
+              {/* Separate chevron button to open the mega-menu.
+                  Icon-only control — must expose a state-aware accessible
+                  name and keep the chevron SVG hidden from AT. */}
               <button
                 type="button"
                 className={cn(
                   'px-2 py-2 text-sm font-medium rounded-md transition-colors',
                   dropdownOpen || isProductActive
-                    ? 'text-be-yellow-600 bg-be-yellow-50'
-                    : 'text-be-charcoal-800 hover:text-be-yellow-600 hover:bg-be-yellow-50'
+                    ? 'text-be-yellow-text bg-be-yellow-50'
+                    : 'text-be-charcoal-800 hover:text-be-yellow-text-hover hover:bg-be-yellow-50'
                 )}
                 aria-expanded={dropdownOpen}
                 aria-haspopup="true"
                 aria-controls="products-mega-menu"
+                aria-label={
+                  dropdownOpen
+                    ? 'Close products menu'
+                    : 'Open products menu'
+                }
                 onClick={() => setDropdownOpen((prev) => !prev)}
               >
                 <ChevronDown
@@ -366,6 +375,8 @@ export function Header() {
                     'size-4 transition-transform duration-200',
                     dropdownOpen && 'rotate-180'
                   )}
+                  aria-hidden="true"
+                  focusable="false"
                 />
               </button>
 
@@ -390,7 +401,7 @@ export function Header() {
                     <div className="flex max-h-[370px]">
                       {/* Left column: Electrical Insulation (4 products) */}
                       <div className="flex-1 p-4 border-r border-be-grey-250">
-                        <div className="text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider px-2 mb-2">
+                        <div className="text-[0.7rem] font-semibold text-be-grey-650 uppercase tracking-wider px-2 mb-2">
                           {productCategories['electrical-insulation'].displayName}
                         </div>
                         <div className="flex flex-col gap-0.5" role="group" aria-label="Electrical insulation products">
@@ -403,11 +414,11 @@ export function Header() {
                               onClick={() => setDropdownOpen(false)}
                             >
                               {/* Icon */}
-                              <span className="flex items-center justify-center size-8 rounded-md bg-be-cream text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0">
+                              <span className="flex items-center justify-center size-8 rounded-md bg-be-cream text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0" aria-hidden="true">
                                 {productIconMap[product.slug] || <Zap className="size-4" />}
                               </span>
                               <div className="min-w-0">
-                                <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors leading-snug">
+                                <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover-hover transition-colors leading-snug">
                                   {product.name}
                                 </div>
                                 <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
@@ -421,7 +432,7 @@ export function Header() {
 
                       {/* Right column: Waterproofing & Civil Protection + View all */}
                       <div className="w-[280px] p-4 bg-be-cream/40 flex flex-col">
-                        <div className="text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider px-2 mb-2">
+                        <div className="text-[0.7rem] font-semibold text-be-grey-650 uppercase tracking-wider px-2 mb-2">
                           {productCategories['waterproofing-civil-protection'].displayName}
                         </div>
                         <div className="flex flex-col gap-0.5" role="group" aria-label="Waterproofing and civil protection products">
@@ -434,11 +445,11 @@ export function Header() {
                               onClick={() => setDropdownOpen(false)}
                             >
                               {/* Icon */}
-                              <span className="flex items-center justify-center size-8 rounded-md bg-be-white text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0">
+                              <span className="flex items-center justify-center size-8 rounded-md bg-be-white text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0" aria-hidden="true">
                                 {productIconMap[product.slug] || <Droplets className="size-4" />}
                               </span>
                               <div className="min-w-0">
-                                <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors leading-snug">
+                                <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover-hover transition-colors leading-snug">
                                   {product.name}
                                 </div>
                                 <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
@@ -460,7 +471,7 @@ export function Header() {
                             <span className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-white transition-colors">
                               View all products
                             </span>
-                            <ArrowRight className="size-4 text-be-charcoal-950 group-hover:text-be-white group-hover:translate-x-0.5 transition-all" />
+                            <ArrowRight className="size-4 text-be-charcoal-950 group-hover:text-be-white group-hover:translate-x-0.5 transition-all" aria-hidden="true" focusable="false" />
                           </Link>
                         </div>
                       </div>
@@ -473,9 +484,10 @@ export function Header() {
             <Link
               href="/about-us"
               className={cn(
-                'px-4 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-600',
-                pathname === '/about-us' ? 'text-be-yellow-600 border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
+                'px-4 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
+                pathname === '/about-us' ? 'text-be-yellow-text border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
               )}
+              aria-current={pathname === '/about-us' ? 'page' : undefined}
             >
               About Us
             </Link>
@@ -483,9 +495,10 @@ export function Header() {
             <Link
               href="/contact-us"
               className={cn(
-                'px-4 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-600',
-                pathname === '/contact-us' ? 'text-be-yellow-600 border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
+                'px-4 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
+                pathname === '/contact-us' ? 'text-be-yellow-text border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
               )}
+              aria-current={pathname === '/contact-us' ? 'page' : undefined}
             >
               Contact Us
             </Link>
@@ -502,14 +515,16 @@ export function Header() {
               <SheetTrigger asChild>
                 <button
                   type="button"
-                  className="md:hidden inline-flex items-center justify-center size-11 rounded-md text-be-charcoal-950 hover:bg-be-grey-150 transition-colors"
-                  aria-label="Open navigation menu"
+                  className="md:hidden inline-flex items-center justify-center size-11 rounded-md text-be-charcoal-950 hover:bg-be-grey-150 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+                  aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                  aria-expanded={mobileOpen}
+                  aria-controls="mobile-navigation-sheet"
                 >
-                  <Menu className="size-6" />
+                  <Menu className="size-6" aria-hidden="true" focusable="false" />
                 </button>
               </SheetTrigger>
 
-              <SheetContent side="right" className="w-[320px] sm:w-[360px] bg-be-white p-0">
+              <SheetContent side="right" className="w-[320px] sm:w-[360px] bg-be-white p-0" id="mobile-navigation-sheet">
                 <SheetHeader className="px-5 pt-5 pb-3 border-b border-be-grey-250">
                   <SheetTitle className="flex items-center">
                     <Link href="/" onClick={() => setMobileOpen(false)}>
@@ -530,10 +545,11 @@ export function Header() {
                     className={cn(
                       'px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center',
                       pathname === '/'
-                        ? 'text-be-yellow-600 bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
-                        : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-600'
+                        ? 'text-be-yellow-text bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
+                        : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-text-hover'
                     )}
                     onClick={() => setMobileOpen(false)}
+                    aria-current={pathname === '/' ? 'page' : undefined}
                   >
                     Home
                   </Link>
@@ -544,8 +560,8 @@ export function Header() {
                       <AccordionTrigger className={cn(
                         'px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] hover:no-underline',
                         isProductActive
-                          ? 'text-be-yellow-600 bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
-                          : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-600'
+                          ? 'text-be-yellow-text bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
+                          : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-text-hover'
                       )}>
                         Products
                       </AccordionTrigger>
@@ -557,10 +573,11 @@ export function Header() {
                             className={cn(
                               'px-5 py-3 pl-8 text-sm font-semibold transition-colors min-h-[44px] flex items-center',
                               pathname === '/products'
-                                ? 'text-be-yellow-600 bg-be-yellow-50'
-                                : 'text-be-yellow-500 hover:bg-be-yellow-50'
+                                ? 'text-be-yellow-text bg-be-yellow-50'
+                                : 'text-be-yellow-text hover:bg-be-yellow-50'
                             )}
                             onClick={() => setMobileOpen(false)}
+                            aria-current={pathname === '/products' ? 'page' : undefined}
                           >
                             View All Products
                           </Link>
@@ -572,7 +589,7 @@ export function Header() {
                             return (
                               <div key={catId}>
                                 {/* Category label */}
-                                <div className="px-5 pl-8 py-1.5 text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider">
+                                <div className="px-5 pl-8 py-1.5 text-[0.7rem] font-semibold text-be-grey-650 uppercase tracking-wider">
                                   {catInfo.displayName}
                                 </div>
                                 {items.map((product) => (
@@ -582,12 +599,13 @@ export function Header() {
                                     className={cn(
                                       'flex items-center gap-3 px-5 py-3 pl-8 text-sm transition-colors min-h-[44px]',
                                       pathname === product.href
-                                        ? 'text-be-yellow-600 bg-be-yellow-50'
-                                        : 'text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600'
+                                        ? 'text-be-yellow-text bg-be-yellow-50'
+                                        : 'text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-text-hover'
                                     )}
                                     onClick={() => setMobileOpen(false)}
+                                    aria-current={pathname === product.href ? 'page' : undefined}
                                   >
-                                    <span className="text-be-yellow-500 shrink-0">
+                                    <span className="text-be-yellow-text shrink-0" aria-hidden="true">
                                       {productIconMap[product.slug] || <Zap className="size-3.5" />}
                                     </span>
                                     <div className="min-w-0">
@@ -613,10 +631,11 @@ export function Header() {
                     className={cn(
                       'px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center',
                       pathname === '/about-us'
-                        ? 'text-be-yellow-600 bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
-                        : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-600'
+                        ? 'text-be-yellow-text bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
+                        : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-text-hover'
                     )}
                     onClick={() => setMobileOpen(false)}
+                    aria-current={pathname === '/about-us' ? 'page' : undefined}
                   >
                     About Us
                   </Link>
@@ -626,10 +645,11 @@ export function Header() {
                     className={cn(
                       'px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center',
                       pathname === '/contact-us'
-                        ? 'text-be-yellow-600 bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
-                        : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-600'
+                        ? 'text-be-yellow-text bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
+                        : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-text-hover'
                     )}
                     onClick={() => setMobileOpen(false)}
+                    aria-current={pathname === '/contact-us' ? 'page' : undefined}
                   >
                     Contact Us
                   </Link>

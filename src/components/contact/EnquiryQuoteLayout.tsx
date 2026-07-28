@@ -270,7 +270,7 @@ export default function EnquiryQuoteLayout() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="name" className="text-sm font-medium text-be-charcoal-800">
-              Name <span className="text-be-yellow-500">*</span>
+              Name <span className="text-be-yellow-text" aria-hidden="true">*</span><span className="sr-only"> (required)</span>
             </label>
             <input
               id="name"
@@ -313,7 +313,7 @@ export default function EnquiryQuoteLayout() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="email" className="text-sm font-medium text-be-charcoal-800">
-              Email <span className="text-be-yellow-500">*</span>
+              Email <span className="text-be-yellow-text" aria-hidden="true">*</span><span className="sr-only"> (required)</span>
             </label>
             <input
               id="email"
@@ -356,7 +356,7 @@ export default function EnquiryQuoteLayout() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="enquiryType" className="text-sm font-medium text-be-charcoal-800">
-              Enquiry Type <span className="text-be-yellow-500">*</span>
+              Enquiry Type <span className="text-be-yellow-text" aria-hidden="true">*</span><span className="sr-only"> (required)</span>
             </label>
             <Select
               value={enquiryType}
@@ -417,7 +417,7 @@ export default function EnquiryQuoteLayout() {
         {/* Row 4: Message (full width) */}
         <div className="flex flex-col gap-1.5">
           <label htmlFor="message" className="text-sm font-medium text-be-charcoal-800">
-            Message <span className="text-be-yellow-500">*</span>
+            Message <span className="text-be-yellow-text" aria-hidden="true">*</span><span className="sr-only"> (required)</span>
           </label>
           <textarea
             id="message"
@@ -523,7 +523,7 @@ export default function EnquiryQuoteLayout() {
           <p className="text-metadata text-be-grey-650">
             Our team will review your enquiry and respond with the next steps.
           </p>
-          <p className="text-metadata text-be-grey-400">
+          <p className="text-metadata text-be-grey-650">
             Your details are used only to respond to this enquiry.
           </p>
         </div>

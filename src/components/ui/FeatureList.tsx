@@ -20,7 +20,7 @@ export function FeatureList({ items, className }: FeatureListProps) {
         return (
           <li key={index} className="flex items-start gap-3 text-body text-be-charcoal-800">
             <span className="mt-0.5 shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-be-yellow-50">
-              <Icon className="h-3.5 w-3.5 text-be-yellow-600" />
+              <Icon className="h-3.5 w-3.5 text-be-yellow-text" />
             </span>
             <span>{item.text}</span>
           </li>

@@ -56,7 +56,7 @@ export default function CapabilityIndustries() {
           </p>
 
           {/* Decorative "Est. India" text */}
-          <p className="text-metadata text-be-grey-400 font-medium tracking-wider">
+          <p className="text-metadata text-be-grey-650 font-medium tracking-wider">
             Est. India — Serving since decades
           </p>
 
@@ -78,7 +78,7 @@ export default function CapabilityIndustries() {
                     key={industry.name}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-be-yellow-50 border border-be-yellow-400/30 text-sm text-be-charcoal-800 font-medium"
                   >
-                    <Icon className="size-3.5 text-be-yellow-600" />
+                    <Icon className="size-3.5 text-be-yellow-text" />
                     {industry.name}
                   </span>
                 );
@@ -89,7 +89,7 @@ export default function CapabilityIndustries() {
           <div className="mt-2">
             <TextLink
               href="/about-us"
-              className="text-lg font-semibold hover-arrow-shift inline-flex items-center gap-2 text-be-charcoal-800 hover:text-be-yellow-600 transition-colors duration-200"
+              className="text-lg font-semibold hover-arrow-shift inline-flex items-center gap-2 text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors duration-200"
             >
               About Us
               <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>

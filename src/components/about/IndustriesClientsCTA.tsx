@@ -53,7 +53,7 @@ export default function IndustriesClientsCTA() {
                   className="reveal-up hover-card-lift flex flex-col items-center gap-3 rounded-lg border border-be-grey-250 bg-be-white p-5 text-center"
                 >
                   <div className="flex items-center justify-center w-10 h-10 rounded-md bg-be-yellow-50">
-                    <Icon className="h-5 w-5 text-be-yellow-600" />
+                    <Icon className="h-5 w-5 text-be-yellow-text" />
                   </div>
                   <span className="text-body font-medium text-be-charcoal-950">
                     {industry.name}

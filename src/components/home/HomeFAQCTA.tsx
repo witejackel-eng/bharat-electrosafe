@@ -33,8 +33,8 @@ export default function HomeFAQCTA() {
       {/* CTA section merged below FAQ */}
       <div className="mt-8 flex flex-col items-center text-center gap-5 max-w-2xl mx-auto reveal-up">
         {/* Decorative shield icon */}
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-be-yellow-50 border border-be-yellow-400/30 text-be-yellow-600 shadow-sm">
-          <ShieldCheck className="h-7 w-7" />
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-be-yellow-50 border border-be-yellow-400/30 text-be-yellow-text shadow-sm" aria-hidden="true">
+          <ShieldCheck className="h-7 w-7" focusable="false" />
         </div>
 
         <h2 className="text-section-h2 text-be-charcoal-950">
@@ -52,12 +52,12 @@ export default function HomeFAQCTA() {
           </PrimaryButton>
 
           <SecondaryButton href={`tel:${company.phonePrimaryTel}`}>
-            <Phone className="h-4 w-4 mr-2" />
+            <Phone className="h-4 w-4 mr-2" aria-hidden="true" focusable="false" />
             Call Sales
           </SecondaryButton>
 
           <SecondaryButton href={company.whatsapp.href} className="gap-2">
-            <MessageCircle className="h-4 w-4 mr-2" />
+            <MessageCircle className="h-4 w-4 mr-2" aria-hidden="true" focusable="false" />
             WhatsApp
           </SecondaryButton>
         </div>

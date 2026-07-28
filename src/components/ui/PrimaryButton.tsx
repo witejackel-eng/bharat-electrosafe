@@ -11,6 +11,7 @@ interface PrimaryButtonProps {
   size?: 'default' | 'lg';
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
+  'aria-label'?: string;
 }
 
 export function PrimaryButton({
@@ -21,6 +22,7 @@ export function PrimaryButton({
   size = 'default',
   disabled = false,
   type = 'button',
+  'aria-label': ariaLabel,
 }: PrimaryButtonProps) {
   const sizeClasses =
     size === 'lg'
@@ -37,6 +39,7 @@ export function PrimaryButton({
         onClick={onClick as React.MouseEventHandler<HTMLAnchorElement>}
         className={cn(baseClasses, sizeClasses, className)}
         aria-disabled={disabled}
+        aria-label={ariaLabel}
       >
         {children}
       </Link>
@@ -49,6 +52,7 @@ export function PrimaryButton({
       onClick={onClick as React.MouseEventHandler<HTMLButtonElement>}
       disabled={disabled}
       className={cn(baseClasses, sizeClasses, className)}
+      aria-label={ariaLabel}
     >
       {children}
     </button>

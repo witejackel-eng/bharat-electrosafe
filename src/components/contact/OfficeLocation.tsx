@@ -53,9 +53,9 @@ export default function OfficeLocation() {
           href={officeMapsDirectionsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-start gap-3 text-body text-be-charcoal-800 leading-relaxed hover:text-be-yellow-600 transition-colors min-h-[44px] py-1"
+          className="flex items-start gap-3 text-body text-be-charcoal-800 leading-relaxed hover:text-be-yellow-text-hover transition-colors min-h-[44px] py-1"
         >
-          <MapPin className="size-5 text-be-yellow-500 shrink-0 mt-1" aria-hidden />
+          <MapPin className="size-5 text-be-yellow-500 shrink-0 mt-1" aria-hidden="true" focusable="false" />
           <div>
             <p className="font-semibold text-be-charcoal-950">{company.name}</p>
             <p>{company.address.line1}</p>
@@ -69,16 +69,16 @@ export default function OfficeLocation() {
         <div className="flex flex-col">
           <a
             href={`mailto:${company.email}`}
-            className="flex items-center gap-2 text-body text-be-charcoal-800 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
+            className="flex items-center gap-2 text-body text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
           >
-            <Mail className="size-4 text-be-yellow-500" aria-hidden />
+            <Mail className="size-4 text-be-yellow-500" aria-hidden="true" focusable="false" />
             {company.email}
           </a>
           <a
             href={`tel:${company.phonePrimaryTel}`}
-            className="flex items-center gap-2 text-body text-be-charcoal-800 hover:text-be-yellow-600 transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
+            className="flex items-center gap-2 text-body text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
           >
-            <Phone className="size-4 text-be-yellow-500" aria-hidden />
+            <Phone className="size-4 text-be-yellow-500" aria-hidden="true" focusable="false" />
             {company.phonePrimary}
           </a>
         </div>
@@ -94,7 +94,7 @@ export default function OfficeLocation() {
         {/* Directions CTA */}
         <div>
           <SecondaryButton href={officeMapsDirectionsUrl} target="_blank">
-            <Navigation className="size-4 mr-1.5" />
+            <Navigation className="size-4 mr-1.5" aria-hidden="true" focusable="false" />
             Get Directions
           </SecondaryButton>
         </div>
@@ -122,16 +122,16 @@ export default function OfficeLocation() {
 
           {/* Top-right corner badge — signals that the map is clickable */}
           <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-be-warm-white/95 backdrop-blur-sm text-be-charcoal-950 px-2.5 py-1 text-xs font-semibold shadow-sm ring-1 ring-be-grey-150">
-            <ExternalLink className="size-3 text-be-yellow-600" aria-hidden />
+            <ExternalLink className="size-3 text-be-yellow-text" aria-hidden="true" focusable="false" />
             Opens in Google Maps
           </span>
 
           {/* Bottom-centre CTA — primary affordance */}
           <div className="absolute inset-x-0 bottom-0 flex justify-center pb-5 pointer-events-none">
             <span className="inline-flex items-center gap-2 rounded-full bg-be-charcoal-950/90 text-be-warm-white px-5 py-2.5 text-sm font-semibold shadow-lg group-hover:bg-be-charcoal-950 group-hover:scale-[1.02] transition-all">
-              <MapPin className="size-4 text-be-yellow-400" aria-hidden />
+              <MapPin className="size-4 text-be-yellow-400" aria-hidden="true" focusable="false" />
               View on Google Maps
-              <ExternalLink className="size-3.5 ml-0.5 opacity-80" aria-hidden />
+              <ExternalLink className="size-3.5 ml-0.5 opacity-80" aria-hidden="true" focusable="false" />
             </span>
           </div>
         </a>

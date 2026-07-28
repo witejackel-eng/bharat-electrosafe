@@ -42,7 +42,7 @@ export function ProductTrustIndicators({ product }: ProductTrustIndicatorsProps)
                 className="flex items-center gap-3 justify-center md:justify-start"
               >
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-be-white border border-be-yellow-100">
-                  <Icon className="h-4 w-4 text-be-yellow-600" />
+                  <Icon className="h-4 w-4 text-be-yellow-text" />
                 </span>
                 <span className="text-metadata font-semibold text-be-charcoal-950 uppercase tracking-wide">
                   {item.label}

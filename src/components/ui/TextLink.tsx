@@ -21,13 +21,13 @@ export function TextLink({
     <Link
       href={href}
       className={cn(
-        'hover-arrow-shift inline-flex items-center gap-1.5 text-be-charcoal-800 hover:text-be-yellow-600 transition-colors duration-200 underline-offset-4 hover:underline font-medium',
+        'hover-arrow-shift inline-flex items-center gap-1.5 text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors duration-200 underline-offset-4 hover:underline font-medium',
         className
       )}
     >
       <span>{children}</span>
       {showArrow && (
-        <ArrowRight className="hover-arrow h-4 w-4 shrink-0" />
+        <ArrowRight className="hover-arrow h-4 w-4 shrink-0" aria-hidden="true" focusable="false" />
       )}
     </Link>
   );

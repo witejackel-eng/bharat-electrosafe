@@ -19,6 +19,18 @@
   --color-be-yellow-500: #FFC400;
   --color-be-yellow-600: #DFAA00;
   --color-be-yellow-700: #B89000;
+  /* Accessible yellow text tokens — used for small brand-yellow text on
+     light backgrounds (white, warm-white, cream, yellow-50). The base
+     yellow-500 (#FFC400) and yellow-600 (#DFAA00) fail WCAG AA contrast
+     when used as small text on light backgrounds (contrast ≈ 1.4 and 2.1
+     respectively). #755600 passes AAA on all light backgrounds
+     (contrast ≈ 7.0 against white). Used for: link hover states, active
+     nav items, "View certificate" links, "View all products" links and
+     other small brand-yellow text on light backgrounds. Yellow-500/600
+     remain available for button fills, badges with dark text, borders,
+     icons and decorative accents. */
+  --color-be-yellow-text: #755600;
+  --color-be-yellow-text-hover: #604600;
   --color-be-charcoal-950: #242426;
   --color-be-charcoal-800: #38383A;
   --color-be-grey-650: #66666A;
@@ -81,6 +93,8 @@
   --be-yellow-500: #FFC400;
   --be-yellow-600: #DFAA00;
   --be-yellow-700: #B89000;
+  --be-yellow-text: #755600;
+  --be-yellow-text-hover: #604600;
   --be-charcoal-950: #242426;
   --be-charcoal-800: #38383A;
   --be-grey-650: #66666A;
@@ -133,6 +147,8 @@
   --be-yellow-500: #FFC400;
   --be-yellow-600: #DFAA00;
   --be-yellow-700: #B89000;
+  --be-yellow-text: #FFD43B;
+  --be-yellow-text-hover: #FFC400;
   --be-charcoal-950: #e8e8e6;
   --be-charcoal-800: #d0d0ce;
   --be-grey-650: #a0a0a4;

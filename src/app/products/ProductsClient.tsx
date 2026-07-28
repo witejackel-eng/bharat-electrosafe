@@ -119,13 +119,13 @@ function ProductFamilyGrid() {
 
                   {/* Text content */}
                   <div className="flex flex-col gap-2 p-4">
-                    <h3 className="text-card-title text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors">
+                    <h3 className="text-card-title text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
                       {product.name}
                     </h3>
                     <p className="text-sm text-be-grey-650 leading-relaxed line-clamp-2">
                       {product.description}
                     </p>
-                    <div className="mt-2 text-sm font-medium text-be-yellow-600 group-hover:text-be-yellow-500 transition-colors">
+                    <div className="mt-2 text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors">
                       View Product
                     </div>
                   </div>
@@ -157,21 +157,26 @@ function ComparisonTable() {
       {/* Desktop: accessible semantic table */}
       <div className="reveal-up hidden md:block overflow-x-auto">
         <table className="w-full text-sm border-collapse">
+          <caption className="sr-only">
+            Comparison of product families across primary purpose,
+            distinguishing feature, typical application and applicable
+            standard.
+          </caption>
           <thead>
             <tr className="bg-be-yellow-50 border-b-2 border-be-yellow-500">
-              <th className="text-left px-4 py-3 font-semibold text-be-charcoal-950">
+              <th scope="col" className="text-left px-4 py-3 font-semibold text-be-charcoal-950">
                 Product
               </th>
-              <th className="text-left px-4 py-3 font-semibold text-be-charcoal-950">
+              <th scope="col" className="text-left px-4 py-3 font-semibold text-be-charcoal-950">
                 Primary Purpose
               </th>
-              <th className="text-left px-4 py-3 font-semibold text-be-charcoal-950">
+              <th scope="col" className="text-left px-4 py-3 font-semibold text-be-charcoal-950">
                 Distinguishing Feature
               </th>
-              <th className="text-left px-4 py-3 font-semibold text-be-charcoal-950">
+              <th scope="col" className="text-left px-4 py-3 font-semibold text-be-charcoal-950">
                 Typical Application
               </th>
-              <th className="text-left px-4 py-3 font-semibold text-be-charcoal-950">
+              <th scope="col" className="text-left px-4 py-3 font-semibold text-be-charcoal-950">
                 Standard
               </th>
             </tr>
@@ -182,24 +187,24 @@ function ComparisonTable() {
                 key={row.slug}
                 className={i % 2 === 0 ? 'bg-be-white' : 'bg-be-cream'}
               >
-                <td className="px-4 py-3">
+                <th scope="row" className="text-left px-4 py-3 font-semibold text-be-charcoal-950">
                   <Link
                     href={`/products/${row.slug}`}
-                    className="font-semibold text-be-charcoal-950 hover:text-be-yellow-600 transition-colors"
+                    className="hover:text-be-yellow-text-hover transition-colors underline-offset-2 hover:underline"
                   >
                     {row.name}
                   </Link>
-                </td>
-                <td className="px-4 py-3 text-be-grey-650">
+                </th>
+                <td className="px-4 py-3 text-be-charcoal-800">
                   {row.primaryPurpose}
                 </td>
-                <td className="px-4 py-3 text-be-grey-650">
+                <td className="px-4 py-3 text-be-charcoal-800">
                   {row.distinguishingFeature}
                 </td>
-                <td className="px-4 py-3 text-be-grey-650">
+                <td className="px-4 py-3 text-be-charcoal-800">
                   {row.typicalApplication}
                 </td>
-                <td className="px-4 py-3 text-be-grey-650 font-medium">
+                <td className="px-4 py-3 text-be-charcoal-800 font-medium">
                   {row.applicableStandard}
                 </td>
               </tr>
@@ -214,27 +219,27 @@ function ComparisonTable() {
           <Link
             key={row.slug}
             href={`/products/${row.slug}`}
-            className="block rounded-lg border border-be-grey-250 bg-be-white p-4 hover:bg-be-yellow-50 transition-colors group"
+            className="block rounded-lg border border-be-grey-250 bg-be-white p-4 hover:bg-be-yellow-50 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
           >
-            <h3 className="text-base font-semibold text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors mb-3">
+            <h3 className="text-base font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors mb-3">
               {row.name}
             </h3>
             <div className="flex flex-col gap-2 text-sm">
               <div className="flex gap-2">
-                <span className="text-be-grey-400 font-medium min-w-[110px]">Purpose:</span>
-                <span className="text-be-grey-650">{row.primaryPurpose}</span>
+                <span className="text-be-grey-650 font-medium min-w-[110px]">Purpose:</span>
+                <span className="text-be-charcoal-800">{row.primaryPurpose}</span>
               </div>
               <div className="flex gap-2">
-                <span className="text-be-grey-400 font-medium min-w-[110px]">Feature:</span>
-                <span className="text-be-grey-650">{row.distinguishingFeature}</span>
+                <span className="text-be-grey-650 font-medium min-w-[110px]">Feature:</span>
+                <span className="text-be-charcoal-800">{row.distinguishingFeature}</span>
               </div>
               <div className="flex gap-2">
-                <span className="text-be-grey-400 font-medium min-w-[110px]">Application:</span>
-                <span className="text-be-grey-650">{row.typicalApplication}</span>
+                <span className="text-be-grey-650 font-medium min-w-[110px]">Application:</span>
+                <span className="text-be-charcoal-800">{row.typicalApplication}</span>
               </div>
               <div className="flex gap-2">
-                <span className="text-be-grey-400 font-medium min-w-[110px]">Standard:</span>
-                <span className="text-be-grey-650 font-medium">{row.applicableStandard}</span>
+                <span className="text-be-grey-650 font-medium min-w-[110px]">Standard:</span>
+                <span className="text-be-charcoal-800 font-medium">{row.applicableStandard}</span>
               </div>
             </div>
           </Link>

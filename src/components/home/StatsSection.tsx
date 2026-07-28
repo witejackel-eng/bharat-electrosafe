@@ -49,13 +49,13 @@ function StatCard({ stat }: { stat: Stat }) {
   return (
     <div className="group flex flex-col items-start gap-3 px-2">
       {/* Icon */}
-      <div className="flex h-10 w-10 items-center justify-center rounded-md bg-be-yellow-50 text-be-yellow-600 border border-be-yellow-100 group-hover:bg-be-yellow-100 transition-colors duration-300">
+      <div className="flex h-10 w-10 items-center justify-center rounded-md bg-be-yellow-50 text-be-yellow-text border border-be-yellow-100 group-hover:bg-be-yellow-100 transition-colors duration-300">
         <Icon className="h-5 w-5" />
       </div>
 
       {/* Number — charcoal with yellow accent on digit portion */}
       <div className="flex items-baseline">
-        <span className="text-4xl font-bold text-be-yellow-600 tabular-nums">
+        <span className="text-4xl font-bold text-be-yellow-text tabular-nums">
           {stat.digit}
         </span>
         {stat.suffix && (

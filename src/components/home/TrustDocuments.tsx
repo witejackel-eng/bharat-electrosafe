@@ -37,7 +37,7 @@ export default function TrustDocuments() {
                 href={mark.document}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-metadata font-semibold text-be-yellow-600 underline underline-offset-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
+                className="text-metadata font-semibold text-be-yellow-text underline underline-offset-2 hover:text-be-yellow-text-hover rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
               >
                 View certificate
               </a>
@@ -82,7 +82,7 @@ export default function TrustDocuments() {
       <div className="reveal-up text-center">
         <Link
           href="/about-us"
-          className="text-sm text-be-grey-650 hover:text-be-yellow-600 transition-colors underline underline-offset-4"
+          className="text-sm text-be-grey-650 hover:text-be-yellow-text-hover transition-colors underline underline-offset-4"
         >
           View awards and leadership on our About Us page
         </Link>

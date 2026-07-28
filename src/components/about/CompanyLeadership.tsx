@@ -39,19 +39,19 @@ export default function CompanyLeadership() {
             <h3 className="text-card-title text-be-charcoal-950 mb-3">Our Values</h3>
             <ul className="flex flex-col gap-3">
               <li className="flex items-start gap-2 text-sm text-be-grey-650">
-                <ShieldCheck className="size-4 text-be-yellow-500 mt-0.5 shrink-0" />
+                <ShieldCheck className="size-4 text-be-yellow-text mt-0.5 shrink-0" aria-hidden="true" focusable="false" />
                 <span><strong className="text-be-charcoal-950">Certified quality</strong> — every product is tested and documented</span>
               </li>
               <li className="flex items-start gap-2 text-sm text-be-grey-650">
-                <BadgeCheck className="size-4 text-be-yellow-500 mt-0.5 shrink-0" />
+                <BadgeCheck className="size-4 text-be-yellow-text mt-0.5 shrink-0" aria-hidden="true" focusable="false" />
                 <span><strong className="text-be-charcoal-950">Standards compliance</strong> — IS 15652:2006, BIS licensed</span>
               </li>
               <li className="flex items-start gap-2 text-sm text-be-grey-650">
-                <HeadsetIcon className="size-4 text-be-yellow-500 mt-0.5 shrink-0" />
+                <HeadsetIcon className="size-4 text-be-yellow-text mt-0.5 shrink-0" aria-hidden="true" focusable="false" />
                 <span><strong className="text-be-charcoal-950">Application support</strong> — technical guidance for every project</span>
               </li>
               <li className="flex items-start gap-2 text-sm text-be-grey-650">
-                <FileText className="size-4 text-be-yellow-500 mt-0.5 shrink-0" />
+                <FileText className="size-4 text-be-yellow-text mt-0.5 shrink-0" aria-hidden="true" focusable="false" />
                 <span><strong className="text-be-charcoal-950">Documentation</strong> — test reports and certificates available</span>
               </li>
             </ul>
@@ -81,7 +81,7 @@ export default function CompanyLeadership() {
               </div>
               <div className="min-w-0">
                 <h4 className="text-base font-semibold text-be-charcoal-950">{leader.name}</h4>
-                <p className="text-sm text-be-yellow-600 font-medium">{leader.role}</p>
+                <p className="text-sm text-be-yellow-text font-medium">{leader.role}</p>
                 <p className="text-sm text-be-grey-650 mt-1 leading-relaxed">{leader.shortBio}</p>
               </div>
             </div>
