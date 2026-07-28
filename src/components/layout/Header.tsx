@@ -105,9 +105,11 @@ export function Header() {
   }, []);
 
   // Close mobile menu on resize to desktop
+  // Use lg breakpoint (1024px) to match when the hamburger hides and
+  // desktop navigation appears.
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 1024) {
         setMobileOpen(false);
       }
     };
@@ -115,15 +117,24 @@ export function Header() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Body scroll lock when mobile menu is open
+  // Body scroll lock when mobile menu is open.
+  // Radix Dialog (SheetContent) already handles overflow: hidden on <body>,
+  // but we also set padding-right equal to the scrollbar width to prevent
+  // the header from jumping horizontally when the scrollbar disappears.
   useEffect(() => {
     if (mobileOpen) {
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = 'hidden';
+      if (scrollbarWidth > 0) {
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+      }
     } else {
       document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
     }
     return () => {
       document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
     };
   }, [mobileOpen]);
 
@@ -300,22 +311,27 @@ export function Header() {
         className={cn(
           'sticky top-0 z-50 bg-be-white border-b border-be-header-border transition-all duration-300',
           scrolled && 'shadow-sm',
+          // Stable mobile height of 64px (h-16), with slightly taller
+          // desktop states to accommodate the contact strip above.
           compact ? 'h-16 md:h-[72px]' : 'h-16 md:h-[84px]'
         )}
       >
-        {/* 3-column CSS Grid: logo | nav | CTA.
+        {/* Responsive CSS Grid:
+            Mobile (<lg): 2-column layout — logo (flex) | hamburger (auto).
+            Desktop (lg+):  3-column layout — logo | nav | CTA.
             minmax(190px,1fr) on both sides keeps the navigation
-            mathematically centred regardless of logo / CTA width, so the
-            logo can grow without shifting the nav. */}
-        <div className="container-site page-horizontal-padding grid grid-cols-[minmax(190px,1fr)_auto_minmax(190px,1fr)] items-center h-full gap-4">
+            mathematically centred regardless of logo / CTA width. */}
+        <div className="container-site page-horizontal-padding grid grid-cols-[minmax(0,1fr)_auto] items-center h-full gap-3 lg:grid-cols-[minmax(190px,1fr)_auto_minmax(190px,1fr)] lg:gap-4">
           {/* ── Column 1: Logo zone (left-aligned) ── */}
           {/* Pure-white brand area — the logo sits directly on the white
               header (no warm tint, no card, no shadow) so the blue +
               yellow artwork reads at maximum clarity. A 1px right divider
               in --be-logo-divider (#E6E0D4) anchors the brand zone
               visually without competing with the mark. Focus ring is
-              preserved for keyboard users via ring-offset-be-white. */}
-          <div className="flex items-center justify-start">
+              preserved for keyboard users via ring-offset-be-white.
+              min-w-0 prevents the logo from forcing the hamburger out
+              of the viewport on narrow screens. */}
+          <div className="flex items-center justify-start min-w-0">
             <Link
               href="/"
               className="shrink-0 flex items-center px-2 sm:px-2.5 py-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2 focus-visible:ring-offset-be-white transition-shadow"
@@ -337,21 +353,21 @@ export function Header() {
                 alt="Bharat Electrosafe logo"
                 width={1589}
                 height={580}
-                sizes="(max-width: 639px) 140px, (max-width: 767px) 142px, (max-width: 1023px) 172px, 185px"
+                sizes="(max-width: 359px) 120px, (max-width: 429px) 138px, (max-width: 767px) 142px, (max-width: 1023px) 172px, 185px"
                 className={cn(
-                  'object-contain transition-all duration-300 h-auto w-[140px] sm:w-[142px] md:w-[172px] lg:w-[185px]',
-                  compact && 'w-[138px] sm:w-[140px] md:w-[156px] lg:w-[160px]'
+                  'object-contain transition-all duration-300 h-auto w-[120px] sm:w-[128px] md:w-[142px] lg:w-[185px]',
+                  compact && 'w-[110px] sm:w-[125px] md:w-[132px] lg:w-[160px]'
                 )}
                 priority
               />
             </Link>
-            {/* Subtle vertical divider — visible from md+ (was xl-only)
-                so tablet and desktop both get the brand-area anchor.
-                32px tall, 1px warm-neutral (#E6E0D4), 16-32px gap from
-                the logo. Colour sits between pure white and be-grey-250
+            {/* Subtle vertical divider — visible from lg+ only.
+                Hidden on mobile and tablet to avoid crowding the logo
+                next to the hamburger. 32px tall, 1px warm-neutral
+                (#E6E0D4). Colour sits between pure white and be-grey-250
                 so it reads as a refined seam rather than a hard rule. */}
             <div
-              className="hidden md:block w-px h-8 bg-be-logo-divider ml-4 sm:ml-6 lg:ml-8"
+              className="hidden lg:block w-px h-8 bg-be-logo-divider ml-4 sm:ml-6 lg:ml-8"
               aria-hidden="true"
             />
           </div>
@@ -452,7 +468,10 @@ export function Header() {
           </nav>
 
           {/* ── Column 3: CTA + Mobile menu (right-aligned) ── */}
-          <div className="flex items-center justify-end gap-3">
+          {/* shrink-0 on mobile prevents this column from being squeezed
+              by the logo. justify-self-end right-aligns the hamburger
+              on mobile. On lg+, the 3-column grid handles alignment. */}
+          <div className="flex items-center justify-end gap-3 shrink-0 lg:shrink">
             {/* Quote CTA — visually slightly less heavy than the logo so
                 the brand reads as the dominant element. Touch target stays
                 at 44px. Yellow fill is preserved. */}
