@@ -53,6 +53,15 @@ const shortAddressLines = [
 ];
 
 /* ────────────────────────────────────────────
+   Shared footer link styles
+   ────────────────────────────────────────────
+   Default: charcoal-800 for strong readability on warm-white.
+   Hover:   dark amber text + underline offset for clear interaction.
+   Focus:   yellow ring (inherited from global focus-ring utilities). */
+
+const footerLinkBase = 'text-be-charcoal-800 hover:text-be-yellow-text-hover hover:underline decoration-be-yellow-text-hover/30 underline-offset-4 transition-colors';
+
+/* ────────────────────────────────────────────
    Icon button — shared by brand column
    ──────────────────────────────────────────── */
 
@@ -97,22 +106,23 @@ function BrandColumn() {
           priority
         />
       </Link>
-      <p className="text-sm text-be-grey-650 leading-relaxed max-w-[280px]">
+      {/* Brand description — 15px, medium-dark grey, comfortable reading. */}
+      <p className="text-[0.9375rem] text-be-grey-700 leading-[1.65] max-w-[300px]">
         Certified electrical insulating mats and engineered protection products for substations, switchrooms, utilities and industry.
       </p>
       <div className="flex items-center gap-3 pt-0.5">
         <IconButton href={`mailto:${company.email}`} label="Email Bharat Electrosafe">
-          <Mail className="size-4" aria-hidden="true" focusable="false" />
+          <Mail className="size-[18px]" aria-hidden="true" focusable="false" />
         </IconButton>
         <IconButton href={`tel:${company.phonePrimaryTel}`} label={`Call ${company.phonePrimary}`}>
-          <Phone className="size-4" aria-hidden="true" focusable="false" />
+          <Phone className="size-[18px]" aria-hidden="true" focusable="false" />
         </IconButton>
         <IconButton
           href={company.whatsapp.href}
           label="Chat on WhatsApp (opens in a new tab)"
           external
         >
-          <MessageCircle className="size-4" aria-hidden="true" focusable="false" />
+          <MessageCircle className="size-[18px]" aria-hidden="true" focusable="false" />
         </IconButton>
       </div>
     </div>
@@ -126,15 +136,17 @@ function BrandColumn() {
 function CompanyColumn() {
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="text-sm font-semibold text-be-charcoal-950 uppercase tracking-wide">
+      {/* Column heading — 14px, semibold, charcoal-950, moderate tracking. */}
+      <h2 className="text-[0.875rem] font-semibold text-be-charcoal-950 uppercase tracking-[0.06em]">
         Company
       </h2>
-      <ul className="flex flex-col gap-2">
+      {/* Links — 16px, charcoal-800, readable. */}
+      <ul className="flex flex-col gap-2.5">
         {companyLinks.map((link) => (
           <li key={link.name}>
             <Link
               href={link.href}
-              className="text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors"
+              className={cn('text-base font-medium leading-normal', footerLinkBase)}
             >
               {link.name}
             </Link>
@@ -152,7 +164,8 @@ function CompanyColumn() {
 function ProductsColumn() {
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="text-sm font-semibold text-be-charcoal-950 uppercase tracking-wide">
+      {/* Column heading — 14px, semibold, charcoal-950. */}
+      <h2 className="text-[0.875rem] font-semibold text-be-charcoal-950 uppercase tracking-[0.06em]">
         Products
       </h2>
       <Link
@@ -161,21 +174,22 @@ function ProductsColumn() {
       >
         View All Products
       </Link>
-      <div className="flex flex-col gap-2.5">
+      <div className="flex flex-col gap-4">
         {categoryOrder.map((catId) => {
           const catInfo = productCategories[catId];
           const items = productNavigationItems.filter((p) => p.category === catId);
           return (
             <div key={catId}>
-              <p className="text-[0.7rem] font-semibold text-be-grey-650 uppercase tracking-wider">
+              {/* Category label — 12.5px, semibold, charcoal-800. */}
+              <p className="text-[0.78125rem] font-semibold text-be-charcoal-800 uppercase tracking-[0.08em] mb-1.5">
                 {catInfo.displayName}
               </p>
-              <ul className="flex flex-col gap-1.5 mt-1">
+              <ul className="flex flex-col gap-2">
                 {items.map((product) => (
                   <li key={product.slug}>
                     <Link
                       href={product.href}
-                      className="text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors"
+                      className={cn('text-base font-medium leading-normal', footerLinkBase)}
                     >
                       {footerProductLabels[product.slug] ?? product.name}
                     </Link>
@@ -208,27 +222,34 @@ function ContactEnquiriesColumn() {
 
       <Link
         href="/contact-us?type=technical-guidance"
-        className="text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors"
+        className={cn('text-base font-medium', footerLinkBase)}
       >
         Ask for Technical Guidance
       </Link>
 
+      {/* Contact rows — 16px text, 18px icons, charcoal-800, 44px touch targets. */}
       <ul className="flex flex-col">
         <li>
           <a
             href={`mailto:${company.email}`}
-            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors py-1.5 min-h-[44px] border-t border-be-grey-150"
+            className={cn(
+              'flex items-center gap-2.5 text-base text-be-charcoal-800 py-1.5 min-h-[44px] border-t border-be-grey-250',
+              footerLinkBase
+            )}
           >
-            <Mail className="size-4 shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
+            <Mail className="size-[18px] shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
             <span className="break-words">{company.email}</span>
           </a>
         </li>
         <li>
           <a
             href={`tel:${company.phonePrimaryTel}`}
-            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors py-1.5 min-h-[44px] border-t border-be-grey-150"
+            className={cn(
+              'flex items-center gap-2.5 text-base text-be-charcoal-800 py-1.5 min-h-[44px] border-t border-be-grey-250',
+              footerLinkBase
+            )}
           >
-            <Phone className="size-4 shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
+            <Phone className="size-[18px] shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
             <span>{company.phonePrimary}</span>
           </a>
         </li>
@@ -237,9 +258,12 @@ function ContactEnquiriesColumn() {
             href={company.whatsapp.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors py-1.5 min-h-[44px] border-t border-be-grey-150"
+            className={cn(
+              'flex items-center gap-2.5 text-base text-be-charcoal-800 py-1.5 min-h-[44px] border-t border-be-grey-250',
+              footerLinkBase
+            )}
           >
-            <MessageCircle className="size-4 shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
+            <MessageCircle className="size-[18px] shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
             <span>WhatsApp</span>
           </a>
         </li>
@@ -248,9 +272,12 @@ function ContactEnquiriesColumn() {
             href={officeMapsDirectionsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-start gap-2 text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors py-1.5 min-h-[44px] border-t border-b border-be-grey-150"
+            className={cn(
+              'flex items-start gap-2.5 text-base text-be-charcoal-800 py-1.5 min-h-[44px] border-t border-b border-be-grey-250',
+              footerLinkBase
+            )}
           >
-            <MapPin className="size-4 shrink-0 mt-1 text-be-yellow-text" aria-hidden="true" focusable="false" />
+            <MapPin className="size-[18px] shrink-0 mt-1 text-be-yellow-text" aria-hidden="true" focusable="false" />
             <span>
               {shortAddressLines.map((line) => (
                 <span key={line} className="block">
@@ -331,6 +358,7 @@ export function Footer() {
 
           <Accordion type="single" collapsible defaultValue="company">
             <AccordionItem value="company">
+              {/* Accordion heading — 16px, semibold, charcoal-950. */}
               <AccordionTrigger className="text-base font-semibold text-be-charcoal-950 py-3 min-h-[44px]">
                 Company
               </AccordionTrigger>
@@ -340,7 +368,10 @@ export function Footer() {
                     <li key={link.name}>
                       <Link
                         href={link.href}
-                        className="text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors py-2 min-h-[44px] inline-flex items-center"
+                        className={cn(
+                          'text-base font-medium py-2 min-h-[44px] inline-flex items-center',
+                          footerLinkBase
+                        )}
                       >
                         {link.name}
                       </Link>
@@ -355,7 +386,7 @@ export function Footer() {
                 Products
               </AccordionTrigger>
               <AccordionContent>
-                <div className="flex flex-col gap-2.5 pb-2">
+                <div className="flex flex-col gap-3 pb-2">
                   <Link
                     href="/products"
                     className="text-base text-be-yellow-text font-semibold hover:text-be-yellow-text-hover transition-colors py-2 min-h-[44px] inline-flex items-center"
@@ -367,7 +398,8 @@ export function Footer() {
                     const items = productNavigationItems.filter((p) => p.category === catId);
                     return (
                       <div key={catId}>
-                        <p className="text-[0.7rem] font-semibold text-be-grey-650 uppercase tracking-wider py-1">
+                        {/* Category label — 12.5px, semibold, charcoal-800. */}
+                        <p className="text-[0.78125rem] font-semibold text-be-charcoal-800 uppercase tracking-[0.08em] py-1">
                           {catInfo.displayName}
                         </p>
                         <ul className="flex flex-col gap-1 mt-0.5">
@@ -375,7 +407,10 @@ export function Footer() {
                             <li key={product.slug}>
                               <Link
                                 href={product.href}
-                                className="text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors py-2 min-h-[44px] inline-flex items-center"
+                                className={cn(
+                                  'text-base font-medium py-2 min-h-[44px] inline-flex items-center',
+                                  footerLinkBase
+                                )}
                               >
                                 {footerProductLabels[product.slug] ?? product.name}
                               </Link>
@@ -398,18 +433,24 @@ export function Footer() {
                   <li>
                     <a
                       href={`mailto:${company.email}`}
-                      className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
+                      className={cn(
+                        'flex items-center gap-2.5 text-base text-be-charcoal-800 py-2 min-h-[44px] border-t border-be-grey-250',
+                        footerLinkBase
+                      )}
                     >
-                      <Mail className="size-4 shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
+                      <Mail className="size-[18px] shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
                       <span className="break-words">{company.email}</span>
                     </a>
                   </li>
                   <li>
                     <a
                       href={`tel:${company.phonePrimaryTel}`}
-                      className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
+                      className={cn(
+                        'flex items-center gap-2.5 text-base text-be-charcoal-800 py-2 min-h-[44px] border-t border-be-grey-250',
+                        footerLinkBase
+                      )}
                     >
-                      <Phone className="size-4 shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
+                      <Phone className="size-[18px] shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
                       <span>{company.phonePrimary}</span>
                     </a>
                   </li>
@@ -418,9 +459,12 @@ export function Footer() {
                       href={company.whatsapp.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
+                      className={cn(
+                        'flex items-center gap-2.5 text-base text-be-charcoal-800 py-2 min-h-[44px] border-t border-be-grey-250',
+                        footerLinkBase
+                      )}
                     >
-                      <MessageCircle className="size-4 shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
+                      <MessageCircle className="size-[18px] shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
                       <span>WhatsApp</span>
                     </a>
                   </li>
@@ -429,9 +473,12 @@ export function Footer() {
                       href={officeMapsDirectionsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-start gap-2 text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors py-2 min-h-[44px] border-t border-b border-be-grey-150"
+                      className={cn(
+                        'flex items-start gap-2.5 text-base text-be-charcoal-800 py-2 min-h-[44px] border-t border-b border-be-grey-250',
+                        footerLinkBase
+                      )}
                     >
-                      <MapPin className="size-4 shrink-0 mt-1 text-be-yellow-text" aria-hidden="true" focusable="false" />
+                      <MapPin className="size-[18px] shrink-0 mt-1 text-be-yellow-text" aria-hidden="true" focusable="false" />
                       <span>
                         {shortAddressLines.map((line) => (
                           <span key={line} className="block">
@@ -448,13 +495,13 @@ export function Footer() {
         </nav>
       </div>
 
-      {/* ── Bottom bar — no duplicated certification info ── */}
+      {/* ── Bottom bar — 13.5px text, charcoal-800, higher contrast ── */}
       <div className="border-t border-be-grey-250 bg-be-yellow-50/50">
-        <div className="container-site page-horizontal-padding py-3.5 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-metadata text-be-grey-650 text-center sm:text-left">
+        <div className="container-site page-horizontal-padding py-3.5 flex flex-col sm:flex-row items-center justify-between gap-2.5">
+          <p className="text-[0.84375rem] text-be-charcoal-800 leading-relaxed text-center sm:text-left">
             &copy; {currentYear} {company.name}. All rights reserved.
           </p>
-          <p className="text-metadata text-be-grey-650 text-center sm:text-right">
+          <p className="text-[0.84375rem] text-be-charcoal-800 leading-relaxed text-center sm:text-right">
             IS 15652:2006 · BIS Licence CM/L:8800129617 · Made in India
           </p>
         </div>
