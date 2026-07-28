@@ -68,6 +68,12 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   output: 'standalone',
   reactStrictMode: true,
+  /* Allow dev-server resources (_next/*, HMR websocket) to be served when
+     the sandbox/browser reaches the dev server via 127.0.0.1 while the
+     server reports its origin as localhost. Silences the Next.js 16
+     "Cross origin request detected" warning and prevents the dev server
+     from dropping requests under sandbox browser load. */
+  allowedDevOrigins: ['http://127.0.0.1', 'http://localhost', 'http://21.0.13.102'],
   /* Pin the workspace root. Without this Turbopack walks up to the first
      lockfile it finds, which on a developer machine can be a directory above
      the repo — it then compiles unrelated files that happen to sit at
@@ -94,8 +100,10 @@ const nextConfig: NextConfig = {
       { source: '/bi-color-insulating-mats.php', destination: '/products/bi-color-insulating-mats' },
       { source: '/auto-glow-reflective-band-insulating-mat.php', destination: '/products/auto-glow-reflective-band-insulating-mats' },
       { source: '/bharat-membrane.php', destination: '/products/bharat-membrane' },
-      /* The old BharatHydro Seal PHP URL now redirects to the new product page. */
-      { source: '/BharatHydro-Seal.php', destination: '/products/bharat-hydro-seal' },
+      /* Bharat Hydro Seal was retired from the catalogue. The old PHP URL now
+         redirects to the main product range so legacy links/links still land on
+         a relevant page instead of a 404. */
+      { source: '/BharatHydro-Seal.php', destination: '/products' },
     ];
 
     return [
