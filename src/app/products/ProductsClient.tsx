@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
+import { MobileStickyCTA } from '@/components/ui/MobileStickyCTA';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { SectionHeader } from '@/components/ui/SectionHeader';
@@ -436,6 +437,7 @@ export default function ProductsClient() {
       </main>
       <Footer />
       <BackToTop />
+      <MobileStickyCTA />
     </div>
   );
 }

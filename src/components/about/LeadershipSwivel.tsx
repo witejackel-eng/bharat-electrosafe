@@ -249,7 +249,7 @@ function SwivelCard({
       aria-hidden={!isActive}
       className={cn(
         'be-swivel-card absolute w-[88%] max-w-[420px] sm:w-[420px] rounded-xl bg-be-white border border-be-grey-250 shadow-lg overflow-hidden',
-        isActive && 'shadow-xl border-be-grey-250'
+        isActive && 'shadow-xl border-be-grey-250 be-swivel-card-active'
       )}
       style={{
         transform: `translateX(${translateX}%) rotateY(${rotateY}deg) scale(${scale})`,

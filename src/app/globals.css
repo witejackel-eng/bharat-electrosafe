@@ -950,8 +950,97 @@
   }
   @media (prefers-reduced-motion: reduce) {
     /* Ensure any animate-[...] utilities resolve to a static final state */
-    [class*="animate-[slide-in-right"] {
+    [class*="animate-[slide-in-right"],
+    [class*="animate-[be-mobile-cta-in"] {
       animation: none !important;
     }
+    /* Scroll-progress bar: jump to value instead of animating width */
+    .be-scroll-progress > div {
+      transition: none !important;
+    }
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     MOBILE STICKY CTA — entrance animation
+     Slides up from below the viewport when the bar becomes visible.
+     ────────────────────────────────────────────────────────────── */
+  @keyframes be-mobile-cta-in {
+    from { opacity: 0; transform: translateY(100%); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     HERO PROOF BADGE — icon + label micro-composition
+     A small refinement of the TechnicalBadge used in the hero proof
+     row: adds a leading icon and a subtle right-side border accent.
+     ────────────────────────────────────────────────────────────── */
+  .be-proof-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.3125rem 0.5625rem;
+    border-radius: 0.375rem;
+    background: linear-gradient(180deg, #FFFBEC 0%, #FFF8DA 100%);
+    border: 1px solid rgba(244, 195, 19, 0.35);
+    box-shadow: 0 1px 0 rgba(0, 26, 67, 0.04);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out,
+                border-color 0.2s ease-out;
+  }
+  .be-proof-badge:hover {
+    transform: translateY(-1px);
+    border-color: rgba(244, 195, 19, 0.65);
+    box-shadow: 0 3px 8px -3px rgba(244, 195, 19, 0.35);
+  }
+  .be-proof-badge__icon {
+    color: var(--be-yellow-text);
+    flex-shrink: 0;
+  }
+  .be-proof-badge__label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--be-charcoal-800);
+    white-space: nowrap;
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     LEADERSHIP SWIVEL — active card hover refinement
+     A subtle lift + enhanced shadow when the active card is hovered,
+     signalling interactivity without breaking the coverflow layout.
+     ────────────────────────────────────────────────────────────── */
+  .be-swivel-card.be-swivel-card-active:hover {
+    transform: translateX(0) rotateY(0) scale(1.015) !important;
+    box-shadow: 0 18px 40px -16px rgba(0, 26, 67, 0.28),
+                0 4px 10px -4px rgba(0, 26, 67, 0.12);
+    border-color: var(--be-yellow-400);
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     SECTION DIVIDER — premium hairline with yellow centre mark
+     A refined visual separator for use between major homepage sections
+     in place of a bare border. Renders a 1px hairline with a small
+     yellow diamond at centre.
+     ────────────────────────────────────────────────────────────── */
+  .be-section-divider {
+    position: relative;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--be-grey-250) 20%,
+      var(--be-grey-250) 80%,
+      transparent 100%
+    );
+  }
+  .be-section-divider::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    background: var(--be-brand-yellow);
+    transform: translate(-50%, -50%) rotate(45deg);
+    box-shadow: 0 0 0 4px var(--be-warm-white);
   }
 }
