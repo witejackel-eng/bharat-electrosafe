@@ -249,6 +249,15 @@
     letter-spacing: -0.01em;
     font-weight: 700;
   }
+  /* Products-overview hero H1 — compact editorial heading for the /products
+     page. Smaller than text-hero-h1 to avoid excessive line-wrapping on the
+     overview page. Does not affect homepage or product-detail headings. */
+  .text-products-hero-h1 {
+    font-size: clamp(2.75rem, 4.2vw, 4rem);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
   .text-product-h1 {
     font-size: clamp(2.25rem, 3.8vw, 3.65rem);
     line-height: 1.05;
