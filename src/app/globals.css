@@ -19,6 +19,12 @@
   --color-be-yellow-500: #FFC400;
   --color-be-yellow-600: #DFAA00;
   --color-be-yellow-700: #B89000;
+  /* Header chrome tokens — pure-white brand area with a soft warm-neutral
+     bottom border + matching vertical divider after the logo zone. These
+     deliberately sit between pure white and the existing be-grey-250 so
+     the header reads as a clean, premium band rather than a flat panel. */
+  --color-be-header-border: #E8E2D8;
+  --color-be-logo-divider: #E6E0D4;
   /* Accessible yellow text tokens — used for small brand-yellow text on
      light backgrounds (white, warm-white, cream, yellow-50). The base
      yellow-500 (#FFC400) and yellow-600 (#DFAA00) fail WCAG AA contrast
@@ -101,6 +107,8 @@
   --be-grey-400: #A9A9A5;
   --be-grey-250: #D8D7D1;
   --be-grey-150: #ECEBE5;
+  --be-header-border: #E8E2D8;
+  --be-logo-divider: #E6E0D4;
 
   /* Semantic overrides */
   --primary: #FFC400;
