@@ -45,6 +45,12 @@ export interface Application {
   description: string;
 }
 
+export type DocumentKind =
+  | 'test-report'
+  | 'certificate'
+  | 'licence'
+  | 'datasheet';
+
 export interface Document {
   type: string;
   name: string;
@@ -54,6 +60,8 @@ export interface Document {
   href?: string;
   /** Thumbnail image path for the document card preview. */
   thumbnail?: string;
+  /** Discriminator controlling how the card renders its actions. */
+  kind: DocumentKind;
 }
 
 /**
@@ -214,6 +222,7 @@ const matDocuments: Document[] = [
     available: true,
     href: '/documents/certifications/erda-test-report-2-5mm.pdf',
     thumbnail: '/images/documents/doc-test-report.webp',
+    kind: 'test-report',
   },
   {
     type: 'Certificate',
@@ -222,6 +231,7 @@ const matDocuments: Document[] = [
     available: true,
     href: '/documents/certifications/iso-9001-2015-qms.pdf',
     thumbnail: '/images/documents/doc-certificate.webp',
+    kind: 'certificate',
   },
   {
     type: 'Licence',
@@ -229,6 +239,7 @@ const matDocuments: Document[] = [
     issuer: 'Bureau of Indian Standards',
     available: false,
     thumbnail: '/images/documents/doc-licence.webp',
+    kind: 'licence',
   },
   {
     type: 'Datasheet',
@@ -236,6 +247,7 @@ const matDocuments: Document[] = [
     issuer: 'Bharat Electrosafe',
     available: false,
     thumbnail: '/images/documents/doc-datasheet.webp',
+    kind: 'datasheet',
   },
 ];
 
@@ -862,6 +874,7 @@ const bharatMembrane: ProductData = {
       available: true,
       href: '/documents/certifications/iso-9001-2015-qms.pdf',
       thumbnail: '/images/documents/doc-certificate.webp',
+      kind: 'certificate',
     },
     {
       type: 'Certificate',
@@ -870,6 +883,7 @@ const bharatMembrane: ProductData = {
       available: true,
       href: '/documents/certifications/iso-14001-2015-ems.pdf',
       thumbnail: '/images/documents/doc-certificate.webp',
+      kind: 'certificate',
     },
     {
       type: 'Approval',
@@ -877,6 +891,7 @@ const bharatMembrane: ProductData = {
       issuer: 'Bureau of Indian Standards',
       available: false,
       thumbnail: '/images/documents/doc-approval.webp',
+      kind: 'licence',
     },
     {
       type: 'Datasheet',
@@ -884,6 +899,7 @@ const bharatMembrane: ProductData = {
       issuer: 'Bharat Electrosafe',
       available: false,
       thumbnail: '/images/documents/doc-datasheet.webp',
+      kind: 'datasheet',
     },
   ],
   relatedProducts: [
@@ -1031,6 +1047,7 @@ const bharatHydroSeal: ProductData = {
       available: true,
       href: '/documents/certifications/iso-9001-2015-qms.pdf',
       thumbnail: '/images/documents/doc-certificate.webp',
+      kind: 'certificate',
     },
     {
       type: 'Approval',
@@ -1038,6 +1055,7 @@ const bharatHydroSeal: ProductData = {
       issuer: 'Bureau of Indian Standards',
       available: false,
       thumbnail: '/images/documents/doc-approval.webp',
+      kind: 'licence',
     },
     {
       type: 'Datasheet',
@@ -1045,6 +1063,7 @@ const bharatHydroSeal: ProductData = {
       issuer: 'Bharat Electrosafe',
       available: false,
       thumbnail: '/images/documents/doc-datasheet.webp',
+      kind: 'datasheet',
     },
   ],
   relatedProducts: [

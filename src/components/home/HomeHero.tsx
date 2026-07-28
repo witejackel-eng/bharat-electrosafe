@@ -35,7 +35,7 @@ export default function HomeHero() {
   }, []);
 
   return (
-    <section className="bg-be-warm-white section-padding-major">
+    <section className="bg-be-warm-white hero-padding">
       <div className="container-site page-horizontal-padding">
         <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14 min-h-[560px] lg:min-h-[640px]">
           {/* Copy — ~55% */}

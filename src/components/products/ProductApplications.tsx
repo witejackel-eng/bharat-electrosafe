@@ -66,7 +66,7 @@ export function ProductApplications({ product }: ProductApplicationsProps) {
   return (
     <section className="section-padding-supporting bg-be-warm-white">
       <div className="container-site page-horizontal-padding">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
           {/* Left: installed-use image */}
           <div className="lg:w-[45%]">
             <ImageFrame
