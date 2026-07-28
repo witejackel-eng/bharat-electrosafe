@@ -5,7 +5,7 @@ import { Eyebrow } from '@/components/ui/Eyebrow';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { TechnicalBadge } from '@/components/ui/TechnicalBadge';
-import Image from 'next/image';
+import HeroTechnicalVisual from '@/components/home/HeroTechnicalVisual';
 
 const proofItems = [
   'IS 15652:2006',
@@ -37,10 +37,10 @@ export default function HomeHero() {
   return (
     <section className="bg-be-warm-white section-padding-major">
       <div className="container-site page-horizontal-padding">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 min-h-[650px] lg:min-h-[720px]">
-          {/* Copy — 55% */}
+        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14 min-h-[560px] lg:min-h-[640px]">
+          {/* Copy — ~55% */}
           <div className="w-full lg:w-[55%] flex flex-col justify-center reveal-up relative">
-            {/* Vertical yellow decorative bar */}
+            {/* Vertical yellow decorative bar — ties to the mat's yellow edge */}
             <div className="hidden lg:block absolute -left-6 top-0 bottom-0 w-1 bg-be-yellow-500 rounded-full" />
 
             {/* Eyebrow with animated underline */}
@@ -53,7 +53,8 @@ export default function HomeHero() {
             </div>
 
             <h1 className="text-hero-h1 text-be-charcoal-950 mb-6">
-              Certified protection for critical electrical environments.
+              Certified protection
+              <br className="hidden lg:block" /> for critical electrical environments.
             </h1>
 
             <p className="text-body-large text-be-grey-650 max-w-xl mb-8">
@@ -86,19 +87,9 @@ export default function HomeHero() {
             </div>
           </div>
 
-          {/* Media — 45% */}
-          <div className="w-full lg:w-[45%] reveal-up">
-            <div className="bg-gradient-to-br from-be-yellow-50 to-be-cream rounded-lg aspect-[16/10]">
-              <Image
-                src="/media/home/hero-product.webp"
-                alt="Bharat Electrosafe electrical insulating mat — Class B with anti-skid coin pattern surface"
-                fill
-                className="object-contain object-center"
-                style={{ width: '100%', height: '100%' }}
-                sizes="(max-width: 768px) 100vw, (max-width: 1360px) 50vw, 680px"
-                priority
-              />
-            </div>
+          {/* Technical visual — ~45%, aligned toward the right edge */}
+          <div className="w-full lg:w-[45%] lg:ml-auto">
+            <HeroTechnicalVisual />
           </div>
         </div>
       </div>
