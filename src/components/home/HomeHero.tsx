@@ -1,15 +1,21 @@
 import Image from 'next/image';
+import { ShieldCheck, BadgeCheck, FlaskConical, Globe2 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
-import { TechnicalBadge } from '@/components/ui/TechnicalBadge';
 import { SectionShell } from '@/components/ui/SectionShell';
 
-const proofItems = [
-  'IS 15652:2006',
-  'BIS Licence CM/L:8800129617',
-  'ERDA / NTH Tested',
-  'Conforming to IEC 61111',
+interface ProofItem {
+  label: string;
+  icon: LucideIcon;
+}
+
+const proofItems: ProofItem[] = [
+  { label: 'IS 15652:2006', icon: ShieldCheck },
+  { label: 'BIS Licence CM/L:8800129617', icon: BadgeCheck },
+  { label: 'ERDA / NTH Tested', icon: FlaskConical },
+  { label: 'Conforming to IEC 61111', icon: Globe2 },
 ];
 
 /**
@@ -90,11 +96,19 @@ export default function HomeHero() {
             aria-hidden="true"
           />
 
-          {/* Proof line — visible immediately, no JS reveal */}
+          {/* Proof line — visible immediately, no JS reveal.
+              Each badge pairs a small icon with the label so the trust
+              signals read at a glance. */}
           <div className="flex flex-wrap gap-2">
-            {proofItems.map((item) => (
-              <TechnicalBadge key={item} label={item} />
-            ))}
+            {proofItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <span key={item.label} className="be-proof-badge">
+                  <Icon className="be-proof-badge__icon size-3.5" aria-hidden="true" />
+                  <span className="be-proof-badge__label">{item.label}</span>
+                </span>
+              );
+            })}
           </div>
         </div>
 

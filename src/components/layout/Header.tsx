@@ -35,6 +35,7 @@ import {
   AccordionContent,
 } from '@/components/ui/accordion';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
+import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import { cn } from '@/lib/utils';
 import { company } from '@/data/company';
 import {
@@ -724,6 +725,10 @@ export function Header() {
             </div>
           </div>
         )}
+        {/* Reading-progress bar — sits on the header's bottom edge. A thin
+            yellow gradient that fills as the user scrolls through the page.
+            Pointer-events none so it never intercepts clicks. */}
+        <ScrollProgress />
       </div>
     </header>
   );

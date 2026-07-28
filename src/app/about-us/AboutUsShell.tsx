@@ -1,6 +1,7 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
+import { MobileStickyCTA } from '@/components/ui/MobileStickyCTA';
 import { RevealObserver } from '@/components/ui/RevealObserver';
 import AboutIntro from '@/components/about/AboutIntro';
 import CompanyLeadership from '@/components/about/CompanyLeadership';
@@ -46,6 +47,7 @@ export default function AboutUsShell() {
       </main>
       <Footer />
       <BackToTop />
+      <MobileStickyCTA />
       {/* Shared reveal-animation observer — same island as the homepage.
           Progressive enhancement only; content is visible without JS. */}
       <RevealObserver />
