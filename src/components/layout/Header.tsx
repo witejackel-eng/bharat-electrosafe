@@ -261,26 +261,27 @@ export function Header() {
       {/* ── Top Contact Strip (desktop only) ── */}
       {/* Dark utility strip sits above the pure-white brand header to give
           the logo zone maximum contrast and a premium two-tone feel. Text
-          uses be-grey-150 (#ECEBE5) on be-charcoal-950 (#242426) — contrast
-          ≈ 13.4:1, passes WCAG AAA. Hover state lifts to be-yellow-400
-          (#FFD43B, contrast ≈ 9.9:1) so links are still AAA on hover.
-          No bottom border — the dark→white transition is the visual seam. */}
-      <div className="hidden md:block bg-be-charcoal-950">
+          uses be-charcoal-800 (#38383A) on be-white (#FFFFFF) — contrast
+          ≈ 10.3:1, passes WCAG AAA. Hover state uses be-yellow-text
+          (#755600, contrast ≈ 4.7:1) so links remain AA on hover.
+          Subtle bottom border (be-header-border #E8E2D8) separates from
+          the main white header bar. */}
+      <div className="hidden md:block bg-be-white border-b border-be-header-border">
         <div className="container-site page-horizontal-padding flex items-center justify-between h-8">
           {/* Left: contact info */}
-          <div className="flex items-center gap-5 text-metadata text-be-grey-150">
+          <div className="flex items-center gap-5 text-metadata text-be-charcoal-800">
             <a
               href={`mailto:${company.email}`}
-              className="flex items-center gap-1.5 hover:text-be-yellow-400 transition-colors"
+              className="flex items-center gap-1.5 hover:text-be-yellow-text transition-colors"
             >
-              <Mail className="size-3.5" aria-hidden="true" focusable="false" />
+              <Mail className="size-3.5 text-be-charcoal-800" aria-hidden="true" focusable="false" />
               <span>{company.email}</span>
             </a>
             <a
               href={`tel:${company.phonePrimaryTel}`}
-              className="flex items-center gap-1.5 hover:text-be-yellow-400 transition-colors"
+              className="flex items-center gap-1.5 hover:text-be-yellow-text transition-colors"
             >
-              <Phone className="size-3.5" aria-hidden="true" focusable="false" />
+              <Phone className="size-3.5 text-be-charcoal-800" aria-hidden="true" focusable="false" />
               <span>{company.phonePrimary}</span>
             </a>
           </div>
@@ -291,10 +292,10 @@ export function Header() {
               href={company.whatsapp.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-metadata text-be-grey-150 hover:text-be-yellow-400 transition-colors"
+              className="flex items-center gap-1.5 text-metadata text-be-charcoal-800 hover:text-be-yellow-text transition-colors"
               aria-label="Chat on WhatsApp (opens in a new tab)"
             >
-              <MessageCircle className="size-3.5" aria-hidden="true" focusable="false" />
+              <MessageCircle className="size-3.5 text-be-charcoal-800" aria-hidden="true" focusable="false" />
               <span>{company.whatsapp.label}</span>
             </a>
           </div>
