@@ -302,35 +302,47 @@ export function Header() {
             mathematically centred regardless of logo / CTA width, so the
             logo can grow without shifting the nav. */}
         <div className="container-site page-horizontal-padding grid grid-cols-[minmax(190px,1fr)_auto_minmax(190px,1fr)] items-center h-full gap-4">
-          {/* ── Column 1: Logo (left-aligned) ── */}
+          {/* ── Column 1: Logo zone (left-aligned) ── */}
+          {/* Dedicated logo area — a very subtle warm-white tint
+              (matching the top contact strip above) lifts the logo
+              off the pure-white header so the wordmark reads as the
+              primary brand element. Treatment is intentionally light:
+              no heavy box, no shadow, no coloured panel — just enough
+              internal padding + a refined 1px right divider (visible
+              from md+) to anchor the brand area visually. */}
           <div className="flex items-center justify-start">
             <Link
               href="/"
-              className="shrink-0 flex items-center"
+              className="shrink-0 flex items-center px-2 sm:px-2.5 py-1.5 rounded-md bg-be-warm-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2 focus-visible:ring-offset-be-white transition-shadow"
               aria-label="Bharat Electrosafe — Home"
             >
               {/* Intrinsic source dimensions are 1589x580 (aspect ≈ 2.74:1).
-                  Display sizes are CSS-driven and ramp from mobile (125-145px)
-                  up to desktop (155-180px). `priority` because the logo is
-                  above the fold on every route. */}
+                  Display sizes are CSS-driven and ramp from mobile
+                  (138-140px) up to desktop (168-185px), with a modest
+                  compact state (132-158px) when scrolled. `priority`
+                  because the logo is above the fold on every route.
+                  Source WebP re-encoded at q=100 from the lossless PNG
+                  so the wordmark renders crisply at small display sizes;
+                  Next.js Image further optimizes the served payload per
+                  viewport width and pixel density. */}
               <Image
                 src="/images/brand/bharat-electrosafe-logo-full.webp"
                 alt="Bharat Electrosafe logo"
                 width={1589}
                 height={580}
-                sizes="(max-width: 767px) 135px, (max-width: 1023px) 155px, 180px"
+                sizes="(max-width: 767px) 140px, (max-width: 1023px) 168px, 185px"
                 className={cn(
-                  'object-contain transition-all duration-300 h-auto w-[125px] sm:w-[135px] md:w-[155px] lg:w-[180px]',
-                  compact && 'w-[120px] sm:w-[125px] md:w-[145px] lg:w-[155px]'
+                  'object-contain transition-all duration-300 h-auto w-[138px] sm:w-[140px] md:w-[168px] lg:w-[185px]',
+                  compact && 'w-[132px] sm:w-[134px] md:w-[152px] lg:w-[158px]'
                 )}
                 priority
               />
             </Link>
-            {/* Subtle vertical divider — only on wide desktop (xl+)
-                so it never crowds tablet / mobile. 40px gap from the
-                logo, 36px tall, 1px neutral grey. */}
+            {/* Subtle vertical divider — visible from md+ (was xl-only)
+                so tablet and desktop both get the brand-area anchor.
+                32px tall, 1px neutral grey, 16-32px gap from the logo. */}
             <div
-              className="hidden xl:block w-px h-9 bg-be-grey-250 ml-10"
+              className="hidden md:block w-px h-8 bg-be-grey-250 ml-4 sm:ml-6 lg:ml-8"
               aria-hidden="true"
             />
           </div>
@@ -465,8 +477,8 @@ export function Header() {
                         alt="Bharat Electrosafe logo"
                         width={1589}
                         height={580}
-                        sizes="140px"
-                        className="object-contain w-[140px] h-auto"
+                        sizes="150px"
+                        className="object-contain w-[150px] h-auto"
                       />
                     </Link>
                   </SheetTitle>
