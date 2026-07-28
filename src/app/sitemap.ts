@@ -1,39 +1,37 @@
 /**
- * Next.js 16 Metadata API — sitemap.
+ * Next.js Metadata API — sitemap.
  *
- * Multi-page application with dedicated routes for each page and product.
- * All routes use real paths (not anchor links) for proper SEO indexing.
+ * Contains all valid public routes: homepage, about, contact and
+ * every product page. Uses the central site URL helper so that
+ * every entry resolves against the official production domain.
+ *
+ * lastModified is omitted unless a genuine content update date is
+ * available — we do not falsely tell search engines that every page
+ * changes on every deployment.
  */
 
 import type { MetadataRoute } from 'next';
-import { company } from '@/data/company';
+import { buildUrl } from '@/lib/site-url';
 import { products } from '@/data/products';
 
-const siteUrl = company.siteUrl;
-
-const staticPages: { path: string; priority: number }[] = [
-  { path: '/', priority: 1.0 },
-  { path: '/about-us', priority: 0.8 },
-  { path: '/contact-us', priority: 0.8 },
+const staticPages: { path: string; priority: number; changeFrequency: 'monthly' | 'yearly' }[] = [
+  { path: '/', priority: 1.0, changeFrequency: 'monthly' },
+  { path: '/about-us', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/contact-us', priority: 0.8, changeFrequency: 'yearly' },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
-  const changeFrequency = 'monthly' as const;
-
   const staticEntries: MetadataRoute.Sitemap = staticPages.map(
-    ({ path, priority }) => ({
-      url: `${siteUrl}${path}`,
-      lastModified,
+    ({ path, priority, changeFrequency }) => ({
+      url: buildUrl(path),
       changeFrequency,
       priority,
     }),
   );
 
   const productEntries: MetadataRoute.Sitemap = products.map((product) => ({
-    url: `${siteUrl}/products/${product.slug}`,
-    lastModified,
-    changeFrequency,
+    url: buildUrl(`/products/${product.slug}`),
+    changeFrequency: 'monthly' as const,
     priority: 0.8,
   }));
 

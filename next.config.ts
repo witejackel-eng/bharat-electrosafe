@@ -3,7 +3,7 @@ import type { NextConfig } from 'next';
 const isProduction = process.env.NODE_ENV === 'production';
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ||
-  'https://bharat-electrosafe.vercel.app';
+  'https://bharatelectrosafe.com';
 
 /**
  * Content-Security-Policy.

@@ -1,60 +1,41 @@
-'use client';
+import type { Metadata } from 'next';
+import { siteUrl, allowIndexing, buildUrl } from '@/lib/site-url';
+import AboutUsClient from './AboutUsClient';
 
-import { useEffect, useRef } from 'react';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
-import { BackToTop } from '@/components/ui/BackToTop';
-import AboutIntro from '@/components/about/AboutIntro';
-import CompanyLeadership from '@/components/about/CompanyLeadership';
-import ManufacturingValues from '@/components/about/ManufacturingValues';
-import AwardsCertifications from '@/components/about/AwardsCertifications';
-import AboutCTA from '@/components/about/AboutCTA';
+export const metadata: Metadata = {
+  title: 'About Bharat Electrosafe | Electrical Safety Manufacturer',
+  description:
+    'Bharat Electrosafe manufactures electrical insulating mats and engineered PVC membranes in Noida, India. ISO 9001, ISO 14001 and ISO 45001 certified, with BIS-licensed production under IS 15652:2006.',
+  alternates: {
+    canonical: buildUrl('/about-us'),
+  },
+  openGraph: {
+    title: 'About Bharat Electrosafe | Electrical Safety Manufacturer',
+    description:
+      'Bharat Electrosafe manufactures electrical insulating mats and engineered PVC membranes in Noida, India. ISO-certified with BIS-licensed production under IS 15652:2006.',
+    url: buildUrl('/about-us'),
+    type: 'website',
+    images: [
+      {
+        url: '/brand/og-bharat-electrosafe.png',
+        width: 1200,
+        height: 630,
+        alt: 'About Bharat Electrosafe — electrical insulating mat and membrane manufacturer',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Bharat Electrosafe | Electrical Safety Manufacturer',
+    description:
+      'Bharat Electrosafe manufactures electrical insulating mats and engineered PVC membranes in Noida, India. ISO-certified with BIS-licensed production.',
+    images: ['/brand/twitter-card-bharat-electrosafe.png'],
+  },
+  robots: allowIndexing
+    ? { index: true, follow: true }
+    : { index: false, follow: false },
+};
 
 export default function AboutUsPage() {
-  const revealRef = useRef<boolean>(false);
-
-  useEffect(() => {
-    if (revealRef.current) return;
-    revealRef.current = true;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const revealElements = entry.target.querySelectorAll('.reveal-up');
-            revealElements.forEach((el) => {
-              el.classList.add('revealed');
-            });
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '-40px' }
-    );
-
-    const sections = document.querySelectorAll('section');
-    sections.forEach((section) => observer.observe(section));
-
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div className="min-h-screen flex flex-col bg-be-warm-white">
-      <Header />
-      <main className="flex-1">
-        {/* 1. Company intro + key facts */}
-        <AboutIntro />
-        {/* 2. Leadership */}
-        <CompanyLeadership />
-        {/* 3. Manufacturing, values, capability */}
-        <ManufacturingValues />
-        {/* 4. Awards, certifications, org references */}
-        <AwardsCertifications />
-        {/* 5. CTA */}
-        <AboutCTA />
-      </main>
-      <Footer />
-      <BackToTop />
-    </div>
-  );
+  return <AboutUsClient />;
 }

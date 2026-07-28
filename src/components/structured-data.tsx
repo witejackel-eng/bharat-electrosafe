@@ -4,12 +4,14 @@
  * Server component — no 'use client'.
  * Generates Product and WebSite schemas without fake prices, ratings,
  * reviews, SKUs or GTINs (B2B components, section 23 compliance).
+ *
+ * Uses the central site URL helper so that all URLs resolve against
+ * the official production domain, not a Vercel preview URL.
  */
 
+import { siteUrl } from '@/lib/site-url';
 import { company } from '@/data/company';
 import { products } from '@/data/products';
-
-const siteUrl = company.siteUrl;
 
 /** Product schema for each product family. */
 function ProductSchema() {

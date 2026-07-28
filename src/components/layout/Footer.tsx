@@ -93,7 +93,7 @@ export function Footer() {
                 <Mail className="size-4" />
               </a>
               <a
-                href={company.phonePrimaryTel}
+                href={`tel:${company.phonePrimaryTel}`}
                 className="size-11 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
                 aria-label="Phone"
               >
@@ -175,7 +175,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href={company.phonePrimaryTel}
+                  href={`tel:${company.phonePrimaryTel}`}
                   className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
                 >
                   <Phone className="size-4 shrink-0" />
@@ -230,7 +230,7 @@ export function Footer() {
                 <Mail className="size-4" />
               </a>
               <a
-                href={company.phonePrimaryTel}
+                href={`tel:${company.phonePrimaryTel}`}
                 className="size-10 inline-flex items-center justify-center rounded-md border border-be-grey-250 text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600 hover:border-be-yellow-400 transition-colors"
                 aria-label="Phone"
               >
@@ -307,7 +307,7 @@ export function Footer() {
                   </li>
                   <li>
                     <a
-                      href={company.phonePrimaryTel}
+                      href={`tel:${company.phonePrimaryTel}`}
                       className="flex items-center gap-2 text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors min-h-[44px]"
                     >
                       <Phone className="size-4 shrink-0" />
