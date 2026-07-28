@@ -27,7 +27,7 @@ import { ImageFrame } from '@/components/ui/ImageFrame';
 import { FeatureList } from '@/components/ui/FeatureList';
 import { SectionShell } from '@/components/ui/SectionShell';
 import type { ProductData, KeyBenefit } from '@/data/products';
-import { getImageAlt, getImageFit } from '@/data/products';
+import { getHeroImage } from '@/data/products';
 
 /* ── Icon mapping ── */
 
@@ -65,7 +65,9 @@ export function ProductOverview({ product }: ProductOverviewProps) {
     text: b.text,
   }));
 
-  const overviewSrc = product.images.overview ?? product.images.hero;
+  /* Falls back to the hero only where a product has no second usable view;
+     every product that has one shows something different here. */
+  const overview = product.images.overview ?? getHeroImage(product);
 
   return (
     <SectionShell variant="standard" bg="bg-be-white" topRule>
@@ -73,10 +75,10 @@ export function ProductOverview({ product }: ProductOverviewProps) {
         {/* Left: Application image */}
         <div className="lg:w-[45%] order-first lg:order-last">
           <ImageFrame
-            src={overviewSrc}
-            alt={getImageAlt(product, overviewSrc)}
+            src={overview.src}
+            alt={overview.alt}
             aspectRatio="landscape"
-            fit={getImageFit(product, overviewSrc)}
+            fit={overview.fit}
           />
         </div>
 

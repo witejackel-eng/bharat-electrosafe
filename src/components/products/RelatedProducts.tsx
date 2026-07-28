@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageFrame } from '@/components/ui/ImageFrame';
 import { SectionShell } from '@/components/ui/SectionShell';
-import { getProductBySlug, getImageAlt, getImageFit } from '@/data/products';
+import { getProductBySlug } from '@/data/products';
 import type { ProductData } from '@/data/products';
 import { cn } from '@/lib/utils';
 
@@ -55,10 +55,10 @@ export function RelatedProducts({ product }: RelatedProductsProps) {
               {/* Image-led card */}
               <div className="relative">
                 <ImageFrame
-                  src={rp.images.thumbnail}
-                  alt={getImageAlt(rp, rp.images.thumbnail)}
+                  src={rp.images.thumbnail.src}
+                  alt={rp.images.thumbnail.alt}
                   aspectRatio="landscape"
-                  fit={getImageFit(rp, rp.images.thumbnail)}
+                  fit={rp.images.thumbnail.fit}
                   className="border-0 rounded-none"
                   sizes="(max-width: 768px) 100vw, 360px"
                 />

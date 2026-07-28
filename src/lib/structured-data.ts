@@ -165,19 +165,15 @@ export function productSchema(product: ProductData) {
       : 'Construction Materials',
   };
 
-  // Product image — use the thumbnail and hero from the product images object
-  if (product.images) {
-    const imageUrls = [product.images.thumbnail, product.images.hero];
-    // Add detail images and overview if present
-    if (product.images.details && product.images.details.length > 0) {
-      imageUrls.push(...product.images.details);
-    }
-    if (product.images.overview) {
-      imageUrls.push(product.images.overview);
-    }
-    schema.image = imageUrls.map((img: string) =>
-      img.startsWith('http') ? img : `${siteUrl}${img}`
-    );
+  /* Product images — the approved gallery, in its curated order, so the hero
+     is first. The card image is deliberately excluded: it is a small crop of a
+     photograph already listed here, and Google asks for the high-resolution
+     asset rather than a thumbnail. Deduplicated because `overview` and
+     `application` point at gallery members. */
+  if (product.images.gallery.length > 0) {
+    schema.image = Array.from(
+      new Set(product.images.gallery.map((image) => image.src))
+    ).map((src) => (src.startsWith('http') ? src : `${siteUrl}${src}`));
   }
 
   // Additional properties — product-specific, never cross-contaminated
