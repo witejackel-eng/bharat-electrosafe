@@ -13,6 +13,7 @@ import { ProductDocuments } from '@/components/products/ProductDocuments';
 import { ProductFAQ } from '@/components/products/ProductFAQ';
 import { RelatedProducts } from '@/components/products/RelatedProducts';
 import { ProductCTA } from '@/components/products/ProductCTA';
+import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { ProductData } from '@/data/products';
 
 export default function EIMClient({ product }: { product: ProductData }) {
@@ -42,6 +43,17 @@ export default function EIMClient({ product }: { product: ProductData }) {
     <div className="min-h-screen flex flex-col bg-be-warm-white">
       <Header />
       <main className="flex-1">
+        {/* Breadcrumb */}
+        <div className="container-site page-horizontal-padding pt-5">
+          <Breadcrumb
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Products', href: '/products' },
+              { label: product.name },
+            ]}
+          />
+        </div>
+
         <ProductHero product={product} />
         <ProductOverview product={product} />
         <ProductApplications product={product} />

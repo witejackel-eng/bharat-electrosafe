@@ -63,8 +63,8 @@ export default function HomeFAQCTA() {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-6 mt-2">
-            <PrimaryButton href="/contact-us" size="lg">
-              Request a Quote
+            <PrimaryButton href="/contact-us?type=technical-guidance" size="lg">
+              Request Technical Guidance
             </PrimaryButton>
 
             <SecondaryButton href={`tel:${company.phonePrimaryTel}`}>

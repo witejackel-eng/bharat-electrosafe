@@ -66,7 +66,7 @@ export default function HomeHero() {
             {/* CTA buttons */}
             <div className="flex flex-wrap gap-4 mb-6">
               <PrimaryButton
-                onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
+                href="/products"
                 size="lg"
               >
                 View Products
