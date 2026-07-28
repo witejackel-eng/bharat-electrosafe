@@ -1,7 +1,6 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import Image from 'next/image';
 
 /**
  * HeroTechnicalVisual
@@ -50,28 +49,28 @@ const callouts: Callout[] = [
     id: 'bis',
     label: 'BIS LICENSED',
     style: 'top-[5%] right-[5%]',
-    anchor: { x: '72%', y: '30%' },
+    anchor: { x: '70%', y: '24%' },
     hideOnMobile: false,
   },
   {
     id: 'class',
     label: 'CLASS A · B · C',
-    style: 'top-[16%] left-[3%]',
-    anchor: { x: '40%', y: '34%' },
+    style: 'top-[30%] left-[3%]',
+    anchor: { x: '36%', y: '62%' },
     hideOnMobile: false,
   },
   {
     id: 'skid',
     label: 'ANTI-SKID SAFETY SURFACE',
-    style: 'bottom-[18%] right-[5%]',
-    anchor: { x: '58%', y: '68%' },
+    style: 'bottom-[20%] right-[4%]',
+    anchor: { x: '55%', y: '76%' },
     hideOnMobile: true,
   },
   {
     id: 'zone',
     label: 'PROTECTED WORKING ZONE',
-    style: 'bottom-[6%] left-[4%]',
-    anchor: { x: '34%', y: '78%' },
+    style: 'bottom-[5%] left-[4%]',
+    anchor: { x: '30%', y: '82%' },
     hideOnMobile: true,
     secondary: true,
   },
@@ -192,11 +191,6 @@ export default function HeroTechnicalVisual() {
           <pattern id="htvGrid" width="36" height="36" patternUnits="userSpaceOnUse">
             <path d="M36 0 H0 V36" fill="none" stroke="#242426" strokeOpacity="0.045" strokeWidth="1" />
           </pattern>
-          {/* Floor perspective gradient */}
-          <linearGradient id="htvFloor" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="#FFFDF3" />
-            <stop offset="1" stopColor="#F2EFE6" />
-          </linearGradient>
           {/* Switchgear body gradient (charcoal, matte metal) */}
           <linearGradient id="htvCab" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stopColor="#38383A" />
@@ -212,16 +206,16 @@ export default function HeroTechnicalVisual() {
           </filter>
         </defs>
 
-        {/* Floor plane — isometric trapezoid receding to upper-right */}
-        <polygon points="40,470 600,470 470,300 170,300" fill="url(#htvFloor)" opacity="0.7" />
+        {/* Engineering grid wash across the whole stage (decorative floor) */}
         <rect x="0" y="0" width="640" height="520" fill="url(#htvGrid)" />
 
-        {/* Floor perspective lines converging toward the switchgear base */}
-        <g stroke="#242426" strokeOpacity="0.06" strokeWidth="1">
-          <line x1="170" y1="300" x2="40" y2="470" />
-          <line x1="280" y1="300" x2="230" y2="470" />
-          <line x1="370" y1="300" x2="400" y2="470" />
-          <line x1="470" y1="300" x2="600" y2="470" />
+        {/* Faint floor perspective lines converging toward the switchgear base
+n            — subtle, no filled trapezoid podium. */}
+        <g stroke="#242426" strokeOpacity="0.05" strokeWidth="1">
+          <line x1="170" y1="310" x2="40" y2="475" />
+          <line x1="280" y1="310" x2="230" y2="475" />
+          <line x1="370" y1="310" x2="400" y2="475" />
+          <line x1="470" y1="310" x2="600" y2="475" />
         </g>
 
         {/* ── Layer 3: switchgear cabinet (upper-right, simplified) ── */}
@@ -310,69 +304,93 @@ export default function HeroTechnicalVisual() {
         </motion.g>
       </svg>
 
-      {/* ── Layer 4: real insulating-mat photo on the floor plane ── */}
-      {/* CSS perspective gives the flat product photo depth so it reads as
-          lying on the floor, unrolled toward the viewer. The real photo
-          (photo-surface-01.webp — black, coin-pattern) carries the product
-          realism; SVG above supplies the industrial context. */}
+      {/* ── Layer 4: flat insulating mat on the floor (SVG + real photo) ──
+          The mat is drawn as a perspective trapezoid directly in the SVG
+          below (wider at the front, narrower at the back) so it unmistakably
+          reads as lying flat on the floor. The real Bharat Electrosafe
+          product photo (photo-surface-01.webp — black, coin-pattern) is
+          clipped to that trapezoid, giving genuine product texture while the
+          trapezoid shape carries the perspective. No CSS 3D rotation is used
+          — the shape itself is the perspective cue. */}
       <motion.div
-        className="absolute inset-0 flex items-end justify-center"
+        className="absolute inset-0"
         {...matMotion}
       >
-        <div
-          className="relative"
-          style={{
-            perspective: '900px',
-            perspectiveOrigin: '50% 20%',
-            width: '100%',
-            height: '100%',
-          }}
+        <svg
+          className="absolute inset-0 h-full w-full"
+          viewBox="0 0 640 520"
+          preserveAspectRatio="xMidYMid slice"
+          role="img"
+          aria-label="Bharat Electrosafe electrical insulating mat — a flat black rubber mat with circular anti-skid coin texture and a yellow safety edge, lying on the floor in front of an electrical switchgear cabinet."
         >
-          {/* Contact shadow beneath the mat — grounds it on the floor */}
-          <div
-            className="absolute left-1/2 bottom-[8%] -translate-x-1/2"
-            style={{
-              width: '66%',
-              height: '36px',
-              background:
-                'radial-gradient(ellipse, rgba(36,36,38,0.38) 10%, rgba(36,36,38,0.18) 45%, transparent 75%)',
-              filter: 'blur(8px)',
-            }}
-            aria-hidden="true"
+          <defs>
+            {/* Clip the real mat photo to the perspective trapezoid. */}
+            <clipPath id="matClip">
+              {/* Back-left, back-right, front-right, front-left — wider at front */}
+              <polygon points="195,338 405,338 525,468 115,468" />
+            </clipPath>
+            {/* Subtle darkening gradient — far edge slightly darker for depth */}
+            <linearGradient id="matShade" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#000000" stopOpacity="0.35" />
+              <stop offset="0.5" stopColor="#000000" stopOpacity="0" />
+              <stop offset="1" stopColor="#000000" stopOpacity="0.05" />
+            </linearGradient>
+            {/* Mat body fill — dense charcoal rubber */}
+            <linearGradient id="matBody" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#1f1f21" />
+              <stop offset="1" stopColor="#242426" />
+            </linearGradient>
+          </defs>
+
+          {/* Soft contact shadow directly beneath the mat — grounds it */}
+          <ellipse
+            cx="320"
+            cy="473"
+            rx="220"
+            ry="14"
+            fill="#242426"
+            opacity="0.16"
+            filter="url(#htvSoft)"
           />
-          {/* The real mat — rotated onto the floor plane */}
-          <div
-            className="absolute left-1/2 bottom-[10%] -translate-x-1/2"
-            style={{
-              width: '70%',
-              maxWidth: '460px',
-              transformStyle: 'preserve-3d',
-              transform: 'rotateX(52deg)',
-              transformOrigin: '50% 100%',
-            }}
-          >
-            <Image
-              src="/media/products/electrical-insulating-mats/photo-surface-01.webp"
-              alt="Bharat Electrosafe electrical insulating mat — black rubber with circular anti-skid coin pattern, installed in front of switchgear"
-              width={1600}
-              height={900}
-              sizes="(max-width: 768px) 90vw, (max-width: 1280px) 48vw, 540px"
-              className="block w-full h-auto rounded-[2px] shadow-xl"
-              style={{ objectFit: 'cover', aspectRatio: '16 / 9' }}
-              priority
-            />
-            {/* Yellow safety-edge accent along the front (leading) edge —
-                a brand tie-in, not a fabricated product spec. */}
-            <motion.div
-              className="absolute left-0 right-0 -bottom-[3px] h-[5px] rounded-full"
-              style={{
-                background: 'linear-gradient(90deg, transparent, #FFC400 18%, #FFC400 82%, transparent)',
-              }}
-              {...stripMotion}
-              aria-hidden="true"
-            />
-          </div>
-        </div>
+
+          {/* ── Mat body (perspective trapezoid) ── */}
+          {/* Base fill — dense charcoal rubber */}
+          <polygon points="195,338 405,338 525,468 115,468" fill="url(#matBody)" />
+
+          {/* Real product photo clipped to the trapezoid — coin-pattern texture.
+              preserveAspectRatio=slice crops the photo to fill the bounding box
+              so the light background around the mat in the source photo is
+              cropped out. opacity 0.92 lets the charcoal base show through
+              for a consistent dark industrial finish. */}
+          <image
+            href="/media/products/electrical-insulating-mats/photo-surface-01.webp"
+            x="115"
+            y="338"
+            width="410"
+            height="130"
+            preserveAspectRatio="xMidYMid slice"
+            clipPath="url(#matClip)"
+            opacity="0.92"
+          />
+
+          {/* Depth shading — darker at the back (far edge) for perspective */}
+          <polygon points="195,338 405,338 525,468 115,468" fill="url(#matShade)" clipPath="url(#matClip)" />
+
+          {/* Thin front-edge thickness — shows realistic material profile */}
+          <polygon points="115,468 525,468 520,475 120,475" fill="#0d0d0e" />
+
+          {/* Yellow safety edge — narrow identification strip along the front edge */}
+          <motion.polygon
+            points="115,468 525,468 523,471 117,471"
+            fill="#FFC400"
+            opacity="0.88"
+            {...stripMotion}
+          />
+
+          {/* Very subtle corner lift on the front-left corner — shows flexibility
+              without creating a fold. Only 3% of mat width. */}
+          <polygon points="115,468 132,468 126,461 119,462" fill="#1a1a1c" stroke="#0d0d0e" strokeWidth="0.5" />
+        </svg>
       </motion.div>
 
       {/* ── Layer 5: HTML callouts with SVG leader lines ─────────── */}
