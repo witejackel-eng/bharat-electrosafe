@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { company } from "@/data/company";
 import { siteUrl, allowIndexing } from "@/lib/site-url";
+import { HomepageStructuredData } from "@/components/structured-data";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -88,34 +89,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Organization structured data (JSON-LD) — verified fields only.
-            sameAs, foundingDate, numberOfEmployees, award, brand and
-            areaServed are omitted until genuine data is confirmed.
-            The generic LinkedIn homepage is not Bharat Electrosafe's
-            company page, so it is excluded from sameAs. */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Organization',
-              name: company.name,
-              legalName: company.legalName,
-              url: siteUrl,
-              email: company.email,
-              telephone: `tel:${company.phonePrimaryTel}`,
-              address: {
-                '@type': 'PostalAddress',
-                streetAddress: `${company.address.line1}, ${company.address.line2}`,
-                addressLocality: company.address.city,
-                addressRegion: company.address.state,
-                postalCode: company.address.pincode,
-                addressCountry: company.address.country,
-              },
-              logo: `${siteUrl}/images/brand/bharat-electrosafe-logo.png`,
-            }),
-          }}
-        />
+        {/* Google Search Console verification — only output when a real
+            value exists. Do not commit a real verification token. */}
+        {process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && (
+          <meta
+            name="google-site-verification"
+            content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION}
+          />
+        )}
+        {/* Structured data: Organisation, WebSite, LocalBusiness schemas.
+            Uses the centralised structured-data utility with @id, verified
+            fields only, and the production domain. No fake sameAs, foundingDate,
+            numberOfEmployees, or unverified claims. */}
+        <HomepageStructuredData />
       </head>
       <body
         className={`${manrope.variable} antialiased bg-be-warm-white text-be-charcoal-950`}

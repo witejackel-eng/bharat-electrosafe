@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { siteUrl, allowIndexing, buildUrl } from '@/lib/site-url';
+import { ContactPageStructuredData } from '@/components/structured-data';
 import ContactUsClient from './ContactUsClient';
 
 export const metadata: Metadata = {
@@ -37,5 +38,10 @@ export const metadata: Metadata = {
 };
 
 export default function ContactUsPage() {
-  return <ContactUsClient />;
+  return (
+    <>
+      <ContactPageStructuredData />
+      <ContactUsClient />
+    </>
+  );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { siteUrl, allowIndexing, buildUrl } from '@/lib/site-url';
+import { ProductsPageStructuredData } from '@/components/structured-data';
 import ProductsClient from './ProductsClient';
 
 export const metadata: Metadata = {
@@ -37,5 +38,10 @@ export const metadata: Metadata = {
 };
 
 export default function ProductsPage() {
-  return <ProductsClient />;
+  return (
+    <>
+      <ProductsPageStructuredData />
+      <ProductsClient />
+    </>
+  );
 }

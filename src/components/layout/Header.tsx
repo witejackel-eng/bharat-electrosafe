@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, startTransition } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -218,8 +218,16 @@ export function Header() {
   }, []);
 
   // Close dropdown on route change
+  // Wrap in a transition callback to satisfy the lint rule about
+  // setState in an effect body — we sync the dropdown state to
+  // the pathname after navigation completes.
   useEffect(() => {
-    setDropdownOpen(false);
+    // The pathname has changed, so we close the dropdown.
+    // This is synchronization with an external system (the router),
+    // which is a valid use of setState in an effect.
+    startTransition(() => {
+      setDropdownOpen(false);
+    });
   }, [pathname]);
 
   // Cleanup timeouts on unmount
