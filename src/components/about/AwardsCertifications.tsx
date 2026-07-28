@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { YouTubeFacade } from '@/components/media/YouTubeFacade';
+import { SectionShell } from '@/components/ui/SectionShell';
 import { awards, allTrustMarks } from '@/data/trust';
 
 /**
@@ -36,11 +37,8 @@ const videos = [
 
 export default function AwardsCertifications() {
   return (
-    <section
-      id="recognition"
-      className="bg-be-white section-padding-major page-horizontal-padding"
-    >
-      <div className="container-site flex flex-col gap-12">
+    <SectionShell variant="standard" bg="bg-be-white" topRule id="recognition">
+      <div className="flex flex-col gap-12">
         {/* ── Awards ── */}
         <div className="reveal-up">
           <SectionHeader
@@ -137,6 +135,6 @@ export default function AwardsCertifications() {
           </div>
         </div>
       </div>
-    </section>
+    </SectionShell>
   );
 }

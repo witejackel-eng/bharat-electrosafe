@@ -25,6 +25,7 @@ import type { LucideIcon } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ImageFrame } from '@/components/ui/ImageFrame';
 import { FeatureList } from '@/components/ui/FeatureList';
+import { SectionShell } from '@/components/ui/SectionShell';
 import type { ProductData, KeyBenefit } from '@/data/products';
 import { getImageAlt, getImageFit } from '@/data/products';
 
@@ -67,31 +68,29 @@ export function ProductOverview({ product }: ProductOverviewProps) {
   const overviewSrc = product.images.overview ?? product.images.hero;
 
   return (
-    <section className="section-padding-supporting bg-be-white">
-      <div className="container-site page-horizontal-padding">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
-          {/* Left: Application image */}
-          <div className="lg:w-[45%] order-first lg:order-last">
-            <ImageFrame
-              src={overviewSrc}
-              alt={getImageAlt(product, overviewSrc)}
-              aspectRatio="landscape"
-              fit={getImageFit(product, overviewSrc)}
-            />
-          </div>
+    <SectionShell variant="standard" bg="bg-be-white" topRule>
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
+        {/* Left: Application image */}
+        <div className="lg:w-[45%] order-first lg:order-last">
+          <ImageFrame
+            src={overviewSrc}
+            alt={getImageAlt(product, overviewSrc)}
+            aspectRatio="landscape"
+            fit={getImageFit(product, overviewSrc)}
+          />
+        </div>
 
-          {/* Right: Overview text + key benefits */}
-          <div className="lg:w-[55%] flex flex-col gap-6">
-            <SectionHeader
-              eyebrow="Product Overview"
-              title={`${product.shortName} Overview`}
-              supportingText={product.overviewText}
-            />
+        {/* Right: Overview text + key benefits */}
+        <div className="lg:w-[55%] flex flex-col gap-6">
+          <SectionHeader
+            eyebrow="Product Overview"
+            title={`${product.shortName} Overview`}
+            supportingText={product.overviewText}
+          />
 
-            <FeatureList items={featureItems} />
-          </div>
+          <FeatureList items={featureItems} />
         </div>
       </div>
-    </section>
+    </SectionShell>
   );
 }

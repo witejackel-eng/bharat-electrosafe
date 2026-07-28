@@ -15,6 +15,7 @@ import { ProductCTA } from '@/components/products/ProductCTA';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { DataTable } from '@/components/ui/DataTable';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
+import { SectionShell } from '@/components/ui/SectionShell';
 import { ProductData } from '@/data/products';
 
 export default function BHSClient({ product }: { product: ProductData }) {
@@ -64,23 +65,21 @@ export default function BHSClient({ product }: { product: ProductData }) {
 
         {/* 3. Material & dimensions + specifications table */}
         <ProductMaterialDimensions product={product} />
-        <section className="section-padding-supporting bg-be-white">
-          <div className="container-site page-horizontal-padding">
-            <div className="flex flex-col gap-6">
-              <SectionHeader
-                eyebrow="Water Stop Properties"
-                title="Product Specifications"
-                supportingText="BharatHydro Seal water stops are manufactured to IS 15058-2002, offering reliable water-tight sealing across a range of joint configurations and pressure conditions."
-              />
+        <SectionShell variant="technical" bg="bg-be-cream" topRule>
+          <div className="flex flex-col gap-6">
+            <SectionHeader
+              eyebrow="Water Stop Properties"
+              title="Product Specifications"
+              supportingText="BharatHydro Seal water stops are manufactured to IS 15058-2002, offering reliable water-tight sealing across a range of joint configurations and pressure conditions."
+            />
 
-              <DataTable
-                headers={product.specifications.headers}
-                rows={product.specifications.rows}
-                stickyFirstColumn
-              />
-            </div>
+            <DataTable
+              headers={product.specifications.headers}
+              rows={product.specifications.rows}
+              stickyFirstColumn
+            />
           </div>
-        </section>
+        </SectionShell>
 
         {/* 4. Documents + FAQ */}
         <ProductDocuments product={product} />
