@@ -4,6 +4,7 @@ import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
+import { productNavigationItems } from '@/data/products';
 
 export default function NotFound() {
   return (
@@ -44,16 +45,36 @@ export default function NotFound() {
           {/* Subtext */}
           <p className="text-body-large text-be-grey-650 max-w-md mx-auto mb-8">
             The page you are looking for does not exist or has been moved.
+            Try one of the links below to find what you need.
           </p>
 
           {/* Action buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <PrimaryButton href="/">
               Return to Home
             </PrimaryButton>
             <SecondaryButton href="/contact-us">
               Contact Us
             </SecondaryButton>
+          </div>
+
+          {/* Product family links */}
+          <div className="max-w-lg mx-auto">
+            <h2 className="text-sm font-semibold text-be-charcoal-950 uppercase tracking-wide mb-4">
+              Our Products
+            </h2>
+            <ul className="flex flex-col gap-2">
+              {productNavigationItems.map((product) => (
+                <li key={product.slug}>
+                  <Link
+                    href={`/products/${product.slug}`}
+                    className="text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
+                  >
+                    {product.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </main>

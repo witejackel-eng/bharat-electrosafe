@@ -1,73 +1,182 @@
 /**
- * Structured data (JSON-LD) for Bharat Electrosafe products.
+ * Structured data (JSON-LD) for Bharat Electrosafe.
  *
  * Server component — no 'use client'.
- * Generates Product and WebSite schemas without fake prices, ratings,
- * reviews, SKUs or GTINs (B2B components, section 23 compliance).
+ * Uses the centralised structured-data utility (src/lib/structured-data.ts)
+ * so that all schemas use consistent entity IDs, the production domain,
+ * and verified data from central sources.
  *
- * Uses the central site URL helper so that all URLs resolve against
- * the official production domain, not a Vercel preview URL.
+ * No fake prices, ratings, reviews, SKUs, GTINs, MPNs, stock status,
+ * shipping data, or offer expiry dates are ever emitted.
+ *
+ * Sections 2–8 of the Phase 5 specification.
  */
 
-import { siteUrl } from '@/lib/site-url';
-import { company } from '@/data/company';
+import {
+  websiteSchema,
+  organisationSchema,
+  localBusinessSchema,
+  productSchema,
+  breadcrumbSchema,
+  faqSchema,
+  serializeJsonLd,
+  type BreadcrumbItem,
+  type FAQItem,
+} from '@/lib/structured-data';
 import { products } from '@/data/products';
 
-/** Product schema for each product family. */
-function ProductSchema() {
+/* ────────────────────────────────────────────
+   Homepage: Organisation + WebSite + LocalBusiness
+   ──────────────────────────────────────────── */
+
+export function HomepageStructuredData() {
   return (
     <>
-      {products.map((product) => (
-        <script
-          key={product.slug}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Product',
-              name: product.name,
-              description: product.description,
-              url: `${siteUrl}/products/${product.slug}`,
-              brand: {
-                '@type': 'Brand',
-                name: company.name,
-              },
-              manufacturer: {
-                '@type': 'Organization',
-                name: company.name,
-                url: siteUrl,
-              },
-            }),
-          }}
-        />
-      ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(organisationSchema()),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(websiteSchema()),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(localBusinessSchema()),
+        }}
+      />
     </>
   );
 }
 
-/** WebSite schema (no search action — site has no search UI). */
-function WebSiteSchema() {
+/* ────────────────────────────────────────────
+   Product page: Product + Breadcrumb schema
+   ──────────────────────────────────────────── */
+
+interface ProductPageStructuredDataProps {
+  productSlug: string;
+  faqs?: FAQItem[];
+}
+
+export function ProductPageStructuredData({ productSlug, faqs }: ProductPageStructuredDataProps) {
+  const product = products.find((p) => p.slug === productSlug);
+  if (!product) return null;
+
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { name: 'Home', href: '/' },
+    { name: 'Products', href: '/products' },
+    { name: product.name, href: `/products/${product.slug}` },
+  ];
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(productSchema(product)),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(breadcrumbSchema(breadcrumbItems, `/products/${product.slug}`)),
+        }}
+      />
+      {faqs && faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeJsonLd(faqSchema(faqs, `/products/${product.slug}`)),
+          }}
+        />
+      )}
+    </>
+  );
+}
+
+/* ────────────────────────────────────────────
+   Products index: Breadcrumb schema
+   ──────────────────────────────────────────── */
+
+export function ProductsPageStructuredData() {
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { name: 'Home', href: '/' },
+    { name: 'Products', href: '/products' },
+  ];
+
   return (
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'WebSite',
-          name: company.name,
-          url: siteUrl,
-          description: company.description,
-        }),
+        __html: serializeJsonLd(breadcrumbSchema(breadcrumbItems, '/products')),
       }}
     />
   );
 }
 
-export function StructuredData() {
+/* ────────────────────────────────────────────
+   About Us: Breadcrumb schema
+   ──────────────────────────────────────────── */
+
+export function AboutPageStructuredData() {
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: '/about-us' },
+  ];
+
   return (
-    <>
-      <WebSiteSchema />
-      <ProductSchema />
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: serializeJsonLd(breadcrumbSchema(breadcrumbItems, '/about-us')),
+      }}
+    />
+  );
+}
+
+/* ────────────────────────────────────────────
+   Contact Us: Breadcrumb schema
+   ──────────────────────────────────────────── */
+
+export function ContactPageStructuredData() {
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { name: 'Home', href: '/' },
+    { name: 'Contact Us', href: '/contact-us' },
+  ];
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: serializeJsonLd(breadcrumbSchema(breadcrumbItems, '/contact-us')),
+      }}
+    />
+  );
+}
+
+/* ────────────────────────────────────────────
+   FAQ page: standalone FAQ schema
+   ──────────────────────────────────────────── */
+
+interface FAQStructuredDataProps {
+  faqs: FAQItem[];
+  path: string;
+}
+
+export function FAQStructuredData({ faqs, path }: FAQStructuredDataProps) {
+  if (!faqs || faqs.length === 0) return null;
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: serializeJsonLd(faqSchema(faqs, path)),
+      }}
+    />
   );
 }

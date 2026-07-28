@@ -58,6 +58,7 @@ const productInterests = [
   { value: 'bcim', label: 'Bi-Color Mats' },
   { value: 'agrim', label: 'Auto-Glow/Reflective Mats' },
   { value: 'bm', label: 'BharatMembrane' },
+  { value: 'bhs', label: 'Bharat Hydro Seal' },
 ];
 
 /* ────────────────────────────────────────────
@@ -221,7 +222,7 @@ export default function EnquiryQuoteLayout() {
 
             {/* Inline error message */}
             {submitError && (
-              <div className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 text-red-800">
+              <div className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 text-red-800" role="alert" aria-live="assertive">
                 <p className="font-semibold">Something went wrong. Please try again or contact us directly.</p>
                 <p className="text-body mt-1">
                   You can reach us at {company.email} or call {company.phonePrimary}.
@@ -246,6 +247,10 @@ export default function EnquiryQuoteLayout() {
                     type="text"
                     {...register('name')}
                     disabled={isSubmitting}
+                    autoComplete="name"
+                    aria-required="true"
+                    aria-invalid={errors.name ? 'true' : undefined}
+                    aria-describedby={errors.name ? 'name-error' : undefined}
                     className={cn(
                       'h-11 rounded-lg border bg-be-white px-4 text-base outline-none transition-colors',
                       'border-be-grey-250 focus:border-be-yellow-500 focus:ring-2 focus:ring-be-yellow-500/20',
@@ -255,7 +260,7 @@ export default function EnquiryQuoteLayout() {
                     placeholder="Your full name"
                   />
                   {errors.name && (
-                    <span className="text-sm text-red-600">{errors.name.message}</span>
+                    <span id="name-error" className="text-sm text-red-600" role="alert">{errors.name.message}</span>
                   )}
                 </div>
 
@@ -268,6 +273,7 @@ export default function EnquiryQuoteLayout() {
                     type="text"
                     {...register('company')}
                     disabled={isSubmitting}
+                    autoComplete="organization"
                     className={cn(
                       'h-11 rounded-lg border border-be-grey-250 bg-be-white px-4 text-base outline-none transition-colors focus:border-be-yellow-500 focus:ring-2 focus:ring-be-yellow-500/20',
                       isSubmitting && 'opacity-60 cursor-not-allowed'
@@ -288,6 +294,10 @@ export default function EnquiryQuoteLayout() {
                     type="email"
                     {...register('email')}
                     disabled={isSubmitting}
+                    autoComplete="email"
+                    aria-required="true"
+                    aria-invalid={errors.email ? 'true' : undefined}
+                    aria-describedby={errors.email ? 'email-error' : undefined}
                     className={cn(
                       'h-11 rounded-lg border bg-be-white px-4 text-base outline-none transition-colors',
                       'border-be-grey-250 focus:border-be-yellow-500 focus:ring-2 focus:ring-be-yellow-500/20',
@@ -297,7 +307,7 @@ export default function EnquiryQuoteLayout() {
                     placeholder="you@yourcompany.in"
                   />
                   {errors.email && (
-                    <span className="text-sm text-red-600">{errors.email.message}</span>
+                    <span id="email-error" className="text-sm text-red-600" role="alert">{errors.email.message}</span>
                   )}
                 </div>
 
@@ -310,6 +320,7 @@ export default function EnquiryQuoteLayout() {
                     type="tel"
                     {...register('phone')}
                     disabled={isSubmitting}
+                    autoComplete="tel"
                     className={cn(
                       'h-11 rounded-lg border border-be-grey-250 bg-be-white px-4 text-base outline-none transition-colors focus:border-be-yellow-500 focus:ring-2 focus:ring-be-yellow-500/20',
                       isSubmitting && 'opacity-60 cursor-not-allowed'
@@ -349,7 +360,7 @@ export default function EnquiryQuoteLayout() {
                     </SelectContent>
                   </Select>
                   {errors.enquiryType && (
-                    <span className="text-sm text-red-600">{errors.enquiryType.message}</span>
+                    <span id="enquiryType-error" className="text-sm text-red-600" role="alert">{errors.enquiryType.message}</span>
                   )}
                 </div>
 
@@ -390,6 +401,9 @@ export default function EnquiryQuoteLayout() {
                   {...register('message')}
                   rows={4}
                   disabled={isSubmitting}
+                  aria-required="true"
+                  aria-invalid={errors.message ? 'true' : undefined}
+                  aria-describedby={errors.message ? 'message-error' : undefined}
                   className={cn(
                     'rounded-lg border bg-be-white px-4 py-3 text-base outline-none transition-colors min-h-[120px] resize-y',
                     'border-be-grey-250 focus:border-be-yellow-500 focus:ring-2 focus:ring-be-yellow-500/20',
@@ -399,7 +413,7 @@ export default function EnquiryQuoteLayout() {
                   placeholder="Describe your requirement in detail…"
                 />
                 {errors.message && (
-                  <span className="text-sm text-red-600">{errors.message.message}</span>
+                  <span id="message-error" className="text-sm text-red-600" role="alert">{errors.message.message}</span>
                 )}
               </div>
 

@@ -36,6 +36,11 @@ const productSpecificQuestions: Record<string, FAQItem> = {
     answer:
       'Yes. BharatMembrane is engineered for use in below-grade waterproofing including basements, foundations, tunnel linings and other submerged or earth-retained structures. The membrane is available in multiple thickness variants, with thicker grades recommended for higher hydrostatic pressure and continuous water exposure.',
   },
+  'bharat-hydro-seal': {
+    question: 'What are PVC water stops and where are they used?',
+    answer:
+      'PVC water stops are flexible strips embedded in concrete joints to prevent water seepage. They are used in construction joints, expansion joints and contraction joints in basements, water tanks, retaining walls, tunnels and other below-grade structures.',
+  },
 };
 
 /* ── Component ── */
