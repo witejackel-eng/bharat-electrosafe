@@ -8,6 +8,17 @@
  * Biographies are condensed for the redesigned interface but nothing is
  * added: no qualification, employer, figure or achievement appears here that
  * the source does not state.
+ *
+ * `fullProfile` is stored as an array of paragraphs so the component can
+ * render them with natural spacing without re-splitting on every render.
+ * The words are unchanged from the verified source content — only the
+ * paragraph boundaries were added for readability.
+ *
+ * `imagePosition` sets the CSS `object-position` per portrait so faces stay
+ * visible without cropping. Each value is chosen for the specific photograph.
+ *
+ * `expertise` is a short list of factual labels drawn strictly from the
+ * biography text — no invented expertise.
  */
 
 export interface Leader {
@@ -16,7 +27,12 @@ export interface Leader {
   image: string;
   imageAlt: string;
   shortBio: string;
-  fullProfile: string;
+  /** Multi-paragraph biography, split at logical sentence boundaries. */
+  fullProfile: string[];
+  /** Per-portrait CSS object-position value (e.g. "center 25%"). */
+  imagePosition?: string;
+  /** 2–3 concise factual expertise labels derived from the biography. */
+  expertise?: string[];
 }
 
 export const leaders: Leader[] = [
@@ -27,8 +43,13 @@ export const leaders: Leader[] = [
     imageAlt: 'Vishnu Gupta, Co-Founder and Director of Bharat Electrosafe',
     shortBio:
       'Chartered Accountant and entrepreneur leading Bharat Electrosafe’s manufacturing and compliance direction.',
-    fullProfile:
-      'CA. Vishnu Gupta is a Chartered Accountant (ICAI, 2005) with over 18 years of leadership experience across finance, manufacturing and infrastructure. As Co-Founder & Director he has led Bharat Electrosafe to become a nationally trusted manufacturer of IS 15652 and IEC 61111 compliant high-voltage insulating mats, marketed through Tata Precision Industries (India) Ltd. He previously held financial leadership roles at Universal Cables Ltd. (MP Birla Group), GHCL Ltd. and Cavendish Industries Ltd. (JK Tyre Group). He is also Co-Founder of Samridhi Test House Pvt. Ltd., an ISO/IEC 17025-accredited and BIS-recognised testing laboratory.',
+    fullProfile: [
+      'CA. Vishnu Gupta is a Chartered Accountant (ICAI, 2005) with over 18 years of leadership experience across finance, manufacturing and infrastructure.',
+      'As Co-Founder & Director he has led Bharat Electrosafe to become a nationally trusted manufacturer of IS 15652 and IEC 61111 compliant high-voltage insulating mats, marketed through Tata Precision Industries (India) Ltd. He previously held financial leadership roles at Universal Cables Ltd. (MP Birla Group), GHCL Ltd. and Cavendish Industries Ltd. (JK Tyre Group).',
+      'He is also Co-Founder of Samridhi Test House Pvt. Ltd., an ISO/IEC 17025-accredited and BIS-recognised testing laboratory.',
+    ],
+    imagePosition: 'center 25%',
+    expertise: ['Finance', 'Manufacturing', 'Compliance'],
   },
   {
     name: 'Krishan Kumar Khandelwal',
@@ -37,8 +58,13 @@ export const leaders: Leader[] = [
     imageAlt: 'Krishan Kumar Khandelwal, Co-Founder and Director of Bharat Electrosafe',
     shortBio:
       'Business strategist overseeing production, quality assurance and partner engagement.',
-    fullProfile:
-      'Mr. Krishan Kumar Khandelwal is an entrepreneur and business strategist with over 25 years across manufacturing, trading, real estate, infrastructure and customer relations. As Co-Founder & Director he oversees operations, quality assurance and partner engagement at Bharat Electrosafe, managing production, vendor development and after-sales coordination. He comes from a business family with a legacy of more than 70 years in the tobacco and sweet supari industry, a background that shaped his approach to supply chain management and long-term customer relationships. His collaborative work supported the company’s tie-up with Tata Precision Industries (India) Ltd.',
+    fullProfile: [
+      'Mr. Krishan Kumar Khandelwal is an entrepreneur and business strategist with over 25 years across manufacturing, trading, real estate, infrastructure and customer relations.',
+      'As Co-Founder & Director he oversees operations, quality assurance and partner engagement at Bharat Electrosafe, managing production, vendor development and after-sales coordination. He comes from a business family with a legacy of more than 70 years in the tobacco and sweet supari industry, a background that shaped his approach to supply chain management and long-term customer relationships.',
+      'His collaborative work supported the company’s tie-up with Tata Precision Industries (India) Ltd.',
+    ],
+    imagePosition: 'center 20%',
+    expertise: ['Operations', 'Quality assurance', 'Partner engagement'],
   },
   {
     name: 'Priyanka Garg',
@@ -47,8 +73,13 @@ export const leaders: Leader[] = [
     imageAlt: 'Priyanka Garg, Entrepreneur, Co-Founder and Director of Bharat Electrosafe',
     shortBio:
       'Rubber and polymer industry leader directing strategy, exports and international trade.',
-    fullProfile:
-      'Mrs. Priyanka Garg brings over 20 years of experience in the rubber and polymer industry, and as Co-Founder and Director has shaped Bharat Electrosafe’s development into a global supplier and exporter of industrial and commercial products, particularly electrical insulating mats. She holds an M.Com from Agra University and a business certification from UP Technical University. Her proficiencies span insulating mats, silicone rubber sheets, EPDM membranes, and PVC and rubber compounds, extending beyond manufacturing into consulting, quality testing and international trade facilitation. Under her leadership the company reports a presence in 11+ countries.',
+    fullProfile: [
+      'Mrs. Priyanka Garg brings over 20 years of experience in the rubber and polymer industry, and as Co-Founder and Director has shaped Bharat Electrosafe’s development into a global supplier and exporter of industrial and commercial products, particularly electrical insulating mats.',
+      'She holds an M.Com from Agra University and a business certification from UP Technical University. Her proficiencies span insulating mats, silicone rubber sheets, EPDM membranes, and PVC and rubber compounds, extending beyond manufacturing into consulting, quality testing and international trade facilitation.',
+      'Under her leadership the company reports a presence in 11+ countries.',
+    ],
+    imagePosition: 'center 30%',
+    expertise: ['Polymer industry', 'Exports', 'International trade'],
   },
 ];
 

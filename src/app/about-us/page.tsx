@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { allowIndexing, buildUrl } from '@/lib/site-url';
 import { AboutPageStructuredData } from '@/components/structured-data';
-import AboutUsClient from './AboutUsClient';
+import AboutUsShell from './AboutUsShell';
 
 /* Title convention: the normal Metadata.title does NOT include the
    "| Bharat Electrosafe" suffix because the root layout template appends
@@ -48,7 +48,7 @@ export default function AboutUsPage() {
   return (
     <>
       <AboutPageStructuredData />
-      <AboutUsClient />
+      <AboutUsShell />
     </>
   );
 }

@@ -550,4 +550,119 @@
       opacity: 0.18;
     }
   }
+
+  /* ──────────────────────────────────────────────────────────────
+     LeaderProfileCard — premium entrance animation via @starting-style.
+     CSS-only, one-shot, staggered. No Framer Motion, no JS.
+
+     Design principle: every element's DEFAULT computed state is its
+     FINAL state (opacity:1, translateY(0), scaleX(1)). Entry animation
+     runs once on initial render via @starting-style. Content is visible
+     immediately when:
+       • JavaScript is disabled
+       • prefers-reduced-motion is set
+       • The browser doesn't support @starting-style
+       • PageSpeed's first meaningful frame is captured
+     ────────────────────────────────────────────────────────────── */
+
+  /* Card entrance — fade + slight upward slide (12px max) */
+  .leader-card {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.5s ease-out,
+      transform 0.5s ease-out,
+      border-color 0.22s ease-out,
+      box-shadow 0.22s ease-out;
+  }
+  @starting-style {
+    .leader-card {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  /* Portrait entrance — delayed fade-in */
+  .leader-portrait {
+    opacity: 1;
+    transition: opacity 0.6s ease-out 0.15s;
+  }
+  @starting-style {
+    .leader-portrait {
+      opacity: 0;
+    }
+  }
+
+  /* Portrait image — subtle scale on hover (pointer devices only) */
+  .leader-portrait-img {
+    transition: transform 0.4s ease-out;
+  }
+
+  /* Yellow accent rule — extends from 0 to full width on entrance */
+  .leader-accent {
+    transform: scaleX(1);
+    transform-origin: left;
+    transition: transform 0.5s ease-out 0.25s;
+  }
+  @starting-style {
+    .leader-accent {
+      transform: scaleX(0);
+    }
+  }
+
+  /* Staggered card delays — 100ms between siblings */
+  .leader-card:nth-child(1) {
+    transition-delay: 0ms;
+  }
+  .leader-card:nth-child(2) {
+    transition-delay: 100ms;
+  }
+  .leader-card:nth-child(3) {
+    transition-delay: 200ms;
+  }
+
+  /* Hover — pointer devices only. Image scales to 1.02, border strengthens,
+     accent extends slightly, card lifts 1px. No layout shift. */
+  @media (hover: hover) {
+    .leader-card:hover {
+      border-color: var(--be-yellow-400);
+      box-shadow:
+        0 1px 2px rgba(36, 36, 38, 0.04),
+        0 6px 16px rgba(36, 36, 38, 0.06);
+    }
+    .leader-card:hover .leader-portrait-img {
+      transform: scale(1.02);
+    }
+    .leader-card:hover .leader-accent {
+      transform: scaleX(1.12);
+      transition: transform 0.25s ease-out;
+    }
+  }
+
+  /* Reduced motion — show final state immediately, no transitions,
+     no transforms. Hover colour feedback is preserved without movement. */
+  @media (prefers-reduced-motion: reduce) {
+    .leader-card,
+    .leader-portrait,
+    .leader-portrait-img,
+    .leader-accent {
+      transition: none;
+      transform: none;
+    }
+    .leader-card:nth-child(1),
+    .leader-card:nth-child(2),
+    .leader-card:nth-child(3) {
+      transition-delay: 0ms;
+    }
+    .leader-card:hover {
+      border-color: var(--be-yellow-400);
+      box-shadow: none;
+    }
+    .leader-card:hover .leader-portrait-img {
+      transform: none;
+    }
+    .leader-card:hover .leader-accent {
+      transform: none;
+    }
+  }
 }
