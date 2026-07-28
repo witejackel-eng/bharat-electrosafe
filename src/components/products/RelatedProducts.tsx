@@ -66,7 +66,7 @@ export function RelatedProducts({ product }: RelatedProductsProps) {
 
               {/* Content */}
               <div className="flex flex-col gap-2 p-4">
-                <h3 className="text-card-title text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors">
+                <h3 className="text-card-title text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
                   {rp.name}
                 </h3>
                 <p className="text-body text-be-grey-650 leading-relaxed line-clamp-2">
@@ -91,7 +91,7 @@ export function RelatedProducts({ product }: RelatedProductsProps) {
         <div className="mt-6 flex justify-center">
           <Link
             href="/products"
-            className="text-sm font-medium text-be-yellow-600 hover:text-be-yellow-500 transition-colors"
+            className="text-sm font-medium text-be-yellow-text hover:text-be-yellow-text-hover transition-colors"
           >
             View all products
           </Link>

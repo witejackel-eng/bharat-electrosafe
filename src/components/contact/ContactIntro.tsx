@@ -50,27 +50,27 @@ interface ContactRow {
 
 const contactRows: ContactRow[] = [
   {
-    icon: <Mail className="size-4 text-be-yellow-600" />,
+    icon: <Mail className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />,
     label: 'Email',
     value: company.email,
     href: `mailto:${company.email}`,
   },
   {
-    icon: <Phone className="size-4 text-be-yellow-600" />,
+    icon: <Phone className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />,
     label: 'Phone',
     phoneGroup: true,
     value: (
       <div className="flex flex-col gap-0.5">
         <a
           href={`tel:${company.phonePrimaryTel}`}
-          className="font-medium text-be-charcoal-950 hover:text-be-yellow-600 transition-colors"
+          className="font-medium text-be-charcoal-950 hover:text-be-yellow-text-hover transition-colors"
         >
           <span className="text-metadata text-be-grey-650 mr-1.5">Primary:</span>
           {company.phonePrimary}
         </a>
         <a
           href={`tel:${company.phoneSecondaryTel}`}
-          className="font-medium text-be-charcoal-950 hover:text-be-yellow-600 transition-colors"
+          className="font-medium text-be-charcoal-950 hover:text-be-yellow-text-hover transition-colors"
         >
           <span className="text-metadata text-be-grey-650 mr-1.5">Secondary:</span>
           {company.phoneSecondary}
@@ -79,14 +79,14 @@ const contactRows: ContactRow[] = [
     ),
   },
   {
-    icon: <MessageCircle className="size-4 text-be-yellow-600" />,
+    icon: <MessageCircle className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />,
     label: 'WhatsApp',
     value: 'Chat on WhatsApp',
     href: company.whatsapp.href,
     external: true,
   },
   {
-    icon: <MapPin className="size-4 text-be-yellow-600" />,
+    icon: <MapPin className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />,
     label: 'Address',
     value: (
       <>
@@ -148,7 +148,7 @@ export default function ContactIntro() {
                   href={row.href}
                   target={row.external ? '_blank' : undefined}
                   rel={row.external ? 'noopener noreferrer' : undefined}
-                  className="text-body font-medium text-be-charcoal-950 hover:text-be-yellow-600 transition-colors break-words"
+                  className="text-body font-medium text-be-charcoal-950 hover:text-be-yellow-text-hover transition-colors break-words"
                 >
                   {row.value}
                 </a>
@@ -199,7 +199,7 @@ export function ImmediateAssistanceStrip() {
           href={`tel:${company.phonePrimaryTel}`}
           className="w-full sm:w-auto"
         >
-          <Phone className="size-4 mr-1.5" />
+          <Phone className="size-4 mr-1.5" aria-hidden="true" focusable="false" />
           Call Sales
         </SecondaryButton>
         <SecondaryButton
@@ -207,7 +207,7 @@ export function ImmediateAssistanceStrip() {
           target="_blank"
           className="w-full sm:w-auto"
         >
-          <MessageCircle className="size-4 mr-1.5" />
+          <MessageCircle className="size-4 mr-1.5" aria-hidden="true" focusable="false" />
           WhatsApp
         </SecondaryButton>
       </div>

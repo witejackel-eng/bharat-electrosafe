@@ -91,7 +91,7 @@ export function ProductApplications({ product }: ProductApplicationsProps) {
                 return (
                   <div key={app.name} className="flex items-start gap-4">
                     <span className="shrink-0 flex items-center justify-center size-9 rounded-md bg-be-yellow-50">
-                      <Icon className="size-4 text-be-yellow-600" />
+                      <Icon className="size-4 text-be-yellow-text" />
                     </span>
                     <div>
                       <div className="text-body font-semibold text-be-charcoal-950">{app.name}</div>

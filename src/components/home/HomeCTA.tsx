@@ -14,7 +14,7 @@ export default function HomeCTA() {
       <div className="container-site page-horizontal-padding">
         <div className="reveal-up flex flex-col items-center text-center gap-6 max-w-2xl mx-auto">
           {/* Decorative shield icon */}
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-be-yellow-50 border border-be-yellow-400/30 text-be-yellow-600 shadow-sm">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-be-yellow-50 border border-be-yellow-400/30 text-be-yellow-text shadow-sm">
             <ShieldCheck className="h-7 w-7" />
           </div>
 

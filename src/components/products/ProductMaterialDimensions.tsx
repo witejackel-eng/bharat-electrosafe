@@ -158,7 +158,7 @@ export function ProductMaterialDimensions({ product }: ProductMaterialDimensions
                 <ol className="flex flex-col gap-3 pb-2">
                   {product.installation.map((step, idx) => (
                     <li key={idx} className="flex items-start gap-3 text-body text-be-charcoal-800">
-                      <span className="shrink-0 flex items-center justify-center size-6 rounded-full bg-be-yellow-50 text-be-yellow-600 text-metadata font-semibold">
+                      <span className="shrink-0 flex items-center justify-center size-6 rounded-full bg-be-yellow-50 text-be-yellow-text text-metadata font-semibold">
                         {idx + 1}
                       </span>
                       <span>{step}</span>
@@ -178,7 +178,7 @@ export function ProductMaterialDimensions({ product }: ProductMaterialDimensions
           <ol className="flex flex-col gap-3">
             {product.installation.map((step, idx) => (
               <li key={idx} className="flex items-start gap-3 text-body text-be-charcoal-800">
-                <span className="shrink-0 flex items-center justify-center size-6 rounded-full bg-be-yellow-50 text-be-yellow-600 text-metadata font-semibold">
+                <span className="shrink-0 flex items-center justify-center size-6 rounded-full bg-be-yellow-50 text-be-yellow-text text-metadata font-semibold">
                   {idx + 1}
                 </span>
                 <span>{step}</span>

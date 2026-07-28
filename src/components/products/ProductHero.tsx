@@ -116,8 +116,8 @@ export function ProductHero({ product }: ProductHeroProps) {
               const Icon = iconMap[fact.icon] ?? Shield;
               return (
                 <div key={fact.label} className="flex items-center gap-3">
-                  <span className="flex items-center justify-center size-9 rounded-md bg-be-yellow-50 shrink-0">
-                    <Icon className="size-4 text-be-yellow-600" />
+                  <span className="flex items-center justify-center size-9 rounded-md bg-be-yellow-50 shrink-0" aria-hidden="true">
+                    <Icon className="size-4 text-be-yellow-text" />
                   </span>
                   <div>
                     <div className="text-metadata text-be-grey-650 font-medium">{fact.label}</div>
@@ -264,7 +264,7 @@ export function ProductHero({ product }: ProductHeroProps) {
       <ul className="flex flex-wrap gap-x-6 gap-y-3 rounded-lg border border-be-yellow-100 bg-be-yellow-50 px-5 py-4 mt-8 lg:mt-8">
         {product.trustPoints.map((point) => (
           <li key={point} className="flex items-center gap-2">
-            <Shield className="size-4 shrink-0 text-be-yellow-600" />
+            <Shield className="size-4 shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
             <span className="text-metadata font-semibold uppercase tracking-wide text-be-charcoal-950">
               {point}
             </span>
@@ -274,7 +274,7 @@ export function ProductHero({ product }: ProductHeroProps) {
           const Icon = item.icon;
           return (
             <li key={item.label} className="flex items-center gap-2">
-              <Icon className="size-4 shrink-0 text-be-yellow-600" />
+              <Icon className="size-4 shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
               <span className="text-metadata font-semibold uppercase tracking-wide text-be-charcoal-950">
                 {item.label}
               </span>

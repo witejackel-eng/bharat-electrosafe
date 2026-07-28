@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { TextLink } from '@/components/ui/TextLink';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SectionShell } from '@/components/ui/SectionShell';
 import { products, productFamilyCount, getImageAlt, getImageFit, productCategories } from '@/data/products';
@@ -13,17 +12,21 @@ function ProductCard({ product, index }: { product: typeof products[number]; ind
   const catInfo = productCategories[product.category];
 
   return (
-    <div className="hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+    <Link
+      href={`/products/${product.slug}`}
+      aria-label={`View ${product.name} product page`}
+      className="hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+    >
       {/* Yellow accent line — animates wider on hover */}
-      <div className="h-1 bg-be-yellow-500 group-hover:h-1.5 transition-all duration-300" />
+      <div className="h-1 bg-be-yellow-500 group-hover:h-1.5 transition-all duration-300" aria-hidden="true" />
 
       {/* Index badge */}
-      <div className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md bg-be-yellow-500/90 text-be-charcoal-950 text-[0.65rem] font-bold tracking-wide shadow-sm">
+      <div className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md bg-be-yellow-500/90 text-be-charcoal-950 text-[0.65rem] font-bold tracking-wide shadow-sm" aria-hidden="true">
         {String(index + 1).padStart(2, '0')}
       </div>
 
       {/* Category badge */}
-      <div className="absolute top-4 right-4 z-10 px-2 py-0.5 rounded-md bg-be-charcoal-950/80 text-be-white text-[0.6rem] font-semibold tracking-wide">
+      <div className="absolute top-4 right-4 z-10 px-2 py-0.5 rounded-md bg-be-charcoal-950/80 text-be-white text-[0.6rem] font-semibold tracking-wide" aria-hidden="true">
         {catInfo.displayName}
       </div>
 
@@ -37,27 +40,24 @@ function ProductCard({ product, index }: { product: typeof products[number]; ind
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
         {/* Dark overlay on hover */}
-        <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/10 transition-colors duration-300" />
+        <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/10 transition-colors duration-300" aria-hidden="true" />
       </div>
 
       {/* Text content */}
       <div className="flex flex-col gap-2 p-4">
-        <h3 className="text-card-title text-be-charcoal-950">
+        <h3 className="text-card-title text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
           {product.name}
         </h3>
         <p className="text-body text-be-grey-650 text-sm leading-relaxed">
           {product.description}
         </p>
         <div className="mt-2">
-          <TextLink
-            href={`/products/${product.slug}`}
-            className="text-be-grey-650 group-hover:text-be-yellow-600 transition-colors duration-200"
-          >
+          <span className="text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors">
             View Product
-          </TextLink>
+          </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

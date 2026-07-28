@@ -99,7 +99,7 @@ export function DocumentCard({
               href={thumbHref}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Open ${name} in a new tab`}
+              aria-label={`Open ${name} preview in a new tab`}
               className="group/thumb block h-full w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
             >
               <Image
@@ -143,7 +143,7 @@ export function DocumentCard({
 
         {/* File size label, only when a genuine file exists */}
         {hasFile && meta && (
-          <p className="text-metadata text-be-grey-400">{meta.sizeLabel}</p>
+          <p className="text-metadata text-be-grey-650">{meta.sizeLabel}</p>
         )}
 
         {/* Action buttons */}
@@ -154,17 +154,19 @@ export function DocumentCard({
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`View ${name} in a new tab`}
                 className="inline-flex items-center justify-center min-h-[40px] rounded-lg border border-be-grey-250 bg-transparent px-4 py-2 text-sm font-semibold text-be-charcoal-800 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-be-yellow-400 hover:text-be-charcoal-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2"
               >
-                <Eye className="h-4 w-4 mr-1.5" aria-hidden="true" />
+                <Eye className="h-4 w-4 mr-1.5" aria-hidden="true" focusable="false" />
                 {labels.primary}
               </a>
               <a
                 href={href}
                 download
+                aria-label={`Download ${name} PDF`}
                 className="inline-flex items-center justify-center min-h-[40px] rounded-lg bg-be-yellow-500 px-4 py-2 text-sm font-semibold text-be-charcoal-950 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:bg-be-yellow-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2"
               >
-                <Download className="h-4 w-4 mr-1.5" aria-hidden="true" />
+                <Download className="h-4 w-4 mr-1.5" aria-hidden="true" focusable="false" />
                 {labels.secondary}
               </a>
             </>
@@ -172,9 +174,10 @@ export function DocumentCard({
             <PrimaryButton
               href={requestHref}
               className="text-sm px-4 py-2 min-h-[40px]"
+              aria-label={`Request ${name}`}
             >
               {isDatasheet ? labels.fallback : labels.fallback}
-              <ArrowRight className="h-4 w-4 ml-1.5" aria-hidden="true" />
+              <ArrowRight className="h-4 w-4 ml-1.5" aria-hidden="true" focusable="false" />
             </PrimaryButton>
           )}
         </div>

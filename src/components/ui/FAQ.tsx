@@ -81,8 +81,8 @@ export function FAQ({
                 <span className="text-card-title text-be-charcoal-950 text-left flex-1 pr-4">
                   {item.question}
                 </span>
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-be-yellow-50 text-be-yellow-600 border border-be-yellow-100 transition-all duration-200 group-data-[state=open]:rotate-45 group-data-[state=open]:bg-be-yellow-500 group-data-[state=open]:text-be-charcoal-950 group-data-[state=open]:border-be-yellow-500">
-                  <Plus className="h-4 w-4" />
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-be-yellow-50 text-be-yellow-text border border-be-yellow-100 transition-all duration-200 group-data-[state=open]:rotate-45 group-data-[state=open]:bg-be-yellow-500 group-data-[state=open]:text-be-charcoal-950 group-data-[state=open]:border-be-yellow-500" aria-hidden="true">
+                  <Plus className="h-4 w-4" focusable="false" />
                 </span>
               </AccordionTrigger>
               <AccordionContent>

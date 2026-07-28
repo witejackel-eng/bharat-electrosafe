@@ -72,11 +72,11 @@ function IndustryCard({ industry }: { industry: Industry }) {
       )}
 
       {/* Number index */}
-      <span className="absolute top-3 right-3 text-[0.6rem] font-medium text-be-grey-400 tracking-wider">
+      <span className="absolute top-3 right-3 text-[0.6rem] font-medium text-be-charcoal-950/80 tracking-wider">
         {industry.index}
       </span>
 
-      <div className="shrink-0 mt-0.5 flex h-12 w-12 items-center justify-center rounded-lg bg-be-yellow-50 text-be-yellow-600 group-hover:bg-be-yellow-100 transition-colors duration-300">
+      <div className="shrink-0 mt-0.5 flex h-12 w-12 items-center justify-center rounded-lg bg-be-yellow-50 text-be-yellow-text group-hover:bg-be-yellow-100 transition-colors duration-300">
         <Icon className="h-5 w-5" />
       </div>
 

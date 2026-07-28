@@ -18,11 +18,11 @@ export default function NotFound() {
               <li className="flex items-center gap-1">
                 <Link
                   href="/"
-                  className="text-be-charcoal-800 hover:text-be-yellow-600 transition-colors duration-200"
+                  className="text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors duration-200"
                 >
                   Home
                 </Link>
-                <span className="text-be-grey-400" aria-hidden>/</span>
+                <span className="text-be-grey-650" aria-hidden>/</span>
               </li>
               <li>
                 <span className="text-be-grey-650 font-medium" aria-current="page">
@@ -33,7 +33,7 @@ export default function NotFound() {
           </nav>
 
           {/* 404 label */}
-          <p className="text-be-yellow-500 text-metadata font-semibold uppercase tracking-wide mb-4">
+          <p className="text-be-yellow-text text-metadata font-semibold uppercase tracking-wide mb-4">
             404
           </p>
 
@@ -68,7 +68,7 @@ export default function NotFound() {
                 <li key={product.slug}>
                   <Link
                     href={`/products/${product.slug}`}
-                    className="text-base text-be-grey-650 hover:text-be-yellow-600 transition-colors"
+                    className="text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors underline-offset-2 hover:underline"
                   >
                     {product.name}
                   </Link>

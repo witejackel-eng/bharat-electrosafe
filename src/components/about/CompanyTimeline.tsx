@@ -81,7 +81,7 @@ export default function CompanyTimeline() {
                 <div key={milestone.year} className="flex flex-col items-start">
                   {/* Year */}
                   <div className="mb-4 h-8 flex items-center">
-                    <span className="text-card-title text-be-yellow-600 font-bold">
+                    <span className="text-card-title text-be-yellow-text font-bold">
                       {milestone.year}
                     </span>
                   </div>
@@ -118,7 +118,7 @@ export default function CompanyTimeline() {
 
                   {/* Year */}
                   <div className="mb-1">
-                    <span className="text-card-title text-be-yellow-600 font-bold">
+                    <span className="text-card-title text-be-yellow-text font-bold">
                       {milestone.year}
                     </span>
                   </div>

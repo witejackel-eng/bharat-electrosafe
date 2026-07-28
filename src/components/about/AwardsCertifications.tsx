@@ -67,7 +67,7 @@ export default function AwardsCertifications() {
               </div>
               <div className="flex flex-col gap-2 p-5">
                 <h3 className="text-card-title text-be-charcoal-950">{award.title}</h3>
-                <p className="text-metadata font-semibold uppercase tracking-wide text-be-yellow-600">
+                <p className="text-metadata font-semibold uppercase tracking-wide text-be-yellow-text">
                   {award.presenter}
                 </p>
                 <p className="text-body text-be-grey-650">{award.detail}</p>
@@ -110,7 +110,7 @@ export default function AwardsCertifications() {
                   href={mark.document}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-metadata font-semibold text-be-yellow-600 underline underline-offset-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
+                  className="text-metadata font-semibold text-be-yellow-text underline underline-offset-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
                 >
                   View certificate
                 </a>
