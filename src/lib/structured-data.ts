@@ -268,9 +268,45 @@ export function localBusinessSchema() {
     },
   };
 
-  // Opening hours: only include if verified in central data
-  // Currently, office hours are not confirmed in central data, so omit.
-  // When confirmed, add: schema.openingHours = 'Mo-Fr 09:00-18:00'
+  // Opening hours: only emit openingHoursSpecification when the client has
+  // verified the current operating schedule via company.officeHours.verified.
+  // Until then, omit entirely — no fabricated openingHoursSpecification.
+  if (company.officeHours.verified && company.officeHours.rows.length > 0) {
+    const dayMap: Record<string, string> = {
+      'Monday – Friday': 'Mo-Fr',
+      'Monday–Friday': 'Mo-Fr',
+      Saturday: 'Sa',
+      Sunday: 'Su',
+    };
+    const specs: Array<{
+      '@type': string;
+      dayOfWeek: string;
+      opens?: string;
+      closes?: string;
+    }> = [];
+    for (const row of company.officeHours.rows) {
+      const dayOfWeek = dayMap[row.day] ?? row.day;
+      if ('closed' in row && row.closed) {
+        specs.push({ '@type': 'OpeningHoursSpecification', dayOfWeek });
+      } else {
+        // Parse "9:00 AM – 6:00 PM" into opens/closes.
+        const match = row.hours.match(
+          /(\d{1,2}:\d{2}\s*[AP]M)\s*[–-]\s*(\d{1,2}:\d{2}\s*[AP]M)/i,
+        );
+        if (match) {
+          specs.push({
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek,
+            opens: match[1].toUpperCase().replace(/\s/g, ''),
+            closes: match[2].toUpperCase().replace(/\s/g, ''),
+          });
+        }
+      }
+    }
+    if (specs.length > 0) {
+      schema.openingHoursSpecification = specs;
+    }
+  }
 
   // Do NOT fabricate: geo coordinates, priceRange, ratings, reviews,
   // service radius, or unverified opening hours.

@@ -23,8 +23,8 @@ const industries = [
 
 const clientLogos = [
   { name: 'BIS' },
-  { name: 'CPRI' },
   { name: 'ERDA' },
+  { name: 'NTH' },
   { name: 'Make in India' },
   { name: 'Indian Railways' },
   { name: 'Power Grid Corp' },

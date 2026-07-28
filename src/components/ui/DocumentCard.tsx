@@ -50,6 +50,9 @@ const actionLabels: Record<
   datasheet: {
     fallback: 'Request datasheet',
   },
+  'standards-information': {
+    fallback: 'Request information',
+  },
 };
 
 export function DocumentCard({

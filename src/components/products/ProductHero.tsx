@@ -47,8 +47,8 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 const staticTrustIndicators = [
-  { icon: FileText, label: 'Full documentation provided' },
-  { icon: Truck, label: 'Pan-India delivery' },
+  { icon: FileText, label: 'Technical documentation available on request' },
+  { icon: Truck, label: 'Delivery confirmed with each quotation' },
   { icon: Headphones, label: 'Technical support available' },
 ];
 

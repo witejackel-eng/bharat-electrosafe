@@ -354,7 +354,7 @@ function TechnicalHelpCTA() {
         <p className="text-body-large text-be-grey-650">
           Our technical team can help you select the right product for your
           operating voltage, environment and regulatory requirements. Share
-          your project details and we will respond within 24 hours.
+          your project details and our team will respond with the next steps.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <PrimaryButton href="/contact-us?type=technical-guidance" size="lg">

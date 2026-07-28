@@ -12,7 +12,7 @@ export const company = {
   legalName: 'Bharat Electrosafe',
   tagline: 'Electrical Safety. Engineered Right.',
   description:
-    'Manufacturer of electrical insulating mats and engineered PVC membranes for industrial, civil and environmental safety applications in India and overseas.',
+    'Manufacturer of electrical insulating mats and engineered PVC membranes for industrial, civil and environmental safety applications.',
 
   // Contact details — single source of truth
   phonePrimary: '+91 7617494968',
@@ -35,6 +35,23 @@ export const company = {
     full: '704, 7th Floor, I-thum, Tower A, Plot No. A-40, Sector-62, Noida-201309, Uttar Pradesh, India',
   },
 
+  /* Office hours — verified flag controls whether the OfficeHours component
+     renders at all and whether openingHoursSpecification is emitted in
+     structured data. The rows below are the values shown on the original
+     company website, but they have NOT been independently confirmed by the
+     client as the current operating schedule. Set `verified: true` only
+     after the client confirms the current hours in writing. When
+     `verified: false`, the OfficeHours component returns null and no
+     openingHoursSpecification is emitted. */
+  officeHours: {
+    verified: false,
+    rows: [
+      { day: 'Monday – Friday', hours: '9:00 AM – 6:00 PM' },
+      { day: 'Saturday', hours: '9:00 AM – 1:00 PM' },
+      { day: 'Sunday', hours: 'Closed', closed: true },
+    ],
+  },
+
   // Regulatory / standards
   certifications: {
     isiStandard: 'IS 15652:2006',
@@ -44,12 +61,18 @@ export const company = {
   },
 
   /* Only qualified, source-supported claims. The family count is derived from
-     the active product registry so it cannot fall out of step with it. */
+     the active product registry so it cannot fall out of step with it.
+     The "Countries Served (company-stated)" qualifier mirrors the wording in
+     trust.ts — it is a company self-statement, not an independently verified
+     figure. Note: company.stats is not currently rendered on the site; the
+     visible stats block lives in StatsSection.tsx and uses verified values
+     only (product count, insulation classes, manufacturing standard, BIS
+     licence number). */
   stats: [
     { value: String(productFamilyCount), label: 'Product Families' },
     { value: 'A · B · C', label: 'Insulation Classes' },
     { value: 'IS 15652:2006', label: 'Manufacturing Standard' },
-    { value: '11+', label: 'Countries Served' },
+    { value: 'CM/L:8800129617', label: 'BIS Licence Number' },
   ],
 
   social: {

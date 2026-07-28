@@ -49,7 +49,8 @@ export type DocumentKind =
   | 'test-report'
   | 'certificate'
   | 'licence'
-  | 'datasheet';
+  | 'datasheet'
+  | 'standards-information';
 
 export interface Document {
   type: string;
@@ -801,48 +802,47 @@ const bharatMembrane: ProductData = {
   description:
     'PVC geo-membrane to IS 15909:2020 for tunnel waterproofing, containment and barrier protection in civil and environmental engineering.',
   introduction:
-    'BharatMembrane is a premium range of PVC geo-membranes developed by Bharat Electrosafe for tunnel waterproofing, containment and barrier protection in civil and environmental engineering applications. Manufactured using high-grade PVC polymers, it is engineered for chemical resistance, UV stability and mechanical strength, making it suited to projects that demand long-lasting, leak-proof performance.',
-  badges: ['IS 15909:2020', 'PVC geo-membrane', 'BIS approved', 'Thermally weldable'],
+    'BharatMembrane is a range of PVC geo-membranes developed by Bharat Electrosafe for tunnel waterproofing, containment and barrier protection in civil and environmental engineering applications. The material is engineered for chemical resistance, UV stability and mechanical strength. Request the current product documentation for the exact membrane grade and project approval requirements.',
+  badges: ['IS 15909:2020', 'PVC geo-membrane', 'Thermally weldable', 'Custom fabrication'],
   quickFacts: [
     { icon: 'droplets', label: 'Function', value: 'Waterproofing and containment' },
     { icon: 'ruler', label: 'Thickness', value: '1 mm – 5 mm' },
     { icon: 'award', label: 'Standard', value: 'IS 15909:2020' },
   ],
   overviewText:
-    'BharatMembrane is manufactured under ISO-certified processes at Bharat Electrosafe facilities and backed by both in-house and third-party quality testing. Sheets are seamable by thermal welding, producing continuous joints without adhesives, and custom fabrication is available so roll sizes suit the project rather than the other way round. Whether the application is industrial, environmental or infrastructure, the material provides a robust and cost-effective barrier.',
+    'BharatMembrane is a PVC geo-membrane for civil and environmental engineering applications. Sheets are seamable by thermal welding, producing continuous joints without adhesives, and custom fabrication is available so roll sizes suit the project. Request the current product documentation for the exact membrane grade and project approval requirements.',
   keyBenefits: [
-    { icon: 'shield', text: 'High-quality PVC geo-membrane for leak-proof barrier performance' },
-    { icon: 'hammer', text: 'Excellent puncture and tear resistance' },
-    { icon: 'sun', text: 'High resistance to UV radiation, chemicals and weathering' },
+    { icon: 'shield', text: 'PVC geo-membrane for barrier and containment applications' },
+    { icon: 'hammer', text: 'Puncture and tear resistance' },
+    { icon: 'sun', text: 'Resistance to UV radiation, chemicals and weathering' },
     { icon: 'git-merge', text: 'Seamable using thermal welding techniques for secure joints' },
     {
       icon: 'badge-check',
-      text: 'BIS approved to IS 15909:2020, with compliance to BS, EN and international standards',
+      text: 'Presented for applications covered by IS 15909:2020',
     },
   ],
   specifications: {
     headers: ['Property', 'Specification'],
     rows: [
-      ['Material', 'High-grade PVC polymer geo-membrane'],
-      ['Standard', 'IS 15909:2020 — BIS approved'],
-      ['Further Compliance', 'BS, EN and international standards'],
+      ['Material', 'PVC polymer geo-membrane'],
+      ['Standard', 'IS 15909:2020'],
       ['Available Thicknesses', '1 mm, 1.5 mm, 2 mm, 2.5 mm, 3 mm and up to 5 mm'],
       ['Roll Sizes', 'To suit project requirements'],
       ['Jointing Method', 'Thermal welding'],
       ['Resistance', 'UV radiation, chemicals and weathering'],
       ['Mechanical', 'Puncture and tear resistant'],
+      ['Service Life', 'Service life depends on product selection, installation quality, operating conditions, exposure and maintenance'],
     ],
   },
   materialProperties: [
-    { label: 'Base Material', value: 'High-grade PVC polymers' },
-    { label: 'Standard', value: 'IS 15909:2020, BIS approved' },
-    { label: 'International Compliance', value: 'BS, EN and international standards' },
+    { label: 'Base Material', value: 'PVC polymers' },
+    { label: 'Standard', value: 'IS 15909:2020' },
     { label: 'UV Resistance', value: 'High' },
     { label: 'Chemical Resistance', value: 'High' },
     { label: 'Weathering Resistance', value: 'High' },
-    { label: 'Puncture and Tear Resistance', value: 'Excellent' },
+    { label: 'Puncture and Tear Resistance', value: 'High' },
     { label: 'Jointing', value: 'Thermal welding for secure, continuous seams' },
-    { label: 'Manufacturing', value: 'Produced under ISO-certified processes' },
+    { label: 'Manufacturing', value: 'Manufactured at Bharat Electrosafe facilities' },
     {
       label: 'Quality Testing',
       value: 'In-house and third-party testing',
@@ -858,7 +858,7 @@ const bharatMembrane: ProductData = {
   installation: [
     'Prepare and inspect the substrate before the membrane is placed',
     'Position sheets with sufficient overlap at every seam',
-    'Weld overlaps thermally to form a continuous, leak-proof joint',
+    'Weld overlaps thermally to form a continuous joint',
     'Seal around penetrations, corners and terminations',
     'Check completed seams before the membrane is covered or backfilled',
     'Custom fabrication is available where a project needs non-standard sheet sizes',
@@ -915,12 +915,12 @@ const bharatMembrane: ProductData = {
       kind: 'certificate',
     },
     {
-      type: 'Approval',
-      name: 'BIS approval — IS 15909:2020',
-      issuer: 'Bureau of Indian Standards',
+      type: 'Standards information',
+      name: 'IS 15909:2020 product information — available on request',
+      issuer: 'Bharat Electrosafe',
       available: false,
       thumbnail: '/images/documents/doc-approval.webp',
-      kind: 'licence',
+      kind: 'standards-information',
     },
     {
       type: 'Datasheet',
@@ -980,52 +980,52 @@ const bharatHydroSeal: ProductData = {
   trustPoints: [
     'IS 15058-2002',
     'PVC water stop',
-    'Chemical resistant',
-    'High tensile strength',
+    'Multiple profiles',
+    'Weldable at intersections',
   ],
   description:
     'PVC water stop seals to IS 15058-2002 for construction and expansion joints in concrete structures — water tanks, dams, basements, tunnels and sewage treatment plants.',
   introduction:
-    'BharatHydro Seal, a trusted brand by Bharat Electrosafe Pvt. Ltd., offers high-performance water stop sealing solutions designed to ensure complete protection against water leakage in construction joints. BharatHydro Seal Water Stops are specially designed to prevent the passage of water through construction and expansion joints in concrete structures. Manufactured using high-quality PVC and rubber compounds, these seals provide excellent resistance against water pressure, chemicals and environmental stress.',
-  badges: ['IS 15058-2002', 'PVC Water Stop', 'High tensile strength', 'Chemical resistant'],
+    'Bharat Hydro Seal is a PVC water-stop product intended for construction and expansion joints in concrete structures. The profiles are designed to reduce water passage through properly designed and installed joints. Product profile, dimensions, joining method and suitability must be selected according to the project conditions.',
+  badges: ['IS 15058-2002', 'PVC Water Stop', 'Multiple profiles', 'Weldable at intersections'],
   quickFacts: [
     { icon: 'droplets', label: 'Function', value: 'Water stop sealing for construction joints' },
     { icon: 'ruler', label: 'Standard', value: 'IS 15058-2002' },
     { icon: 'shield', label: 'Material', value: 'PVC and rubber compounds' },
   ],
   overviewText:
-    'BharatHydro Seal Water Stops are manufactured under strict quality controls at Bharat Electrosafe facilities using high-grade PVC and rubber compounds. Every profile is designed to create a reliable, water-tight seal at construction and expansion joints, resisting water pressure, chemical exposure and environmental stress. Profiles are available in centre-bulb, dumbbell and ribbed configurations to suit different joint types and movement requirements, and they can be welded at intersections for continuous, leak-proof protection across the entire structure.',
+    'Bharat Hydro Seal profiles are made from PVC and rubber compounds and are available in centre-bulb, dumbbell and ribbed configurations. Profile selection depends on the joint type, expected movement, water pressure and project specification. Intersections and terminations require an appropriate joining method to form a continuous system. Request the current product and compliance documents required for your project.',
   keyBenefits: [
-    { icon: 'droplets', text: 'Superior water-tight sealing at construction and expansion joints' },
-    { icon: 'bolt', text: 'High tensile strength and flexibility to accommodate joint movement' },
-    { icon: 'flask-conical', text: 'Resistant to chemicals, corrosion and weather conditions' },
-    { icon: 'hammer', text: 'Easy installation and long service life in demanding environments' },
-    { icon: 'shield-check', text: 'Suitable for high-pressure water retention structures' },
+    { icon: 'droplets', text: 'PVC water-stop profiles for construction and expansion joints' },
+    { icon: 'bolt', text: 'Available in centre-bulb, dumbbell and ribbed configurations' },
+    { icon: 'flask-conical', text: 'Made from PVC and rubber compounds' },
+    { icon: 'hammer', text: 'Weldable at intersections to form a continuous system' },
+    { icon: 'shield-check', text: 'Profile selection depends on joint type and project conditions' },
   ],
   specifications: {
     headers: ['Property', 'Specification'],
     rows: [
-      ['Material', 'High-quality PVC and rubber compound water stop'],
+      ['Material', 'PVC and rubber compound water stop'],
       ['Standard', 'IS 15058-2002'],
       ['Profile Types', 'Centre bulb, dumbbell and ribbed configurations'],
       ['Joint Types', 'Construction joints and expansion joints'],
-      ['Resistance', 'Water pressure, chemicals, corrosion and weathering'],
-      ['Mechanical', 'High tensile strength and flexibility'],
+      ['Resistance', 'Designed to resist water pressure, chemicals and weathering'],
+      ['Mechanical', 'Tensile strength and flexibility to accommodate joint movement'],
       ['Jointing Method', 'Weldable at intersections for continuous seals'],
-      ['Service Life', 'Long-lasting performance in demanding environments'],
+      ['Service Life', 'Service life depends on product selection, installation quality, operating conditions, exposure and maintenance'],
     ],
   },
   materialProperties: [
-    { label: 'Base Material', value: 'High-quality PVC and rubber compounds' },
+    { label: 'Base Material', value: 'PVC and rubber compounds' },
     { label: 'Standard', value: 'IS 15058-2002' },
-    { label: 'Water Resistance', value: 'Superior water-tight sealing' },
-    { label: 'Chemical Resistance', value: 'Resistant to chemicals and corrosion' },
-    { label: 'Weathering Resistance', value: 'Resistant to environmental stress' },
-    { label: 'Tensile Strength', value: 'High' },
-    { label: 'Flexibility', value: 'High — accommodates joint movement' },
+    { label: 'Function', value: 'Reduces water passage through properly designed and installed joints' },
+    { label: 'Chemical Resistance', value: 'Designed to resist chemicals and corrosion' },
+    { label: 'Weathering Resistance', value: 'Designed to resist environmental stress' },
+    { label: 'Tensile Strength', value: 'Selected to accommodate joint movement' },
+    { label: 'Flexibility', value: 'Selected to accommodate joint movement' },
     { label: 'Profile Types', value: 'Centre bulb, dumbbell and ribbed' },
-    { label: 'Jointing', value: 'Weldable at intersections for continuous protection' },
-    { label: 'Manufacturing', value: 'Produced under ISO-certified processes' },
+    { label: 'Jointing', value: 'Weldable at intersections for a continuous system' },
+    { label: 'Manufacturing', value: 'Manufactured at Bharat Electrosafe facilities' },
   ],
   dimensions: [
     { label: 'Profile Width', value: 'Available in multiple widths to suit joint requirements' },
@@ -1039,7 +1039,7 @@ const bharatHydroSeal: ProductData = {
     'Clean the concrete surface at the joint location before positioning the water stop',
     'Place the water stop centrally in the joint with the bulb aligned to the joint plane',
     'Secure the water stop in position before pouring the next concrete lift',
-    'Weld intersections and terminations to form a continuous, leak-proof seal',
+    'Weld intersections and terminations to form a continuous seal',
     'Inspect the installed water stop for proper alignment before covering',
   ],
   applications: [
@@ -1080,12 +1080,12 @@ const bharatHydroSeal: ProductData = {
       kind: 'certificate',
     },
     {
-      type: 'Approval',
-      name: 'IS 15058-2002 compliance — Water stop for construction joints',
-      issuer: 'Bureau of Indian Standards',
+      type: 'Standards information',
+      name: 'IS 15058:2002 product information — available on request',
+      issuer: 'Bharat Electrosafe',
       available: false,
       thumbnail: '/images/documents/doc-approval.webp',
-      kind: 'licence',
+      kind: 'standards-information',
     },
     {
       type: 'Datasheet',

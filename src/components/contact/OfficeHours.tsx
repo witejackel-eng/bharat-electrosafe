@@ -1,18 +1,7 @@
 'use client';
 
 import { Clock } from 'lucide-react';
-
-interface HourRow {
-  day: string;
-  hours: string;
-  closed?: boolean;
-}
-
-const hours: HourRow[] = [
-  { day: 'Monday – Friday', hours: '9:00 AM – 6:00 PM' },
-  { day: 'Saturday', hours: '9:00 AM – 1:00 PM' },
-  { day: 'Sunday', hours: 'Closed', closed: true },
-];
+import { company } from '@/data/company';
 
 /**
  * Compact office-hours card.
@@ -20,8 +9,18 @@ const hours: HourRow[] = [
  * Rendered inline inside the office column of Chapter 2 — no longer a
  * separate full-width section. Uses a bordered card so it visually groups
  * with the address and contact rows above it.
+ *
+ * Returns null when `company.officeHours.verified` is false. The office
+ * hours shown on the original company website have NOT been independently
+ * confirmed by the client as the current operating schedule, so they must
+ * not be displayed until verification. Phone, email, address, enquiry form
+ * and WhatsApp options remain visible regardless.
  */
 export default function OfficeHours() {
+  const { verified, rows } = company.officeHours;
+
+  if (!verified) return null;
+
   return (
     <div className="reveal-up rounded-lg border border-be-grey-250 bg-be-white p-5 flex flex-col gap-3">
       {/* Header */}
@@ -37,7 +36,7 @@ export default function OfficeHours() {
 
       {/* Hours list */}
       <ul className="flex flex-col divide-y divide-be-grey-150">
-        {hours.map((row) => (
+        {rows.map((row) => (
           <li
             key={row.day}
             className="flex items-center justify-between py-2.5 first:pt-0 last:pb-0"
@@ -47,7 +46,7 @@ export default function OfficeHours() {
             </span>
             <span
               className={
-                row.closed
+                'closed' in row && row.closed
                   ? 'text-body text-be-grey-650 italic'
                   : 'text-body text-be-charcoal-800 tabular-nums'
               }
