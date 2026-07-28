@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Header } from '@/components/layout/Header';
@@ -13,8 +13,11 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { SectionShell } from '@/components/ui/SectionShell';
+import { CompareProvider, useCompare } from '@/components/products/CompareContext';
+import { CompareToggle } from '@/components/products/CompareToggle';
+import { CompareBar } from '@/components/products/CompareBar';
+import { CompareModal } from '@/components/products/CompareModal';
 import {
-  productNavigationItems,
   productNavigationByCategory,
   productComparisonData,
   productCategories,
@@ -22,6 +25,45 @@ import {
   imageFitClass,
   ProductCategory,
 } from '@/data/products';
+
+/* ────────────────────────────────────────────
+   CompareBarHost — renders the sticky compare bar + modal.
+   Must be a child of CompareProvider so useCompare works.
+   ──────────────────────────────────────────── */
+
+function CompareBarHost() {
+  const { selected } = useCompare();
+  const [modalRequested, setModalRequested] = useState(false);
+
+  // Map of slug → product name for display in the bar/modal
+  const selectedNames = useMemo(() => {
+    const map: Record<string, string> = {};
+    // Build from the navigation items so we don't need a full product lookup
+    Object.values(productNavigationByCategory).forEach((items) => {
+      items.forEach((p) => {
+        map[p.slug] = p.name;
+      });
+    });
+    return map;
+  }, []);
+
+  // Derive the effective modal open state during render: the modal is open
+  // only while the user has requested it AND at least 2 products are
+  // selected. This avoids a set-state-in-effect and stays in sync with the
+  // compare selection automatically.
+  const modalOpen = modalRequested && selected.length >= 2;
+
+  return (
+    <>
+      <CompareBar selectedNames={selectedNames} onCompare={() => setModalRequested(true)} />
+      <CompareModal
+        open={modalOpen}
+        onClose={() => setModalRequested(false)}
+        selectedNames={selectedNames}
+      />
+    </>
+  );
+}
 
 /* ────────────────────────────────────────────
    Section 1: Products page hero
@@ -98,49 +140,59 @@ function ProductFamilyGrid() {
             {/* Product cards grid */}
             <div className="stagger-reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {items.map((product) => (
-                <Link
+                <div
                   key={product.slug}
-                  href={product.href}
                   className="hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300"
                 >
-                  {/* Yellow accent line */}
-                  <div className="h-1 bg-be-yellow-500 group-hover:h-1.5 transition-all duration-300" />
+                  <Link
+                    href={product.href}
+                    className="flex flex-col flex-1"
+                    aria-label={`View ${product.name}`}
+                  >
+                    {/* Yellow accent line */}
+                    <div className="h-1 bg-be-yellow-500 group-hover:h-1.5 transition-all duration-300" />
 
-                  {/* Category label */}
-                  <div className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md bg-be-yellow-500/90 text-be-charcoal-950 text-[0.65rem] font-bold tracking-wide shadow-sm">
-                    {catInfo.displayName}
-                  </div>
-
-                  {/* Image area */}
-                  <div className="relative w-full overflow-hidden bg-be-cream aspect-[4/3]">
-                    <Image
-                      src={product.thumbnail.src}
-                      alt={product.thumbnail.alt}
-                      fill
-                      className={imageFitClass(product.thumbnail)}
-                      style={
-                        product.thumbnail.position
-                          ? { objectPosition: product.thumbnail.position }
-                          : undefined
-                      }
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                    />
-                    <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/10 transition-colors duration-300" />
-                  </div>
-
-                  {/* Text content */}
-                  <div className="flex flex-col gap-2 p-4">
-                    <h3 className="text-card-title text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
-                      {product.name}
-                    </h3>
-                    <p className="text-sm text-be-grey-650 leading-relaxed line-clamp-2">
-                      {product.description}
-                    </p>
-                    <div className="mt-2 text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors">
-                      View Product
+                    {/* Category label */}
+                    <div className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md bg-be-yellow-500/90 text-be-charcoal-950 text-[0.65rem] font-bold tracking-wide shadow-sm">
+                      {catInfo.displayName}
                     </div>
+
+                    {/* Image area */}
+                    <div className="relative w-full overflow-hidden bg-be-cream aspect-[4/3]">
+                      <Image
+                        src={product.thumbnail.src}
+                        alt={product.thumbnail.alt}
+                        fill
+                        className={imageFitClass(product.thumbnail)}
+                        style={
+                          product.thumbnail.position
+                            ? { objectPosition: product.thumbnail.position }
+                            : undefined
+                        }
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                      />
+                      <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/10 transition-colors duration-300" />
+                    </div>
+
+                    {/* Text content */}
+                    <div className="flex flex-col gap-2 p-4 flex-1">
+                      <h3 className="text-card-title text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
+                        {product.name}
+                      </h3>
+                      <p className="text-sm text-be-grey-650 leading-relaxed line-clamp-2">
+                        {product.description}
+                      </p>
+                      <div className="mt-2 text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors">
+                        View Product
+                      </div>
+                    </div>
+                  </Link>
+
+                  {/* Compare toggle — outside the link so clicks don't navigate */}
+                  <div className="px-4 pb-4 -mt-1">
+                    <CompareToggle slug={product.slug} productName={product.name} />
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           </div>
@@ -411,33 +463,37 @@ export default function ProductsClient() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-be-warm-white">
-      <Header />
-      <main className="flex-1">
-        {/* Breadcrumb */}
-        <div className="container-site page-horizontal-padding pt-5">
-          <Breadcrumb
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'Products' },
-            ]}
-          />
-        </div>
+    <CompareProvider>
+      <div className="min-h-screen flex flex-col bg-be-warm-white">
+        <Header />
+        <main className="flex-1">
+          {/* Breadcrumb */}
+          <div className="container-site page-horizontal-padding pt-5">
+            <Breadcrumb
+              items={[
+                { label: 'Home', href: '/' },
+                { label: 'Products' },
+              ]}
+            />
+          </div>
 
-        {/* 1. Hero */}
-        <ProductsHero />
-        {/* 2. Product family grid */}
-        <ProductFamilyGrid />
-        {/* 3. Comparison table */}
-        <ComparisonTable />
-        {/* 4. Selection guidance */}
-        <SelectionGuidance />
-        {/* 5. Technical help CTA */}
-        <TechnicalHelpCTA />
-      </main>
-      <Footer />
-      <BackToTop />
-      <MobileStickyCTA />
-    </div>
+          {/* 1. Hero */}
+          <ProductsHero />
+          {/* 2. Product family grid */}
+          <ProductFamilyGrid />
+          {/* 3. Comparison table */}
+          <ComparisonTable />
+          {/* 4. Selection guidance */}
+          <SelectionGuidance />
+          {/* 5. Technical help CTA */}
+          <TechnicalHelpCTA />
+        </main>
+        <Footer />
+        <BackToTop />
+        <MobileStickyCTA />
+        {/* Interactive comparison tray + modal (uses CompareProvider) */}
+        <CompareBarHost />
+      </div>
+    </CompareProvider>
   );
 }

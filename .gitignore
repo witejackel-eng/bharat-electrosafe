@@ -56,6 +56,10 @@ prompt
 server.log
 # Skills directory
 /skills/
+# Local QA artifacts — screenshots and tool-results from agent-browser
+# testing. Never committed to the public repo.
+qa-shots/
+tool-results/
 # Proprietary client asset archive and private working files.
 # The archive is the source for scripts/build-assets.mjs; only the
 # sanitised derivatives under public/ are ever committed.

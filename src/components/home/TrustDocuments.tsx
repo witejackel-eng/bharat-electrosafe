@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SectionShell } from '@/components/ui/SectionShell';
+import { LogoRail } from '@/components/ui/LogoRail';
 import { primaryTrustMarks, organisationReferences, organisationReferenceHeading, organisationReferenceNote, scaleFacts } from '@/data/trust';
 
 export default function TrustDocuments() {
@@ -54,25 +55,22 @@ export default function TrustDocuments() {
         ))}
       </div>
 
-      {/* Organisation logo rail — conservative wording */}
+      {/* Organisation logo rail — animated marquee of client logos.
+          Conservative wording preserved; the marquee adds editorial motion
+          without claiming specific contract relationships. Pause-on-hover
+          lets users read each logo. Reduced-motion users see a static rail. */}
       <div className="reveal-up mb-2">
         <p className="text-sm text-be-grey-650 font-semibold uppercase tracking-wider mb-3 text-center">
           {organisationReferenceHeading}
         </p>
-        <p className="text-metadata text-be-grey-650 text-center mb-3">{organisationReferenceNote}</p>
-        <div className="flex flex-wrap items-center justify-center gap-6">
-          {organisationReferences.map((org) => (
-            <div key={org.name} className="flex items-center justify-center p-3 rounded-lg border border-be-grey-250 bg-be-white/60">
-              <Image
-                src={org.logo}
-                alt={`${org.name} logo`}
-                width={80}
-                height={40}
-                className="object-contain"
-                sizes="80px"
-              />
-            </div>
-          ))}
+        <p className="text-metadata text-be-grey-650 text-center mb-4">{organisationReferenceNote}</p>
+        <div className="relative rounded-xl border border-be-grey-250 bg-be-white/70 p-4 overflow-hidden">
+          {/* Edge fade masks for premium marquee feel */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-be-white to-transparent z-10" aria-hidden="true" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-be-white to-transparent z-10" aria-hidden="true" />
+          <LogoRail
+            logos={organisationReferences.map((org) => ({ name: org.name, src: org.logo }))}
+          />
         </div>
       </div>
 
