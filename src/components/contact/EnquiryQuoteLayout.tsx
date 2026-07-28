@@ -201,7 +201,7 @@ export default function EnquiryQuoteLayout() {
             Send Us an Enquiry
           </h2>
           <p className="text-body-large text-be-grey-650">
-            Fill in the form below and our team will respond within 24 business hours.
+            Fill in the form below and our team will review your enquiry and respond with the next steps.
           </p>
         </div>
         <div className="max-w-xl rounded-lg border border-be-grey-250 bg-be-cream p-8 text-center flex flex-col items-center gap-4">
@@ -215,7 +215,7 @@ export default function EnquiryQuoteLayout() {
             Your enquiry has been submitted successfully.
           </p>
           <p className="text-body text-be-grey-650">
-            Our team will respond within 24 business hours. If urgent, feel free to call us directly.
+            Our team will review your enquiry and respond with the next steps. If urgent, feel free to call us directly.
           </p>
           <div className="flex flex-wrap gap-3 justify-center pt-2">
             <PrimaryButton onClick={() => {
@@ -242,7 +242,7 @@ export default function EnquiryQuoteLayout() {
           Send Us an Enquiry
         </h2>
         <p className="text-body-large text-be-grey-650">
-          Fill in the form below and our team will respond within 24 business hours.
+          Fill in the form below and our team will review your enquiry and respond with the next steps.
         </p>
       </div>
 
@@ -521,7 +521,7 @@ export default function EnquiryQuoteLayout() {
             ) : 'Send Enquiry'}
           </PrimaryButton>
           <p className="text-metadata text-be-grey-650">
-            We normally respond within one business day.
+            Our team will review your enquiry and respond with the next steps.
           </p>
           <p className="text-metadata text-be-grey-400">
             Your details are used only to respond to this enquiry.

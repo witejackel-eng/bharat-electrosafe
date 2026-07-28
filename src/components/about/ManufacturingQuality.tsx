@@ -52,7 +52,7 @@ export default function ManufacturingQuality() {
             headers={['Stage 1', 'Stage 2', 'Stage 3']}
             rows={[
               ['Raw material inspection', 'In-process testing', 'Final product certification'],
-              ['IS 15652:2006 compliance', 'BIS licensed production', 'CPRI/ERDA verified'],
+              ['IS 15652:2006 compliance', 'BIS licensed production', 'ERDA/NTH tested'],
               ['Thickness verification', 'Voltage class testing', 'Dimensional accuracy checks'],
             ]}
           />

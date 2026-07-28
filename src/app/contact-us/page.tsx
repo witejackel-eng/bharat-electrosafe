@@ -1,17 +1,24 @@
 import type { Metadata } from 'next';
-import { siteUrl, allowIndexing, buildUrl } from '@/lib/site-url';
+import { allowIndexing, buildUrl } from '@/lib/site-url';
 import { ContactPageStructuredData } from '@/components/structured-data';
 import ContactUsClient from './ContactUsClient';
 
+/* Title convention: the normal Metadata.title does NOT include the
+   "| Bharat Electrosafe" suffix because the root layout template appends
+   it automatically. Open Graph and Twitter receive the final full branded
+   title. */
+const PAGE_TITLE = 'Contact & Request a Product Quotation';
+const FULL_TITLE = `${PAGE_TITLE} | Bharat Electrosafe`;
+
 export const metadata: Metadata = {
-  title: 'Contact Bharat Electrosafe | Request a Product Quotation',
+  title: PAGE_TITLE,
   description:
     'Request a quotation for electrical insulating mats, PVC geomembrane or water stop seals. Contact Bharat Electrosafe in Noida, India for product enquiries and technical support.',
   alternates: {
     canonical: buildUrl('/contact-us'),
   },
   openGraph: {
-    title: 'Contact Bharat Electrosafe | Request a Product Quotation',
+    title: FULL_TITLE,
     description:
       'Request a quotation for electrical insulating mats, PVC geomembrane or water stop seals. Contact Bharat Electrosafe in Noida, India.',
     url: buildUrl('/contact-us'),
@@ -27,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Contact Bharat Electrosafe | Request a Product Quotation',
+    title: FULL_TITLE,
     description:
       'Request a quotation for electrical insulating mats, PVC geomembrane or water stop seals. Contact Bharat Electrosafe in Noida, India.',
     images: ['/brand/twitter-card-bharat-electrosafe.png'],

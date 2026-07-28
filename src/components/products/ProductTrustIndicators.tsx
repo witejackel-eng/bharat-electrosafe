@@ -22,8 +22,8 @@ interface ProductTrustIndicatorsProps {
 export function ProductTrustIndicators({ product }: ProductTrustIndicatorsProps) {
   const trustIndicators: TrustIndicator[] = [
     { icon: ShieldCheck, label: product.trustPoints[0] },
-    { icon: FileText, label: 'Full documentation provided' },
-    { icon: Truck, label: 'Pan-India delivery' },
+    { icon: FileText, label: 'Technical documentation available on request' },
+    { icon: Truck, label: 'Delivery confirmed with each quotation' },
     { icon: Headphones, label: 'Technical support available' },
   ];
 

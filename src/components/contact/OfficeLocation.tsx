@@ -88,7 +88,7 @@ export default function OfficeLocation() {
 
         {/* Response-time note */}
         <p className="text-metadata text-be-grey-650">
-          Response within 24 business hours for online enquiries.
+          Our team will review your enquiry and respond with the next steps.
         </p>
 
         {/* Directions CTA */}

@@ -243,7 +243,7 @@ export const organisationReferenceNote =
  * self-statement from reading as an independently verified figure.
  */
 export const scaleFacts = [
-  { value: '11+', label: 'Countries served' },
+  { value: '11+', label: 'Countries served (company-stated)' },
   { value: '1,000+', label: 'Customers stated by the company' },
   { value: String(productFamilyCount), label: 'Product families' },
 ] as const;

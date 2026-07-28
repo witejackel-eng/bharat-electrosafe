@@ -1,17 +1,24 @@
 import type { Metadata } from 'next';
-import { siteUrl, allowIndexing, buildUrl } from '@/lib/site-url';
+import { allowIndexing, buildUrl } from '@/lib/site-url';
 import { ProductsPageStructuredData } from '@/components/structured-data';
 import ProductsClient from './ProductsClient';
 
+/* Title convention: the normal Metadata.title does NOT include the
+   "| Bharat Electrosafe" suffix because the root layout template appends
+   it automatically. Open Graph and Twitter receive the final full branded
+   title. */
+const PAGE_TITLE = 'Products — Electrical Insulation and Engineered Protection';
+const FULL_TITLE = `${PAGE_TITLE} | Bharat Electrosafe`;
+
 export const metadata: Metadata = {
-  title: 'Products — Electrical Insulation and Engineered Protection | Bharat Electrosafe',
+  title: PAGE_TITLE,
   description:
     'Explore six product families for electrical insulation, hazard visibility, waterproofing and construction-joint protection. Compare features and find the right product for your application.',
   alternates: {
     canonical: buildUrl('/products'),
   },
   openGraph: {
-    title: 'Products — Electrical Insulation and Engineered Protection | Bharat Electrosafe',
+    title: FULL_TITLE,
     description:
       'Explore six product families for electrical insulation, hazard visibility, waterproofing and construction-joint protection.',
     url: buildUrl('/products'),
@@ -27,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Products — Electrical Insulation and Engineered Protection | Bharat Electrosafe',
+    title: FULL_TITLE,
     description:
       'Explore six product families for electrical insulation, hazard visibility, waterproofing and construction-joint protection.',
     images: ['/brand/og-bharat-electrosafe.png'],

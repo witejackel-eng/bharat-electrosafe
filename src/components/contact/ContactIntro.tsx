@@ -168,7 +168,7 @@ export default function ContactIntro() {
 
       {/* Response-time statement */}
       <p className="text-metadata text-be-grey-650">
-        We normally respond within one business day.
+        Our team will review your enquiry and respond with the next steps.
       </p>
     </div>
   );
