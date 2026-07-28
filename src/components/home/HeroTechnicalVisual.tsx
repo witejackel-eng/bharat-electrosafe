@@ -1,26 +1,48 @@
 /**
  * HeroTechnicalVisual — Server Component (pure SVG/CSS, no client JS).
  *
- * Previously this was a Client Component using Framer Motion for one-shot
- * entrance animations. That forced the entire hero visual into the client
- * bundle and delayed LCP. The visual is now a static server-rendered SVG
- * with no animation — the first paint is the final paint.
+ * Redesigned hero illustration telling a complete product story in one
+ * integrated scene:
+ *
+ *   "An electrical technician is operating a control panel while
+ *    standing on an insulating mat."
  *
  * Layer stack (back → front):
  *   1. Warm-cream stage background with clipped corner + radial highlight
- *   2. SVG isometric floor plane, engineering grid, hazard-zone boundary,
- *      measurement nodes
- *   3. SVG simplified switchgear cabinet (charcoal/grey, premium, simplified)
- *   4. REAL Bharat Electrosafe insulating-mat texture (purpose-built
- *      mat-texture.webp — 68 KB, cropped from photo-surface-01.webp) clipped
- *      to a perspective trapezoid. A yellow safety-edge accent ties the
- *      visual to the brand.
- *   5. HTML technical callouts (BIS LICENSED, CLASS A · B · C, ANTI-SKID
- *      SAFETY SURFACE, PROTECTED WORKING ZONE) with thin SVG leader lines.
+ *   2. Engineering grid + floor perspective lines (shared vanishing point)
+ *   3. Switchgear cabinet (back-right, on floor plane, simplified)
+ *   4. Insulating mat (front-center, flat on floor, real product texture
+ *      with yellow safety edge, visible thickness, raised perimeter)
+ *   5. Operator (side view, standing on mat, facing cabinet, yellow hard
+ *      hat, charcoal coveralls, reaching toward panel)
+ *   6. Protected-zone yellow dashed boundary (hugging mat outline)
+ *   7. Hazard line (floor-level, blue-grey, approaches from left, fades
+ *      at mat boundary — conveys "insulating barrier contains the risk")
+ *   8. HTML callouts (max 4: ELECTRICAL SWITCHGEAR, OPERATOR STANDING
+ *      AREA, INSULATING BARRIER, ANTI-SKID SURFACE) with SVG leader lines
  *
- * The real product texture carries the product realism; SVG supplies the
- * industrial context, depth and technical annotation. No Canvas, WebGL,
- * video, Framer Motion or any client runtime.
+ * Story sequence (CSS-only, one-shot, ~1.6s total, reduced-motion safe):
+ *   Step 1 (0–0.3s):   Cabinet + grid + floor fade in
+ *   Step 2 (0.2–0.5s): Mat fades in
+ *   Step 3 (0.4–0.7s): Operator fades in
+ *   Step 4 (0.6–1.3s): Protected-zone boundary fades in around mat
+ *   Step 5 (0.9–1.4s): Callouts fade in
+ *   Step 6 (1.1–1.6s): Hazard line appears, then fades at mat boundary
+ *
+ * Static-first guarantee: every element's DEFAULT computed state is its
+ * FINAL state. Entry animations use @starting-style (transitions) and
+ * CSS @keyframes (path fades). With JS disabled, with animations
+ * disabled, with prefers-reduced-motion, or in PageSpeed's first
+ * meaningful frame, every element renders at its final state and the
+ * complete scene is immediately understandable.
+ *
+ * Accessibility: the wrapper div has role="img" and a single descriptive
+ * aria-label. All internal SVGs are aria-hidden="true" so assistive
+ * technology hears one concise description instead of dozens of paths.
+ *
+ * Performance: server-rendered, no Framer Motion, no Canvas, no WebGL,
+ * no video, no large base64. Reuses the existing optimised
+ * mat-texture.webp (68 KB). No client JS introduced.
  *
  * All colours reuse the existing be-* brand tokens.
  */
@@ -30,15 +52,16 @@
 /* ------------------------------------------------------------------ */
 type Callout = {
   id: string;
+  /** Desktop label. */
   label: string;
+  /** Mobile label (if different). When omitted, `label` is used at all sizes. */
+  mobileLabel?: string;
   /** Position of the label box on the stage (Tailwind classes). */
   style: string;
-  /** Anchor point the leader line connects to (percent of stage). */
+  /** Anchor point the leader line connects to (percent of stage, 0–100). */
   anchor: { x: number; y: number };
-  /** Leader line goes from label to anchor. */
+  /** Hide on mobile (default false). */
   hideOnMobile?: boolean;
-  /** Secondary (smaller) callout style. */
-  secondary?: boolean;
   /** Leader-line label endpoint direction. */
   isRight?: boolean;
   isTop?: boolean;
@@ -46,47 +69,45 @@ type Callout = {
 
 const callouts: Callout[] = [
   {
-    id: 'bis',
-    label: 'BIS LICENSED',
-    style: 'top-[5%] right-[5%]',
-    anchor: { x: 70, y: 24 },
-    hideOnMobile: false,
+    id: 'switchgear',
+    label: 'ELECTRICAL SWITCHGEAR',
+    style: 'top-[4%] right-[3%]',
+    anchor: { x: 72, y: 36 },
     isRight: true,
     isTop: true,
   },
   {
-    id: 'class',
-    label: 'CLASS A · B · C',
-    style: 'top-[30%] left-[3%]',
-    anchor: { x: 36, y: 62 },
-    hideOnMobile: false,
-    isRight: false,
-    isTop: false,
+    id: 'operator',
+    label: 'OPERATOR STANDING AREA',
+    mobileLabel: 'INSULATING MAT',
+    style: 'bottom-[26%] left-[3%]',
+    anchor: { x: 47, y: 80 },
+  },
+  {
+    id: 'barrier',
+    label: 'INSULATING BARRIER',
+    mobileLabel: 'PROTECTED AREA',
+    style: 'bottom-[6%] right-[3%]',
+    anchor: { x: 80, y: 92 },
+    isRight: true,
   },
   {
     id: 'skid',
-    label: 'ANTI-SKID SAFETY SURFACE',
-    style: 'bottom-[20%] right-[4%]',
-    anchor: { x: 55, y: 76 },
+    label: 'ANTI-SKID SURFACE',
+    style: 'top-[46%] left-[3%]',
+    anchor: { x: 28, y: 80 },
     hideOnMobile: true,
-    isRight: true,
-    isTop: false,
-  },
-  {
-    id: 'zone',
-    label: 'PROTECTED WORKING ZONE',
-    style: 'bottom-[5%] left-[4%]',
-    anchor: { x: 30, y: 82 },
-    hideOnMobile: true,
-    secondary: true,
-    isRight: false,
-    isTop: false,
+    isTop: true,
   },
 ];
 
 export default function HeroTechnicalVisual() {
   return (
-    <div className="relative w-full h-[320px] sm:h-[420px] lg:h-[520px] overflow-hidden">
+    <div
+      role="img"
+      aria-label="Technical illustration of an electrical technician standing on an insulating mat while operating switchgear. The mat forms a protected standing surface between the operator and the floor."
+      className="relative w-full h-[340px] sm:h-[420px] lg:h-[520px] overflow-hidden"
+    >
       {/* ── Layer 1: stage background ─────────────────────────────── */}
       <div
         className="absolute inset-0"
@@ -106,9 +127,14 @@ export default function HeroTechnicalVisual() {
           }}
         />
       </div>
-      <div className="absolute left-6 bottom-0 right-6 h-px bg-be-grey-250/60" aria-hidden="true" />
+      <div
+        className="absolute left-6 bottom-0 right-6 h-px bg-be-grey-250/60"
+        aria-hidden="true"
+      />
 
-      {/* ── Layers 2–3: SVG technical environment + switchgear ─────── */}
+      {/* ── Layers 2–7: SVG technical environment (single SVG, shared
+            coordinate system so the mat, operator, cabinet, protected
+            zone and hazard line all sit on the same perspective plane). */}
       <svg
         className="absolute inset-0 h-full w-full"
         viewBox="0 0 640 520"
@@ -116,126 +142,162 @@ export default function HeroTechnicalVisual() {
         aria-hidden="true"
       >
         <defs>
-          <pattern id="htvGrid" width="36" height="36" patternUnits="userSpaceOnUse">
-            <path d="M36 0 H0 V36" fill="none" stroke="#242426" strokeOpacity="0.045" strokeWidth="1" />
+          {/* Engineering grid pattern */}
+          <pattern
+            id="htv2-grid"
+            width="36"
+            height="36"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M36 0 H0 V36"
+              fill="none"
+              stroke="#242426"
+              strokeOpacity="0.045"
+              strokeWidth="1"
+            />
           </pattern>
-          <linearGradient id="htvCab" x1="0" y1="0" x2="1" y2="0">
+
+          {/* Cabinet gradients */}
+          <linearGradient id="htv2-cab" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stopColor="#38383A" />
             <stop offset="1" stopColor="#2a2a2c" />
           </linearGradient>
-          <linearGradient id="htvCabSide" x1="0" y1="0" x2="1" y2="0">
+          <linearGradient id="htv2-cab-side" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stopColor="#2a2a2c" />
             <stop offset="1" stopColor="#1f1f21" />
           </linearGradient>
-          <filter id="htvSoft" x="-20%" y="-20%" width="140%" height="140%">
+
+          {/* Mat gradients */}
+          <linearGradient id="htv2-mat-body" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#1f1f21" />
+            <stop offset="1" stopColor="#242426" />
+          </linearGradient>
+          <linearGradient id="htv2-mat-shade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#000000" stopOpacity="0.35" />
+            <stop offset="0.5" stopColor="#000000" stopOpacity="0" />
+            <stop offset="1" stopColor="#000000" stopOpacity="0.05" />
+          </linearGradient>
+
+          {/* Mat perspective clip — trapezoid matching mat outline */}
+          <clipPath id="htv2-mat-clip">
+            <polygon points="195,338 405,338 525,468 115,468" />
+          </clipPath>
+
+          {/* Soft shadow filter for contact shadows */}
+          <filter
+            id="htv2-soft"
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
+          >
             <feGaussianBlur stdDeviation="7" />
           </filter>
         </defs>
 
-        <rect x="0" y="0" width="640" height="520" fill="url(#htvGrid)" />
+        {/* ── Layer 2: floor grid + perspective lines ────────────── */}
+        <g className="htv-step htv-step-1">
+          <rect x="0" y="0" width="640" height="520" fill="url(#htv2-grid)" />
 
-        <g stroke="#242426" strokeOpacity="0.05" strokeWidth="1">
-          <line x1="170" y1="310" x2="40" y2="475" />
-          <line x1="280" y1="310" x2="230" y2="475" />
-          <line x1="370" y1="310" x2="400" y2="475" />
-          <line x1="470" y1="310" x2="600" y2="475" />
+          {/* Floor perspective lines converging toward back-center */}
+          <g stroke="#242426" strokeOpacity="0.06" strokeWidth="1">
+            <line x1="80" y1="475" x2="240" y2="310" />
+            <line x1="200" y1="475" x2="290" y2="310" />
+            <line x1="320" y1="475" x2="320" y2="310" />
+            <line x1="440" y1="475" x2="350" y2="310" />
+            <line x1="560" y1="475" x2="400" y2="310" />
+          </g>
+
+          {/* Floor horizontal lines (slight perspective) */}
+          <g stroke="#242426" strokeOpacity="0.05" strokeWidth="1">
+            <line x1="40" y1="350" x2="600" y2="350" />
+            <line x1="20" y1="400" x2="620" y2="400" />
+            <line x1="0" y1="450" x2="640" y2="450" />
+          </g>
         </g>
 
-        {/* ── Layer 3: switchgear cabinet (upper-right, simplified) ── */}
-        <g>
-          <ellipse cx="430" cy="300" rx="96" ry="12" fill="#242426" opacity="0.12" filter="url(#htvSoft)" />
-          <polygon points="500,110 542,92 542,296 500,300" fill="url(#htvCabSide)" />
-          <rect x="348" y="110" width="152" height="190" fill="url(#htvCab)" />
-          <polygon points="348,110 500,110 542,92 390,92" fill="#4a4a44" />
-          <line x1="424" y1="110" x2="424" y2="300" stroke="#1f1f21" strokeWidth="1.5" />
+        {/* ── Layer 3: switchgear cabinet (back-right, on floor) ──── */}
+        <g className="htv-step htv-step-1">
+          {/* Contact shadow on floor */}
+          <ellipse
+            cx="430"
+            cy="306"
+            rx="100"
+            ry="10"
+            fill="#242426"
+            opacity="0.14"
+            filter="url(#htv2-soft)"
+          />
+          {/* Cabinet side (right) — shows 3D depth */}
+          <polygon points="500,108 542,90 542,296 500,302" fill="url(#htv2-cab-side)" />
+          {/* Cabinet front face */}
+          <rect x="348" y="108" width="152" height="194" fill="url(#htv2-cab)" />
+          {/* Cabinet top — shows 3D depth */}
+          <polygon points="348,108 500,108 542,90 390,90" fill="#4a4a44" />
+          {/* Centre seam (double-door) */}
+          <line x1="424" y1="108" x2="424" y2="302" stroke="#1f1f21" strokeWidth="1.5" />
+          {/* Upper vent slots (left door) */}
           <g stroke="#1f1f21" strokeWidth="2" opacity="0.7">
-            <line x1="360" y1="128" x2="414" y2="128" />
-            <line x1="360" y1="135" x2="414" y2="135" />
-            <line x1="360" y1="142" x2="414" y2="142" />
-            <line x1="434" y1="128" x2="488" y2="128" />
-            <line x1="434" y1="135" x2="488" y2="135" />
-            <line x1="434" y1="142" x2="488" y2="142" />
+            <line x1="360" y1="126" x2="414" y2="126" />
+            <line x1="360" y1="133" x2="414" y2="133" />
+            <line x1="360" y1="140" x2="414" y2="140" />
+            <line x1="434" y1="126" x2="488" y2="126" />
+            <line x1="434" y1="133" x2="488" y2="133" />
+            <line x1="434" y1="140" x2="488" y2="140" />
           </g>
-          <circle cx="372" cy="158" r="3" fill="#FFC400" />
-          <circle cx="372" cy="158" r="1.4" fill="#FFF4BE" />
-          <circle cx="386" cy="158" r="3" fill="#3a3a3a" stroke="#1f1f21" strokeWidth="0.5" />
-          <rect x="440" y="152" width="40" height="20" rx="2" fill="#1f1f21" />
-          <circle cx="450" cy="162" r="4" fill="#4a4a44" stroke="#666668" strokeWidth="0.5" />
-          <circle cx="470" cy="162" r="4" fill="#4a4a44" stroke="#666668" strokeWidth="0.5" />
+          {/* Status LED (yellow) + meter */}
+          <circle cx="372" cy="156" r="3" fill="#FFC400" />
+          <circle cx="372" cy="156" r="1.4" fill="#FFF4BE" />
+          <circle
+            cx="386"
+            cy="156"
+            r="3"
+            fill="#3a3a3a"
+            stroke="#1f1f21"
+            strokeWidth="0.5"
+          />
+          {/* Digital panel + knobs */}
+          <rect x="440" y="150" width="40" height="20" rx="2" fill="#1f1f21" />
+          <circle cx="450" cy="160" r="4" fill="#4a4a44" stroke="#666668" strokeWidth="0.5" />
+          <circle cx="470" cy="160" r="4" fill="#4a4a44" stroke="#666668" strokeWidth="0.5" />
+          {/* Door handles */}
           <rect x="416" y="200" width="4" height="40" rx="2" fill="#666668" />
           <rect x="428" y="200" width="4" height="40" rx="2" fill="#666668" />
+          {/* High-voltage warning triangle */}
           <g transform="translate(392,218)">
-            <polygon points="16,0 32,28 0,28" fill="#FFC400" stroke="#242426" strokeWidth="1.5" />
-            <text x="16" y="24" textAnchor="middle" fontSize="18" fontWeight="700" fill="#242426" fontFamily="sans-serif">!</text>
+            <polygon
+              points="16,0 32,28 0,28"
+              fill="#FFC400"
+              stroke="#242426"
+              strokeWidth="1.5"
+            />
+            <text
+              x="16"
+              y="24"
+              textAnchor="middle"
+              fontSize="18"
+              fontWeight="700"
+              fill="#242426"
+              fontFamily="sans-serif"
+            >
+              !
+            </text>
           </g>
+          {/* Side vents */}
           <g stroke="#1f1f21" strokeWidth="1.5" opacity="0.6">
-            <line x1="510" y1="120" x2="536" y2="108" />
-            <line x1="510" y1="135" x2="536" y2="123" />
-            <line x1="510" y1="150" x2="536" y2="138" />
+            <line x1="510" y1="118" x2="536" y2="106" />
+            <line x1="510" y1="133" x2="536" y2="121" />
+            <line x1="510" y1="148" x2="536" y2="136" />
           </g>
-          <rect x="344" y="298" width="160" height="6" fill="#1f1f21" />
-          <polygon points="500,298 542,294 542,300 500,304" fill="#1a1a1c" />
+          {/* Cabinet base plinth */}
+          <rect x="344" y="300" width="160" height="6" fill="#1f1f21" />
+          <polygon points="500,300 542,296 542,302 500,306" fill="#1a1a1c" />
         </g>
 
-        {/* ── Layer 2b: hazard-zone boundary + electrical contour ── */}
-        <ellipse
-          cx="300"
-          cy="395"
-          rx="250"
-          ry="80"
-          fill="none"
-          stroke="#242426"
-          strokeWidth="1.5"
-          strokeDasharray="4 6"
-          opacity="0.18"
-        />
-        <path
-          d="M70,440 Q120,470 300,470 Q470,470 540,440"
-          fill="none"
-          stroke="#FFC400"
-          strokeWidth="2"
-          strokeDasharray="8 5"
-          strokeLinecap="round"
-          opacity="0.5"
-        />
-
-        {/* Measurement nodes (desktop only, faint) */}
-        <g className="hidden sm:block">
-          <g stroke="#242426" strokeOpacity="0.2" strokeWidth="1">
-            <line x1="90" y1="478" x2="510" y2="478" />
-          </g>
-          {[120, 200, 280, 360, 440, 480].map((x) => (
-            <line key={x} x1={x} y1="474" x2={x} y2="482" stroke="#242426" strokeOpacity="0.2" strokeWidth="1" />
-          ))}
-          <circle cx="90" cy="478" r="2.5" fill="#FFFDF3" stroke="#242426" strokeOpacity="0.3" strokeWidth="1" />
-          <circle cx="510" cy="478" r="2.5" fill="#FFFDF3" stroke="#242426" strokeOpacity="0.3" strokeWidth="1" />
-        </g>
-      </svg>
-
-      {/* ── Layer 4: flat insulating mat on the floor (SVG + real texture) ── */}
-      <div className="absolute inset-0">
-        <svg
-          className="absolute inset-0 h-full w-full"
-          viewBox="0 0 640 520"
-          preserveAspectRatio="xMidYMid slice"
-          role="img"
-          aria-label="Bharat Electrosafe electrical insulating mat — a flat black rubber mat with circular anti-skid coin texture and a yellow safety edge, lying on the floor in front of an electrical switchgear cabinet."
-        >
-          <defs>
-            <clipPath id="matClip">
-              <polygon points="195,338 405,338 525,468 115,468" />
-            </clipPath>
-            <linearGradient id="matShade" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#000000" stopOpacity="0.35" />
-              <stop offset="0.5" stopColor="#000000" stopOpacity="0" />
-              <stop offset="1" stopColor="#000000" stopOpacity="0.05" />
-            </linearGradient>
-            <linearGradient id="matBody" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#1f1f21" />
-              <stop offset="1" stopColor="#242426" />
-            </linearGradient>
-          </defs>
-
+        {/* ── Layer 4: insulating mat (front-center, flat on floor) ─ */}
+        <g className="htv-step htv-step-2">
+          {/* Floor contact shadow under mat — confirms mat lies ON floor */}
           <ellipse
             cx="320"
             cy="473"
@@ -243,15 +305,12 @@ export default function HeroTechnicalVisual() {
             ry="14"
             fill="#242426"
             opacity="0.16"
-            filter="url(#htvSoft)"
+            filter="url(#htv2-soft)"
           />
-
-          {/* Mat body */}
-          <polygon points="195,338 405,338 525,468 115,468" fill="url(#matBody)" />
-
-          {/* Optimized product texture — 68 KB purpose-built asset
-              (down from 372 KB photo-surface-01.webp). Clipped to the
-              perspective trapezoid. */}
+          {/* Mat body (perspective trapezoid — narrow at back, wide at front) */}
+          <polygon points="195,338 405,338 525,468 115,468" fill="url(#htv2-mat-body)" />
+          {/* Real anti-skid product texture — 68 KB purpose-built asset,
+              clipped to the perspective trapezoid. */}
           <image
             href="/media/hero/mat-texture.webp"
             x="115"
@@ -259,33 +318,173 @@ export default function HeroTechnicalVisual() {
             width="410"
             height="130"
             preserveAspectRatio="xMidYMid slice"
-            clipPath="url(#matClip)"
+            clipPath="url(#htv2-mat-clip)"
             opacity="0.92"
           />
-
-          {/* Depth shading */}
-          <polygon points="195,338 405,338 525,468 115,468" fill="url(#matShade)" clipPath="url(#matClip)" />
-
-          {/* Front-edge thickness */}
+          {/* Depth shading — top-to-bottom light variation */}
+          <polygon
+            points="195,338 405,338 525,468 115,468"
+            fill="url(#htv2-mat-shade)"
+            clipPath="url(#htv2-mat-clip)"
+          />
+          {/* Slightly raised perimeter edge — thin inner outline */}
+          <polygon
+            points="202,344 398,344 516,462 124,462"
+            fill="none"
+            stroke="#3a3a3c"
+            strokeWidth="1.25"
+            opacity="0.45"
+          />
+          {/* Front-edge thickness — shows mat is a solid 3D object,
+              not a painted floor patch. */}
           <polygon points="115,468 525,468 520,475 120,475" fill="#0d0d0e" />
-
-          {/* Yellow safety edge */}
+          {/* Yellow safety edge — brand identifier */}
           <polygon
             points="115,468 525,468 523,471 117,471"
             fill="#FFC400"
             opacity="0.88"
           />
+          {/* Subtle corner detail (front-left) */}
+          <polygon
+            points="115,468 132,468 126,461 119,462"
+            fill="#1a1a1c"
+            stroke="#0d0d0e"
+            strokeWidth="0.5"
+          />
+        </g>
 
-          {/* Subtle corner lift */}
-          <polygon points="115,468 132,468 126,461 119,462" fill="#1a1a1c" stroke="#0d0d0e" strokeWidth="0.5" />
-        </svg>
-      </div>
+        {/* ── Layer 5: operator (side view, on mat, facing cabinet) ─
+            Muted blue-grey coverall (lighter than the dark mat) ensures
+            the figure stays visible against the mat without dominating
+            it. Thin lighter outline along the figure's edges keeps the
+            silhouette readable at all screen sizes. */}
+        <g className="htv-step htv-step-3">
+          {/* Contact shadow on mat — confirms operator stands ON mat */}
+          <ellipse cx="305" cy="416" rx="28" ry="3.5" fill="#000" opacity="0.22" />
 
-      {/* ── Layer 5: HTML callouts with SVG leader lines ─────────── */}
+          {/* Back leg (slightly behind front leg) */}
+          <path
+            d="M298,365 L301,413 L308,413 L306,365 Z"
+            fill="#3a4248"
+            stroke="#5a626a"
+            strokeWidth="0.6"
+          />
+          {/* Back boot */}
+          <ellipse cx="304" cy="414" rx="7" ry="2.5" fill="#1a1a1c" stroke="#3a4248" strokeWidth="0.4" />
+
+          {/* Front leg */}
+          <path
+            d="M310,365 L314,413 L321,413 L318,365 Z"
+            fill="#4a5258"
+            stroke="#6a7280"
+            strokeWidth="0.6"
+          />
+          {/* Front boot */}
+          <ellipse cx="318" cy="414" rx="7" ry="2.5" fill="#1a1a1c" stroke="#4a5258" strokeWidth="0.4" />
+
+          {/* Torso (coverall, slight forward lean toward panel) */}
+          <path
+            d="M294,295 L322,295 L324,365 L292,365 Z"
+            fill="#4a5560"
+            stroke="#6a7280"
+            strokeWidth="0.6"
+          />
+          {/* Torso highlight (light from upper-left) */}
+          <path d="M294,295 L302,295 L300,365 L293,365 Z" fill="#5a6571" opacity="0.6" />
+          {/* Coverall waist band */}
+          <rect x="292" y="358" width="32" height="3" fill="#2a3238" opacity="0.6" />
+
+          {/* Back arm (at side, slightly visible behind torso) */}
+          <path
+            d="M294,302 L289,335 L293,360 L298,335 Z"
+            fill="#3a4248"
+            stroke="#5a626a"
+            strokeWidth="0.5"
+          />
+
+          {/* Front arm — reaches toward cabinet to convey "operating" */}
+          <path
+            d="M322,302 L342,320 L355,340 L350,345 L340,330 L322,315 Z"
+            fill="#4a5560"
+            stroke="#6a7280"
+            strokeWidth="0.5"
+          />
+          {/* Hand (glove) */}
+          <circle cx="353" cy="343" r="4" fill="#3a4248" stroke="#5a626a" strokeWidth="0.4" />
+
+          {/* Neck */}
+          <rect x="303" y="287" width="9" height="10" fill="#4a4036" />
+
+          {/* Head (profile, facing right toward cabinet) */}
+          <circle cx="309" cy="278" r="9" fill="#4a4036" />
+
+          {/* Hard hat (yellow) — profile view, the only saturated brand
+              accent on the operator. Helmet identifies the figure as
+              industrial personnel without dominating the mat. */}
+          <path
+            d="M299,276 Q299,263 309,262 Q319,263 319,276 L321,278 L297,278 Z"
+            fill="#FFC400"
+            stroke="#DFAA00"
+            strokeWidth="0.5"
+          />
+          {/* Hard hat brim (front) */}
+          <path d="M317,272 L323,274 L323,278 L317,278 Z" fill="#FFC400" />
+          {/* Hard hat brim (back) */}
+          <path d="M295,278 L299,274 L299,278 L295,278 Z" fill="#DFAA00" opacity="0.9" />
+          {/* Hard hat subtle highlight */}
+          <path
+            d="M303,267 Q307,263 313,263"
+            stroke="#FFF4BE"
+            strokeWidth="1"
+            fill="none"
+            opacity="0.7"
+          />
+        </g>
+
+        {/* ── Layer 6: protected-zone boundary (yellow dashed, hugs mat) */}
+        <polygon
+          points="180,328 420,328 540,478 100,478"
+          fill="none"
+          stroke="#FFC400"
+          strokeWidth="2"
+          strokeDasharray="8 5"
+          strokeLinecap="round"
+          className="htv-zone-draw"
+        />
+
+        {/* ── Layer 7: hazard line (floor-level, fades at mat boundary) */}
+        {/* The line approaches from the lower-left at floor level and
+            stops at the mat boundary — conveys "insulating barrier
+            contains floor-level electrical risk". No sparks, no
+            lightning, no shock imagery. Just a technical current line
+            that fades where the mat begins. */}
+        <path
+          d="M30,455 Q70,458 108,452"
+          fill="none"
+          stroke="#5a6a7a"
+          strokeWidth="1.5"
+          strokeDasharray="6 4"
+          strokeLinecap="round"
+          className="htv-hazard-draw"
+        />
+        {/* Small "stopped" marker where hazard meets mat boundary — a
+            subtle visual cue that the line terminates at the mat edge. */}
+        <g
+          className="htv-step htv-step-6"
+          stroke="#5a6a7a"
+          strokeWidth="1.5"
+          opacity="0.55"
+        >
+          <line x1="106" y1="448" x2="114" y2="456" />
+          <line x1="114" y1="448" x2="106" y2="456" />
+        </g>
+      </svg>
+
+      {/* ── Layer 8: HTML callouts with SVG leader lines ─────────── */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Leader lines (SVG overlay) */}
+        {/* Leader lines (SVG overlay, container-percent coordinate system) */}
         <svg
-          className="absolute inset-0 h-full w-full hidden sm:block"
+          className="absolute inset-0 h-full w-full"
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
           aria-hidden="true"
@@ -295,60 +494,54 @@ export default function HeroTechnicalVisual() {
             .map((c) => {
               const ax = c.anchor.x;
               const ay = c.anchor.y;
-              const lx = c.isRight ? ax + 8 : ax - 8;
-              const ly = c.isTop ? ay + 6 : ay - 6;
+              const lx = c.isRight ? ax + 5 : ax - 5;
+              const ly = c.isTop ? ay + 4 : ay - 4;
               return (
-                <line
-                  key={`line-${c.id}`}
-                  x1={ax}
-                  y1={ay}
-                  x2={lx}
-                  y2={ly}
-                  stroke="#A9A9A5"
-                  strokeWidth="0.4"
-                  vectorEffect="non-scaling-stroke"
-                  opacity="0.6"
-                />
+                <g key={`ll-${c.id}`}>
+                  <line
+                    x1={ax}
+                    y1={ay}
+                    x2={lx}
+                    y2={ly}
+                    stroke="#A9A9A5"
+                    strokeWidth="0.4"
+                    vectorEffect="non-scaling-stroke"
+                    opacity="0.6"
+                  />
+                  <circle
+                    cx={c.anchor.x}
+                    cy={c.anchor.y}
+                    r="0.8"
+                    fill="#FFC400"
+                    stroke="#242426"
+                    strokeWidth="0.3"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                </g>
               );
             })}
-          {callouts
-            .filter((c) => !c.hideOnMobile)
-            .map((c) => (
-              <circle
-                key={`dot-${c.id}`}
-                cx={c.anchor.x}
-                cy={c.anchor.y}
-                r="0.8"
-                fill="#FFC400"
-                stroke="#242426"
-                strokeWidth="0.3"
-                vectorEffect="non-scaling-stroke"
-              />
-            ))}
         </svg>
 
-        {/* Callout labels */}
+        {/* Callout labels — HTML overlays positioned with Tailwind.
+            Desktop shows full label; mobile shows shortened label.
+            Each label has a subtle cream background pill so it stays
+            legible against any visual element it overlaps. */}
         {callouts.map((c) => (
           <div
             key={c.id}
-            className={`absolute ${c.style} flex items-center gap-1.5 ${
-              c.hideOnMobile ? 'hidden sm:flex' : 'flex'
-            }`}
+            className={`absolute ${c.style} flex items-center gap-1.5 htv-step htv-step-5 ${
+              c.hideOnMobile ? 'hidden md:flex' : 'flex'
+            } rounded-sm px-1.5 py-0.5 bg-be-warm-white/85 backdrop-blur-[1px] border border-be-grey-250/60`}
           >
             <span
-              className={`h-1.5 w-1.5 rounded-full shrink-0 ${
-                c.secondary ? 'bg-be-charcoal-800' : 'bg-be-yellow-500'
-              }`}
+              className="h-1.5 w-1.5 rounded-full shrink-0 bg-be-yellow-500"
               aria-hidden="true"
             />
-            <span
-              className={`whitespace-nowrap font-semibold uppercase tracking-[0.13em] text-be-charcoal-800 ${
-                c.secondary
-                  ? 'text-[0.55rem] sm:text-[0.6rem]'
-                  : 'text-[0.6rem] sm:text-[0.625rem]'
-              }`}
-            >
-              {c.label}
+            <span className="whitespace-nowrap font-semibold uppercase tracking-[0.12em] text-be-charcoal-800 text-[0.625rem] sm:text-[0.6875rem] md:text-[0.625rem]">
+              <span className="hidden md:inline">{c.label}</span>
+              {c.mobileLabel ? (
+                <span className="md:hidden">{c.mobileLabel}</span>
+              ) : null}
             </span>
           </div>
         ))}
