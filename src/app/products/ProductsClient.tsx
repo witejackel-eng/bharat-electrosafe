@@ -28,23 +28,27 @@ import {
 
 function ProductsHero() {
   return (
-    <SectionShell variant="hero" bg="bg-be-warm-white">
-      <div className="max-w-3xl">
-        <div className="mb-6">
+    <SectionShell
+      variant="hero"
+      bg="bg-be-warm-white"
+      className="pt-10 pb-12 md:pt-12 md:pb-14 lg:pt-14 lg:pb-16"
+    >
+      <div className="max-w-5xl">
+        <div className="mb-4">
           <Eyebrow>PRODUCT RANGE</Eyebrow>
           <div className="mt-2 h-0.5 bg-be-yellow-500 rounded animate-slide-in" style={{ width: '80px' }} />
         </div>
 
-        <h1 className="text-hero-h1 text-be-charcoal-950 mb-6">
+        <h1 className="text-products-hero-h1 text-be-charcoal-950 mb-4">
           Electrical insulation and engineered protection products
         </h1>
 
-        <p className="text-body-large text-be-grey-650 mb-8">
+        <p className="text-body-large text-be-grey-650 mb-6">
           Explore {productFamilyCount} product families for electrical safety, hazard
           demarcation, waterproofing and construction-joint protection.
         </p>
 
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-3">
           <PrimaryButton href="#product-grid" size="lg">
             Explore Products
           </PrimaryButton>
