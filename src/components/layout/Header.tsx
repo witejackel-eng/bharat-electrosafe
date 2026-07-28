@@ -20,7 +20,6 @@ import {
   Eye,
   Sun,
   Droplets,
-  Waves,
 } from 'lucide-react';
 import {
   Sheet,
@@ -64,7 +63,6 @@ const productIconMap: Record<string, React.ReactNode> = {
   'bi-color-insulating-mats': <Shield className="size-4" />,
   'auto-glow-reflective-band-insulating-mats': <Sun className="size-4" />,
   'bharat-membrane': <Droplets className="size-4" />,
-  'bharat-hydro-seal': <Waves className="size-4" />,
 };
 
 /* ────────────────────────────────────────────
@@ -81,7 +79,6 @@ const ESCAPE_KEY = 'Escape';
 
 export function Header() {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
   const [compact, setCompact] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -97,7 +94,6 @@ export function Header() {
   useEffect(() => {
     const handleScroll = () => {
       const y = window.scrollY;
-      setScrolled(y > 10);
       setCompact(y > 80);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -259,29 +255,28 @@ export function Header() {
   return (
     <header className="relative z-50">
       {/* ── Top Contact Strip (desktop only) ── */}
-      {/* Dark utility strip sits above the pure-white brand header to give
-          the logo zone maximum contrast and a premium two-tone feel. Text
-          uses be-charcoal-800 (#38383A) on be-white (#FFFFFF) — contrast
-          ≈ 10.3:1, passes WCAG AAA. Hover state uses be-yellow-text
-          (#755600, contrast ≈ 4.7:1) so links remain AA on hover.
-          Subtle bottom border (be-header-border #E8E2D8) separates from
-          the main white header bar. */}
-      <div className="hidden md:block bg-be-white border-b border-be-header-border">
+      {/* Navy utility strip continues the header's navy band upward, so the
+          logo zone and contact strip read as one designed composition rather
+          than a white strip floating above a navy bar. Text uses
+          rgba(255,255,255,0.78) on navy (#00275B) — contrast ≈ 7.5:1, passes
+          WCAG AAA. Hover state uses brand-yellow (#F4C313, contrast ≈ 8.6:1
+          on navy) for a bright, on-brand interaction. */}
+      <div className="hidden md:block be-contact-strip-navy">
         <div className="container-site page-horizontal-padding flex items-center justify-between h-8">
           {/* Left: contact info */}
-          <div className="flex items-center gap-5 text-metadata text-be-charcoal-800">
+          <div className="flex items-center gap-5 text-metadata text-white/78">
             <a
               href={`mailto:${company.email}`}
-              className="flex items-center gap-1.5 hover:text-be-yellow-text transition-colors"
+              className="flex items-center gap-1.5 hover:text-be-brand-yellow transition-colors"
             >
-              <Mail className="size-3.5 text-be-charcoal-800" aria-hidden="true" focusable="false" />
+              <Mail className="size-3.5 text-white/70" aria-hidden="true" focusable="false" />
               <span>{company.email}</span>
             </a>
             <a
               href={`tel:${company.phonePrimaryTel}`}
-              className="flex items-center gap-1.5 hover:text-be-yellow-text transition-colors"
+              className="flex items-center gap-1.5 hover:text-be-brand-yellow transition-colors"
             >
-              <Phone className="size-3.5 text-be-charcoal-800" aria-hidden="true" focusable="false" />
+              <Phone className="size-3.5 text-white/70" aria-hidden="true" focusable="false" />
               <span>{company.phonePrimary}</span>
             </a>
           </div>
@@ -292,10 +287,10 @@ export function Header() {
               href={company.whatsapp.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-metadata text-be-charcoal-800 hover:text-be-yellow-text transition-colors"
+              className="flex items-center gap-1.5 text-metadata text-white/78 hover:text-be-brand-yellow transition-colors"
               aria-label="Chat on WhatsApp (opens in a new tab)"
             >
-              <MessageCircle className="size-3.5 text-be-charcoal-800" aria-hidden="true" focusable="false" />
+              <MessageCircle className="size-3.5 text-white/70" aria-hidden="true" focusable="false" />
               <span>{company.whatsapp.label}</span>
             </a>
           </div>
@@ -310,8 +305,8 @@ export function Header() {
           which previously caused left-clipping at narrower widths. */}
       <div
         className={cn(
-          'sticky top-0 z-50 bg-be-white border-b border-be-header-border transition-all duration-300',
-          scrolled && 'shadow-sm',
+          'sticky top-0 z-50 be-header-navy transition-all duration-300',
+          compact && 'be-header-navy-compact',
           // Stable mobile height of 64px (h-16), with slightly taller
           // desktop states to accommodate the contact strip above.
           compact ? 'h-16 md:h-[72px]' : 'h-16 md:h-[84px]'
@@ -324,51 +319,40 @@ export function Header() {
             mathematically centred regardless of logo / CTA width. */}
         <div className="container-site page-horizontal-padding grid grid-cols-[minmax(0,1fr)_auto] items-center h-full gap-3 lg:grid-cols-[minmax(190px,1fr)_auto_minmax(190px,1fr)] lg:gap-4">
           {/* ── Column 1: Logo zone (left-aligned) ── */}
-          {/* Pure-white brand area — the logo sits directly on the white
-              header (no warm tint, no card, no shadow) so the blue +
-              yellow artwork reads at maximum clarity. A 1px right divider
-              in --be-logo-divider (#E6E0D4) anchors the brand zone
-              visually without competing with the mark. Focus ring is
-              preserved for keyboard users via ring-offset-be-white.
-              min-w-0 prevents the logo from forcing the hamburger out
-              of the viewport on narrow screens. */}
+          {/* The transparent header logo (extracted from the client's master
+              JPEG with soft anti-aliased alpha) sits directly on the navy
+              band. Because the logo's own background was the same navy
+              gradient, the image boundary disappears — no visible square,
+              no mismatched blue rectangle. Focus ring is yellow on navy. */}
           <div className="flex items-center justify-start min-w-0">
             <Link
               href="/"
-              className="shrink-0 flex items-center px-2 sm:px-2.5 py-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2 focus-visible:ring-offset-be-white transition-shadow"
+              className="shrink-0 flex items-center px-2 sm:px-2.5 py-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800 transition-shadow"
               aria-label="Bharat Electrosafe — Home"
             >
-              {/* Intrinsic source dimensions are 1589x580 (aspect ≈ 2.74:1).
-                  Display sizes ramp from mobile (140px, top of the 130–145
-                  range) up to desktop (185px, within 170–190), with a
-                  compact state (138–160px, within 145–160 desktop) when
-                  scrolled. `priority` because the logo is above the fold
-                  on every route.
-                  Source is the lossless PNG master (188KB, 8-bit RGBA) —
-                  the sharpest available transparent asset — and Next.js
-                  Image re-optimizes per viewport width and pixel density
-                  (AVIF/WebP) for the served payload, so PNG-as-source
-                  gives maximum crispness with no client-weight penalty. */}
+              {/* Transparent header logo — 891x349 (aspect ≈ 2.55:1).
+                  Display sizes ramp from mobile (132px) up to desktop
+                  (196px), with a compact state when scrolled. `priority`
+                  because the logo is above the fold on every route.
+                  WebP source (76KB) for fast LCP; PNG fallback available. */}
               <Image
-                src="/images/brand/bharat-electrosafe-logo-full.png"
+                src="/brand/bharat-electrosafe-logo-header.webp"
                 alt="Bharat Electrosafe logo"
-                width={1589}
-                height={580}
-                sizes="(max-width: 359px) 120px, (max-width: 429px) 138px, (max-width: 767px) 142px, (max-width: 1023px) 172px, 185px"
+                width={891}
+                height={349}
+                sizes="(max-width: 359px) 124px, (max-width: 429px) 132px, (max-width: 767px) 140px, (max-width: 1023px) 168px, 196px"
                 className={cn(
-                  'object-contain transition-all duration-300 h-auto w-[120px] sm:w-[128px] md:w-[142px] lg:w-[185px]',
-                  compact && 'w-[110px] sm:w-[125px] md:w-[132px] lg:w-[160px]'
+                  'object-contain transition-all duration-300 h-auto w-[124px] sm:w-[132px] md:w-[140px] lg:w-[196px]',
+                  compact && 'w-[116px] sm:w-[124px] md:w-[132px] lg:w-[168px]'
                 )}
                 priority
               />
             </Link>
             {/* Subtle vertical divider — visible from lg+ only.
-                Hidden on mobile and tablet to avoid crowding the logo
-                next to the hamburger. 32px tall, 1px warm-neutral
-                (#E6E0D4). Colour sits between pure white and be-grey-250
-                so it reads as a refined seam rather than a hard rule. */}
+                A faint white divider replaces the old warm-neutral seam,
+                matching the navy composition. */}
             <div
-              className="hidden lg:block w-px h-8 bg-be-logo-divider ml-4 sm:ml-6 lg:ml-8"
+              className="hidden lg:block w-px h-8 bg-white/12 ml-4 sm:ml-6 lg:ml-8"
               aria-hidden="true"
             />
           </div>
@@ -381,8 +365,8 @@ export function Header() {
             <Link
               href="/"
               className={cn(
-                'px-3.5 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
-                pathname === '/' ? 'text-be-yellow-text border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
+                'relative px-3.5 py-2 text-sm font-medium rounded-md be-nav-link',
+                pathname === '/' && 'be-nav-link-active'
               )}
               aria-current={pathname === '/' ? 'page' : undefined}
             >
@@ -403,10 +387,8 @@ export function Header() {
               <Link
                 href="/products"
                 className={cn(
-                  'px-2 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
-                  isProductActive
-                    ? 'text-be-yellow-text'
-                    : 'text-be-charcoal-800'
+                  'relative px-2 py-2 text-sm font-medium rounded-md be-nav-link',
+                  isProductActive && 'be-nav-link-active'
                 )}
                 aria-current={isProductActive ? 'page' : undefined}
               >
@@ -421,8 +403,8 @@ export function Header() {
                 className={cn(
                   'px-2 py-2 text-sm font-medium rounded-md transition-colors',
                   dropdownOpen || isProductActive
-                    ? 'text-be-yellow-text bg-be-yellow-50'
-                    : 'text-be-charcoal-800 hover:text-be-yellow-text-hover hover:bg-be-yellow-50'
+                    ? 'text-be-brand-yellow bg-white/8'
+                    : 'be-nav-link'
                 )}
                 aria-expanded={dropdownOpen}
                 aria-haspopup="true"
@@ -448,8 +430,8 @@ export function Header() {
             <Link
               href="/about-us"
               className={cn(
-                'px-3.5 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
-                pathname === '/about-us' ? 'text-be-yellow-text border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
+                'relative px-3.5 py-2 text-sm font-medium rounded-md be-nav-link',
+                pathname === '/about-us' && 'be-nav-link-active'
               )}
               aria-current={pathname === '/about-us' ? 'page' : undefined}
             >
@@ -459,8 +441,8 @@ export function Header() {
             <Link
               href="/contact-us"
               className={cn(
-                'px-3.5 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-text-hover',
-                pathname === '/contact-us' ? 'text-be-yellow-text border-l-[3px] border-be-yellow-500 pl-3' : 'text-be-charcoal-800'
+                'relative px-3.5 py-2 text-sm font-medium rounded-md be-nav-link',
+                pathname === '/contact-us' && 'be-nav-link-active'
               )}
               aria-current={pathname === '/contact-us' ? 'page' : undefined}
             >
@@ -473,9 +455,8 @@ export function Header() {
               by the logo. justify-self-end right-aligns the hamburger
               on mobile. On lg+, the 3-column grid handles alignment. */}
           <div className="flex items-center justify-end gap-3 shrink-0 lg:shrink">
-            {/* Quote CTA — visually slightly less heavy than the logo so
-                the brand reads as the dominant element. Touch target stays
-                at 44px. Yellow fill is preserved. */}
+            {/* Quote CTA — yellow fill with navy text for maximum contrast
+                and brand presence on the navy header. Touch target 44px. */}
             <PrimaryButton
               href="/contact-us"
               className="hidden lg:inline-flex text-sm px-4 py-2 shadow-sm hover:shadow-sm hover:translate-y-0"
@@ -483,12 +464,12 @@ export function Header() {
               Request a Quote
             </PrimaryButton>
 
-            {/* Mobile hamburger */}
+            {/* Mobile hamburger — white icon on navy */}
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
                 <button
                   type="button"
-                  className="lg:hidden inline-flex items-center justify-center size-11 rounded-md text-be-charcoal-950 hover:bg-be-grey-150 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+                  className="lg:hidden inline-flex items-center justify-center size-11 rounded-md text-white hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800"
                   aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
                   aria-expanded={mobileOpen}
                   aria-controls="mobile-navigation-sheet"
@@ -497,17 +478,17 @@ export function Header() {
                 </button>
               </SheetTrigger>
 
-              <SheetContent side="right" className="w-[320px] sm:w-[360px] bg-be-white p-0" id="mobile-navigation-sheet">
-                <SheetHeader className="px-5 pt-5 pb-3 border-b border-be-grey-250">
+              <SheetContent side="right" className="w-[320px] sm:w-[360px] bg-be-navy-900 p-0 border-l border-white/10" id="mobile-navigation-sheet">
+                <SheetHeader className="px-5 pt-5 pb-3 border-b border-white/10">
                   <SheetTitle className="flex items-center">
                     <Link href="/" onClick={() => setMobileOpen(false)}>
                       <Image
-                        src="/images/brand/bharat-electrosafe-logo-full.png"
+                        src="/brand/bharat-electrosafe-logo-header.webp"
                         alt="Bharat Electrosafe logo"
-                        width={1589}
-                        height={580}
-                        sizes="150px"
-                        className="object-contain w-[150px] h-auto"
+                        width={891}
+                        height={349}
+                        sizes="160px"
+                        className="object-contain w-[160px] h-auto"
                       />
                     </Link>
                   </SheetTitle>
@@ -519,8 +500,8 @@ export function Header() {
                     className={cn(
                       'px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center',
                       pathname === '/'
-                        ? 'text-be-yellow-text bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
-                        : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-text-hover'
+                        ? 'text-be-brand-yellow bg-white/8 border-l-[3px] border-be-brand-yellow'
+                        : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow'
                     )}
                     onClick={() => setMobileOpen(false)}
                     aria-current={pathname === '/' ? 'page' : undefined}
@@ -534,8 +515,8 @@ export function Header() {
                       <AccordionTrigger className={cn(
                         'px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] hover:no-underline',
                         isProductActive
-                          ? 'text-be-yellow-text bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
-                          : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-text-hover'
+                          ? 'text-be-brand-yellow bg-white/8 border-l-[3px] border-be-brand-yellow'
+                          : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow'
                       )}>
                         Products
                       </AccordionTrigger>
@@ -547,8 +528,8 @@ export function Header() {
                             className={cn(
                               'px-5 py-3 pl-8 text-sm font-semibold transition-colors min-h-[44px] flex items-center',
                               pathname === '/products'
-                                ? 'text-be-yellow-text bg-be-yellow-50'
-                                : 'text-be-yellow-text hover:bg-be-yellow-50'
+                                ? 'text-be-brand-yellow bg-white/8'
+                                : 'text-be-brand-yellow-soft hover:bg-white/6'
                             )}
                             onClick={() => setMobileOpen(false)}
                             aria-current={pathname === '/products' ? 'page' : undefined}
@@ -563,7 +544,7 @@ export function Header() {
                             return (
                               <div key={catId}>
                                 {/* Category label */}
-                                <div className="px-5 pl-8 py-1.5 text-[0.7rem] font-semibold text-be-grey-650 uppercase tracking-wider">
+                                <div className="px-5 pl-8 py-1.5 text-[0.7rem] font-semibold text-white/50 uppercase tracking-wider">
                                   {catInfo.displayName}
                                 </div>
                                 {items.map((product) => (
@@ -573,13 +554,13 @@ export function Header() {
                                     className={cn(
                                       'flex items-center gap-3 px-5 py-3 pl-8 text-sm transition-colors min-h-[44px]',
                                       pathname === product.href
-                                        ? 'text-be-yellow-text bg-be-yellow-50'
-                                        : 'text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-text-hover'
+                                        ? 'text-be-brand-yellow bg-white/8'
+                                        : 'text-white/80 hover:bg-white/6 hover:text-be-brand-yellow'
                                     )}
                                     onClick={() => setMobileOpen(false)}
                                     aria-current={pathname === product.href ? 'page' : undefined}
                                   >
-                                    <span className="text-be-yellow-text shrink-0" aria-hidden="true">
+                                    <span className="text-be-brand-yellow shrink-0" aria-hidden="true">
                                       {productIconMap[product.slug] || <Zap className="size-3.5" />}
                                     </span>
                                     <div className="min-w-0">
@@ -598,15 +579,15 @@ export function Header() {
                   </Accordion>
 
                   {/* Divider */}
-                  <div className="mx-5 my-1 h-px bg-be-grey-250" />
+                  <div className="mx-5 my-1 h-px bg-white/10" />
 
                   <Link
                     href="/about-us"
                     className={cn(
                       'px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center',
                       pathname === '/about-us'
-                        ? 'text-be-yellow-text bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
-                        : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-text-hover'
+                        ? 'text-be-brand-yellow bg-white/8 border-l-[3px] border-be-brand-yellow'
+                        : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow'
                     )}
                     onClick={() => setMobileOpen(false)}
                     aria-current={pathname === '/about-us' ? 'page' : undefined}
@@ -619,8 +600,8 @@ export function Header() {
                     className={cn(
                       'px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center',
                       pathname === '/contact-us'
-                        ? 'text-be-yellow-text bg-be-yellow-50 border-l-[3px] border-be-yellow-500'
-                        : 'text-be-charcoal-950 hover:bg-be-yellow-50 hover:text-be-yellow-text-hover'
+                        ? 'text-be-brand-yellow bg-white/8 border-l-[3px] border-be-brand-yellow'
+                        : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow'
                     )}
                     onClick={() => setMobileOpen(false)}
                     aria-current={pathname === '/contact-us' ? 'page' : undefined}
@@ -630,7 +611,7 @@ export function Header() {
                 </nav>
 
                 {/* CTA at bottom of mobile sheet */}
-                <div className="mt-auto px-5 pb-6 pt-4 border-t border-be-grey-250">
+                <div className="mt-auto px-5 pb-6 pt-4 border-t border-white/10">
                   <PrimaryButton
                     href="/contact-us"
                     className="w-full justify-center"

@@ -13,14 +13,14 @@ const FULL_TITLE = `${PAGE_TITLE} | Bharat Electrosafe`;
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description:
-    'Request a quotation for electrical insulating mats, PVC geomembrane or water stop seals. Contact Bharat Electrosafe in Noida, India for product enquiries and technical support.',
+    'Request a quotation for electrical insulating mats or PVC geomembrane. Contact Bharat Electrosafe in Noida, India for product enquiries and technical support.',
   alternates: {
     canonical: buildUrl('/contact-us'),
   },
   openGraph: {
     title: FULL_TITLE,
     description:
-      'Request a quotation for electrical insulating mats, PVC geomembrane or water stop seals. Contact Bharat Electrosafe in Noida, India.',
+      'Request a quotation for electrical insulating mats or PVC geomembrane. Contact Bharat Electrosafe in Noida, India.',
     url: buildUrl('/contact-us'),
     type: 'website',
     images: [
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: FULL_TITLE,
     description:
-      'Request a quotation for electrical insulating mats, PVC geomembrane or water stop seals. Contact Bharat Electrosafe in Noida, India.',
+      'Request a quotation for electrical insulating mats or PVC geomembrane. Contact Bharat Electrosafe in Noida, India.',
     images: ['/brand/twitter-card-bharat-electrosafe.png'],
   },
   robots: allowIndexing

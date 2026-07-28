@@ -13,9 +13,6 @@
  *   - BharatMembrane must NOT inherit IS 15652, electrical insulation
  *     classes, the BIS insulating-mat licence, or ERDA/NTH electrical-mat
  *     claims. It references IS 15909:2020 conservatively.
- *   - Bharat Hydro Seal must NOT inherit IS 15652, electrical insulation
- *     classes, the BIS insulating-mat licence, or ERDA/NTH electrical-mat
- *     claims. It references IS 15058:2002 conservatively.
  *   - CPRI is NOT referenced anywhere. No CPRI document has been verified.
  *   - No claim is described as "BIS approval" unless a genuine
  *     product-specific approval document has been verified.
@@ -198,35 +195,6 @@ export const productFaqsBySlug: Record<string, SiteFAQ[]> = {
       question: 'Can BharatMembrane be used in below-grade and underwater applications?',
       answer:
         'BharatMembrane is used in below-grade waterproofing including basements, foundations, tunnel linings and other submerged or earth-retained structures. Thicker grades are recommended for higher hydrostatic pressure and continuous water exposure. Confirm the appropriate grade with the technical team for the specific project conditions.',
-    },
-    {
-      question: 'What dimensions are available?',
-      answer:
-        'Standard and custom dimensions are available. Contact our team with your specific requirements for a tailored solution.',
-    },
-    {
-      question: 'How do I request a quotation?',
-      answer:
-        'Use our contact form, call our sales team, or send a WhatsApp message with your requirements including product, dimensions, quantity and delivery location.',
-    },
-    {
-      question: 'What is the lead time?',
-      answer:
-        'Lead time varies based on product and quantity. Standard products ship faster; custom dimensions require additional production time. Timelines are confirmed with each quotation.',
-    },
-  ],
-
-  /* ── Bharat Hydro Seal (civil — NO IS 15652 / no BIS mat licence) ── */
-  'bharat-hydro-seal': [
-    {
-      question: 'What are PVC water stops and where are they used?',
-      answer:
-        'Bharat Hydro Seal is a PVC water-stop product for concrete construction and expansion joints. The product information references IS 15058:2002. Request the current product and compliance documents required for your project.',
-    },
-    {
-      question: 'What profiles are available for Bharat Hydro Seal?',
-      answer:
-        'Profiles are available in centre-bulb, dumbbell and ribbed configurations to suit different joint types and movement requirements. Profile selection depends on the joint type, expected movement, water pressure and project specification. Intersections and terminations require an appropriate joining method to form a continuous system.',
     },
     {
       question: 'What dimensions are available?',

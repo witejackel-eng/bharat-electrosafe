@@ -77,7 +77,7 @@ function ProductFamilyGrid() {
         <SectionHeader
           eyebrow="PRODUCT FAMILIES"
           title="Our product range"
-          supportingText="Six product families across two categories, each designed around a specific protection requirement."
+          supportingText="Five product families across two categories, each designed around a specific protection requirement."
         />
       </div>
 
@@ -160,7 +160,7 @@ function ComparisonTable() {
         <SectionHeader
           eyebrow="COMPARISON"
           title="Product comparison"
-          supportingText="Compare features and applications across all six product families to find the right solution."
+          supportingText="Compare features and applications across all five product families to find the right solution."
         />
       </div>
 
@@ -327,12 +327,6 @@ function SelectionGuidance() {
                 <span className="text-be-charcoal-800 font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
                 <div>
                   <strong className="text-be-charcoal-950">Choose BharatMembrane</strong> when the requirement is waterproofing, lining or containment.
-                </div>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-be-charcoal-800 font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
-                <div>
-                  <strong className="text-be-charcoal-950">Choose Bharat Hydro Seal</strong> when the requirement is sealing concrete construction or expansion joints against water movement.
                 </div>
               </li>
             </ul>

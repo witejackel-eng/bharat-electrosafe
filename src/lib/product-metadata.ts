@@ -2,9 +2,8 @@
  * Product metadata helper — generates route-specific metadata from the
  * central product registry.
  *
- * Uses the real product name, description and slug. BharatMembrane and
- * Bharat Hydro Seal use their own verified information and do not inherit
- * BIS insulating-mat claims.
+ * Uses the real product name, description and slug. BharatMembrane uses its
+ * own verified information and does not inherit BIS insulating-mat claims.
  *
  * Title convention:
  *   - The normal Metadata.title does NOT include the "| Bharat Electrosafe"
@@ -14,9 +13,9 @@
  *   - Open Graph and Twitter receive the final full branded title
  *     (`socialTitle`), because social platforms read the absolute title
  *     and do not apply the root template.
- *   - Product brands such as "BharatMembrane" and "Bharat Hydro Seal" may
- *     remain in product-specific titles because those are product names,
- *     not accidental repetition of the website suffix.
+ *   - Product brands such as "BharatMembrane" may remain in product-specific
+ *     titles because those are product names, not accidental repetition of
+ *     the website suffix.
  */
 
 import type { Metadata } from 'next';
@@ -57,12 +56,6 @@ const productTitles: Record<string, ProductTitleSet> = {
     pageTitle: 'PVC Geomembrane Manufacturer India | BharatMembrane',
     socialTitle: 'PVC Geomembrane Manufacturer India | BharatMembrane',
   },
-  /* Bharat Hydro Seal is a product brand name — keeping it in the title is
-     intentional, not accidental site-name repetition. */
-  'bharat-hydro-seal': {
-    pageTitle: 'PVC Water Stop for Construction Joints | Bharat Hydro Seal',
-    socialTitle: 'PVC Water Stop for Construction Joints | Bharat Hydro Seal',
-  },
 };
 
 /**
@@ -86,8 +79,6 @@ const productOgImages: Record<string, string> = {
     '/media/products/auto-glow-reflective-band-insulating-mats/gallery/01-reflective-bands-daylight.webp',
   'bharat-membrane':
     '/media/products/bharat-membrane/gallery/01-tunnel-membrane-lining.webp',
-  'bharat-hydro-seal':
-    '/media/products/bharat-hydro-seal/gallery/01-ribbed-water-stop-profile.webp',
 };
 
 /**

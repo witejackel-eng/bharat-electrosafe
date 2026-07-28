@@ -40,7 +40,6 @@ const footerProductLabels: Record<string, string> = {
   'bi-color-insulating-mats': 'Bi-Color Insulating Mats',
   'auto-glow-reflective-band-insulating-mats': 'Auto-Glow / Reflective Mats',
   'bharat-membrane': 'BharatMembrane',
-  'bharat-hydro-seal': 'Bharat Hydro Seal',
 };
 
 /* Shortened footer address used in column 4 + mobile Contact accordion.
@@ -158,7 +157,7 @@ function CompanyColumn() {
 }
 
 /* ────────────────────────────────────────────
-   Products column — all six families
+   Products column — all five families
    ──────────────────────────────────────────── */
 
 function ProductsColumn() {

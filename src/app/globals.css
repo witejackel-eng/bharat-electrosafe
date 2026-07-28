@@ -19,6 +19,20 @@
   --color-be-yellow-500: #FFC400;
   --color-be-yellow-600: #DFAA00;
   --color-be-yellow-700: #B89000;
+  /* Navy brand tokens — derived from the BE logo's deep-blue field.
+     The logo artwork sits on a navy gradient (#001A43 → #00275B), so the
+     unified header reuses the same navy character to absorb the logo
+     seamlessly. Brand-blue (#138FEA) is the bright accent from the
+     "Bharat" wordmark; brand-yellow (#F4C313) from "Electrosafe". */
+  --color-be-navy-950: #001A43;
+  --color-be-navy-900: #001F4D;
+  --color-be-navy-850: #002456;
+  --color-be-navy-800: #00275B;
+  --color-be-navy-700: #07366D;
+  --color-be-navy-600: #0A4690;
+  --color-be-brand-blue: #138FEA;
+  --color-be-brand-blue-soft: #5BB0F0;
+  --color-be-brand-yellow: #F4C313;
   /* Header chrome tokens — pure-white brand area with a soft warm-neutral
      bottom border + matching vertical divider after the logo zone. These
      deliberately sit between pure white and the existing be-grey-250 so
@@ -111,6 +125,15 @@
   --be-grey-150: #ECEBE5;
   --be-header-border: #E8E2D8;
   --be-logo-divider: #E6E0D4;
+  --be-navy-950: #001A43;
+  --be-navy-900: #001F4D;
+  --be-navy-850: #002456;
+  --be-navy-800: #00275B;
+  --be-navy-700: #07366D;
+  --be-navy-600: #0A4690;
+  --be-brand-blue: #138FEA;
+  --be-brand-blue-soft: #5BB0F0;
+  --be-brand-yellow: #F4C313;
 
   /* Semantic overrides */
   --primary: #FFC400;
@@ -742,6 +765,193 @@
     }
     .leader-card:hover .leader-accent {
       transform: none;
+    }
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     UNIFIED NAVY HEADER
+     The deep blue surrounding the BE logo is absorbed into the full
+     header band. Logo, navigation and CTA live in one navy composition.
+     Background = layered radial brand-blue glow + navy gradient, so the
+     logo's own navy field disappears into the header (no visible square).
+     ────────────────────────────────────────────────────────────── */
+  .be-header-navy {
+    background:
+      radial-gradient(
+        circle at 22% -60%,
+        rgba(19, 143, 234, 0.22),
+        transparent 50%
+      ),
+      linear-gradient(110deg, #00275B 0%, #001F4D 58%, #001A43 100%);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18), 0 6px 18px -10px rgba(0, 26, 67, 0.45);
+  }
+  .be-header-navy-compact {
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.22), 0 10px 24px -12px rgba(0, 26, 67, 0.55);
+  }
+  /* Top contact strip on navy — lighter text for contrast */
+  .be-contact-strip-navy {
+    background: linear-gradient(110deg, #001A43 0%, #00275B 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  /* Nav link on navy: white default, yellow active/hover (brand accent) */
+  .be-nav-link {
+    color: rgba(255, 255, 255, 0.86);
+    transition: color 0.2s ease-out, background-color 0.2s ease-out;
+  }
+  .be-nav-link:hover {
+    color: var(--be-brand-yellow);
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+  .be-nav-link-active {
+    color: var(--be-brand-yellow);
+  }
+  .be-nav-link-active::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 6px;
+    height: 2px;
+    background: var(--be-brand-yellow);
+    border-radius: 2px;
+  }
+  /* Mega-menu on navy stays white for legibility */
+  .be-mega-menu {
+    background: #FFFFFF;
+    border: 1px solid var(--be-grey-250);
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     HEADER → HERO TRANSITION
+     A restrained continuation of navy illumination at the very top of
+     the hero that fades into the established warm-white page background.
+     No wave, no blob — a clean designed opening.
+     ────────────────────────────────────────────────────────────── */
+  .be-hero-to-navy {
+    background:
+      radial-gradient(
+        ellipse 90% 70% at 50% -10%,
+        rgba(0, 39, 91, 0.06),
+        transparent 60%
+      ),
+      var(--be-warm-white);
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     LEADERSHIP SWIVEL CAROUSEL
+     Coverflow-style: active card centred & flat, side cards rotated
+     in Y, smaller and less prominent. CSS transforms only (no 3D
+     engine). Reduced-motion disables perspective.
+     ────────────────────────────────────────────────────────────── */
+  .be-swivel-stage {
+    perspective: 1600px;
+    perspective-origin: 50% 40%;
+  }
+  .be-swivel-track {
+    transform-style: preserve-3d;
+  }
+  .be-swivel-card {
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.45s ease-out;
+    backface-visibility: hidden;
+  }
+  /* Card positional states are applied inline by the component based on
+     offset from active index. These classes provide the reduced-motion
+     override. */
+  @media (prefers-reduced-motion: reduce) {
+    .be-swivel-stage {
+      perspective: none;
+    }
+    .be-swivel-track {
+      transform-style: flat;
+    }
+    .be-swivel-card {
+      transition: opacity 0.2s ease-out;
+    }
+  }
+
+  /* Portrait treatment — thin yellow accent rule under treated portraits */
+  .be-leader-portrait-frame {
+    position: relative;
+  }
+  .be-leader-portrait-frame::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--be-brand-yellow) 0%, var(--be-brand-blue) 100%);
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     PRODUCT-LED HERO SCENE
+     Soft entrance for the scene, mat inset and callouts. Static-first:
+     final state is the default; @starting-style drives a one-shot fade.
+     Reduced-motion shows everything immediately.
+     ────────────────────────────────────────────────────────────── */
+  .be-hero-scene {
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+  }
+  @starting-style {
+    .be-hero-scene { opacity: 0; }
+  }
+  .be-hero-mat-inset {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s;
+  }
+  @starting-style {
+    .be-hero-mat-inset { opacity: 0; transform: translateY(12px); }
+  }
+  /* Protected-zone dashed frame around the mat inset */
+  .be-hero-zone {
+    border: 2px dashed var(--be-brand-yellow);
+    opacity: 0.7;
+    animation: be-hero-zone-fade 0.7s ease-out 0.5s both;
+  }
+  @keyframes be-hero-zone-fade {
+    from { opacity: 0; }
+    to   { opacity: 0.7; }
+  }
+  .be-hero-callout {
+    opacity: 1;
+    transition: opacity 0.5s ease-out 0.7s;
+  }
+  @starting-style {
+    .be-hero-callout { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .be-hero-scene,
+    .be-hero-mat-inset,
+    .be-hero-callout {
+      transition: none;
+      opacity: 1;
+      transform: none;
+    }
+    .be-hero-zone {
+      animation: none;
+      opacity: 0.7;
+    }
+    .be-hero-mat-inset { transform: none; }
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     DRAWER / DIALOG ANIMATIONS
+     ────────────────────────────────────────────────────────────── */
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes slide-in-right {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    /* Ensure any animate-[...] utilities resolve to a static final state */
+    [class*="animate-[slide-in-right"] {
+      animation: none !important;
     }
   }
 }

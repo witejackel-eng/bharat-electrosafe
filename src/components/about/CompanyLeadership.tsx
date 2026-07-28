@@ -1,7 +1,6 @@
-import Image from 'next/image';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SectionShell } from '@/components/ui/SectionShell';
-import { LeaderProfileCard } from '@/components/about/LeaderProfileCard';
+import { LeadershipSwivel } from '@/components/about/LeadershipSwivel';
 import { leaders } from '@/data/team';
 import { ShieldCheck, BadgeCheck, HeadsetIcon, FileText } from 'lucide-react';
 
@@ -77,10 +76,12 @@ export default function CompanyLeadership() {
       </div>
 
       {/* ── Leadership ────────────────────────────────────────────
-          Editorial 3-card section. Each leader receives equal visual
-          importance. On desktop (lg+): 3 equal columns. On tablet (md):
-          2 columns with the third card spanning both columns and centred.
-          On mobile: 1 column, full-width cards.
+          Premium swivel-and-scroll management portfolio. One active
+          profile is centred; previous and next cards are partially
+          visible with a subtle rotateY. Each card carries substantial
+          professional information (portrait, role, short bio, expertise,
+          leadership focus) and a “View Full Profile” action that opens
+          an accessible drawer with the complete biography.
 
           All biographical content comes from src/data/team.ts. The
           component does not duplicate or rewrite any profile text. */}
@@ -88,25 +89,11 @@ export default function CompanyLeadership() {
         <SectionHeader
           eyebrow="Leadership"
           title="The people guiding Bharat Electrosafe"
-          supportingText="Meet the leaders directing the company’s manufacturing, finance, quality, operations, partnerships and international development."
+          supportingText="Meet the directors shaping the company’s manufacturing, finance, quality, operations, partnerships and international development. Drag, swipe or use the arrows to browse each profile."
         />
 
-        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-7 lg:mt-10 lg:grid-cols-3 lg:gap-8">
-          {leaders.map((leader, i) => (
-            <LeaderProfileCard
-              key={leader.name}
-              leader={leader}
-              /* On tablet (md, 2-col grid) the third card spans both
-                 columns and is centred so it doesn't sit awkwardly on
-                 the far left. On desktop (lg, 3-col grid) it returns
-                 to a normal single-column span. */
-              className={
-                i === 2
-                  ? 'md:col-span-2 md:max-w-md md:justify-self-center lg:col-span-1 lg:max-w-none lg:justify-self-stretch'
-                  : ''
-              }
-            />
-          ))}
+        <div className="mt-10 lg:mt-12">
+          <LeadershipSwivel leaders={leaders} />
         </div>
       </div>
     </SectionShell>

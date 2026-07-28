@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     absolute: 'Electrical Insulating Mats Manufacturer India | Bharat Electrosafe',
   },
   description:
-    'Manufacturer of electrical insulating mats to IS 15652:2006, coloured strip and bi-color mats, auto-glow reflective band mats, PVC geomembrane and water stop seals for industrial and civil safety applications in India.',
+    'Manufacturer of electrical insulating mats to IS 15652:2006, coloured strip and bi-color mats, auto-glow reflective band mats and PVC geomembrane for industrial and civil safety applications in India.',
   alternates: {
     canonical: buildUrl('/'),
   },
