@@ -69,3 +69,6 @@ private-assets/
 asset-working/
 **/Thumbs.db
 
+
+# Local logo backup (for quick revert during logo swap)
+/.logo-backup/
