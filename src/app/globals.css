@@ -363,6 +363,26 @@
     animation: slide-in-left 0.6s ease-out forwards;
   }
 
+  /* Mega-menu entrance — replaces Framer Motion. One-shot fade + slight
+     upward slide. Reduced-motion users see no animation (the menu still
+     appears, just instantly). */
+  @keyframes mega-menu-in {
+    0% { opacity: 0; transform: translateX(-50%) translateY(8px); }
+    100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  .animate-mega-menu-in {
+    animation: mega-menu-in 0.18s ease-out forwards;
+  }
+
+  /* Back-to-top entrance — replaces Framer Motion. */
+  @keyframes back-to-top-in {
+    0% { opacity: 0; transform: translateY(16px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .animate-back-to-top-in {
+    animation: back-to-top-in 0.25s ease-out forwards;
+  }
+
   /* Decorative accent line */
   .accent-line-yellow {
     position: relative;
@@ -410,6 +430,14 @@
     .animate-slide-in {
       animation: none;
       transform: scaleX(1);
+    }
+    .animate-mega-menu-in {
+      animation: none;
+      opacity: 1;
+    }
+    .animate-back-to-top-in {
+      animation: none;
+      opacity: 1;
     }
     .stagger-reveal > * {
       opacity: 1;

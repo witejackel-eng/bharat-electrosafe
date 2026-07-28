@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
 import { company } from "@/data/company";
 import { siteUrl, allowIndexing } from "@/lib/site-url";
 import { HomepageStructuredData } from "@/components/structured-data";
 
+// Variable-font configuration — a single Manrope variable font file replaces
+// the previous five static weights (400/500/600/700/800). This reduces font
+// transfer size and the number of font requests on the critical path while
+// preserving every weight the design system uses.
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: "variable",
   display: "swap",
 });
 
@@ -108,7 +111,12 @@ export default function RootLayout({
         style={{ fontFamily: "var(--font-manrope), sans-serif" }}
       >
         {children}
-        <Toaster />
+        {/* Toaster removed from root layout — useToast() is never called
+            anywhere in the application. The contact form uses inline
+            success/error messages, not toasts. Mounting <Toaster /> globally
+            shipped @radix-ui/react-toast and related code on every route for
+            no benefit. If toast notifications are needed in future, mount
+            <Toaster /> only on the route that triggers them. */}
       </body>
     </html>
   );

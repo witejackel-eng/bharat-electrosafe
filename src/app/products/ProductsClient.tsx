@@ -277,25 +277,25 @@ function SelectionGuidance() {
 
             <ul className="flex flex-col gap-3 text-sm text-be-grey-650">
               <li className="flex items-start gap-2">
-                <span className="text-be-yellow-500 font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
+                <span className="text-be-yellow-text font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
                 <div>
                   <strong className="text-be-charcoal-950">Choose Electrical Insulating Mats</strong> when the requirement is operator protection near live electrical equipment.
                 </div>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-be-yellow-500 font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
+                <span className="text-be-yellow-text font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
                 <div>
                   <strong className="text-be-charcoal-950">Choose Coloured Strip Mats</strong> when electrical insulation and visible hazard-zone demarcation are both required.
                 </div>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-be-yellow-500 font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
+                <span className="text-be-yellow-text font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
                 <div>
                   <strong className="text-be-charcoal-950">Choose Bi-Color Mats</strong> when a dual-colour surface or visible layer differentiation is required.
                 </div>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-be-yellow-500 font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
+                <span className="text-be-yellow-text font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
                 <div>
                   <strong className="text-be-charcoal-950">Choose Auto-Glow / Reflective Band Mats</strong> when guidance must remain visible in low-light or emergency conditions.
                 </div>

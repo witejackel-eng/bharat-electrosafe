@@ -1,47 +1,26 @@
-'use client';
-
-import { useEffect, useRef } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
+import { RevealObserver } from '@/components/ui/RevealObserver';
 import HomeHero from '@/components/home/HomeHero';
 import ProductRange from '@/components/home/ProductRange';
 import TrustDocuments from '@/components/home/TrustDocuments';
 import CapabilityIndustries from '@/components/home/CapabilityIndustries';
 import HomeFAQCTA from '@/components/home/HomeFAQCTA';
 
-export default function HomeClient() {
-  const revealRef = useRef<boolean>(false);
-
-  useEffect(() => {
-    if (revealRef.current) return;
-    revealRef.current = true;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const revealElements = entry.target.querySelectorAll('.reveal-up');
-            revealElements.forEach((el) => {
-              el.classList.add('revealed');
-            });
-            const staggerElements = entry.target.querySelectorAll('.stagger-reveal');
-            staggerElements.forEach((el) => {
-              el.classList.add('revealed');
-            });
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '-40px' }
-    );
-
-    const sections = document.querySelectorAll('section');
-    sections.forEach((section) => observer.observe(section));
-
-    return () => observer.disconnect();
-  }, []);
-
+/**
+ * HomeShell — Server Component.
+ *
+ * The homepage layout is server-rendered so all section content (hero, product
+ * range, trust marks, capabilities, FAQ, CTA) appears in the initial HTML
+ * without waiting for hydration. Only the interactive islands (Header, FAQ
+ * accordion, BackToTop, RevealObserver) ship client JavaScript.
+ *
+ * RevealObserver is a progressive-enhancement island that toggles the
+ * `revealed` CSS class for entrance animations — it renders nothing visible
+ * and does not gate content.
+ */
+export default function HomeShell() {
   return (
     <div className="min-h-screen flex flex-col bg-be-warm-white">
       <Header />
@@ -59,6 +38,7 @@ export default function HomeClient() {
       </main>
       <Footer />
       <BackToTop />
+      <RevealObserver />
     </div>
   );
 }
