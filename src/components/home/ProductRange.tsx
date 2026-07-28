@@ -1,12 +1,15 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { TextLink } from '@/components/ui/TextLink';
-import { products, productFamilyCount, getImageAlt, getImageFit } from '@/data/products';
+import { PrimaryButton } from '@/components/ui/PrimaryButton';
+import { products, productFamilyCount, getImageAlt, getImageFit, productCategories } from '@/data/products';
 
 function ProductCard({ product, index }: { product: typeof products[number]; index: number }) {
   const src = product.images.thumbnail;
+  const catInfo = productCategories[product.category];
 
   return (
     <div className="hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
@@ -16,6 +19,11 @@ function ProductCard({ product, index }: { product: typeof products[number]; ind
       {/* Index badge */}
       <div className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md bg-be-yellow-500/90 text-be-charcoal-950 text-[0.65rem] font-bold tracking-wide shadow-sm">
         {String(index + 1).padStart(2, '0')}
+      </div>
+
+      {/* Category badge */}
+      <div className="absolute top-4 right-4 z-10 px-2 py-0.5 rounded-md bg-be-charcoal-950/80 text-be-white text-[0.6rem] font-semibold tracking-wide">
+        {catInfo.displayName}
       </div>
 
       {/* Image area — square images use a squarer ratio on mobile */}
@@ -60,7 +68,7 @@ export default function ProductRange() {
           <SectionHeader
             eyebrow="PRODUCT RANGE"
             title="Our product range"
-            supportingText={`${productFamilyCount} product families, each designed around a specific protection requirement.`}
+            supportingText={`${productFamilyCount} product families designed for electrical insulation, hazard visibility, waterproofing and civil protection.`}
           />
         </div>
 
@@ -75,10 +83,17 @@ export default function ProductRange() {
 
           {/* Second row: 3 cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {products.slice(3, 6).map((product, i) => (
+            {products.slice(3).map((product, i) => (
               <ProductCard key={product.slug} product={product} index={3 + i} />
             ))}
           </div>
+        </div>
+
+        {/* View all products CTA */}
+        <div className="mt-8 flex justify-center reveal-up">
+          <PrimaryButton href="/products">
+            View All Products
+          </PrimaryButton>
         </div>
       </div>
     </section>

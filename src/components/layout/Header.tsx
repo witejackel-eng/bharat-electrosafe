@@ -28,61 +28,20 @@ import {
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { cn } from '@/lib/utils';
 import { company } from '@/data/company';
+import {
+  productNavigationItems,
+  productNavigationByCategory,
+  productCategories,
+  ProductCategory,
+} from '@/data/products';
 
 /* ────────────────────────────────────────────
-   Product data
+   Category order for navigation display
    ──────────────────────────────────────────── */
 
-interface ProductNavItem {
-  name: string;
-  description: string;
-  href: string;
-  thumbnail: string; // real product image from official website
-}
-
-const products: ProductNavItem[] = [
-  {
-    name: 'Electrical Insulating Mats',
-    description: 'Class A, B & C voltage-rated insulation',
-    href: '/products/electrical-insulating-mats',
-    thumbnail: '/media/products/electrical-insulating-mats/product-02.webp',
-  },
-  {
-    name: 'Coloured Strip Insulating Mats',
-    description: 'Boundary marking for hazard zones',
-    href: '/products/coloured-strip-insulating-mats',
-    thumbnail: '/media/products/coloured-strip-insulating-mats/product-04.webp',
-  },
-  {
-    name: 'Bi-Color Insulating Mats',
-    description: 'Dual-tone visual differentiation',
-    href: '/products/bi-color-insulating-mats',
-    thumbnail: '/media/products/bi-color-insulating-mats/product-01.webp',
-  },
-  {
-    name: 'Auto-Glow / Reflective Band Mats',
-    description: 'Low-light emergency guidance',
-    href: '/products/auto-glow-reflective-band-insulating-mats',
-    thumbnail: '/media/products/auto-glow-reflective-band-insulating-mats/product-06.webp',
-  },
-  {
-    name: 'BharatMembrane',
-    description: 'Engineered waterproofing membrane',
-    href: '/products/bharat-membrane',
-    thumbnail: '/media/products/bharat-membrane/product-01.webp',
-  },
-  {
-    name: 'BharatHydro Seal',
-    description: 'PVC water stop for construction joints',
-    href: '/products/bharat-hydro-seal',
-    thumbnail: '/media/products/bharat-hydro-seal/product-01.webp',
-  },
-];
-
-const navLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'About Us', href: '/about-us' },
-  { name: 'Contact Us', href: '/contact-us' },
+const categoryOrder: ProductCategory[] = [
+  'electrical-insulation',
+  'waterproofing-civil-protection',
 ];
 
 /* ────────────────────────────────────────────
@@ -98,7 +57,7 @@ export function Header() {
   const dropdownTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Check if a product link matches current path
-  const isProductActive = products.some((p) => pathname.startsWith(p.href));
+  const isProductActive = pathname.startsWith('/products');
 
   // Scroll detection
   useEffect(() => {
@@ -111,7 +70,7 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu on route change (resize)
+  // Close mobile menu on resize to desktop
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -237,27 +196,39 @@ export function Header() {
               Home
             </Link>
 
-            {/* Products with dropdown */}
+            {/* Products: text links to /products, chevron opens dropdown */}
             <div
-              className="relative"
+              className="relative flex items-center"
               onMouseEnter={handleDropdownEnter}
               onMouseLeave={handleDropdownLeave}
               onKeyDown={handleDropdownKeyDown}
             >
+              {/* "Products" links to /products overview page */}
+              <Link
+                href="/products"
+                className={cn(
+                  'px-2 py-2 text-sm font-medium transition-colors rounded-md hover:bg-be-yellow-50 hover:text-be-yellow-600',
+                  isProductActive
+                    ? 'text-be-yellow-600'
+                    : 'text-be-charcoal-800'
+                )}
+              >
+                Products
+              </Link>
+
+              {/* Separate chevron button to open the dropdown */}
               <button
                 type="button"
                 className={cn(
-                  'flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-md transition-colors',
+                  'px-2 py-2 text-sm font-medium rounded-md transition-colors',
                   dropdownOpen || isProductActive
                     ? 'text-be-yellow-600 bg-be-yellow-50'
-                    : 'text-be-charcoal-800 hover:text-be-yellow-600 hover:bg-be-yellow-50',
-                  isProductActive && 'border-l-[3px] border-be-yellow-500 pl-3'
+                    : 'text-be-charcoal-800 hover:text-be-yellow-600 hover:bg-be-yellow-50'
                 )}
                 aria-expanded={dropdownOpen}
                 aria-haspopup="true"
                 onClick={() => setDropdownOpen((prev) => !prev)}
               >
-                Products
                 <ChevronDown
                   className={cn(
                     'size-4 transition-transform duration-200',
@@ -266,7 +237,7 @@ export function Header() {
                 />
               </button>
 
-              {/* Dropdown panel */}
+              {/* Dropdown panel — grouped by category */}
               <AnimatePresence>
                 {dropdownOpen && (
                   <motion.div
@@ -274,38 +245,63 @@ export function Header() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.2, ease: 'easeOut' }}
-                    className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-[640px] bg-be-yellow-50 border border-be-grey-250 rounded-xl shadow-lg p-5"
+                    className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-[480px] bg-be-yellow-50 border border-be-grey-250 rounded-xl shadow-lg p-4"
                     onMouseEnter={handleDropdownEnter}
                     onMouseLeave={handleDropdownLeave}
                     onKeyDown={handleDropdownKeyDown}
                   >
-                    <div className="grid grid-cols-2 gap-3">
-                      {products.map((product) => (
-                        <Link
-                          key={product.href}
-                          href={product.href}
-                          className="flex items-start gap-3 p-3 rounded-lg bg-be-white hover:bg-be-cream transition-colors group"
-                          onClick={() => setDropdownOpen(false)}
-                        >
-                          {/* Thumbnail — real product image */}
-                          <Image
-                            src={product.thumbnail}
-                            alt={product.name}
-                            width={40}
-                            height={40}
-                            className="shrink-0 w-10 h-10 rounded-md object-cover"
-                          />
-                          <div className="min-w-0">
-                            <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors leading-snug">
-                              {product.name}
-                            </div>
-                            <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug">
-                              {product.description}
-                            </div>
+                    {/* View all products link */}
+                    <Link
+                      href="/products"
+                      className="flex items-center gap-2 p-2 rounded-lg bg-be-white hover:bg-be-cream transition-colors mb-3 group"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors">
+                        View all products
+                      </div>
+                      <ChevronDown className="size-3 text-be-grey-400 rotate-[-90deg]" />
+                    </Link>
+
+                    {/* Categories */}
+                    {categoryOrder.map((catId) => {
+                      const catInfo = productCategories[catId];
+                      const items = productNavigationByCategory[catId];
+                      return (
+                        <div key={catId} className="mb-3 last:mb-0">
+                          <div className="text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider px-2 mb-1.5">
+                            {catInfo.displayName}
                           </div>
-                        </Link>
-                      ))}
-                    </div>
+                          <div className="flex flex-col gap-1">
+                            {items.map((product) => (
+                              <Link
+                                key={product.slug}
+                                href={product.href}
+                                className="flex items-start gap-3 p-2 rounded-lg bg-be-white hover:bg-be-cream transition-colors group"
+                                onClick={() => setDropdownOpen(false)}
+                              >
+                                {/* Thumbnail */}
+                                <Image
+                                  src={product.thumbnail}
+                                  alt={product.name}
+                                  width={32}
+                                  height={32}
+                                  className="shrink-0 w-8 h-8 rounded-md object-cover"
+                                  sizes="32px"
+                                />
+                                <div className="min-w-0">
+                                  <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-600 transition-colors leading-snug">
+                                    {product.name}
+                                  </div>
+                                  <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
+                                    {product.description}
+                                  </div>
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -365,7 +361,7 @@ export function Header() {
                   </SheetTitle>
                 </SheetHeader>
 
-                <nav className="flex flex-col py-2" aria-label="Mobile navigation">
+                <nav className="flex flex-col py-2 overflow-y-auto" aria-label="Mobile navigation">
                   <Link
                     href="/"
                     className={cn(
@@ -379,7 +375,7 @@ export function Header() {
                     Home
                   </Link>
 
-                  {/* Products accordion */}
+                  {/* Products accordion — with direct /products link */}
                   <Accordion type="single" collapsible className="px-0">
                     <AccordionItem value="products" className="border-b-0">
                       <AccordionTrigger className={cn(
@@ -392,41 +388,58 @@ export function Header() {
                       </AccordionTrigger>
                       <AccordionContent className="pb-2">
                         <div className="flex flex-col">
-                          {products.map((product) => (
-                            <Link
-                              key={product.href}
-                              href={product.href}
-                              className={cn(
-                                'flex items-center gap-3 px-5 py-3 pl-8 text-sm transition-colors min-h-[44px]',
-                                pathname.startsWith(product.href)
-                                  ? 'text-be-yellow-600 bg-be-yellow-50'
-                                  : 'text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600'
-                              )}
-                              onClick={() => setMobileOpen(false)}
-                            >
-                              <Image
-                                src={product.thumbnail}
-                                alt={product.name}
-                                width={28}
-                                height={28}
-                                className="shrink-0 w-7 h-7 rounded-md object-cover"
-                              />
-                              <div className="min-w-0">
-                                <div className="font-medium leading-snug">
-                                  {product.name}
+                          {/* View All Products link */}
+                          <Link
+                            href="/products"
+                            className={cn(
+                              'px-5 py-3 pl-8 text-sm font-semibold transition-colors min-h-[44px] flex items-center',
+                              pathname === '/products'
+                                ? 'text-be-yellow-600 bg-be-yellow-50'
+                                : 'text-be-yellow-500 hover:bg-be-yellow-50'
+                            )}
+                            onClick={() => setMobileOpen(false)}
+                          >
+                            View All Products
+                          </Link>
+
+                          {/* Products grouped by category */}
+                          {categoryOrder.map((catId) => {
+                            const catInfo = productCategories[catId];
+                            const items = productNavigationByCategory[catId];
+                            return (
+                              <div key={catId}>
+                                {/* Category label */}
+                                <div className="px-5 pl-8 py-1.5 text-[0.7rem] font-semibold text-be-grey-400 uppercase tracking-wider">
+                                  {catInfo.displayName}
                                 </div>
-                                <div className="text-metadata text-be-grey-650 leading-snug">
-                                  {product.description}
-                                </div>
+                                {items.map((product) => (
+                                  <Link
+                                    key={product.slug}
+                                    href={product.href}
+                                    className={cn(
+                                      'flex items-center gap-3 px-5 py-3 pl-8 text-sm transition-colors min-h-[44px]',
+                                      pathname === product.href
+                                        ? 'text-be-yellow-600 bg-be-yellow-50'
+                                        : 'text-be-charcoal-800 hover:bg-be-yellow-50 hover:text-be-yellow-600'
+                                    )}
+                                    onClick={() => setMobileOpen(false)}
+                                  >
+                                    <div className="min-w-0">
+                                      <div className="font-medium leading-snug">
+                                        {product.name}
+                                      </div>
+                                    </div>
+                                  </Link>
+                                ))}
                               </div>
-                            </Link>
-                          ))}
+                            );
+                          })}
                         </div>
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
 
-                  {/* Divider between Products accordion and other nav items */}
+                  {/* Divider */}
                   <div className="mx-5 my-1 h-px bg-be-grey-250" />
 
                   <Link

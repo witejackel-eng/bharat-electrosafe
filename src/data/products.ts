@@ -1,7 +1,7 @@
 /**
  * Product Data — Bharat Electrosafe
  *
- * Comprehensive data definitions for all 5 product families.
+ * Comprehensive data definitions for all 6 product families.
  *
  * Every technical figure below is transcribed from the client's own product
  * pages on bharatelectrosafe.com. The four insulating-mat families share one
@@ -114,10 +114,34 @@ export const membraneTrustPoints: string[] = [
   'Technical documentation available',
 ];
 
+export type ProductCategory =
+  | 'electrical-insulation'
+  | 'waterproofing-civil-protection';
+
+export interface ProductCategoryInfo {
+  id: ProductCategory;
+  displayName: string;
+  selectionPurpose: string;
+}
+
+export const productCategories: Record<ProductCategory, ProductCategoryInfo> = {
+  'electrical-insulation': {
+    id: 'electrical-insulation',
+    displayName: 'Electrical Insulation',
+    selectionPurpose: 'Operator protection near live electrical equipment',
+  },
+  'waterproofing-civil-protection': {
+    id: 'waterproofing-civil-protection',
+    displayName: 'Waterproofing and Civil Protection',
+    selectionPurpose: 'Waterproofing, containment and construction-joint sealing',
+  },
+};
+
 export interface ProductData {
   slug: string;
   name: string;
   shortName: string;
+  category: ProductCategory;
   images: ProductImages;
   /** Statements safe to show for this product specifically. */
   trustPoints: string[];
@@ -261,6 +285,7 @@ const electricalInsulatingMats: ProductData = {
   slug: 'electrical-insulating-mats',
   name: 'Electrical Insulating Mats',
   shortName: 'EIM',
+  category: 'electrical-insulation',
   images: {
     thumbnail: `${EIM}/product-01.webp`,
     hero: `${EIM}/product-02.webp`,
@@ -381,6 +406,7 @@ const colouredStripInsulatingMats: ProductData = {
   slug: 'coloured-strip-insulating-mats',
   name: 'Coloured Strip Insulating Mats',
   shortName: 'CSIM',
+  category: 'electrical-insulation',
   images: {
     thumbnail: `${CSIM}/product-02.webp`,
     hero: `${CSIM}/product-04.webp`,
@@ -500,6 +526,7 @@ const biColorInsulatingMats: ProductData = {
   slug: 'bi-color-insulating-mats',
   name: 'Bi-Color Insulating Mats',
   shortName: 'BCIM',
+  category: 'electrical-insulation',
   images: {
     thumbnail: `${BCIM}/product-01.webp`,
     hero: `${BCIM}/product-02.webp`,
@@ -612,6 +639,7 @@ const autoGlowReflectiveBandMats: ProductData = {
   slug: 'auto-glow-reflective-band-insulating-mats',
   name: 'Auto-Glow / Reflective Band Insulating Mats',
   shortName: 'AGRIM',
+  category: 'electrical-insulation',
   images: {
     thumbnail: `${AGRIM}/product-01.webp`,
     /* Normal-light product first — the glow is evidenced further down the
@@ -741,6 +769,7 @@ const bharatMembrane: ProductData = {
   slug: 'bharat-membrane',
   name: 'BharatMembrane',
   shortName: 'BM',
+  category: 'waterproofing-civil-protection',
   images: {
     thumbnail: `${BM}/product-01.webp`,
     hero: `${BM}/product-06.webp`,
@@ -919,8 +948,9 @@ const BHS = '/media/products/bharat-hydro-seal';
 
 const bharatHydroSeal: ProductData = {
   slug: 'bharat-hydro-seal',
-  name: 'BharatHydro Seal',
+  name: 'Bharat Hydro Seal',
   shortName: 'Hydro-Seal',
+  category: 'waterproofing-civil-protection',
   images: {
     thumbnail: `${BHS}/product-01.webp`,
     hero: `${BHS}/product-02.webp`,
@@ -1111,8 +1141,112 @@ export function getImageFit(product: ProductData, src: string): 'cover' | 'conta
   return product.images.contextual?.includes(src) ? 'cover' : 'contain';
 }
 
-/** Labels for the contact-form product selector — all five families. */
+/** Labels for the contact-form product selector — all six families. */
 export const contactProductOptions = products.map((p) => ({
   value: p.slug,
   label: p.name,
 }));
+
+/**
+ * Lightweight product navigation projection — used by Header, Footer,
+ * /products page and any other component that needs product links without
+ * shipping the full technical-detail client bundle.
+ *
+ * Derives everything from the central product registry so adding a product
+ * later requires changing only the registry.
+ */
+export interface ProductNavItem {
+  name: string;
+  slug: string;
+  description: string;
+  thumbnail: string;
+  href: string;
+  category: ProductCategory;
+  categoryDisplayName: string;
+}
+
+export const productNavigationItems: ProductNavItem[] = products.map((p) => ({
+  name: p.name,
+  slug: p.slug,
+  description: p.description,
+  thumbnail: p.images.thumbnail,
+  href: `/products/${p.slug}`,
+  category: p.category,
+  categoryDisplayName: productCategories[p.category].displayName,
+}));
+
+/**
+ * Product navigation grouped by category, for use in header dropdowns,
+ * mobile menus and the /products page family grid.
+ */
+export const productNavigationByCategory: Record<ProductCategory, ProductNavItem[]> =
+  Object.fromEntries(
+    (Object.keys(productCategories) as ProductCategory[]).map((catId) => [
+      catId,
+      productNavigationItems.filter((p) => p.category === catId),
+    ]),
+  ) as Record<ProductCategory, ProductNavItem[]>;
+
+/**
+ * Comparison data for the /products page comparison table.
+ * Uses verified data from the central product registry only.
+ */
+export interface ProductComparisonRow {
+  name: string;
+  slug: string;
+  primaryPurpose: string;
+  distinguishingFeature: string;
+  typicalApplication: string;
+  applicableStandard: string;
+}
+
+export const productComparisonData: ProductComparisonRow[] = [
+  {
+    name: 'Electrical Insulating Mats',
+    slug: 'electrical-insulating-mats',
+    primaryPurpose: 'Operator insulation',
+    distinguishingFeature: 'Standard anti-skid insulating surface',
+    typicalApplication: 'Control panels, substations and switchrooms',
+    applicableStandard: 'IS 15652:2006',
+  },
+  {
+    name: 'Coloured Strip Insulating Mats',
+    slug: 'coloured-strip-insulating-mats',
+    primaryPurpose: 'Insulation with hazard-zone marking',
+    distinguishingFeature: 'High-visibility coloured boundary strip',
+    typicalApplication: 'Marked safe pathways around electrical installations',
+    applicableStandard: 'IS 15652:2006',
+  },
+  {
+    name: 'Bi-Color Insulating Mats',
+    slug: 'bi-color-insulating-mats',
+    primaryPurpose: 'Insulation with visible dual-layer construction',
+    distinguishingFeature: 'Contrasting colour layers',
+    typicalApplication: 'Areas requiring visible surface differentiation',
+    applicableStandard: 'IS 15652:2006',
+  },
+  {
+    name: 'Auto-Glow / Reflective Band Mats',
+    slug: 'auto-glow-reflective-band-insulating-mats',
+    primaryPurpose: 'Insulation with low-light guidance',
+    distinguishingFeature: 'Glow or reflective visibility feature',
+    typicalApplication: 'Emergency routes and low-light electrical areas',
+    applicableStandard: 'IS 15652:2006',
+  },
+  {
+    name: 'BharatMembrane',
+    slug: 'bharat-membrane',
+    primaryPurpose: 'Waterproofing and containment',
+    distinguishingFeature: 'Engineered PVC geomembrane',
+    typicalApplication: 'Tunnels, civil works and environmental containment',
+    applicableStandard: 'IS 15909:2020',
+  },
+  {
+    name: 'Bharat Hydro Seal',
+    slug: 'bharat-hydro-seal',
+    primaryPurpose: 'Construction-joint water sealing',
+    distinguishingFeature: 'PVC water stop profile',
+    typicalApplication: 'Concrete joints and water-retaining structures',
+    applicableStandard: 'IS 15058-2002',
+  },
+];
