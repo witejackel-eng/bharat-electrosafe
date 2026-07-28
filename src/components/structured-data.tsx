@@ -19,6 +19,7 @@ import {
   productSchema,
   breadcrumbSchema,
   faqSchema,
+  homepageItemListSchema,
   serializeJsonLd,
   type BreadcrumbItem,
   type FAQItem,
@@ -51,6 +52,22 @@ export function HomepageStructuredData() {
         }}
       />
     </>
+  );
+}
+
+/* ────────────────────────────────────────────
+   Homepage ItemList: homepage-only catalogue schema
+   Rendered only on the homepage route — not sitewide.
+   ──────────────────────────────────────────── */
+
+export function HomepageItemListStructuredData() {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: serializeJsonLd(homepageItemListSchema()),
+      }}
+    />
   );
 }
 

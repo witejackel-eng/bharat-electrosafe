@@ -466,3 +466,96 @@ Recommended next-phase priorities:
 3. Consider an interactive Industries-Served filter (click an industry → see recommended products) to replace or augment the static CapabilityIndustries section.
 4. Performance audit: measure CLS from the be-pulse-attention on the wizard and the be-fade-in-up step transitions.
 5. Add BreadcrumbList JSON-LD to the homepage (currently only on product/about/contact pages).
+
+---
+Task ID: QA-POLISH-5
+Agent: Z.ai Code (main session)
+Task: QA-driven polish round 5 — assess project status, perform testing/QA via agent-browser, independently select work focus (fix bugs or add features), improve styling details, add functionality, update worklog.
+
+Work Log:
+- Read existing worklog.md; confirmed prior QA-POLISH-4 round (compact homepage wizard, ProcessSection, HowTo structured data, allowedDevOrigins stability fix, hydro-seal redirect fix) was complete and pushed as bab47f1.
+- Dev server was stopped; restarted with `(node node_modules/.bin/next dev -p 3000 >dev.log 2>&1 &)` subshell pattern. Verified all 9 valid routes return 200; /products/bharat-hydro-seal returns 404; /BharatHydro-Seal.php → 308 redirect → /products (prior fix intact).
+- Performed QA with agent-browser on desktop (1440x900) and mobile (390x844):
+  - Homepage H1, 8 sections, 5 JSON-LD scripts (Organization, WebSite, LocalBusiness, FAQPage, HowTo), 4 proof badges, header display:contents (sticky fix intact).
+  - Wizard flow verified end-to-end: Operator protection → MV → Indoor → result "Electrical Insulating Mats (Class B)" with reasoning.
+  - Compare URL sync (?compare=electrical-insulating-mats) + Add to compare from wizard both work.
+  - Mobile: no horizontal overflow, MobileStickyCTA appears after scroll, wizard + compare work.
+  - `bun run lint` and `bun run typecheck` both clean.
+- No critical bugs found in QA. Site was stable before this round.
+
+Independently selected work focus: implement the top 3 recommended next-phase items from QA-POLISH-4 worklog (Technical Resources section, interactive Industries filter, homepage structured data) + premium styling. Implemented 3 new features + 4 new CSS utilities.
+
+Implemented:
+
+1. Technical Resources & Compliance Library (NEW FEATURE — src/components/home/TechnicalResources.tsx)
+   - Centralised, filterable library of every verifiable document on the site.
+   - Aggregates from /data/trust.ts allTrustMarks (certificates with PDFs) AND /data/products.ts product.documents (test reports, datasheets, licences, standards info) into a single grid.
+   - Deduplication: product documents processed FIRST so the ERDA test report is correctly categorised as kind='test-report' (not miscategorised as a certificate via the trust mark). Trust marks with PDFs are then added only if their href isn't already captured.
+   - 6 filter chips with live counts: All (16), Test reports (1), Certificates (5), Licences (4), Datasheets (5), Standards info (1).
+   - Standards quick-reference band at the top: 4 tiles for IS 15652:2006, IEC 61111, IS 15909:2020, BIS CM/L:8800129617.
+   - Each card uses the existing DocumentCard component (no duplication of card logic). Cards with PDFs get View + Download buttons; cards without PDFs route to a prefilled /contact-us request.
+   - "Request full document set" CTA in the header; "Browse all products" link in the footer.
+   - Stagger-reveal animation re-triggers on filter change (rAF-deferred for lint).
+   - SR-only heading updates with the current filter result count.
+   - Integrated into homepage as Section 8 (between InteractiveIndustries and HomeFAQCTA).
+
+2. Interactive Industries Filter (NEW FEATURE — src/components/home/InteractiveIndustries.tsx)
+   - Replaces the static CapabilityIndustries section (which had a static "Industries we serve" chip rail).
+   - 6 industry chips: Power Utilities, Substations & Switchrooms, Railways & Metro, Oil & Gas, Manufacturing, Infrastructure & Construction.
+   - Click a chip → results panel updates with: industry header (navy gradient band), lead-reason callout (yellow-tinted box), recommended product list (with thumbnails, "Lead match" badge on first item, descriptions, hover-arrow), and a "Discuss your [industry] application" CTA.
+   - Industry → product mappings are conservative and derived from the application notes in /data/products.ts.
+   - Left column: sticky intro + manufacturing image + proof points (carried over from CapabilityIndustries).
+   - Mobile: results panel scrolls into view when chip is clicked (only on <1024px); desktop keeps side-by-side layout.
+   - Active chip gets be-industry-active-glow CSS (charcoal fill + yellow icon + soft glow shadow). Inactive chips get hover lift + yellow border.
+   - aria-live="polite" on results panel; aria-pressed on chips; focus-visible rings throughout.
+   - Integrated into homepage as Section 7 (replaces CapabilityIndustries).
+
+3. Homepage ItemList Structured Data (NEW SEO — src/lib/structured-data.ts + structured-data.tsx + page.tsx)
+   - New homepageItemListSchema() function in the centralised structured-data lib.
+   - Emits an ItemList JSON-LD with numberOfItems=5 and itemListElement[] entries (position + name + url) for each product.
+   - New HomepageItemListStructuredData React component (rendered only on the homepage route, NOT sitewide — unlike Organisation/WebSite/LocalBusiness which are sitewide entity definitions).
+   - Homepage now emits 6 JSON-LD scripts: Organization, WebSite, LocalBusiness, FAQPage, HowTo, ItemList.
+   - No fabricated SKUs, prices, ratings, or availability — only position, name, and url per item.
+
+4. Premium CSS Utilities (4 new in globals.css)
+   - be-filter-chip: pill-style toggle with a radial yellow glow that follows the pointer on hover. Pseudo-element, no layout impact. Reduced-motion safe.
+   - be-resource-tile: wrapper for DocumentCard in the TechnicalResources library. Adds a top-edge yellow gradient accent on hover + 3px lift + soft shadow. Frames the document like a filed paper tab.
+   - be-industry-active-glow: charcoal fill + 1px ring + soft glow shadow for the active industry chip. Makes the selected chip feel like a "filed tab" against the results panel.
+   - be-scroll-x: refined thin scrollbar styling (6px thumb, transparent track, grey-250 thumb that darkens to grey-400 on hover) for horizontally-scrolling containers.
+
+5. InteractiveIndustries active chip enhancement
+   - Active industry chip now uses be-industry-active-glow (was just shadow-md).
+   - Inactive chips get hover:-translate-y-0.5 for a subtle lift.
+
+Verification Results:
+- All 9 valid routes return 200; /products/bharat-hydro-seal returns 404; /BharatHydro-Seal.php → 308.
+- bun run lint — clean (exit 0).
+- bun run typecheck — clean (exit 0).
+- Homepage: 9 sections (was 8). New section headings: "Built around safety…" (InteractiveIndustries) and "Datasheets, certificates & test reports" (TechnicalResources).
+- Homepage JSON-LD: 6 scripts (Organization, WebSite, LocalBusiness, FAQPage, HowTo, ItemList). ItemList valid: type=ItemList, @id=…/#product-list, numberOfItems=5, firstItem={position:1, name:"Electrical Insulating Mats", url:"https://bharatelectrosafe.com/products/electrical-insulating-mats"}.
+- InteractiveIndustries: 6 industry chips render. Clicking "Railways & Metro" → activeH4="Railways & Metro", leadMatchProduct="Electrical Insulating Mats", leadReason="Traction-voltage insulation plus auto-glow bands for low-light evacuation corridors." Clicking "Oil & Gas" → leadReason="Insulating mats plus bi-color and strip demarcation for hazardous-zone boundaries." Both verified on desktop and mobile.
+- TechnicalResources: 6 filter chips with correct counts (All=16, Test reports=1, Certificates=5, Licences=4, Datasheets=5, Standards info=1). Clicking "Test reports" → 1 visible card titled "ERDA test report — 2.5 mm insulating mat". Clicking "All" → 16 visible cards. 4 standards quick-reference tiles render. Active chip pixel sample: charcoal (39,39,41) ≈ #242426.
+- Mobile (390x844): no horizontal overflow on homepage. InteractiveIndustries: 6 chips, results panel updates on click. TechnicalResources: 6 filter chips, 16 visible cards, 8 standards tiles (4×2 grid). MobileStickyCTA appears after scroll and does not overlap the TechnicalResources filter chips.
+- No "hydro seal" references in rendered DOM.
+- Dev log: all requests 200, no errors or warnings.
+
+Stage Summary:
+- 7 files changed: page.tsx, HomeClient.tsx, globals.css, structured-data.tsx, structured-data.ts + 2 new files (TechnicalResources.tsx, InteractiveIndustries.tsx).
+- 2 new components: TechnicalResources (centralised compliance library with filters), InteractiveIndustries (interactive industry → product picker).
+- 1 new structured data type: ItemList (homepage-only).
+- 4 new CSS utilities: be-filter-chip, be-resource-tile, be-industry-active-glow, be-scroll-x.
+- 1 component replaced: CapabilityIndustries → InteractiveIndustries (CapabilityIndustries.tsx file left in place but no longer imported; can be removed in a future cleanup).
+- No critical bugs. All prior work (Hydro Seal removal, navy header, product-led hero, leadership swivel, scroll progress, mobile CTA, animated stats, compact wizard, ProcessSection, compare tool, URL-shareable compare) preserved and stable.
+
+Unresolved / Risks:
+- CapabilityIndustries.tsx is now unused (replaced by InteractiveIndustries). Left in place to avoid breaking any future imports; can be removed in a future cleanup.
+- Dev server (Next.js 16 Turbopack) remains unstable in the sandbox under rapid-fire requests. Restarts cleanly with subshell pattern. Production on Vercel is unaffected.
+- Leadership portraits remain low-resolution (source limitation; treated in prior round).
+- The TechnicalResources library aggregates 16 documents, of which 9 have no downloadable PDF (4 BIS licence cards from mat products, 4 datasheet cards, 1 standards-info card). These render as "Request document" buttons that route to /contact-us with a prefilled message. This is the intended behaviour per the source-data rules in /data/trust.ts (marks without a released document get a label and no download control).
+
+Recommended next-phase priorities:
+1. Remove the unused CapabilityIndustries.tsx file (and its imports) now that InteractiveIndustries replaces it.
+2. Add a /resources route that mirrors the homepage TechnicalResources section as a standalone page (with deeper filtering by product, standard, or issuer).
+3. Add a "Compare products" CTA inside the InteractiveIndustries results panel so visitors can add the recommended products to the compare tray in one click.
+4. Performance audit: measure CLS from the TechnicalResources filter transition (stagger-reveal re-trigger) and the InteractiveIndustries results panel update.
+5. Add a BreadcrumbList JSON-LD to the homepage (still only on product/about/contact pages) — though an ItemList is now present, a single-item Home breadcrumb is low-value per schema.org guidance.
