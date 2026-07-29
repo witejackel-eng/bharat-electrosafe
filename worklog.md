@@ -559,3 +559,32 @@ Recommended next-phase priorities:
 3. Add a "Compare products" CTA inside the InteractiveIndustries results panel so visitors can add the recommended products to the compare tray in one click.
 4. Performance audit: measure CLS from the TechnicalResources filter transition (stagger-reveal re-trigger) and the InteractiveIndustries results panel update.
 5. Add a BreadcrumbList JSON-LD to the homepage (still only on product/about/contact pages) — though an ItemList is now present, a single-item Home breadcrumb is low-value per schema.org guidance.
+
+---
+Task ID: structure-restoration-1
+Agent: Super Z (main)
+Task: Restore homepage structure + Bharat Hydro Seal + leadership carousel + header + hero (client revision)
+
+Work Log:
+- Created backup branch `backup-before-structure-restoration` and pushed to origin
+- Restored homepage to 5-section structure: HomeHero → ProductRange → TrustDocuments → CapabilityIndustries → HomeFAQCTA
+- Removed unrequested homepage sections: StatsSection, HomeProductFinder, ProcessSection, InteractiveIndustries, TechnicalResources
+- Restored Bharat Hydro Seal completely: product data, route, 24 media assets, mega-menu icon, footer links, enquiry form, sitemap, structured data, llms.txt, PHP redirect
+- Restored "six product families" wording across /products route (was "five")
+- Rebuilt leadership carousel: 860px active card (was 420px), 2 bio paragraphs visible (was 3-line clamp), rotateY 10° + scale 0.88 on neighbours, fixed hardcoded "of ${3}" aria-label → uses leaders.length
+- Mobile: neighbours hidden via opacity:0 (no text bleed), single bio paragraph
+- Header: removed vertical logo divider per spec
+- Hero: replaced small-square-inset with product-first composition — large mat as dominant foreground (≈45% of scene), switchgear softly darkened in background, yellow safety edge + "Insulating Mat" callout; dedicated mobile portrait scene
+- Fixed a11y: CompareBar Clear button now disabled when tray is aria-hidden (was triggering axe aria-hidden-focus rule)
+- Removed 12 committed QA screenshots from repo root (tool-result artifacts)
+- All 65 Playwright a11y tests pass
+- Production build succeeds (16 routes including /products/bharat-hydro-seal)
+- Responsive QA: all 10 viewports pass (360, 390, 430, 768, 820, 1024, 1280, 1366, 1440, 1920) — zero horizontal overflow, BHS visible, carousel OK, zero console errors on production
+
+Stage Summary:
+- 5 commits pushed to main: restore, leadership, header+hero, a11y fix, chore
+- Backup branch: backup-before-structure-restoration
+- Site has 6 product families again with BHS fully integrated
+- Leadership carousel is premium and substantial (860px active card, 2 bio paragraphs, expertise, focus, drawer)
+- Header is unified navy with no logo rectangle
+- Hero tells one product story (mat dominant, not a tiny inset)
