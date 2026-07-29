@@ -633,3 +633,35 @@ Stage Summary:
 - Files modified: src/app/globals.css, src/app/contact-us/ContactUsClient.tsx, src/app/products/ProductsClient.tsx, src/components/about/AboutIntro.tsx, src/components/about/CompanyLeadership.tsx, src/components/home/HomeFAQCTA.tsx, src/components/layout/Header.tsx, src/components/products/ProductHero.tsx, src/components/ui/FAQ.tsx, src/data/faqs.ts
 - Files deleted: src/components/about/LeadershipSwivel.tsx
 - Files created: src/components/about/LeadershipGrid.tsx
+
+---
+Task ID: remove-product-finder
+Agent: super-z (main)
+Task: Remove the complete Product Finder block from the /products page (PRODUCT FINDER eyebrow, "Not sure which product you need?" heading, supporting paragraph, "Find the right product" wizard card, 3-question flow, step indicator/progress bar, recommendation/result state, reset/restart controls, and any leftover whitespace). Do NOT remove product catalogue, product cards, comparison tools, product data, Bharat Hydro Seal, or change any other page/section.
+
+Work Log:
+- Read existing worklog.md; confirmed prior round (header colour integration, FAQ redesign, leadership grid) was complete and pushed as 0bd96e9.
+- Inspected src/app/products/ProductsClient.tsx — located Product Finder at lines 317-335 (ProductFinderSection function) and 506-507 (render call), plus import at line 20.
+- Grep'd entire src/ and tests/ for ProductFinder, ProductFinderWizard, ProductFinderSection, product-finder, FinderWizard, RecommendationWizard, ProductRecommendation — confirmed the only consumer is ProductsClient.tsx; ProductFinderWizard.tsx is not used elsewhere (HomeProductFinder was already removed in an earlier structure-restoration commit).
+- Verified no tests reference the Product Finder (tests/a11y/*.spec.ts only enumerate product routes for a11y checks).
+- Inspected src/components/products/ProductFinderWizard.tsx — self-contained component using its own local state, lucide-react icons, getProductBySlug, CompareContext (graceful null-safe), cn util. No exports other than ProductFinderWizard; no shared recommendation logic to preserve.
+- Inspected src/app/globals.css for Finder-specific CSS — confirmed be-result-reveal, be-pulse-attention, be-fade-in-up keyframes/rules are ONLY used by ProductFinderWizard.tsx. Kept be-premium-sheen (still used by CompareBar.tsx and PrimaryButton.tsx). Kept be-step-badge / be-step-connector (already orphaned by earlier homepage restoration, not Finder-specific — left untouched to stay within task scope).
+- Edited src/app/products/ProductsClient.tsx:
+  * Removed `import { ProductFinderWizard } from '@/components/products/ProductFinderWizard';`
+  * Removed entire `ProductFinderSection()` function definition (Section 3.5 block, 19 lines)
+  * Removed `<ProductFinderSection />` render call from main()
+  * Renumbered section comments (4. Comparison table → 3, 5. Selection guidance → 4, 6. Technical help CTA → 5)
+- Deleted src/components/products/ProductFinderWizard.tsx (589 lines, no other consumers).
+- Removed 3 orphaned CSS blocks from src/app/globals.css (51 lines): `@keyframes be-result-reveal` + `.be-result-reveal > *` rules, `@keyframes be-pulse-attention` + `.be-pulse-attention` rule, `@keyframes be-fade-in-up` + `.be-fade-in-up` rule (each with their prefers-reduced-motion override).
+- Verified zero remaining references: `rg ProductFinderWizard|ProductFinderSection src/ tests/` → no matches; `rg be-result-reveal|be-pulse-attention|be-fade-in-up src/ tests/` → no matches.
+
+Stage Summary:
+- 3 files changed (2 modified, 1 deleted), net -667 lines / +3 lines.
+- typecheck (tsc --noEmit): PASS, 0 errors
+- lint (eslint .): PASS, 0 errors, 1 pre-existing warning (EnquiryQuoteLayout.tsx React Hook Form watch() — unrelated, was already present in prior commit)
+- production build (next build): PASS, all 16 routes generated including /products and /products/bharat-hydro-seal
+- Route HTTP checks (npm run start + curl): /, /products, /products/bharat-hydro-seal, /products/bharat-membrane, /products/electrical-insulating-mats, /products/coloured-strip-insulating-mats, /products/bi-color-insulating-mats, /products/auto-glow-reflective-band-insulating-mats, /about-us, /contact-us → all HTTP 200
+- /products page content check (135388 bytes): zero Product Finder markup, zero finder-specific CSS classes; required sections (PRODUCT FAMILIES, Product comparison, SELECTION GUIDE, Need technical guidance) all present; all six product families including Bharat Hydro Seal still linked
+- Files modified: src/app/products/ProductsClient.tsx, src/app/globals.css
+- Files deleted: src/components/products/ProductFinderWizard.tsx
+- No new files, no new sections, no replacement added — vertical gap closed naturally as ComparisonTable now follows ProductFamilyGrid directly via SectionShell topRule + bg transitions (bg-be-white → bg-be-cream)

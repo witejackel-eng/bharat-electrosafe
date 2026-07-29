@@ -17,7 +17,6 @@ import { CompareProvider, useCompare } from '@/components/products/CompareContex
 import { CompareToggle } from '@/components/products/CompareToggle';
 import { CompareBar } from '@/components/products/CompareBar';
 import { CompareModal } from '@/components/products/CompareModal';
-import { ProductFinderWizard } from '@/components/products/ProductFinderWizard';
 import {
   productNavigationByCategory,
   productComparisonData,
@@ -314,27 +313,6 @@ function ComparisonTable() {
 }
 
 /* ────────────────────────────────────────────
-   Section 3.5: Interactive Product Finder Wizard
-   ──────────────────────────────────────────── */
-
-function ProductFinderSection() {
-  return (
-    <SectionShell variant="standard" bg="bg-be-cream" topRule>
-      <div className="reveal-up mb-8">
-        <SectionHeader
-          eyebrow="PRODUCT FINDER"
-          title="Not sure which product you need?"
-          supportingText="Answer a few questions and we'll recommend the right product family for your application."
-        />
-      </div>
-      <div className="reveal-up max-w-3xl mx-auto">
-        <ProductFinderWizard />
-      </div>
-    </SectionShell>
-  );
-}
-
-/* ────────────────────────────────────────────
    Section 4: Selection guidance
    ──────────────────────────────────────────── */
 
@@ -503,13 +481,11 @@ export default function ProductsClient() {
           <ProductsHero />
           {/* 2. Product family grid */}
           <ProductFamilyGrid />
-          {/* 3. Interactive product finder wizard */}
-          <ProductFinderSection />
-          {/* 4. Comparison table */}
+          {/* 3. Comparison table */}
           <ComparisonTable />
-          {/* 5. Selection guidance (static reference) */}
+          {/* 4. Selection guidance (static reference) */}
           <SelectionGuidance />
-          {/* 6. Technical help CTA */}
+          {/* 5. Technical help CTA */}
           <TechnicalHelpCTA />
         </main>
         <Footer />

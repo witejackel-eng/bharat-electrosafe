@@ -1277,57 +1277,6 @@
   }
 
   /* ──────────────────────────────────────────────────────────────
-     RESULT REVEAL — a staggered fade-and-rise used when wizard or
-     comparison results appear. Each child animates in sequence.
-     ────────────────────────────────────────────────────────────── */
-  @keyframes be-result-reveal {
-    0% { opacity: 0; transform: translateY(12px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  .be-result-reveal > * {
-    animation: be-result-reveal 0.4s ease-out backwards;
-  }
-  .be-result-reveal > *:nth-child(1) { animation-delay: 0ms; }
-  .be-result-reveal > *:nth-child(2) { animation-delay: 120ms; }
-  .be-result-reveal > *:nth-child(3) { animation-delay: 240ms; }
-  @media (prefers-reduced-motion: reduce) {
-    .be-result-reveal > * { animation: none; }
-  }
-
-  /* ──────────────────────────────────────────────────────────────
-     PULSE ATTENTION — a gentle pulse used to draw the eye to the
-     product finder wizard and other new interactive features. Two
-     slow pulses then stops (animation-iteration-count: 2).
-     ────────────────────────────────────────────────────────────── */
-  @keyframes be-pulse-attention {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(244, 195, 19, 0); }
-    50% { box-shadow: 0 0 0 8px rgba(244, 195, 19, 0.15); }
-  }
-  .be-pulse-attention {
-    animation: be-pulse-attention 2s ease-out 2;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .be-pulse-attention { animation: none; }
-  }
-
-  /* ──────────────────────────────────────────────────────────────
-     FADE-IN-UP — a gentle rise-and-fade used for wizard step
-     transitions and section reveals. Richer than the plain fade-in
-     because it adds a small upward motion that signals forward
-     progress through the wizard.
-     ────────────────────────────────────────────────────────────── */
-  @keyframes be-fade-in-up {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .be-fade-in-up {
-    animation: be-fade-in-up 0.32s ease-out;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .be-fade-in-up { animation: none; }
-  }
-
-  /* ──────────────────────────────────────────────────────────────
      STEP CONNECTOR — a vertical accent that connects numbered step
      badges in a vertical timeline. Applied to the container; each
      direct child .be-step-badge gets a yellow line drawn from its
