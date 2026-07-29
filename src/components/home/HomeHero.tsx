@@ -21,29 +21,34 @@ const proofItems: ProofItem[] = [
 /**
  * HomeHero — Server Component.
  *
- * Product-led hero that tells the insulating-mat safety story in one frame:
+ * Product-first hero that tells the insulating-mat safety story in ONE
+ * coherent scene (per client spec):
  *
- *   Electrical switchgear environment  →  insulating mat beneath the
- *   operator  →  protected working zone.
+ *   Industrial switchgear environment (background)
+ *   → large Bharat Electrosafe insulating mat in the foreground
+ *   → yellow safety edge + coin-surface texture clearly visible
+ *   → the mat IS the subject, not a small inset tile.
+ *
+ * The previous "small square inset over a switchgear photo" composition
+ * felt like two unrelated images. This version uses the mat as the
+ * dominant foreground element (≈45% of the visual) with the switchgear
+ * scene softly visible behind it — one perspective, one lighting
+ * treatment, one product story.
  *
  * Composition (desktop):
- *   • Left column  — eyebrow, headline, supporting copy, two CTAs, proof line.
- *   • Right column — a real photograph of industrial switchgear as the
- *     hazard context, with a real mat product close-up inset that overlaps
- *     the lower-left of the scene. A yellow “protected zone” frame and two
- *     restrained callouts identify the mat as the protective equipment,
- *     not ordinary flooring.
+ *   • Left column  — eyebrow, headline, supporting copy, two CTAs,
+ *     proof badges.
+ *   • Right column — one integrated product scene: switchgear context
+ *     softly blurred/darkened behind a large, sharp mat product image
+ *     with a yellow safety-edge accent and a single restrained callout.
  *
- * The hero background uses a restrained navy illumination at the top that
- * fades into the warm-white page — a designed continuation of the navy
- * header, not a separate banner.
+ * Mobile:
+ *   • Copy first, then the product scene at full width with the mat
+ *     clearly visible — no tiny crop, no hidden product.
  *
- * Static-first: all content is server-rendered. No entry animation gates
- * legibility. Motion is limited to a single soft fade via @starting-style
- * (CSS-only) and respects prefers-reduced-motion.
- *
- * Proof badges render immediately visible (no JS reveal) so IS 15652:2006
- * and the BIS licence appear in the first paint for SEO and trust.
+ * Motion: soft fade via @starting-style only (CSS-only). Respects
+ * prefers-reduced-motion. Static-first: all content is server-rendered
+ * and legible on first paint.
  */
 export default function HomeHero() {
   return (
@@ -96,9 +101,7 @@ export default function HomeHero() {
             aria-hidden="true"
           />
 
-          {/* Proof line — visible immediately, no JS reveal.
-              Each badge pairs a small icon with the label so the trust
-              signals read at a glance. */}
+          {/* Proof line — visible immediately, no JS reveal. */}
           <div className="flex flex-wrap gap-2">
             {proofItems.map((item) => {
               const Icon = item.icon;
@@ -112,9 +115,19 @@ export default function HomeHero() {
           </div>
         </div>
 
-        {/* ── Product scene column ── */}
+        {/* ── Product scene column ──
+            Desktop: integrated switchgear + mat composition.
+            Mobile/tablet (<lg): portrait-friendly product-first scene
+            with a taller aspect ratio so the mat remains dominant. */}
         <div className="w-full lg:w-[48%] lg:ml-auto">
-          <ProductHeroScene />
+          {/* Desktop / tablet-landscape scene — 4:3 aspect */}
+          <div className="hidden lg:block">
+            <ProductHeroScene />
+          </div>
+          {/* Mobile / tablet-portrait scene — 3:4 aspect, mat dominant */}
+          <div className="lg:hidden">
+            <ProductHeroSceneMobile />
+          </div>
         </div>
       </div>
     </SectionShell>
@@ -122,27 +135,35 @@ export default function HomeHero() {
 }
 
 /**
- * ProductHeroScene — the right-column visual.
+ * ProductHeroScene — one integrated product-first composition.
  *
- * A real industrial switchgear photograph provides the hazard context. A
- * real mat product close-up is inset at the lower-left, overlapping the
- * scene, so the mat reads as the protective equipment placed in that
- * environment — not as a decorative tile. A thin yellow “protected zone”
- * frame and two restrained callouts make the product’s role explicit.
+ * Layers (back to front):
+ *   1. Switchgear environment photograph — softly darkened + blurred
+ *      to recede as context, not compete with the product.
+ *   2. Subtle navy gradient overlay — ties the scene to the header and
+ *      improves mat legibility against the background.
+ *   3. Large mat product image — the dominant foreground element
+ *      (≈45% of scene area). Shows the coin-surface texture, the yellow
+ *      safety edge, and the IEC 61111 marking. Sharp, well-lit.
+ *   4. Single restrained callout — "Insulating Mat" tag on the product
+ *      itself, so the role is explicit without cluttering the scene.
  *
- * Accessibility: the wrapper is role="img" with one descriptive aria-label.
- * The individual images use empty alt (decorative) because the composite
- * meaning is conveyed by the wrapper label — avoiding duplicate
- * announcements.
+ * No separate floating thumbnail. No collage. One perspective, one
+ * lighting treatment, one product story.
+ *
+ * Accessibility: the wrapper is role="img" with one descriptive
+ * aria-label. Individual images use empty alt (decorative) because the
+ * composite meaning is conveyed by the wrapper label.
  */
 function ProductHeroScene() {
   return (
     <div
       role="img"
-      aria-label="Electrical insulating mat positioned as a protective standing surface in front of industrial switchgear, defining the operator’s protected working zone."
+      aria-label="Bharat Electrosafe electrical insulating mat with coin-surface texture and yellow safety edge, positioned as the protective standing surface in front of industrial switchgear."
       className="relative w-full overflow-hidden rounded-xl shadow-xl be-hero-scene"
     >
-      {/* Industrial switchgear context — real photograph */}
+      {/* ── Layer 1: Switchgear environment (background context) ──
+          Real photograph, softly darkened so it recedes. */}
       <div className="relative aspect-[4/3] w-full overflow-hidden">
         <Image
           src="/media/hero/switchgear-scene.webp"
@@ -150,52 +171,78 @@ function ProductHeroScene() {
           fill
           priority
           sizes="(max-width: 1023px) 100vw, 48vw"
-          className="object-cover"
+          className="object-cover be-hero-bg-image"
         />
-        {/* Subtle dark gradient at bottom for inset legibility + depth */}
+        {/* Navy gradient overlay — darkens the background for mat
+            legibility and ties the scene to the navy header. */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(180deg, rgba(0,26,67,0.04) 0%, rgba(0,26,67,0) 35%, rgba(0,26,67,0.28) 100%)',
+              'linear-gradient(180deg, rgba(0,26,67,0.35) 0%, rgba(0,26,67,0.45) 50%, rgba(0,26,67,0.65) 100%)',
           }}
           aria-hidden="true"
         />
-        {/* Thin navy border to tie the scene to the header */}
+        {/* Thin navy inner ring — ties to header */}
         <div
-          className="absolute inset-0 ring-1 ring-inset ring-be-navy-800/20 rounded-xl"
+          className="absolute inset-0 ring-1 ring-inset ring-be-navy-800/30 rounded-xl"
           aria-hidden="true"
         />
       </div>
 
-      {/* Mat product close-up — overlapping inset, lower-left.
-          Reads as the protective product placed in this environment. */}
-      <div className="absolute -bottom-5 -left-3 sm:-left-5 w-[44%] max-w-[280px] be-hero-mat-inset">
-        <div className="relative aspect-square overflow-hidden rounded-lg shadow-2xl ring-1 ring-be-navy-900/30 be-hero-mat-frame">
+      {/* ── Layer 2: Large mat product (foreground, dominant) ──
+          The mat occupies ~45% of the scene area and sits in the
+          lower portion — reading as the protective surface the
+          operator stands on. Coin-surface texture + yellow safety
+          edge are clearly visible. Sharp, well-lit, unmistakable. */}
+      <div className="absolute bottom-0 left-0 right-0 be-hero-mat-foreground">
+        {/* Mat image — large, sharp, dominant */}
+        <div className="relative mx-auto w-[88%] max-w-[440px] aspect-[16/10] overflow-hidden rounded-t-lg shadow-2xl ring-1 ring-be-navy-900/40 be-hero-mat-image">
           <Image
-            src="/media/hero/mat-product-closeup.webp"
+            src="/media/products/electrical-insulating-mats/gallery/01-blue-coin-mat.webp"
             alt=""
             fill
-            sizes="(max-width: 1023px) 44vw, 240px"
+            priority
+            sizes="(max-width: 1023px) 88vw, 440px"
             className="object-cover"
           />
-          {/* Yellow safety edge accent — brand identifier on the mat inset */}
+          {/* Yellow safety edge — brand identifier, runs along the
+              bottom of the mat image (the leading edge the operator
+              would see when approaching the panel). */}
           <div
-            className="absolute bottom-0 left-0 right-0 h-1.5 bg-be-yellow-500"
+            className="absolute bottom-0 left-0 right-0 h-2 bg-be-yellow-500"
+            aria-hidden="true"
+          />
+          {/* Soft top gradient so the mat image blends into the
+              switchgear background rather than pasting a hard edge. */}
+          <div
+            className="absolute top-0 left-0 right-0 h-8"
+            style={{
+              background:
+                'linear-gradient(180deg, rgba(0,26,67,0.35) 0%, transparent 100%)',
+            }}
             aria-hidden="true"
           />
         </div>
+
+        {/* Single restrained callout — on the mat itself, so the
+            product's role is explicit. Yellow background, dark text,
+            high contrast, small. */}
+        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex items-center gap-1.5 rounded-md px-2.5 py-1.5 bg-be-yellow-500/95 backdrop-blur-sm border border-be-yellow-600/40 shadow-lg be-hero-callout">
+          <span
+            className="h-1.5 w-1.5 rounded-full shrink-0 bg-be-navy-900"
+            aria-hidden="true"
+          />
+          <span className="whitespace-nowrap font-semibold uppercase tracking-[0.1em] text-be-charcoal-950 text-[0.625rem] sm:text-[0.7rem]">
+            Insulating Mat
+          </span>
+        </div>
       </div>
 
-      {/* Protected-zone yellow dashed frame — hugs the mat inset,
-          conveys “this is the protected working area”. */}
-      <div
-        className="absolute -bottom-7 -left-5 sm:-left-7 w-[48%] max-w-[300px] h-[calc(44%+40px)] max-h-[320px] rounded-lg pointer-events-none be-hero-zone"
-        aria-hidden="true"
-      />
-
-      {/* Callout: switchgear (top-right) */}
-      <div className="absolute top-3 right-3 hidden sm:flex items-center gap-1.5 rounded-md px-2 py-1 bg-white/90 backdrop-blur-sm border border-be-grey-250/70 shadow-sm be-hero-callout">
+      {/* ── Layer 3: Switchgear context callout (top-left) ──
+          Identifies the hazard context without cluttering the scene.
+          Hidden on very small screens to avoid crowding the mat. */}
+      <div className="absolute top-3 left-3 hidden sm:flex items-center gap-1.5 rounded-md px-2.5 py-1.5 bg-white/85 backdrop-blur-sm border border-white/40 shadow-sm be-hero-callout">
         <span
           className="h-1.5 w-1.5 rounded-full shrink-0 bg-be-navy-700"
           aria-hidden="true"
@@ -204,16 +251,92 @@ function ProductHeroScene() {
           Switchgear
         </span>
       </div>
+    </div>
+  );
+}
 
-      {/* Callout: insulating mat (near the inset) */}
-      <div className="absolute bottom-3 right-3 hidden sm:flex items-center gap-1.5 rounded-md px-2 py-1 bg-be-yellow-500/95 border border-be-yellow-600/40 shadow-sm be-hero-callout">
-        <span
-          className="h-1.5 w-1.5 rounded-full shrink-0 bg-be-navy-900"
+/**
+ * ProductHeroSceneMobile — portrait-friendly product-first scene for
+ * mobile and tablet-portrait (<lg).
+ *
+ * Uses a 3:4 aspect ratio with the switchgear environment as a darkened
+ * background and the mat product as the dominant foreground element
+ * occupying the lower portion of the frame. The mat's coin-surface
+ * texture, yellow safety edge, and "Insulating Mat" callout are all
+ * clearly visible at small screen sizes.
+ *
+ * Accessibility: same role="img" + single aria-label pattern as the
+ * desktop scene.
+ */
+function ProductHeroSceneMobile() {
+  return (
+    <div
+      role="img"
+      aria-label="Bharat Electrosafe electrical insulating mat with coin-surface texture and yellow safety edge, positioned as the protective standing surface in front of industrial switchgear."
+      className="relative w-full overflow-hidden rounded-xl shadow-xl be-hero-scene"
+    >
+      {/* Switchgear background — portrait crop, darkened */}
+      <div className="relative aspect-[3/4] w-full overflow-hidden">
+        <Image
+          src="/media/hero/switchgear-scene-mobile.webp"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover be-hero-bg-image"
+        />
+        {/* Navy gradient overlay — darker at bottom for mat legibility */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(180deg, rgba(0,26,67,0.30) 0%, rgba(0,26,67,0.45) 45%, rgba(0,26,67,0.70) 100%)',
+          }}
           aria-hidden="true"
         />
-        <span className="whitespace-nowrap font-semibold uppercase tracking-[0.1em] text-be-charcoal-950 text-[0.625rem]">
-          Insulating Mat
-        </span>
+        <div
+          className="absolute inset-0 ring-1 ring-inset ring-be-navy-800/30 rounded-xl"
+          aria-hidden="true"
+        />
+      </div>
+
+      {/* Mat product — dominant foreground, lower portion of frame */}
+      <div className="absolute bottom-0 left-0 right-0 be-hero-mat-foreground">
+        <div className="relative mx-auto w-[92%] max-w-[380px] aspect-[16/10] overflow-hidden rounded-t-lg shadow-2xl ring-1 ring-be-navy-900/40 be-hero-mat-image">
+          <Image
+            src="/media/products/electrical-insulating-mats/gallery/01-blue-coin-mat.webp"
+            alt=""
+            fill
+            priority
+            sizes="92vw"
+            className="object-cover"
+          />
+          {/* Yellow safety edge — bottom of mat */}
+          <div
+            className="absolute bottom-0 left-0 right-0 h-2 bg-be-yellow-500"
+            aria-hidden="true"
+          />
+          {/* Soft top blend */}
+          <div
+            className="absolute top-0 left-0 right-0 h-8"
+            style={{
+              background:
+                'linear-gradient(180deg, rgba(0,26,67,0.40) 0%, transparent 100%)',
+            }}
+            aria-hidden="true"
+          />
+        </div>
+
+        {/* "Insulating Mat" callout — on the mat, always visible on mobile */}
+        <div className="absolute top-3 right-3 flex items-center gap-1.5 rounded-md px-2.5 py-1.5 bg-be-yellow-500/95 backdrop-blur-sm border border-be-yellow-600/40 shadow-lg be-hero-callout">
+          <span
+            className="h-1.5 w-1.5 rounded-full shrink-0 bg-be-navy-900"
+            aria-hidden="true"
+          />
+          <span className="whitespace-nowrap font-semibold uppercase tracking-[0.1em] text-be-charcoal-950 text-[0.7rem]">
+            Insulating Mat
+          </span>
+        </div>
       </div>
     </div>
   );

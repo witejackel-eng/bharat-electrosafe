@@ -334,7 +334,10 @@ export function Header() {
               JPEG with soft anti-aliased alpha) sits directly on the navy
               band. Because the logo's own background was the same navy
               gradient, the image boundary disappears — no visible square,
-              no mismatched blue rectangle. Focus ring is yellow on navy. */}
+              no mismatched blue rectangle. Focus ring is yellow on navy.
+              The vertical logo divider was removed per spec ("remove the
+              vertical logo divider if it makes the header feel segmented
+              or crowded") — the navy band now reads as one composition. */}
           <div className="flex items-center justify-start min-w-0">
             <Link
               href="/"
@@ -359,13 +362,6 @@ export function Header() {
                 priority
               />
             </Link>
-            {/* Subtle vertical divider — visible from lg+ only.
-                A faint white divider replaces the old warm-neutral seam,
-                matching the navy composition. */}
-            <div
-              className="hidden lg:block w-px h-8 bg-white/12 ml-4 sm:ml-6 lg:ml-8"
-              aria-hidden="true"
-            />
           </div>
 
           {/* ── Column 2: Desktop Navigation (centred) ── */}

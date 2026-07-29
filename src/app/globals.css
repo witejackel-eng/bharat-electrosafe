@@ -909,10 +909,17 @@
   }
 
   /* ──────────────────────────────────────────────────────────────
-     PRODUCT-LED HERO SCENE
-     Soft entrance for the scene, mat inset and callouts. Static-first:
-     final state is the default; @starting-style drives a one-shot fade.
+     PRODUCT-FIRST HERO SCENE
+     One integrated composition: switchgear background (softened) +
+     large dominant mat product in the foreground. Static-first: final
+     state is the default; @starting-style drives a one-shot fade.
      Reduced-motion shows everything immediately.
+
+     Layers:
+       .be-hero-bg-image        — switchgear photo, softly darkened
+       .be-hero-mat-foreground  — container for the mat + callout
+       .be-hero-mat-image       — the mat product image itself
+       .be-hero-callout         — "Insulating Mat" / "Switchgear" tags
      ────────────────────────────────────────────────────────────── */
   .be-hero-scene {
     opacity: 1;
@@ -921,23 +928,29 @@
   @starting-style {
     .be-hero-scene { opacity: 0; }
   }
-  .be-hero-mat-inset {
+  /* Background switchgear — slight scale-down on entrance for depth */
+  .be-hero-bg-image {
+    transform: scale(1);
+    transition: transform 0.8s ease-out;
+  }
+  @starting-style {
+    .be-hero-bg-image { transform: scale(1.04); }
+  }
+  /* Mat foreground — fades + lifts in slightly after the background */
+  .be-hero-mat-foreground {
     opacity: 1;
     transform: translateY(0);
     transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s;
   }
   @starting-style {
-    .be-hero-mat-inset { opacity: 0; transform: translateY(12px); }
+    .be-hero-mat-foreground { opacity: 0; transform: translateY(16px); }
   }
-  /* Protected-zone dashed frame around the mat inset */
-  .be-hero-zone {
-    border: 2px dashed var(--be-brand-yellow);
-    opacity: 0.7;
-    animation: be-hero-zone-fade 0.7s ease-out 0.5s both;
-  }
-  @keyframes be-hero-zone-fade {
-    from { opacity: 0; }
-    to   { opacity: 0.7; }
+  /* Mat image — subtle inner shadow for depth, no entrance animation
+     of its own (the parent .be-hero-mat-foreground handles it). */
+  .be-hero-mat-image {
+    box-shadow:
+      0 -8px 24px -8px rgba(0, 26, 67, 0.35),
+      0 2px 8px rgba(0, 0, 0, 0.15);
   }
   .be-hero-callout {
     opacity: 1;
@@ -948,17 +961,14 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .be-hero-scene,
-    .be-hero-mat-inset,
+    .be-hero-bg-image,
+    .be-hero-mat-foreground,
+    .be-hero-mat-image,
     .be-hero-callout {
       transition: none;
       opacity: 1;
       transform: none;
     }
-    .be-hero-zone {
-      animation: none;
-      opacity: 0.7;
-    }
-    .be-hero-mat-inset { transform: none; }
   }
 
   /* ──────────────────────────────────────────────────────────────
