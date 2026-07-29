@@ -842,10 +842,18 @@
      Coverflow-style: active card centred & flat, side cards rotated
      in Y, smaller and less prominent. CSS transforms only (no 3D
      engine). Reduced-motion disables perspective.
+
+     Stage overflow is hidden horizontally so neighbouring cards are
+     cleanly clipped at the viewport edge — no text bleed beyond the
+     stage bounds.
      ────────────────────────────────────────────────────────────── */
   .be-swivel-stage {
     perspective: 1600px;
     perspective-origin: 50% 40%;
+    /* Clip neighbour cards to the stage bounds so their text doesn't
+       bleed past the viewport edge. Vertical overflow stays visible
+       so the active card's full height is never clipped. */
+    overflow-x: hidden;
   }
   .be-swivel-track {
     transform-style: preserve-3d;
@@ -854,6 +862,22 @@
     transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
                 opacity 0.45s ease-out;
     backface-visibility: hidden;
+  }
+  /* Mobile: disable 3D perspective entirely. One card at a time, flat,
+     no neighbour bleed. The component still renders neighbours but they
+     are hidden via opacity:0 so no text bleeds onto the active card. */
+  @media (max-width: 639px) {
+    .be-swivel-stage {
+      perspective: none;
+    }
+    .be-swivel-track {
+      transform-style: flat;
+    }
+    /* Hide non-active cards completely on mobile — no text bleed. */
+    .be-swivel-card[aria-hidden="true"] {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
   }
   /* Card positional states are applied inline by the component based on
      offset from active index. These classes provide the reduced-motion

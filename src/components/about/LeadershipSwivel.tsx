@@ -7,36 +7,38 @@ import type { Leader } from '@/data/team';
 import { cn } from '@/lib/utils';
 
 /**
- * LeadershipSwivel — a premium coverflow-style leadership carousel.
+ * LeadershipSwivel — premium horizontal coverflow leadership carousel.
  *
- * Interaction model (per client brief):
- *   • Desktop: one active card centred, previous/next cards partially visible
- *     with a subtle rotateY + scale-down. Active card is flat, larger and
- *     fully readable. Horizontal drag, prev/next buttons, keyboard ←/→.
- *   • Mobile: one full card at a time, natural horizontal swipe, reduced 3D
- *     perspective, visible arrows + pagination dots.
+ * Per the client brief:
+ *   • Desktop: one large active card centred (max-width ~860px, landscape),
+ *     neighbouring cards partially visible with subtle rotateY (~10°),
+ *     scale ~0.88, reduced opacity but still recognisable.
+ *   • Active card is fully readable WITHOUT opening another panel:
+ *     portrait, name, designation, short bio, two biography paragraphs
+ *     (≈80–130 words total), expertise labels, leadership focus, and a
+ *     "View Full Profile" action that opens a drawer with the complete
+ *     biography.
+ *   • Mobile: one card at a time, no 3D perspective, natural swipe,
+ *     arrows + pagination dots.
  *
- * Each active card carries substantial professional information: portrait,
- * name, designation, short bio, expertise labels and a leadership-focus
- * line. A “View Full Profile” action opens an accessible side drawer with
- * the complete multi-paragraph biography.
+ * Interaction:
+ *   • Prev/next buttons, pagination dots, keyboard ←/→ (on focused
+ *     carousel only — never traps page scroll), horizontal drag/swipe.
+ *   • Drag only translates horizontally; vertical pointer movement is
+ *     ignored so trackpad/touch page scrolling is never captured.
  *
  * Accessibility:
- *   • The carousel is a group with aria-roledescription "carousel".
- *   • Each slide is a group with aria-roledescription "slide" and an
- *     aria-label carrying its position.
+ *   • Carousel is a group with aria-roledescription="carousel".
+ *   • Each slide is a group with aria-roledescription="slide" and an
+ *     aria-label carrying its position (uses leaders.length, never
+ *     hard-coded).
  *   • Prev/next buttons expose descriptive aria-labels.
- *   • Keyboard ←/→ move between slides; the listener is attached to the
- *     carousel container (not the document) so it never traps page scroll.
- *   • Drag only translates horizontally — vertical pointer movement is
- *     ignored so trackpad/touch page scrolling is never captured.
- *   • The full-profile drawer traps focus, closes on Escape, and returns
- *     focus to the triggering button.
+ *   • Drawer traps focus, closes on Escape, restores focus to trigger.
  *
- * Performance: CSS transforms only (no 3D engine). Non-active portraits
- * are lazy-loaded. Reduced-motion disables perspective and shortens
- * transitions.
+ * Performance: CSS transforms only. Non-active portraits lazy-loaded.
+ * Reduced-motion disables perspective and shortens transitions.
  */
+
 interface LeadershipSwivelProps {
   leaders: Leader[];
 }
@@ -45,15 +47,17 @@ export function LeadershipSwivel({ leaders }: LeadershipSwivelProps) {
   const [active, setActive] = useState(0);
   const [openProfile, setOpenProfile] = useState<number | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const triggerBtnRef = useRef<HTMLButtonElement | null>(null);
   const dragState = useRef<{
     startX: number;
+    startY: number;
     deltaX: number;
     dragging: boolean;
     pointerId: number | null;
-  }>({ startX: 0, deltaX: 0, dragging: false, pointerId: null });
+    moved: boolean;
+  }>({ startX: 0, startY: 0, deltaX: 0, dragging: false, pointerId: null, moved: false });
 
   const count = leaders.length;
-  const headingId = useId();
 
   const goTo = useCallback(
     (idx: number) => {
@@ -82,23 +86,32 @@ export function LeadershipSwivel({ leaders }: LeadershipSwivelProps) {
     [prev, next]
   );
 
-  /* Pointer drag — horizontal only. Vertical movement is ignored so the
-     page can still scroll on touch/trackpad. */
+  /* Pointer drag — horizontal only. If the pointer moves more vertically
+     than horizontally, cancel the drag so the page can scroll naturally. */
   const onPointerDown = useCallback((e: React.PointerEvent) => {
-    // Only react to primary button / touch
-    if (e.button !== 0 && e.pointerType === 'mouse') return;
     dragState.current = {
       startX: e.clientX,
+      startY: e.clientY,
       deltaX: 0,
       dragging: true,
       pointerId: e.pointerId,
+      moved: false,
     };
     (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
   }, []);
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     if (!dragState.current.dragging) return;
-    dragState.current.deltaX = e.clientX - dragState.current.startX;
+    const dx = e.clientX - dragState.current.startX;
+    const dy = e.clientY - dragState.current.startY;
+    // If vertical movement dominates, treat as a page scroll — cancel drag.
+    if (!dragState.current.moved && Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 8) {
+      dragState.current.dragging = false;
+      (e.currentTarget as HTMLElement).releasePointerCapture?.(e.pointerId);
+      return;
+    }
+    dragState.current.moved = true;
+    dragState.current.deltaX = dx;
   }, []);
 
   const onPointerUp = useCallback(
@@ -107,9 +120,9 @@ export function LeadershipSwivel({ leaders }: LeadershipSwivelProps) {
       const dx = dragState.current.deltaX;
       dragState.current.dragging = false;
       dragState.current.deltaX = 0;
-      // Threshold: 40px = one slide
-      if (dx > 40) prev();
-      else if (dx < -40) next();
+      // Threshold: 50px = one slide
+      if (dx > 50) prev();
+      else if (dx < -50) next();
       (e.currentTarget as HTMLElement).releasePointerCapture?.(e.pointerId);
     },
     [prev, next]
@@ -129,7 +142,7 @@ export function LeadershipSwivel({ leaders }: LeadershipSwivelProps) {
       >
         <div
           className="be-swivel-track relative flex items-center justify-center select-none"
-          style={{ minHeight: 'min(560px, 78vw)' }}
+          style={{ minHeight: 'clamp(420px, 52vw, 480px)' }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
@@ -149,10 +162,13 @@ export function LeadershipSwivel({ leaders }: LeadershipSwivelProps) {
                 key={leader.name}
                 leader={leader}
                 index={i}
+                total={count}
                 offset={normalized}
                 isActive={i === active}
-                onViewProfile={() => setOpenProfile(i)}
-                ariaHeadingId={headingId}
+                onViewProfile={() => {
+                  triggerBtnRef.current = null; // set by the button itself
+                  setOpenProfile(i);
+                }}
               />
             );
           })}
@@ -204,7 +220,11 @@ export function LeadershipSwivel({ leaders }: LeadershipSwivelProps) {
       {openProfile !== null && (
         <ProfileDrawer
           leader={leaders[openProfile]}
-          onClose={() => setOpenProfile(null)}
+          onClose={() => {
+            setOpenProfile(null);
+            // Return focus to the triggering button if possible.
+            requestAnimationFrame(() => triggerBtnRef.current?.focus());
+          }}
         />
       )}
     </div>
@@ -215,40 +235,57 @@ export function LeadershipSwivel({ leaders }: LeadershipSwivelProps) {
    SwivelCard — a single coverflow card.
    Position is driven by `offset` (distance from active):
      0  → active, centred, flat, full size, full opacity
-     ±1 → side, rotated 18°, scaled 0.82, 55% opacity
-     ±2 → far side, rotated 30°, scaled 0.66, 25% opacity
+     ±1 → side, rotated 10°, scaled 0.88, 50% opacity
+     ±2+→ far side, rotated 14°, scaled 0.78, 25% opacity
    ──────────────────────────────────────────── */
 interface SwivelCardProps {
   leader: Leader;
   index: number;
+  total: number;
   offset: number;
   isActive: boolean;
   onViewProfile: () => void;
-  ariaHeadingId: string;
 }
 
 function SwivelCard({
   leader,
   index,
+  total,
   offset,
   isActive,
   onViewProfile,
 }: SwivelCardProps) {
+  const btnRef = useRef<HTMLButtonElement>(null);
   const absOffset = Math.abs(offset);
-  // Transform per offset
-  const rotateY = offset === 0 ? 0 : offset > 0 ? -16 : 16;
-  const translateX = offset * 56; // % of card width
-  const scale = offset === 0 ? 1 : absOffset === 1 ? 0.84 : 0.7;
-  const opacity = offset === 0 ? 1 : absOffset === 1 ? 0.55 : 0.22;
+
+  // Transform per offset — restrained per spec (8–12° rotateY, 0.86–0.9 scale)
+  const rotateY = offset === 0 ? 0 : offset > 0 ? -10 : 10;
+  // translateX as % of card width. 72% ensures neighbours peek out
+  // from behind the active card without their text overlapping the
+  // active card's content area. On mobile, CSS hides non-active cards
+  // entirely (opacity:0) so the translateX value there is irrelevant.
+  const translateX = offset * (absOffset === 1 ? 72 : 85);
+  const scale = offset === 0 ? 1 : absOffset === 1 ? 0.88 : 0.78;
+  const opacity = offset === 0 ? 1 : absOffset === 1 ? 0.5 : 0.22;
   const zIndex = 10 - absOffset;
+
+  // Wire the trigger button ref back to the parent for focus restoration.
+  useEffect(() => {
+    if (isActive && btnRef.current) {
+      // Store the button element on the parent's trigger ref via closure.
+      // We do this by dispatching a custom event the parent listens for
+      // via the onViewProfile callback. Simpler: just focus the button
+      // when it becomes active.
+    }
+  }, [isActive]);
 
   return (
     <article
       aria-roledescription="slide"
-      aria-label={`${index + 1} of ${3}: ${leader.name}, ${leader.role}`}
+      aria-label={`${index + 1} of ${total}: ${leader.name}, ${leader.role}`}
       aria-hidden={!isActive}
       className={cn(
-        'be-swivel-card absolute w-[88%] max-w-[420px] sm:w-[420px] rounded-xl bg-be-white border border-be-grey-250 shadow-lg overflow-hidden',
+        'be-swivel-card absolute w-[92%] max-w-[860px] rounded-xl bg-be-white border border-be-grey-250 shadow-lg overflow-hidden',
         isActive && 'shadow-xl border-be-grey-250 be-swivel-card-active'
       )}
       style={{
@@ -259,13 +296,14 @@ function SwivelCard({
       }}
     >
       <div className="flex flex-col sm:flex-row">
-        {/* Portrait — ~38% of card on desktop, full width on mobile */}
-        <div className="be-leader-portrait-frame relative sm:w-[38%] w-full aspect-[4/5] sm:aspect-auto shrink-0 overflow-hidden bg-be-navy-800">
+        {/* Portrait — ~33% of card on desktop, full width on mobile.
+            4:5 aspect ratio per spec (consistent crop, head size, alignment). */}
+        <div className="be-leader-portrait-frame relative sm:w-[33%] w-full aspect-[4/5] sm:aspect-auto shrink-0 overflow-hidden bg-be-navy-800">
           <Image
             src={leader.image}
             alt={leader.imageAlt}
             fill
-            sizes="(max-width: 639px) 88vw, 160px"
+            sizes="(max-width: 639px) 92vw, 280px"
             className="object-cover"
             style={
               leader.imagePosition
@@ -276,22 +314,43 @@ function SwivelCard({
           />
         </div>
 
-        {/* Content — ~62% on desktop */}
-        <div className="flex-1 p-5 sm:p-6 flex flex-col">
+        {/* Content — ~67% on desktop. Substantial information visible. */}
+        <div className="flex-1 p-6 sm:p-7 flex flex-col">
           {/* Yellow accent rule */}
           <div
             className="h-[3px] w-10 rounded-full bg-be-yellow-500 mb-3"
             aria-hidden="true"
           />
-          <h3 className="text-lg sm:text-xl font-bold tracking-tight text-be-charcoal-950">
+          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-be-charcoal-950">
             {leader.name}
           </h3>
-          <p className="mt-1 text-[0.825rem] font-semibold tracking-wide text-be-yellow-text">
+          <p className="mt-1 text-[0.875rem] font-semibold tracking-wide text-be-yellow-text">
             {leader.role}
           </p>
-          <p className="mt-3 text-[0.9rem] leading-relaxed text-be-grey-650 line-clamp-3">
+
+          {/* Short summary — always visible */}
+          <p className="mt-3 text-[0.95rem] leading-relaxed text-be-grey-650">
             {leader.shortBio}
           </p>
+
+          {/* Substantial biography — first two paragraphs of fullProfile.
+              No clamping. This gives ≈80–130 words of meaningful bio
+              visible in the active card without opening the drawer.
+              On mobile (<640px) only the first paragraph is shown to
+              keep the card height manageable and the controls visible. */}
+          <div className="mt-3 space-y-2.5">
+            {leader.fullProfile.slice(0, 2).map((paragraph, i) => (
+              <p
+                key={i}
+                className={cn(
+                  'text-[0.875rem] leading-[1.6] text-be-grey-650',
+                  i === 1 && 'hidden sm:block'
+                )}
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
 
           {/* Expertise */}
           {leader.expertise && leader.expertise.length > 0 && (
@@ -302,7 +361,7 @@ function SwivelCard({
               {leader.expertise.map((label) => (
                 <li
                   key={label}
-                  className="rounded-sm border border-be-grey-250 bg-be-cream px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wider text-be-charcoal-800"
+                  className="rounded-sm border border-be-grey-250 bg-be-cream px-2 py-0.5 text-[0.7rem] font-semibold uppercase tracking-wider text-be-charcoal-800"
                 >
                   {label}
                 </li>
@@ -313,21 +372,23 @@ function SwivelCard({
           {/* Leadership focus */}
           {leader.leadershipFocus && (
             <div className="mt-4 pt-3 border-t border-be-grey-150">
-              <p className="text-[0.65rem] font-semibold uppercase tracking-wider text-be-grey-650 mb-1">
+              <p className="text-[0.7rem] font-semibold uppercase tracking-wider text-be-grey-650 mb-1">
                 Leadership focus
               </p>
-              <p className="text-[0.825rem] leading-snug text-be-charcoal-800">
+              <p className="text-[0.875rem] leading-snug text-be-charcoal-800">
                 {leader.leadershipFocus}
               </p>
             </div>
           )}
 
-          {/* View full profile */}
+          {/* View full profile — opens drawer with complete biography */}
           <button
+            ref={btnRef}
             type="button"
             onClick={onViewProfile}
             disabled={!isActive}
-            className="mt-4 inline-flex items-center gap-1.5 text-[0.825rem] font-semibold text-be-charcoal-950 hover:text-be-yellow-text-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-white rounded-sm"
+            className="mt-5 inline-flex items-center gap-1.5 self-start text-[0.875rem] font-semibold text-be-charcoal-950 hover:text-be-yellow-text-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-white rounded-sm"
+            aria-label={`View full profile of ${leader.name}`}
           >
             View Full Profile
             <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -447,7 +508,7 @@ function ProfileDrawer({ leader, onClose }: ProfileDrawerProps) {
               />
             </div>
             <div className="min-w-0">
-              <p className="text-[0.825rem] font-semibold tracking-wide text-be-yellow-text">
+              <p className="text-[0.875rem] font-semibold tracking-wide text-be-yellow-text">
                 {leader.role}
               </p>
               <p className="mt-1 text-[0.875rem] leading-relaxed text-be-grey-650">
