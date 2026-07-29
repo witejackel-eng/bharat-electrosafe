@@ -606,34 +606,6 @@
   }
 
   /* ──────────────────────────────────────────────────────────────
-     Laptop-height optimisation — slightly tighter hero spacing on
-     short desktop viewports (1366x768, 1280x720, 1440x800). Does not
-     affect tall monitors or mobile/tablet. Applied only to the
-     homepage hero via the .home-hero-compact class.
-     ────────────────────────────────────────────────────────────── */
-  @media (min-width: 1024px) and (max-height: 820px) {
-    .home-hero-compact {
-      padding-top: 40px;
-      padding-bottom: 40px;
-    }
-    .home-hero-compact .home-hero-eyebrow {
-      margin-bottom: 14px;
-    }
-    .home-hero-compact .home-hero-heading {
-      margin-bottom: 14px;
-    }
-    .home-hero-compact .home-hero-paragraph {
-      margin-bottom: 18px;
-    }
-    .home-hero-compact .home-hero-ctas {
-      margin-bottom: 14px;
-    }
-    .home-hero-compact .home-hero-separator {
-      margin-bottom: 14px;
-    }
-  }
-
-  /* ──────────────────────────────────────────────────────────────
      Product-hero laptop-height optimisation — tighter spacing on short
      desktop viewports for product-detail pages.
      ────────────────────────────────────────────────────────────── */
@@ -777,12 +749,12 @@
      gradient. Excessive glow, glossy effects and visible colour patches
      have been removed so the logo's own navy field disappears cleanly.
      A 2px brand-yellow accent line sits beneath the main header bar and
-     a very soft shadow lifts the bar without darkening the page.
+     a soft shadow lifts the bar without darkening the page.
      ────────────────────────────────────────────────────────────── */
   .be-header-navy {
     position: relative;
-    background: linear-gradient(110deg, #07386F 0%, #052B5D 55%, #031F49 100%);
-    box-shadow: 0 6px 22px rgba(2, 31, 73, 0.12);
+    background: linear-gradient(110deg, #07386F 0%, #052B5D 52%, #031F49 100%);
+    box-shadow: 0 5px 18px rgba(3, 31, 73, 0.14);
   }
   /* 2px brand-yellow accent line beneath the main header */
   .be-header-navy::after {
@@ -796,13 +768,7 @@
     pointer-events: none;
   }
   .be-header-navy-compact {
-    box-shadow: 0 8px 26px rgba(2, 31, 73, 0.16);
-  }
-  /* Top contact strip on navy — slightly darker than the main bar so the
-     composition reads as a single designed band without competing glow. */
-  .be-contact-strip-navy {
-    background: linear-gradient(110deg, #031F49 0%, #021A3E 100%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 22px rgba(3, 31, 73, 0.18);
   }
   /* Nav link on navy: soft white default, yellow reserved for active
      links and hover details. Hover background kept restrained so the
@@ -853,11 +819,12 @@
      LEADERSHIP CARD GRID
      A clean three-column grid (desktop) / two-column (tablet) /
      one-column (mobile) layout. No carousel, no rotation, no overlap.
-     Desktop hover smoothly expands the hovered card to ~1.25fr and
-     shrinks the others to ~0.875fr while revealing the fuller
-     biography inside the card. Mobile/tap toggles the biography
-     inline via a 44px "Read biography" button. Reduced-motion
-     shortens the transitions.
+     All cards stay equal width at all times — hovering does NOT
+     enlarge the card, scale it, or change grid column ratios. Only
+     the biography area inside the card expands/collapses, smoothly
+     animating the card's height by the amount needed for the bio.
+     Desktop hover, keyboard focus-within, and mobile tap all toggle
+     the biography reveal. Reduced-motion shortens the transition.
      ────────────────────────────────────────────────────────────── */
   .be-leadership-grid {
     display: grid;
@@ -872,17 +839,16 @@
   }
   @media (min-width: 1024px) {
     .be-leadership-grid {
-      /* --be-grid-cols is set inline by the LeadershipGrid component
-         based on hover state. Default is three equal columns. */
-      grid-template-columns: var(--be-grid-cols, 1fr 1fr 1fr);
+      /* Three equal columns, always. No grid-template-columns transition. */
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 1.5rem;
-      transition: grid-template-columns 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     }
   }
 
   /* Single leadership card. Warm-white background, thin neutral border,
-     small yellow accent line, moderate corner radius, soft shadow only
-     on hover/expanded state. */
+     small yellow accent line, moderate corner radius. No scale transform,
+     no enlargement on hover — only a very subtle border + shadow lift
+     when the biography is open so the user can see which card is active. */
   .be-leader-card {
     position: relative;
     display: flex;
@@ -891,9 +857,8 @@
     border-radius: 0.625rem;
     background: var(--be-warm-white);
     border: 1px solid var(--be-grey-250);
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-                border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: box-shadow 0.28s ease-out,
+                border-color 0.28s ease-out;
   }
   /* Yellow accent line at the top of each card */
   .be-leader-card::before {
@@ -908,69 +873,62 @@
     pointer-events: none;
     z-index: 1;
   }
-  @media (min-width: 1024px) {
-    /* Desktop hover: restrained 1.02 scale, enhanced border + shadow.
-       Only applied on devices that actually support hover. */
-    @media (hover: hover) {
-      .be-leader-card.be-leader-card-hovered {
-        transform: scale(1.02);
-        border-color: var(--be-yellow-400);
-        box-shadow:
-          0 18px 40px -16px rgba(2, 31, 73, 0.18),
-          0 4px 10px -4px rgba(2, 31, 73, 0.08);
-        z-index: 2;
-      }
-      .be-leader-card.be-leader-card-dimmed {
-        opacity: 0.92;
-      }
-    }
+  /* No hover scale. No dimming of neighbouring cards. The only visual
+     change when a biography is open (hover, focus-within, or tap) is a
+     subtle yellow-tinted border + soft shadow. */
+  .be-leader-card.be-leader-card-expanded,
+  .be-leader-card:focus-within {
+    border-color: var(--be-yellow-400);
+    box-shadow:
+      0 10px 24px -12px rgba(2, 31, 73, 0.14),
+      0 2px 6px -2px rgba(2, 31, 73, 0.06);
   }
-  /* Mobile/tablet tap-to-expand: same shadow/border emphasis, no
-     scale (avoid layout shift on touch). */
+  /* Touch (no hover) only gets the expanded-state emphasis. */
   .be-leader-card.be-leader-card-expanded {
     border-color: var(--be-yellow-400);
     box-shadow:
-      0 18px 40px -16px rgba(2, 31, 73, 0.18),
-      0 4px 10px -4px rgba(2, 31, 73, 0.08);
-    z-index: 2;
+      0 10px 24px -12px rgba(2, 31, 73, 0.14),
+      0 2px 6px -2px rgba(2, 31, 73, 0.06);
   }
 
   /* Biography reveal — uses grid-template-rows trick for smooth
      height transition without measuring. Inner wrapper clips
-     overflow during the transition. Revealed on hover (desktop),
-     tap (mobile/tablet) AND on keyboard focus-within (accessibility). */
+     overflow during the transition. Revealed when toggled open
+     (JS state) AND on keyboard focus-within (accessibility).
+     250–350ms transition per spec. */
   .be-leader-bio {
     display: grid;
     grid-template-rows: 0fr;
     opacity: 0;
-    transition: grid-template-rows 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 0.3s ease-out;
+    transition: grid-template-rows 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.25s ease-out;
   }
   .be-leader-bio > .be-leader-bio-inner {
     overflow: hidden;
     min-height: 0;
+    /* Subtle yellow left accent inside the expanded area — restrained. */
+    border-left: 2px solid var(--be-brand-yellow);
+    padding-left: 0.75rem;
+    margin-top: 0.25rem;
   }
-  .be-leader-card.be-leader-card-hovered .be-leader-bio,
   .be-leader-card.be-leader-card-expanded .be-leader-bio,
+  .be-leader-card .be-leader-bio-open,
   .be-leader-card:focus-within .be-leader-bio {
     grid-template-rows: 1fr;
     opacity: 1;
   }
-  /* Hovered dimmed cards still show their (collapsed) bio placeholder
-     so the grid height doesn't jump when transitioning in/out. */
 
   @media (prefers-reduced-motion: reduce) {
     .be-leadership-grid,
     .be-leader-card,
-    .be-leader-card.be-leader-card-hovered,
     .be-leader-card.be-leader-card-expanded,
     .be-leader-bio {
       transition: none;
       transform: none;
     }
     /* Make sure bio content is still reachable without animation. */
-    .be-leader-card.be-leader-card-hovered .be-leader-bio,
     .be-leader-card.be-leader-card-expanded .be-leader-bio,
+    .be-leader-card .be-leader-bio-open,
     .be-leader-card:focus-within .be-leader-bio {
       grid-template-rows: 1fr;
       opacity: 1;
@@ -993,65 +951,92 @@
   }
 
   /* ──────────────────────────────────────────────────────────────
-     PRODUCT-FIRST HERO SCENE
-     One integrated composition: switchgear background (softened) +
-     large dominant mat product in the foreground. Static-first: final
-     state is the default; @starting-style drives a one-shot fade.
-     Reduced-motion shows everything immediately.
+     PHOTOGRAPHIC HOMEPAGE HERO
+     Full-bleed switchgear-room photograph with HTML content overlay
+     positioned over the open left side. The mat stays visible across
+     the lower foreground and the technician stays right-of-centre.
 
      Layers:
-       .be-hero-bg-image        — switchgear photo, softly darkened
-       .be-hero-mat-foreground  — container for the mat + callout
-       .be-hero-mat-image       — the mat product image itself
-       .be-hero-callout         — "Insulating Mat" / "Switchgear" tags
+       .be-photo-hero              — root <section>
+       .be-photo-hero__desktop     — full-bleed image holder (≥lg)
+       .be-photo-hero__image       — the <Image> (object-cover)
+       .be-photo-hero__scrim       — left-to-right warm-white
+                                     readability gradient (left only)
+       .be-photo-hero__content     — text container, max-width 600px
+       .be-photo-hero__headline    — H1, ~58-68px desktop
+       .be-photo-hero__lede        — supporting paragraph
      ────────────────────────────────────────────────────────────── */
-  .be-hero-scene {
+  .be-photo-hero {
+    position: relative;
+    background: var(--be-warm-white);
+  }
+  .be-photo-hero__desktop {
+    position: relative;
+    width: 100%;
+    /* Desktop hero height: ~620px on standard laptops, ~680px on tall
+       desktops. Kept above the 590px minimum from the brief. */
+    min-height: 620px;
+    height: clamp(620px, 78vh, 680px);
+    overflow: hidden;
+    background: #031F49; /* navy fallback before image loads */
+  }
+  @media (min-width: 1024px) and (max-height: 820px) {
+    .be-photo-hero__desktop {
+      min-height: 590px;
+      height: 590px;
+    }
+  }
+  .be-photo-hero__image {
+    /* Subtle one-shot fade-in on first paint; default state is fully
+       visible so reduced-motion / no-JS users see it immediately. */
     opacity: 1;
-    transition: opacity 0.5s ease-out;
+    transition: opacity 0.6s ease-out;
   }
   @starting-style {
-    .be-hero-scene { opacity: 0; }
+    .be-photo-hero__image { opacity: 0; }
   }
-  /* Background switchgear — slight scale-down on entrance for depth */
-  .be-hero-bg-image {
-    transform: scale(1);
-    transition: transform 0.8s ease-out;
+  .be-photo-hero__scrim {
+    /* Restrained readability gradient over the LEFT region only.
+       Fades to transparent at 66% so the technician (right-of-centre)
+       and the mat remain visible. Tuned to the attached photo's
+       naturally open left side. */
+    background: linear-gradient(
+      90deg,
+      rgba(252, 251, 247, 0.98) 0%,
+      rgba(252, 251, 247, 0.92) 30%,
+      rgba(252, 251, 247, 0.48) 48%,
+      rgba(252, 251, 247, 0)    66%
+    );
+    pointer-events: none;
   }
-  @starting-style {
-    .be-hero-bg-image { transform: scale(1.04); }
+  .be-photo-hero__content {
+    /* Holds eyebrow / headline / lede / CTAs / proof badges. */
+    max-width: 600px;
   }
-  /* Mat foreground — fades + lifts in slightly after the background */
-  .be-hero-mat-foreground {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s;
+  .be-photo-hero__headline {
+    font-size: clamp(2.5rem, 4.6vw, 4.25rem); /* ~58-68px desktop */
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    font-weight: 700;
+    max-width: 600px;
   }
-  @starting-style {
-    .be-hero-mat-foreground { opacity: 0; transform: translateY(16px); }
+  .be-photo-hero__lede {
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    max-width: 540px;
   }
-  /* Mat image — subtle inner shadow for depth, no entrance animation
-     of its own (the parent .be-hero-mat-foreground handles it). */
-  .be-hero-mat-image {
-    box-shadow:
-      0 -8px 24px -8px rgba(0, 26, 67, 0.35),
-      0 2px 8px rgba(0, 0, 0, 0.15);
-  }
-  .be-hero-callout {
-    opacity: 1;
-    transition: opacity 0.5s ease-out 0.7s;
-  }
-  @starting-style {
-    .be-hero-callout { opacity: 0; }
+  @media (min-width: 1024px) and (max-height: 820px) {
+    .be-photo-hero__headline {
+      font-size: clamp(2.25rem, 3.6vw, 3.25rem);
+    }
+    .be-photo-hero__lede {
+      font-size: 1rem;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .be-hero-scene,
-    .be-hero-bg-image,
-    .be-hero-mat-foreground,
-    .be-hero-mat-image,
-    .be-hero-callout {
+    .be-photo-hero__image {
       transition: none;
       opacity: 1;
-      transform: none;
     }
   }
 
@@ -1197,8 +1182,7 @@
   }
   /* On navy backgrounds, add a subtle dark offset ring for contrast
      against the yellow. */
-  .be-header-navy :focus-visible,
-  .be-contact-strip-navy :focus-visible {
+  .be-header-navy :focus-visible {
     outline-color: var(--be-brand-yellow);
     outline-offset: 2px;
     box-shadow: 0 0 0 4px rgba(0, 26, 67, 0.6);
@@ -1442,5 +1426,28 @@
   }
   .be-scroll-x::-webkit-scrollbar-thumb:hover {
     background: var(--be-grey-400);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   LEADERSHIP CARD HOVER (outside @layer so :hover wins over
+   Tailwind v4 base/preflight). On hover-capable devices only,
+   hovering a leadership card reveals its biography (height grows
+   by the exact amount needed for the bio) and applies a subtle
+   yellow border + soft shadow. Card width and scale never change.
+   Disabled on touch devices (no hover) — there, the toggle button
+   is the only way to open the bio. Also disabled under
+   prefers-reduced-motion (handled by the @media block above).
+   ────────────────────────────────────────────────────────────── */
+@media (hover: hover) {
+  .be-leader-card:hover {
+    border-color: var(--be-yellow-400);
+    box-shadow:
+      0 10px 24px -12px rgba(2, 31, 73, 0.14),
+      0 2px 6px -2px rgba(2, 31, 73, 0.06);
+  }
+  .be-leader-card:hover .be-leader-bio {
+    grid-template-rows: 1fr;
+    opacity: 1;
   }
 }

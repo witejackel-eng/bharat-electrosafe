@@ -10,9 +10,6 @@ import { usePathname } from 'next/navigation';
    framer-motion on the homepage path. */
 import {
   Menu,
-  Mail,
-  Phone,
-  MessageCircle,
   ChevronDown,
   ArrowRight,
   Zap,
@@ -38,9 +35,7 @@ import {
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import { cn } from '@/lib/utils';
-import { company } from '@/data/company';
 import {
-  productNavigationItems,
   productNavigationByCategory,
   productCategories,
   ProductCategory,
@@ -259,57 +254,20 @@ export function Header() {
     /* `display: contents` lets the <header> element provide semantics without
        generating a box. This is essential: the inner sticky bar (next sibling)
        can only stick within the height of its containing block. If the header
-       generated a box, its height would equal just the contact strip + bar
-       (~104px), and the sticky bar would scroll off after ~0px. With
-       `contents`, the sticky bar's containing block becomes the page flex
-       column (min-h-screen, tall), so it sticks correctly for the full page.
-       The <header> element remains in the accessibility tree. */
+       generated a box, its height would equal just the bar (~72px), and the
+       sticky bar would scroll off after ~0px. With `contents`, the sticky
+       bar's containing block becomes the page flex column (min-h-screen,
+       tall), so it sticks correctly for the full page. The <header> element
+       remains in the accessibility tree. */
     <header className="contents z-50">
-      {/* ── Top Contact Strip (desktop only) ── */}
-      {/* Navy utility strip continues the header's navy band upward, so the
-          logo zone and contact strip read as one designed composition rather
-          than a white strip floating above a navy bar. Text uses
-          rgba(255,255,255,0.78) on navy (#00275B) — contrast ≈ 7.5:1, passes
-          WCAG AAA. Hover state uses brand-yellow (#F4C313, contrast ≈ 8.6:1
-          on navy) for a bright, on-brand interaction. */}
-      <div className="hidden md:block be-contact-strip-navy">
-        <div className="container-site page-horizontal-padding flex items-center justify-between h-8">
-          {/* Left: contact info */}
-          <div className="flex items-center gap-5 text-metadata text-white/78">
-            <a
-              href={`mailto:${company.email}`}
-              className="flex items-center gap-1.5 hover:text-be-brand-yellow transition-colors"
-            >
-              <Mail className="size-3.5 text-white/70" aria-hidden="true" focusable="false" />
-              <span>{company.email}</span>
-            </a>
-            <a
-              href={`tel:${company.phonePrimaryTel}`}
-              className="flex items-center gap-1.5 hover:text-be-brand-yellow transition-colors"
-            >
-              <Phone className="size-3.5 text-white/70" aria-hidden="true" focusable="false" />
-              <span>{company.phonePrimary}</span>
-            </a>
-          </div>
+      {/* ── Main Header Bar ──
+          A single restrained navy band. The previous desktop-only contact
+          strip was removed per spec ("If the utility strip is visually
+          unnecessary, remove it and place essential contact details
+          elsewhere without breaking functionality") — email, phone and
+          WhatsApp remain available on /contact-us and in the footer.
 
-          {/* Right: social / WhatsApp */}
-          <div className="flex items-center gap-3">
-            <a
-              href={company.whatsapp.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-metadata text-white/78 hover:text-be-brand-yellow transition-colors"
-              aria-label="Chat on WhatsApp (opens in a new tab)"
-            >
-              <MessageCircle className="size-3.5 text-white/70" aria-hidden="true" focusable="false" />
-              <span>{company.whatsapp.label}</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Main Header Bar ── */}
-      {/* The sticky bar is the positioning context for the Products
+          The sticky bar is the positioning context for the Products
           mega-menu. Rendering the menu as a child of this sticky bar
           (instead of inside the small Products trigger) lets us centre it
           on the header container / viewport rather than on the trigger,
@@ -318,9 +276,9 @@ export function Header() {
         className={cn(
           'sticky top-0 z-50 be-header-navy transition-all duration-300',
           compact && 'be-header-navy-compact',
-          // Stable mobile height of 64px (h-16), with slightly taller
-          // desktop states to accommodate the contact strip above.
-          compact ? 'h-16 md:h-[72px]' : 'h-16 md:h-[84px]'
+          // Compact desktop height ~64px, default desktop ~72px.
+          // Mobile stays at 60px for the entire scroll lifecycle.
+          compact ? 'h-[60px] md:h-16' : 'h-[60px] md:h-[72px]'
         )}
       >
         {/* Responsive CSS Grid:
@@ -329,35 +287,31 @@ export function Header() {
             minmax(190px,1fr) on both sides keeps the navigation
             mathematically centred regardless of logo / CTA width. */}
         <div className="container-site page-horizontal-padding grid grid-cols-[minmax(0,1fr)_auto] items-center h-full gap-3 lg:grid-cols-[minmax(190px,1fr)_auto_minmax(190px,1fr)] lg:gap-4">
-          {/* ── Column 1: Logo zone (left-aligned) ── */}
-          {/* The transparent header logo (extracted from the client's master
-              JPEG with soft anti-aliased alpha) sits directly on the navy
-              band. Because the logo's own background was the same navy
-              gradient, the image boundary disappears — no visible square,
-              no mismatched blue rectangle. Focus ring is yellow on navy.
-              The vertical logo divider was removed per spec ("remove the
-              vertical logo divider if it makes the header feel segmented
-              or crowded") — the navy band now reads as one composition. */}
+          {/* ── Column 1: Logo zone (left-aligned) ──
+              The transparent header logo sits directly on the navy band.
+              The image's own navy field matches the bar gradient so the
+              image boundary disappears — no visible square, no mismatched
+              blue rectangle. Focus ring is yellow on navy. */}
           <div className="flex items-center justify-start min-w-0">
             <Link
               href="/"
-              className="shrink-0 flex items-center px-2 sm:px-2.5 py-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800 transition-shadow"
+              className="shrink-0 flex items-center px-1.5 sm:px-2 py-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800 transition-shadow"
               aria-label="Bharat Electrosafe — Home"
             >
               {/* Transparent header logo — 891x349 (aspect ≈ 2.55:1).
-                  Display sizes ramp from mobile (132px) up to desktop
-                  (196px), with a compact state when scrolled. `priority`
-                  because the logo is above the fold on every route.
-                  WebP source (76KB) for fast LCP; PNG fallback available. */}
+                  Display sizes ramp from mobile (130px) up to desktop
+                  (180px), with a compact state when scrolled (168px).
+                  `priority` because the logo is above the fold on every
+                  route. WebP source (76KB) for fast LCP. */}
               <Image
                 src="/brand/bharat-electrosafe-logo-header.webp"
                 alt="Bharat Electrosafe logo"
                 width={891}
                 height={349}
-                sizes="(max-width: 359px) 124px, (max-width: 429px) 132px, (max-width: 767px) 140px, (max-width: 1023px) 168px, 196px"
+                sizes="(max-width: 359px) 124px, (max-width: 429px) 130px, (max-width: 767px) 136px, (max-width: 1023px) 156px, 180px"
                 className={cn(
-                  'object-contain transition-all duration-300 h-auto w-[124px] sm:w-[132px] md:w-[140px] lg:w-[196px]',
-                  compact && 'w-[116px] sm:w-[124px] md:w-[132px] lg:w-[168px]'
+                  'object-contain transition-all duration-300 h-auto w-[124px] sm:w-[130px] md:w-[136px] lg:w-[180px]',
+                  compact && 'w-[116px] sm:w-[124px] md:w-[130px] lg:w-[168px]'
                 )}
                 priority
               />
@@ -462,11 +416,12 @@ export function Header() {
               by the logo. justify-self-end right-aligns the hamburger
               on mobile. On lg+, the 3-column grid handles alignment. */}
           <div className="flex items-center justify-end gap-3 shrink-0 lg:shrink">
-            {/* Quote CTA — yellow fill with navy text for maximum contrast
-                and brand presence on the navy header. Touch target 44px. */}
+            {/* Quote CTA — compact yellow fill with deep navy text.
+                44px tall, moderate radius, no hover translation.
+                Stays vertically aligned with the navigation. */}
             <PrimaryButton
               href="/contact-us"
-              className="hidden lg:inline-flex text-sm px-4 py-2 shadow-sm hover:shadow-sm hover:translate-y-0"
+              className="hidden lg:inline-flex text-sm px-4 py-2 shadow-sm hover:shadow-sm hover:translate-y-0 min-h-[44px]"
             >
               Request a Quote
             </PrimaryButton>

@@ -665,3 +665,83 @@ Stage Summary:
 - Files modified: src/app/products/ProductsClient.tsx, src/app/globals.css
 - Files deleted: src/components/products/ProductFinderWizard.tsx
 - No new files, no new sections, no replacement added — vertical gap closed naturally as ComparisonTable now follows ProductFamilyGrid directly via SectionShell topRule + bg transitions (bg-be-white → bg-be-cream)
+
+---
+Task ID: hero-image-header-leadership
+Agent: super-z (main)
+Task: Three improvements to bharat-electrosafe repo:
+  1. Replace homepage hero visual with the attached insulating-mat image (full-width photographic hero, no collage, no labels in image, semantic HTML content over the open left side, mobile gets a 4:3 crop with copy-first layout).
+  2. Refine the header: single restrained navy gradient, 2px yellow rule, soft shadow, compact height (~72px desktop / 60-64px mobile / 64px sticky-compact), logo ~180px desktop / ~130px mobile, centred navigation, compact yellow CTA. Remove the desktop contact strip (email/phone/WhatsApp remain in footer + /contact-us).
+  3. Fix the About Us leadership cards: cards must NOT widen, scale, or float on hover. Only the biography content area expands/collapses inside the card. Hover (desktop), click (toggle button), and keyboard focus-within all reveal the bio. One-at-a-time on mobile tap.
+
+Work Log:
+- Read prior worklog and inspected HomeHero.tsx (339 lines, old product-first hero with switchgear background + mat inset + "Insulating Mat" / "Switchgear" callouts), Header.tsx (741 lines, navy bar + desktop-only contact strip with email/phone/WhatsApp), LeadershipGrid.tsx (285 lines, grid-fr hover expansion + scale(1.02) + dimming of neighbours), team.ts (3 leaders with shortBio + fullProfile + expertise), globals.css (1498 lines).
+- VLM-analysed the attached 1672x941 PNG: technician is centre-right, blue insulating mat covers the entire floor, left side is open with closed cabinets, closed cabinets visible on both sides, bright even industrial lighting. Perfect for full-width hero with text on left.
+- Wrote /home/z/my-project/scripts/optimize-hero-image.py — generates two optimised WebP crops from the source PNG:
+  * public/media/hero/bharat-electrosafe-insulating-mat-hero.webp (1920x780, 72 KB) — desktop wide hero, focus_left=0.42 keeps technician visible right-of-centre, left ~40% open for text.
+  * public/media/hero/bharat-electrosafe-insulating-mat-hero-mobile.webp (900x675, 63 KB) — mobile 4:3 crop, focus_left=0.55 keeps technician just right of centre with mat visible below.
+  * Quality 82, method 6, no sharpening/saturation/contrast boost, no colour grading.
+- VLM-verified both crops: technician fully visible (not badly cropped), blue mat clearly visible across lower foreground, closed cabinets visible on both sides, no large empty section.
+- Rewrote src/components/home/HomeHero.tsx (158 lines) as a Server Component:
+  * Desktop / tablet-landscape (≥lg): full-bleed photograph (1920x780, object-cover) at min-height 620-680px (clamp(620px, 78vh, 680px), 590px on short laptops). Real HTML content positioned over the open left side, restrained by a left-to-right warm-white gradient that fades to transparent at 66% (never reaches the technician).
+  * Mobile / tablet-portrait (<lg): copy first on warm-white background, image immediately below at 4:3 aspect.
+  * Single shared HeroContent() function — eyebrow → headline → supporting copy → CTAs → proof badges — used on both layouts so messaging is identical.
+  * Single semantic <h1> with class .be-photo-hero__headline (~58-68px desktop via clamp(2.5rem, 4.6vw, 4.25rem), 600px max-width).
+  * Hero image alt: "Electrical technician operating switchgear while standing on an electrical insulating mat covering the control-room floor." (per spec).
+  * Both images priority + sizes=100vw / 100vw for LCP without loading desktop asset on mobile.
+- Updated src/app/globals.css:
+  * Removed the old "PRODUCT-FIRST HERO SCENE" CSS block (be-hero-scene, be-hero-bg-image, be-hero-mat-foreground, be-hero-mat-image, be-hero-callout — 51 lines).
+  * Removed the old "LAPTOP-HEIGHT OPTIMISATION home-hero-compact" media query block (27 lines, orphaned after hero rebuild).
+  * Added new "PHOTOGRAPHIC HOMEPAGE HERO" CSS block: .be-photo-hero, .be-photo-hero__desktop, .be-photo-hero__image (one-shot @starting-style fade), .be-photo-hero__scrim (left-only warm-white gradient 98→92→48→0%), .be-photo-hero__content (max-width 600px), .be-photo-hero__headline, .be-photo-hero__lede.
+  * Updated header CSS: tightened .be-header-navy shadow to spec value (0 5px 18px rgba(3, 31, 73, 0.14) instead of 0 6px 22px rgba(2, 31, 73, 0.12)); removed the .be-contact-strip-navy rule entirely (contact strip is gone from the markup); updated .be-header-navy-compact shadow accordingly.
+  * Removed .be-contact-strip-navy :focus-visible from the focus-ring CSS.
+- Updated src/components/layout/Header.tsx:
+  * Removed unused imports: Mail, Phone, MessageCircle from lucide-react; company from '@/data/company'; productNavigationItems from '@/data/products'.
+  * Removed the entire desktop-only contact strip (lines 270-309 of the previous version — 40 lines of contact info + WhatsApp link markup).
+  * Tightened main bar heights: default 60px mobile / 72px desktop (was 64 / 84), compact 60px mobile / 64px desktop (was 64 / 72).
+  * Tightened logo sizes: default 124px mobile / 180px desktop (was 124-140 / 196), compact 116px mobile / 168px desktop (was 116-132 / 168).
+  * Tightened logo padding (px-1.5 sm:px-2 instead of px-2 sm:px-2.5) so the navy band reads as one composition without excess logo zone.
+  * Added min-h-[44px] to the desktop "Request a Quote" CTA to guarantee the 44px touch-target spec.
+- Rewrote src/components/about/LeadershipGrid.tsx (242 lines):
+  * Removed the grid-fr expansion logic entirely (no more --be-grid-cols CSS variable, no more 1.25fr/0.875fr column ratios, no more scale(1.02) transform, no more dimming of neighbouring cards).
+  * Three states now drive biography reveal:
+    1. openIndex (JS) — toggled by the "View biography" / "Close biography" button (click, Enter, Space, mobile tap).
+    2. hoveredIndex (JS) — toggled by onMouseEnter / onMouseLeave on the card. Used instead of pure CSS :hover for guaranteed cross-browser reliability (pure CSS :hover was tested but failed in headless browsers that report (hover: hover) as false).
+    3. :focus-within (CSS) — keyboard users tabbing to the toggle button get the bio revealed automatically.
+  * The card article element gets the be-leader-card-expanded class when EITHER the toggle is open OR the card is hovered. This class drives ONLY the yellow border + soft shadow — never scale, never width change.
+  * The bio region gets the be-leader-bio-open class when isBioRevealed is true. This class drives ONLY the grid-template-rows 0fr → 1fr transition (250-350ms cubic-bezier).
+  * Toggle button label flips between "View biography" / "Close biography" with chevron rotation, 44px minimum touch target, aria-expanded + aria-controls.
+  * One-at-a-time on mobile: tapping button 2 while button 1 is open closes button 1 and opens button 2 (verified via Playwright).
+  * Cards stay equal width at all times (1fr 1fr 1fr on desktop, 1fr 1fr on tablet, 1fr on mobile). No grid-template-columns transition.
+- Updated src/app/globals.css for leadership card CSS:
+  * Removed: .be-leader-card.be-leader-card-hovered rule (scale(1.02) + heavy shadow), .be-leader-card.be-leader-card-dimmed rule (opacity 0.92), grid-template-columns transition, transform transition on .be-leader-card.
+  * Kept: yellow accent line at top of card, warm-white background, thin neutral border.
+  * New: subtle border + soft shadow on .be-leader-card-expanded (no scale, no transform). Subtle yellow left-accent inside the expanded bio area. Smooth 300ms cubic-bezier transition on grid-template-rows + 250ms on opacity.
+  * Added @media (hover: hover) block OUTSIDE @layer utilities at the end of the file — kept as a defensive CSS rule (in case any user has both JS hover state AND CSS hover capability, the visual result is the same).
+- Verified all six product families remain linked in the mobile drawer and mega-menu (Bharat Hydro Seal included — untouched).
+
+Stage Summary:
+- 6 files changed (3 modified, 1 new asset pair, 1 script created, 1 worklog updated):
+  * src/components/home/HomeHero.tsx (rewritten, 344 → 158 lines)
+  * src/components/layout/Header.tsx (modified, 741 → 696 lines — contact strip removed, heights/logos tightened, CTA min-height added)
+  * src/components/about/LeadershipGrid.tsx (rewritten, 285 → 242 lines — grid-fr expansion removed, biography-only expansion implemented)
+  * src/app/globals.css (modified — old hero CSS removed, new photographic hero CSS added, header CSS refined, leadership card CSS rewritten, hover rule moved outside @layer)
+  * public/media/hero/bharat-electrosafe-insulating-mat-hero.webp (NEW, 1920x780, 72 KB)
+  * public/media/hero/bharat-electrosafe-insulating-mat-hero-mobile.webp (NEW, 900x675, 63 KB)
+  * /home/z/my-project/scripts/optimize-hero-image.py (NEW — reproducible image-optimisation script)
+- typecheck (tsc --noEmit): PASS, 0 errors
+- lint (eslint .): PASS, 0 errors, 1 pre-existing warning (EnquiryQuoteLayout.tsx React Hook Form watch() — unrelated)
+- production build (next build): PASS, all 16 routes generated including /products, /products/bharat-hydro-seal, /about-us
+- HTTP route checks (npm run start + curl): /, /products, /products/bharat-hydro-seal, /products/bharat-membrane, /products/electrical-insulating-mats, /about-us, /contact-us → all HTTP 200
+- /products page content check (296,067 bytes): zero old collage markup (no "Insulating Mat" / "Switchgear" callouts, no be-hero-mat-foreground / be-hero-bg-image / be-hero-mat-image classes, no hero-product / switchgear-scene references); new hero image referenced once; hero alt text present; eyebrow + headline + both CTAs + all 4 proof badges present; zero be-contact-strip-navy references in HTML
+- Hero image HTTP check: desktop webp 200 OK 74 KB image/webp; mobile webp 200 OK 64 KB image/webp
+- Visual VLM verification (desktop 1440x900): full-width photograph of technician + blue mat + closed cabinets confirmed; headline visible over left side; CTAs visible; all 4 proof badges visible; navy header compact with no contact strip; no white-rectangle fog, no large empty space, text does not cover technician.
+- Visual VLM verification (mobile 390x844): headline visible at top on warm-white; both CTAs visible; all 4 proof badges visible; photograph of technician + blue mat visible below the text; compact navy header with logo + menu only; no overflow, no horizontal scroll.
+- Visual VLM verification (leadership default state, 1440x900): exactly 3 equal-width cards in a single row; each card shows portrait + name + designation + short text + expertise labels + "View biography" button; cards normal-sized (not enlarged, scaled, or floating); navy header compact.
+- Visual VLM verification (leadership hover state, 1440x900): first card expanded to show full multi-paragraph biography; first card has yellow border; other two cards unchanged in width and content; first card grew downward only (width 408.53px unchanged, height 819→1251px); portrait/name/role/expertise/button all still visible.
+- Visual VLM verification (leadership toggle state, 1440x900): clicking "View biography" reveals full bio + changes label to "Close biography" + rotates chevron; clicking "View biography" on card 2 while card 1 is open closes card 1 and opens card 2 (one-at-a-time verified via JS state inspection).
+- Visual VLM verification (tablet 768x1024): leadership cards arranged in 2 columns, normal-sized, no horizontal overflow.
+- Horizontal overflow check: 0 px at all 10 required viewports (360, 390, 430, 768, 820, 1024, 1280, 1366, 1440, 1920).
+- Console errors: zero on /, /about-us, /products. Page errors: zero on /, /about-us.
+- Files deleted: none (the old ProductFinderWizard.tsx was deleted in the prior commit; this round only modifies existing files).
+- No new sections added. No existing sections removed (other than the contact strip from the header, which is explicitly permitted by spec). Homepage section order preserved (Hero → ProductRange → TrustDocuments → CapabilityIndustries → HomeFAQCTA). Bharat Hydro Seal and all six product families remain linked in mobile drawer + mega-menu + footer.

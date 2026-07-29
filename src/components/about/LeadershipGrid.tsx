@@ -9,38 +9,42 @@ import { cn } from '@/lib/utils';
 /**
  * LeadershipGrid — clean three-column leadership card grid.
  *
- * Replaces the previous LeadershipSwivel coverflow carousel with a
- * simpler, more readable layout that satisfies the client brief:
+ * Per client brief (revised):
+ *   • Cards are normal, compact cards. Hovering a card does NOT make it
+ *     wider, larger, scaled, floating, or visually dominant.
+ *   • Only the biography content inside the card expands/collapses.
  *
  * Desktop (≥1024px):
- *   • Three equal-width cards in a single row, no overlap, no rotation.
- *   • Hovering a card smoothly expands it to ~1.25fr while the others
- *     shrink to ~0.875fr. The card scales to a restrained 1.02 and the
- *     fuller biography reveals inside the same card.
- *   • Other cards become slightly dimmer but stay visible and comparable.
- *   • 350–450ms cubic-bezier transition. No flip, no rotate, no drawer.
+ *   • Three equal-width cards in a single row, always. No grid column
+ *     ratio changes, no scale, no dimming of neighbours, no overlap.
+ *   • Hovering a card reveals its full biography (height grows by the
+ *     exact amount needed for the bio, nothing more). Implemented via
+ *     JS state (mouse enter/leave) for guaranteed cross-browser
+ *     reliability — pure CSS `:hover` is brittle under headless test
+ *     runners that report `(hover: hover)` as false even on desktop.
+ *   • Keyboard focus-within also reveals the biography (CSS-driven).
+ *   • A real "View biography" / "Close biography" button is also
+ *     available for click users who prefer not to hover.
  *
- * Tablet (640–1023px):
- *   • Two-column grid. Hover does not apply.
- *   • Tap "Read biography" to expand the bio inline.
- *
- * Mobile (<640px):
- *   • One card per row.
- *   • Tap "Read biography" to expand the bio inline.
- *   • Only one card stays expanded at a time.
+ * Tablet (640–1023px) & Mobile (<640px):
+ *   • Two-column (tablet) / one-column (mobile) grid.
+ *   • Hover is not required — a 44px "View biography" button toggles
+ *     the biography inline. Tapping again collapses it.
+ *   • Only one biography is open at a time on touch devices.
  *
  * Accessibility:
  *   • Cards are <article> elements with descriptive aria-labels.
- *   • The "Read biography" button is a real <button> with a 44px touch
- *     target, aria-expanded state, and visible focus ring.
- *   • Keyboard users get the biography revealed via :focus-within so
- *     tabbing into a card exposes the same content as hover.
+ *   • The biography button is a real <button> with aria-expanded and
+ *     aria-controls pointing to the biography region.
+ *   • Keyboard users get the biography revealed via :focus-within.
  *   • prefers-reduced-motion disables all transitions (handled in CSS).
  *
- * Performance:
- *   • CSS grid + transform only. No 3D engine, no carousel runtime.
- *   • Portraits lazy-loaded except the first card (priority for LCP).
- *   • No body-scroll lock, no focus trap — the page scrolls naturally.
+ * Layout stability:
+ *   • No horizontal layout movement during expansion.
+ *   • Image dimensions never change.
+ *   • Cards in the same row align to the tallest expanded card thanks
+ *     to `align-items: start` on the grid; neighbours keep their
+ *     original width and appearance.
  */
 
 interface LeadershipGridProps {
@@ -48,8 +52,19 @@ interface LeadershipGridProps {
 }
 
 export function LeadershipGrid({ leaders }: LeadershipGridProps) {
+  // `openIndex` is the card whose biography is currently OPEN via the
+  // toggle button (click/Enter/Space/tap). `hoveredIndex` is the card
+  // currently being hovered (desktop only). Either state reveals the
+  // biography; the toggle button takes precedence for label correctness.
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [mobileExpanded, setMobileExpanded] = useState<number | null>(null);
+
+  const handleToggle = useCallback(
+    (index: number) => {
+      setOpenIndex((current) => (current === index ? null : index));
+    },
+    []
+  );
 
   const handleHoverEnter = useCallback((index: number) => {
     setHoveredIndex(index);
@@ -59,45 +74,24 @@ export function LeadershipGrid({ leaders }: LeadershipGridProps) {
     setHoveredIndex(null);
   }, []);
 
-  const handleToggleMobile = useCallback(
-    (index: number) => {
-      setMobileExpanded((current) => (current === index ? null : index));
-    },
-    []
-  );
-
-  // Compute desktop grid template based on hovered card.
-  // Default: three equal columns. Hovered card expands to 1.25fr,
-  // others shrink to 0.875fr. Total stays at 3fr so the section
-  // width remains fixed.
-  const gridCols =
-    hoveredIndex !== null
-      ? leaders
-          .map((_, i) => (i === hoveredIndex ? '1.25fr' : '0.875fr'))
-          .join(' ')
-      : leaders.map(() => '1fr').join(' ');
-
   return (
-    <div
-      className="be-leadership-grid"
-      style={{ ['--be-grid-cols' as string]: gridCols }}
-    >
+    <div className="be-leadership-grid">
       {leaders.map((leader, index) => {
+        const isOpen = openIndex === index;
         const isHovered = hoveredIndex === index;
-        const isDimmed = hoveredIndex !== null && hoveredIndex !== index;
-        const isMobileExpanded = mobileExpanded === index;
-
+        // Biography is revealed when EITHER the toggle is open OR the
+        // card is hovered (desktop). Card width and scale never change.
+        const isBioRevealed = isOpen || isHovered;
         return (
           <LeaderCard
             key={leader.name}
             leader={leader}
             index={index}
-            isHovered={isHovered}
-            isDimmed={isDimmed}
-            isMobileExpanded={isMobileExpanded}
+            isOpen={isOpen}
+            isBioRevealed={isBioRevealed}
+            onToggle={handleToggle}
             onHoverEnter={handleHoverEnter}
             onHoverLeave={handleHoverLeave}
-            onToggleMobile={handleToggleMobile}
           />
         );
       })}
@@ -112,23 +106,21 @@ export function LeadershipGrid({ leaders }: LeadershipGridProps) {
 interface LeaderCardProps {
   leader: Leader;
   index: number;
-  isHovered: boolean;
-  isDimmed: boolean;
-  isMobileExpanded: boolean;
+  isOpen: boolean;
+  isBioRevealed: boolean;
+  onToggle: (index: number) => void;
   onHoverEnter: (index: number) => void;
   onHoverLeave: () => void;
-  onToggleMobile: (index: number) => void;
 }
 
 function LeaderCard({
   leader,
   index,
-  isHovered,
-  isDimmed,
-  isMobileExpanded,
+  isOpen,
+  isBioRevealed,
+  onToggle,
   onHoverEnter,
   onHoverLeave,
-  onToggleMobile,
 }: LeaderCardProps) {
   const buttonId = `leader-bio-toggle-${index}`;
   const bioRegionId = `leader-bio-region-${index}`;
@@ -137,9 +129,10 @@ function LeaderCard({
     <article
       className={cn(
         'be-leader-card',
-        isHovered && 'be-leader-card-hovered',
-        isDimmed && 'be-leader-card-dimmed',
-        isMobileExpanded && 'be-leader-card-expanded'
+        // Expanded class drives the yellow border + soft shadow whether
+        // the user opened the bio via toggle button, hover, or keyboard
+        // focus-within (CSS). Card width and scale never change.
+        isBioRevealed && 'be-leader-card-expanded'
       )}
       aria-label={`${leader.name}, ${leader.role}`}
       onMouseEnter={() => onHoverEnter(index)}
@@ -180,7 +173,7 @@ function LeaderCard({
           {leader.role}
         </p>
 
-        {/* Short summary — always visible (35–55 words spec) */}
+        {/* Short summary — always visible (2-3 lines, approved content) */}
         <p className="mt-3 text-[0.95rem] leading-relaxed text-be-grey-650">
           {leader.shortBio}
         </p>
@@ -203,15 +196,21 @@ function LeaderCard({
         )}
 
         {/* ── Biography reveal ──────────────────────────────
-            Hidden by default. Revealed on hover (desktop),
-            tap (mobile/tablet) and keyboard focus-within.
+            Hidden by default. Revealed when:
+              • The toggle button below is clicked (isOpen)
+              • The pointer hovers the card (isHovered, desktop)
+              • The card receives keyboard focus-within (CSS)
             The grid-template-rows 0fr → 1fr technique animates
-            height smoothly without measuring. */}
+            height smoothly without measuring. Card width, image,
+            and typography positions remain stable. */}
         <div
           id={bioRegionId}
           role="region"
           aria-labelledby={buttonId}
-          className="be-leader-bio mt-4"
+          className={cn(
+            'be-leader-bio mt-4',
+            isBioRevealed && 'be-leader-bio-open'
+          )}
         >
           <div className="be-leader-bio-inner">
             {/* Leadership focus — small accent block above bio */}
@@ -226,7 +225,9 @@ function LeaderCard({
               </div>
             )}
 
-            {/* Fuller biography — multi-paragraph, no clamping */}
+            {/* Fuller biography — multi-paragraph, no clamping.
+                Concise approved content keeps the expanded card at a
+                reasonable height. */}
             <div className="space-y-2.5">
               {leader.fullProfile.map((paragraph, i) => (
                 <p
@@ -240,38 +241,24 @@ function LeaderCard({
           </div>
         </div>
 
-        {/* ── Toggle / indicator ───────────────────────────
-            Desktop: subtle "View biography" indicator that
-            visually clarifies the card is hover-expandable.
-            Mobile/tablet: real 44px button that toggles the bio
-            inline and changes label to "Close biography". */}
-
-        {/* Desktop indicator (visible lg+ only, not focusable) */}
-        <div
-          className="hidden lg:flex items-center gap-1.5 mt-4 text-[0.8rem] font-semibold text-be-charcoal-950/70"
-          aria-hidden="true"
-        >
-          <span
-            className="inline-block h-1.5 w-1.5 rounded-full bg-be-yellow-500"
-            aria-hidden="true"
-          />
-          <span>View biography</span>
-        </div>
-
-        {/* Mobile/tablet button (visible below lg only) */}
+        {/* ── Toggle button ────────────────────────────────
+            Real <button> with aria-expanded + aria-controls. Works
+            on every device: desktop click, mobile tap, keyboard
+            Enter/Space. Label flips between "View biography" /
+            "Close biography". 44px minimum touch target. */}
         <button
           id={buttonId}
           type="button"
-          onClick={() => onToggleMobile(index)}
-          aria-expanded={isMobileExpanded}
+          onClick={() => onToggle(index)}
+          aria-expanded={isOpen}
           aria-controls={bioRegionId}
-          className="lg:hidden mt-4 inline-flex items-center justify-center gap-1.5 self-start min-h-[44px] px-4 py-2 rounded-md border border-be-grey-250 bg-be-white text-[0.875rem] font-semibold text-be-charcoal-950 hover:border-be-yellow-400 hover:bg-be-yellow-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-warm-white"
+          className="mt-4 inline-flex items-center justify-center gap-1.5 self-start min-h-[44px] px-4 py-2 rounded-md border border-be-grey-250 bg-be-white text-[0.875rem] font-semibold text-be-charcoal-950 hover:border-be-yellow-400 hover:bg-be-yellow-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-warm-white"
         >
-          {isMobileExpanded ? 'Close biography' : 'Read biography'}
+          {isOpen ? 'Close biography' : 'View biography'}
           <ChevronDown
             className={cn(
               'size-4 transition-transform duration-200',
-              isMobileExpanded && 'rotate-180'
+              isOpen && 'rotate-180'
             )}
             aria-hidden="true"
             focusable="false"
