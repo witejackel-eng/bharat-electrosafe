@@ -134,7 +134,9 @@ export function CompareBar({
               <button
                 type="button"
                 onClick={clear}
-                className="rounded-md px-3 py-2 text-sm font-medium text-white/80 hover:text-be-brand-yellow transition-colors focus-ring"
+                disabled={!visible}
+                tabIndex={visible ? 0 : -1}
+                className="rounded-md px-3 py-2 text-sm font-medium text-white/80 hover:text-be-brand-yellow transition-colors focus-ring disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Clear
               </button>
