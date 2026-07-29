@@ -1,7 +1,7 @@
 /**
  * Product Data — Bharat Electrosafe
  *
- * Comprehensive data definitions for all 5 product families.
+ * Comprehensive data definitions for all 6 product families.
  *
  * Every technical figure below is transcribed from the client's own product
  * pages on bharatelectrosafe.com. The four insulating-mat families share one
@@ -1128,6 +1128,192 @@ const bharatMembrane: ProductData = {
    Product Registry
    ──────────────────────────────────────────── */
 
+const BHS = '/media/products/bharat-hydro-seal';
+
+/* Rebuilt from the client's own 4032x3024 profile photographs, which were
+   not in the repository at all. The page had been running on 500 px website
+   renders plus a marketing flyer and a scanned application drawing — the last
+   two are collateral, not product imagery, and are dropped. */
+const bhsGallery: ProductGalleryImage[] = [
+  {
+    src: `${BHS}/gallery/01-ribbed-water-stop-profile.webp`,
+    alt: 'Black ribbed PVC water stop profile with a hollow centre bulb, for concrete construction joints',
+    caption: 'Ribbed profile with centre bulb',
+    type: 'product',
+    fit: 'contain',
+  },
+  {
+    src: `${BHS}/gallery/02-centre-bulb-profile.webp`,
+    alt: 'Grey PVC water stop profile showing the centre bulb between ribbed flanges',
+    caption: 'Centre bulb between ribbed flanges',
+    type: 'alternate',
+    fit: 'contain',
+  },
+  {
+    src: `${BHS}/gallery/03-flat-flange-profile.webp`,
+    alt: 'White PVC water stop profile with flat flanges either side of a centre bulb',
+    caption: 'Flat-flange profile',
+    type: 'alternate',
+    fit: 'contain',
+  },
+  {
+    src: `${BHS}/gallery/04-translucent-pvc-profile.webp`,
+    alt: 'Translucent PVC water stop profile with the ribs and centre bulb visible through the material',
+    caption: 'Translucent PVC variant',
+    type: 'alternate',
+    fit: 'contain',
+  },
+  {
+    src: `${BHS}/gallery/05-rib-detail.webp`,
+    alt: 'Close view of the moulded ribs along a black PVC water stop profile',
+    caption: 'Rib detail',
+    type: 'profile',
+    fit: 'cover',
+  },
+];
+
+const bharatHydroSeal: ProductData = {
+  slug: 'bharat-hydro-seal',
+  name: 'Bharat Hydro Seal',
+  shortName: 'Hydro-Seal',
+  category: 'waterproofing-civil-protection',
+  images: {
+    thumbnail: {
+      src: `${BHS}/card.webp`,
+      alt: 'Black ribbed PVC water stop profile with a centre bulb',
+      fit: 'contain',
+    },
+    gallery: bhsGallery,
+    overview: bhsGallery[1],
+    /* No photograph exists of a water stop cast into a concrete joint. The
+       slot stays empty rather than showing a bare concrete structure in which
+       the product cannot be found. */
+  },
+  trustPoints: [
+    'IS 15058-2002',
+    'PVC water stop',
+    'Multiple profiles',
+    'Weldable at intersections',
+  ],
+  description:
+    'PVC water stop seals to IS 15058-2002 for construction and expansion joints in concrete structures — water tanks, dams, basements, tunnels and sewage treatment plants.',
+  introduction:
+    'Bharat Hydro Seal is a PVC water-stop product intended for construction and expansion joints in concrete structures. The profiles are designed to reduce water passage through properly designed and installed joints. Product profile, dimensions, joining method and suitability must be selected according to the project conditions.',
+  badges: ['IS 15058-2002', 'PVC Water Stop', 'Multiple profiles', 'Weldable at intersections'],
+  quickFacts: [
+    { icon: 'droplets', label: 'Function', value: 'Water stop sealing for construction joints' },
+    { icon: 'ruler', label: 'Standard', value: 'IS 15058-2002' },
+    { icon: 'shield', label: 'Material', value: 'PVC and rubber compounds' },
+  ],
+  overviewText:
+    'Bharat Hydro Seal profiles are made from PVC and rubber compounds and are available in centre-bulb, dumbbell and ribbed configurations. Profile selection depends on the joint type, expected movement, water pressure and project specification. Intersections and terminations require an appropriate joining method to form a continuous system. Request the current product and compliance documents required for your project.',
+  keyBenefits: [
+    { icon: 'droplets', text: 'PVC water-stop profiles for construction and expansion joints' },
+    { icon: 'bolt', text: 'Available in centre-bulb, dumbbell and ribbed configurations' },
+    { icon: 'flask-conical', text: 'Made from PVC and rubber compounds' },
+    { icon: 'hammer', text: 'Weldable at intersections to form a continuous system' },
+    { icon: 'shield-check', text: 'Profile selection depends on joint type and project conditions' },
+  ],
+  specifications: {
+    headers: ['Property', 'Specification'],
+    rows: [
+      ['Material', 'PVC and rubber compound water stop'],
+      ['Standard', 'IS 15058-2002'],
+      ['Profile Types', 'Centre bulb, dumbbell and ribbed configurations'],
+      ['Joint Types', 'Construction joints and expansion joints'],
+      ['Resistance', 'Designed to resist water pressure, chemicals and weathering'],
+      ['Mechanical', 'Tensile strength and flexibility to accommodate joint movement'],
+      ['Jointing Method', 'Weldable at intersections for continuous seals'],
+      ['Service Life', 'Service life depends on product selection, installation quality, operating conditions, exposure and maintenance'],
+    ],
+  },
+  materialProperties: [
+    { label: 'Base Material', value: 'PVC and rubber compounds' },
+    { label: 'Standard', value: 'IS 15058-2002' },
+    { label: 'Function', value: 'Reduces water passage through properly designed and installed joints' },
+    { label: 'Chemical Resistance', value: 'Designed to resist chemicals and corrosion' },
+    { label: 'Weathering Resistance', value: 'Designed to resist environmental stress' },
+    { label: 'Tensile Strength', value: 'Selected to accommodate joint movement' },
+    { label: 'Flexibility', value: 'Selected to accommodate joint movement' },
+    { label: 'Profile Types', value: 'Centre bulb, dumbbell and ribbed' },
+    { label: 'Jointing', value: 'Weldable at intersections for a continuous system' },
+    { label: 'Manufacturing', value: 'Manufactured at Bharat Electrosafe facilities' },
+  ],
+  dimensions: [
+    { label: 'Profile Width', value: 'Available in multiple widths to suit joint requirements' },
+    { label: 'Thickness', value: 'Range of thicknesses for different pressure classes' },
+    { label: 'Custom Fabrication', value: 'Available for project-specific requirements' },
+  ],
+  colors: ['Black'],
+  surfacePatterns: ['Smooth profile', 'Ribbed profile'],
+  installation: [
+    'Confirm the joint type — construction joint or expansion joint — and select the appropriate profile',
+    'Clean the concrete surface at the joint location before positioning the water stop',
+    'Place the water stop centrally in the joint with the bulb aligned to the joint plane',
+    'Secure the water stop in position before pouring the next concrete lift',
+    'Weld intersections and terminations to form a continuous seal',
+    'Inspect the installed water stop for proper alignment before covering',
+  ],
+  applications: [
+    {
+      icon: 'droplets',
+      name: 'Water Tanks & Reservoirs',
+      description: 'Water stop sealing for water storage tanks and reservoir construction joints',
+    },
+    {
+      icon: 'waves',
+      name: 'Dams & Canals',
+      description: 'Sealing expansion and construction joints in dam and canal structures',
+    },
+    {
+      icon: 'trash-2',
+      name: 'Sewage Treatment Plants',
+      description: 'Chemical-resistant water stops for sewage treatment plant construction',
+    },
+    {
+      icon: 'mountain',
+      name: 'Basements & Underground Structures',
+      description: 'Water stop protection for basement and underground construction joints',
+    },
+    {
+      icon: 'person-swim',
+      name: 'Swimming Pools & Tunnels',
+      description: 'Water-tight sealing for swimming pools and tunnel construction',
+    },
+  ],
+  documents: [
+    {
+      type: 'Certificate',
+      name: 'ISO 9001:2015 — Quality Management System',
+      issuer: 'Certification body',
+      available: true,
+      href: '/documents/certifications/iso-9001-2015-qms.pdf',
+      thumbnail: '/images/documents/doc-certificate.webp',
+      kind: 'certificate',
+    },
+    {
+      type: 'Standards information',
+      name: 'IS 15058:2002 product information — available on request',
+      issuer: 'Bharat Electrosafe',
+      available: false,
+      thumbnail: '/images/documents/doc-approval.webp',
+      kind: 'standards-information',
+    },
+    {
+      type: 'Datasheet',
+      name: 'Product datasheet — available on request',
+      issuer: 'Bharat Electrosafe',
+      available: false,
+      thumbnail: '/images/documents/doc-datasheet.webp',
+      kind: 'datasheet',
+    },
+  ],
+  relatedProducts: [
+    'bharat-membrane',
+    'electrical-insulating-mats',
+  ],
+  classType: 'membrane',
+};
 
 export const products: ProductData[] = [
   electricalInsulatingMats,
@@ -1135,6 +1321,7 @@ export const products: ProductData[] = [
   biColorInsulatingMats,
   autoGlowReflectiveBandMats,
   bharatMembrane,
+  bharatHydroSeal,
 ];
 
 /** Number of active product families — the single source for any "N families"
@@ -1170,7 +1357,7 @@ export function imageFitClass(image: ProductImage, containPadding = 'p-3'): stri
   return image.fit === 'contain' ? `object-contain ${containPadding}` : 'object-cover';
 }
 
-/** Labels for the contact-form product selector — all five families. */
+/** Labels for the contact-form product selector — all six families. */
 export const contactProductOptions = products.map((p) => ({
   value: p.slug,
   label: p.name,
@@ -1270,5 +1457,13 @@ export const productComparisonData: ProductComparisonRow[] = [
     distinguishingFeature: 'Engineered PVC geomembrane',
     typicalApplication: 'Tunnels, civil works and environmental containment',
     applicableStandard: 'IS 15909:2020',
+  },
+  {
+    name: 'Bharat Hydro Seal',
+    slug: 'bharat-hydro-seal',
+    primaryPurpose: 'Construction-joint water sealing',
+    distinguishingFeature: 'PVC water stop profile',
+    typicalApplication: 'Concrete joints and water-retaining structures',
+    applicableStandard: 'IS 15058-2002',
   },
 ];

@@ -121,7 +121,7 @@ function ProductFamilyGrid() {
         <SectionHeader
           eyebrow="PRODUCT FAMILIES"
           title="Our product range"
-          supportingText="Five product families across two categories, each designed around a specific protection requirement."
+          supportingText="Six product families across two categories, each designed around a specific protection requirement."
         />
       </div>
 
@@ -214,7 +214,7 @@ function ComparisonTable() {
         <SectionHeader
           eyebrow="COMPARISON"
           title="Product comparison"
-          supportingText="Compare features and applications across all five product families to find the right solution."
+          supportingText="Compare features and applications across all six product families to find the right solution."
         />
       </div>
 

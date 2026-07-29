@@ -100,10 +100,8 @@ const nextConfig: NextConfig = {
       { source: '/bi-color-insulating-mats.php', destination: '/products/bi-color-insulating-mats' },
       { source: '/auto-glow-reflective-band-insulating-mat.php', destination: '/products/auto-glow-reflective-band-insulating-mats' },
       { source: '/bharat-membrane.php', destination: '/products/bharat-membrane' },
-      /* Bharat Hydro Seal was retired from the catalogue. The old PHP URL now
-         redirects to the main product range so legacy links/links still land on
-         a relevant page instead of a 404. */
-      { source: '/BharatHydro-Seal.php', destination: '/products' },
+      /* The old BharatHydro Seal PHP URL now redirects to the new product page. */
+      { source: '/BharatHydro-Seal.php', destination: '/products/bharat-hydro-seal' },
     ];
 
     return [

@@ -20,6 +20,7 @@ import {
   Eye,
   Sun,
   Droplets,
+  Waves,
 } from 'lucide-react';
 import {
   Sheet,
@@ -64,6 +65,7 @@ const productIconMap: Record<string, React.ReactNode> = {
   'bi-color-insulating-mats': <Shield className="size-4" />,
   'auto-glow-reflective-band-insulating-mats': <Sun className="size-4" />,
   'bharat-membrane': <Droplets className="size-4" />,
+  'bharat-hydro-seal': <Waves className="size-4" />,
 };
 
 /* ────────────────────────────────────────────

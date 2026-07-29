@@ -64,10 +64,7 @@ export const company = {
      the active product registry so it cannot fall out of step with it.
      The "Countries Served (company-stated)" qualifier mirrors the wording in
      trust.ts — it is a company self-statement, not an independently verified
-     figure. Note: company.stats is not currently rendered on the site; the
-     visible stats block lives in StatsSection.tsx and uses verified values
-     only (product count, insulation classes, manufacturing standard, BIS
-     licence number). */
+     figure. */
   stats: [
     { value: String(productFamilyCount), label: 'Product Families' },
     { value: 'A · B · C', label: 'Insulation Classes' },

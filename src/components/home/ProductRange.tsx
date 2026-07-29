@@ -11,15 +11,12 @@ function ProductCard({ product, index }: { product: typeof products[number]; ind
      detail shot or a hero picked locally by this component. */
   const thumbnail = product.images.thumbnail;
   const catInfo = productCategories[product.category];
-  /* First-row cards (index 0–2) are near the fold on desktop — mark them
-     priority so they load eagerly and don't get flagged as late-LCP. */
-  const isAboveFold = index < 3;
 
   return (
     <Link
       href={`/products/${product.slug}`}
       aria-label={`View ${product.name} product page`}
-      className="be-card-glow hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+      className="hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
     >
       {/* Yellow accent line — animates wider on hover */}
       <div className="h-1 bg-be-yellow-500 group-hover:h-1.5 transition-all duration-300" aria-hidden="true" />
@@ -40,7 +37,6 @@ function ProductCard({ product, index }: { product: typeof products[number]; ind
           src={thumbnail.src}
           alt={thumbnail.alt}
           fill
-          priority={isAboveFold}
           className={`${imageFitClass(thumbnail, 'p-3 md:p-2')} ${
             thumbnail.fit === 'cover'
               ? 'group-hover:scale-105 transition-transform duration-300'
@@ -62,7 +58,7 @@ function ProductCard({ product, index }: { product: typeof products[number]; ind
           {product.description}
         </p>
         <div className="mt-2">
-          <span className="be-underline-grow text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors">
+          <span className="text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors">
             View Product
           </span>
         </div>

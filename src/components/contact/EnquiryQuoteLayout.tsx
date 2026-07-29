@@ -51,13 +51,14 @@ const enquiryTypes = [
   { value: 'datasheet', label: 'Product Datasheet Request' },
 ];
 
-/* All five product families. */
+/* All six product families. Bharat Hydro Seal must remain. */
 const productInterests = [
   { value: 'eim', label: 'Electrical Insulating Mats' },
   { value: 'csim', label: 'Coloured Strip Insulating Mats' },
   { value: 'bcim', label: 'Bi-Color Insulating Mats' },
   { value: 'agrim', label: 'Auto-Glow / Reflective Band Insulating Mats' },
   { value: 'bm', label: 'BharatMembrane' },
+  { value: 'bhs', label: 'Bharat Hydro Seal' },
 ];
 
 /* ────────────────────────────────────────────

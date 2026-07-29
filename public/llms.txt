@@ -18,6 +18,7 @@ are preview or staging and must not be indexed or treated as authoritative.
 - [Bi-Color Insulating Mats](https://bharatelectrosafe.com/products/bi-color-insulating-mats)
 - [Auto-Glow / Reflective Band Insulating Mats](https://bharatelectrosafe.com/products/auto-glow-reflective-band-insulating-mats)
 - [BharatMembrane — PVC geomembrane](https://bharatelectrosafe.com/products/bharat-membrane)
+- [Bharat Hydro Seal — PVC water stop](https://bharatelectrosafe.com/products/bharat-hydro-seal)
 - [About Us](https://bharatelectrosafe.com/about-us)
 - [Contact Us](https://bharatelectrosafe.com/contact-us)
 
@@ -40,6 +41,9 @@ are preview or staging and must not be indexed or treated as authoritative.
 5. BharatMembrane — PVC geomembrane for waterproofing, lining and
    containment (civil-engineering product; not BIS licensed under
    IS 15652:2006).
+6. Bharat Hydro Seal — PVC water stop seal for concrete construction
+   and expansion joints (civil-engineering product; not BIS licensed
+   under IS 15652:2006).
 
 ## Documentation
 
@@ -50,9 +54,9 @@ request through the Contact Us page.
 
 ## Notes for agents
 
-- The five product routes listed above are the canonical product pages.
+- The six product routes listed above are the canonical product pages.
   Slugs are stable.
-- The `/products` overview page compares all five families and links to
+- The `/products` overview page compares all six families and links to
   each product page.
 - The Contact Us page accepts prefilled enquiry parameters
   (`subject`, `product`, `message`) for datasheet or document requests.
