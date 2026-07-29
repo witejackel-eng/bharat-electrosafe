@@ -588,3 +588,48 @@ Stage Summary:
 - Leadership carousel is premium and substantial (860px active card, 2 bio paragraphs, expertise, focus, drawer)
 - Header is unified navy with no logo rectangle
 - Hero tells one product story (mat dominant, not a tiny inset)
+
+---
+Task ID: design-corrections-2026-07-29
+Agent: main
+Task: Implement design corrections per client spec — header colour integration, FAQ redesign, leadership card grid (replacing swivel), responsive/accessibility polish. No new sections, no removed products, no hero redesign.
+
+Work Log:
+- Updated globals.css warm-white token from #FFFEF9 to #FCFBF7 (warm off-white page background)
+- Replaced .be-header-navy radial-glow + navy gradient with restrained linear-gradient(110deg, #07386F 0%, #052B5D 55%, #031F49 100%)
+- Added 2px brand-yellow ::after accent line beneath main header bar
+- Softened header shadow to 0 6px 22px rgba(2,31,73,0.12); compact state 0 8px 26px rgba(2,31,73,0.16)
+- Darkened .be-contact-strip-navy to linear-gradient(110deg, #031F49 0%, #021A3E 100%) for tonal hierarchy
+- Softened nav text to rgba(255,255,255,0.82); hover bg from 0.06 to 0.04 (more restrained)
+- Removed heavy bg-white/8 hover on Products chevron trigger
+- Added new .be-page-top-tint utility class — linear-gradient(180deg, rgba(7,56,111,0.055) 0%, rgba(252,251,247,0) 140px) over warm-white
+- Updated existing .be-hero-to-navy to use the same gradient spec (homepage hero)
+- Applied .be-page-top-tint to AboutIntro, ProductsHero, ProductHero (all 6 product detail pages), ContactUsClient first section
+- Updated src/data/faqs.ts homeFaqs array from 4 to 8 practical buyer questions (standard, class selection, custom sizes, installations, documentation, quotation info, lead time, BharatMembrane/Hydro Seal clarification)
+- Lead-time answer confirms timing depends on product, dimensions, quantity, delivery location and is confirmed during quotation (no invented timelines)
+- BharatMembrane and Bharat Hydro Seal answer clearly states they are waterproofing/civil-protection products that do NOT inherit IS 15652:2006 insulating-mat certification
+- Redesigned FAQ.tsx: increased gap-3 to gap-4 (14-18px vertical spacing), added thin yellow accent on left edge of open item, semibold questions, max-w-[60ch] answer width for comfortable line-length, warm-white card backgrounds with subtle border
+- Reduced empty space between FAQ accordion and CTA in HomeFAQCTA (mt-8 to mt-4)
+- Created new src/components/about/LeadershipGrid.tsx — clean 3-column grid (desktop) / 2-column (tablet) / 1-column (mobile)
+- Desktop hover: hovered card expands to 1.25fr, others shrink to 0.875fr (smooth 400ms cubic-bezier), restrained 1.02 scale, enhanced border + shadow, biography reveals inside card via grid-template-rows 0fr→1fr technique
+- Mobile/tablet: 44px "Read biography" button toggles biography inline, only one expanded at a time, button label changes to "Close biography" with rotating chevron
+- Keyboard accessible: :focus-within reveals biography for keyboard users
+- Reduced-motion: all transitions disabled, bio still reachable
+- All portraits use consistent 4:5 crop with controlled object-position; bg-be-navy-800 backdrop
+- Updated CompanyLeadership.tsx to import LeadershipGrid instead of LeadershipSwivel
+- Deleted src/components/about/LeadershipSwivel.tsx (571 lines) — confirmed unused elsewhere
+- Removed .be-swivel-stage, .be-swivel-track, .be-swivel-card CSS and .be-swivel-card.be-swivel-card-active:hover refinement from globals.css
+- Verified all 6 products including Bharat Hydro Seal remain in mobile menu accordion
+
+Stage Summary:
+- 11 files changed, 1 file deleted, 1 file created (net -461 lines)
+- typecheck: PASS
+- lint: PASS (1 pre-existing warning, 0 errors)
+- production build: PASS (all 16 routes generated, 5 required routes verified HTTP 200)
+- accessibility.spec.ts: 65/65 PASS (all routes incl. /products/bharat-hydro-seal, /about-us, /contact-us)
+- product-hero-compress.spec.ts: 81/81 PASS (all 6 product pages across 1024/1366/1440 + mobile 390)
+- header-mobile.spec.ts: passing tests confirm no logo rectangle, no nav wrap, no CTA collision, mobile menu works, sticky header correct
+- Pre-existing test failures (NOT introduced by these changes, verified by stashing): 2 header-mobile tests (aria-expanded test uses stale locator after label change; header-width test expects boundingBox on display:contents element) and hero-desktop/hero-mobile tests (expect SVG technical illustration that doesn't exist in current hero — HomeHero.tsx was not modified)
+- Files modified: src/app/globals.css, src/app/contact-us/ContactUsClient.tsx, src/app/products/ProductsClient.tsx, src/components/about/AboutIntro.tsx, src/components/about/CompanyLeadership.tsx, src/components/home/HomeFAQCTA.tsx, src/components/layout/Header.tsx, src/components/products/ProductHero.tsx, src/components/ui/FAQ.tsx, src/data/faqs.ts
+- Files deleted: src/components/about/LeadershipSwivel.tsx
+- Files created: src/components/about/LeadershipGrid.tsx

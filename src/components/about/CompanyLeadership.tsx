@@ -1,6 +1,6 @@
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SectionShell } from '@/components/ui/SectionShell';
-import { LeadershipSwivel } from '@/components/about/LeadershipSwivel';
+import { LeadershipGrid } from '@/components/about/LeadershipGrid';
 import { leaders } from '@/data/team';
 import { ShieldCheck, BadgeCheck, HeadsetIcon, FileText } from 'lucide-react';
 
@@ -10,17 +10,16 @@ import { ShieldCheck, BadgeCheck, HeadsetIcon, FileText } from 'lucide-react';
  * Contains four content blocks on the About page:
  *   1. "Our Journey" — company overview
  *   2. "Our Mission" + "Our Values" — two side-by-side cards
- *   3. "Leadership" — three large editorial profile cards
+ *   3. "Leadership" — three clean editorial profile cards in a grid
  *
- * The leadership section was redesigned from small 64px circular avatars
- * to substantial editorial cards with large 4:3 portraits, full
- * multi-paragraph biographies, and factual expertise labels. All
- * biographical content comes from src/data/team.ts — no content is
- * duplicated or invented here.
+ * The leadership section was redesigned from the previous coverflow
+ * swivel carousel into a clean three-column grid (desktop) with a
+ * refined hover-expansion interaction. Mobile and tablet use a tap
+ * to expand each biography inline. All biographical content comes
+ * from src/data/team.ts — no content is duplicated or invented here.
  *
  * The existing `.reveal-up` classes on the Journey/Mission/Values blocks
  * are driven by the shared <RevealObserver /> mounted in the page shell.
- * The leadership cards use @starting-style CSS animations (no JS needed).
  */
 
 export default function CompanyLeadership() {
@@ -76,12 +75,12 @@ export default function CompanyLeadership() {
       </div>
 
       {/* ── Leadership ────────────────────────────────────────────
-          Premium swivel-and-scroll management portfolio. One active
-          profile is centred; previous and next cards are partially
-          visible with a subtle rotateY. Each card carries substantial
-          professional information (portrait, role, short bio, expertise,
-          leadership focus) and a “View Full Profile” action that opens
-          an accessible drawer with the complete biography.
+          Clean three-column leadership grid (desktop) with hover
+          expansion. Each card shows portrait, name, role, short bio,
+          expertise labels and a “View biography” indicator. Hovering
+          (desktop) or tapping “Read biography” (mobile/tablet)
+          reveals the fuller biography and leadership focus inside
+          the same card — no drawer, no carousel, no overlap.
 
           All biographical content comes from src/data/team.ts. The
           component does not duplicate or rewrite any profile text. */}
@@ -89,11 +88,11 @@ export default function CompanyLeadership() {
         <SectionHeader
           eyebrow="Leadership"
           title="The people guiding Bharat Electrosafe"
-          supportingText="Meet the directors shaping the company’s manufacturing, finance, quality, operations, partnerships and international development. Drag, swipe or use the arrows to browse each profile."
+          supportingText="Meet the directors shaping the company’s manufacturing, finance, quality, operations, partnerships and international development. Hover a card on desktop or tap “Read biography” on mobile to see the fuller profile."
         />
 
         <div className="mt-10 lg:mt-12">
-          <LeadershipSwivel leaders={leaders} />
+          <LeadershipGrid leaders={leaders} />
         </div>
       </div>
     </SectionShell>

@@ -410,7 +410,7 @@ export function Header() {
                 className={cn(
                   'px-2 py-2 text-sm font-medium rounded-md transition-colors',
                   dropdownOpen || isProductActive
-                    ? 'text-be-brand-yellow bg-white/8'
+                    ? 'text-be-brand-yellow'
                     : 'be-nav-link'
                 )}
                 aria-expanded={dropdownOpen}

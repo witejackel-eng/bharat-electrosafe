@@ -20,17 +20,20 @@ export default function HomeFAQCTA() {
       topRule
       ariaLabel="Frequently asked questions and contact"
     >
+      {/* FAQ accordion — wider content band (720–820px) per spec.
+          max-w-3xl = 768px sits comfortably inside that range. */}
       <div className="max-w-3xl mx-auto">
         <FAQ
           eyebrow="COMMON QUESTIONS"
           title="Frequently asked questions"
-          supportingText="Quick answers to common questions about our products, certifications and enquiry process."
+          supportingText="Practical answers about our products, certifications, sizing and enquiry process — all in one place."
           items={faqItems}
         />
       </div>
 
-      {/* CTA section merged below FAQ */}
-      <div className="mt-8 flex flex-col items-center text-center gap-5 max-w-2xl mx-auto reveal-up">
+      {/* CTA section merged below FAQ — tighter spacing per spec.
+          Reduced from mt-8 to mt-4 to remove excessive empty space. */}
+      <div className="mt-4 flex flex-col items-center text-center gap-4 max-w-2xl mx-auto reveal-up">
         {/* Decorative shield icon */}
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-be-yellow-50 border border-be-yellow-400/30 text-be-yellow-text shadow-sm" aria-hidden="true">
           <ShieldCheck className="h-7 w-7" focusable="false" />
@@ -45,7 +48,7 @@ export default function HomeFAQCTA() {
           location.
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-6 mt-2">
+        <div className="flex flex-wrap items-center justify-center gap-6 mt-1">
           <PrimaryButton href="/contact-us?type=technical-guidance" size="lg">
             Request Technical Guidance
           </PrimaryButton>

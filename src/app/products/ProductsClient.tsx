@@ -74,7 +74,7 @@ function ProductsHero() {
   return (
     <SectionShell
       variant="hero"
-      bg="bg-be-warm-white"
+      bg="be-page-top-tint"
       className="pt-10 pb-12 md:pt-12 md:pb-14 lg:pt-14 lg:pb-16"
     >
       <div className="max-w-5xl">

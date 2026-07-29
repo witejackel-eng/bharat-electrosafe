@@ -74,7 +74,7 @@ export default function ContactUsClient() {
         {/* ───────── Chapter 1 — Contact and Enquiry ───────── */}
         <section
           aria-label="Contact and Enquiry"
-          className="bg-be-warm-white pt-10 pb-10 md:pt-14 md:pb-14 lg:pt-16 lg:pb-16"
+          className="be-page-top-tint pt-10 pb-10 md:pt-14 md:pb-14 lg:pt-16 lg:pb-16"
         >
           <div className="container-site page-horizontal-padding">
             {/* Two-column block: contact info (left) + form (right).

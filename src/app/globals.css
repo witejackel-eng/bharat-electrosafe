@@ -11,7 +11,10 @@
 
   /* Bharat Electrosafe Brand Colors */
   --color-be-white: #FFFFFF;
-  --color-be-warm-white: #FFFEF9;
+  /* Warm off-white page background — slightly warmer than the previous
+     #FFFEF9 so the navy header integrates with the page rather than
+     switching abruptly to stark white. */
+  --color-be-warm-white: #FCFBF7;
   --color-be-cream: #FFFDF3;
   --color-be-yellow-50: #FFFBE8;
   --color-be-yellow-100: #FFF4BE;
@@ -106,7 +109,7 @@
   --foreground: #242426;
 
   --be-white: #FFFFFF;
-  --be-warm-white: #FFFEF9;
+  --be-warm-white: #FCFBF7;
   --be-cream: #FFFDF3;
   --be-yellow-50: #FFFBE8;
   --be-yellow-100: #FFF4BE;
@@ -770,37 +773,47 @@
 
   /* ──────────────────────────────────────────────────────────────
      UNIFIED NAVY HEADER
-     The deep blue surrounding the BE logo is absorbed into the full
-     header band. Logo, navigation and CTA live in one navy composition.
-     Background = layered radial brand-blue glow + navy gradient, so the
-     logo's own navy field disappears into the header (no visible square).
+     The deep Bharat Electrosafe navy is preserved as a single restrained
+     gradient. Excessive glow, glossy effects and visible colour patches
+     have been removed so the logo's own navy field disappears cleanly.
+     A 2px brand-yellow accent line sits beneath the main header bar and
+     a very soft shadow lifts the bar without darkening the page.
      ────────────────────────────────────────────────────────────── */
   .be-header-navy {
-    background:
-      radial-gradient(
-        circle at 22% -60%,
-        rgba(19, 143, 234, 0.22),
-        transparent 50%
-      ),
-      linear-gradient(110deg, #00275B 0%, #001F4D 58%, #001A43 100%);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18), 0 6px 18px -10px rgba(0, 26, 67, 0.45);
+    position: relative;
+    background: linear-gradient(110deg, #07386F 0%, #052B5D 55%, #031F49 100%);
+    box-shadow: 0 6px 22px rgba(2, 31, 73, 0.12);
+  }
+  /* 2px brand-yellow accent line beneath the main header */
+  .be-header-navy::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--be-brand-yellow);
+    pointer-events: none;
   }
   .be-header-navy-compact {
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.22), 0 10px 24px -12px rgba(0, 26, 67, 0.55);
+    box-shadow: 0 8px 26px rgba(2, 31, 73, 0.16);
   }
-  /* Top contact strip on navy — lighter text for contrast */
+  /* Top contact strip on navy — slightly darker than the main bar so the
+     composition reads as a single designed band without competing glow. */
   .be-contact-strip-navy {
-    background: linear-gradient(110deg, #001A43 0%, #00275B 100%);
+    background: linear-gradient(110deg, #031F49 0%, #021A3E 100%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
-  /* Nav link on navy: white default, yellow active/hover (brand accent) */
+  /* Nav link on navy: soft white default, yellow reserved for active
+     links and hover details. Hover background kept restrained so the
+     bar never feels chunky or segmented. */
   .be-nav-link {
-    color: rgba(255, 255, 255, 0.86);
+    color: rgba(255, 255, 255, 0.82);
     transition: color 0.2s ease-out, background-color 0.2s ease-out;
   }
   .be-nav-link:hover {
     color: var(--be-brand-yellow);
-    background-color: rgba(255, 255, 255, 0.06);
+    background-color: rgba(255, 255, 255, 0.04);
   }
   .be-nav-link-active {
     color: var(--be-brand-yellow);
@@ -822,79 +835,150 @@
   }
 
   /* ──────────────────────────────────────────────────────────────
-     HEADER → HERO TRANSITION
-     A restrained continuation of navy illumination at the very top of
-     the hero that fades into the established warm-white page background.
-     No wave, no blob — a clean designed opening.
+     HEADER → PAGE TRANSITION
+     A very subtle blue-tinted gradient at the top of the hero/page that
+     fades into the warm off-white page background. No waves, blobs or
+     decorative shapes — the navy header now integrates with the page
+     rather than switching abruptly to stark white.
      ────────────────────────────────────────────────────────────── */
-  .be-hero-to-navy {
+  .be-hero-to-navy,
+  .be-page-top-tint {
     background:
-      radial-gradient(
-        ellipse 90% 70% at 50% -10%,
-        rgba(0, 39, 91, 0.06),
-        transparent 60%
-      ),
+      linear-gradient(180deg, rgba(7, 56, 111, 0.055) 0%, rgba(252, 251, 247, 0) 140px),
       var(--be-warm-white);
+    background-repeat: no-repeat;
   }
 
   /* ──────────────────────────────────────────────────────────────
-     LEADERSHIP SWIVEL CAROUSEL
-     Coverflow-style: active card centred & flat, side cards rotated
-     in Y, smaller and less prominent. CSS transforms only (no 3D
-     engine). Reduced-motion disables perspective.
-
-     Stage overflow is hidden horizontally so neighbouring cards are
-     cleanly clipped at the viewport edge — no text bleed beyond the
-     stage bounds.
+     LEADERSHIP CARD GRID
+     A clean three-column grid (desktop) / two-column (tablet) /
+     one-column (mobile) layout. No carousel, no rotation, no overlap.
+     Desktop hover smoothly expands the hovered card to ~1.25fr and
+     shrinks the others to ~0.875fr while revealing the fuller
+     biography inside the card. Mobile/tap toggles the biography
+     inline via a 44px "Read biography" button. Reduced-motion
+     shortens the transitions.
      ────────────────────────────────────────────────────────────── */
-  .be-swivel-stage {
-    perspective: 1600px;
-    perspective-origin: 50% 40%;
-    /* Clip neighbour cards to the stage bounds so their text doesn't
-       bleed past the viewport edge. Vertical overflow stays visible
-       so the active card's full height is never clipped. */
-    overflow-x: hidden;
+  .be-leadership-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    align-items: start;
   }
-  .be-swivel-track {
-    transform-style: preserve-3d;
-  }
-  .be-swivel-card {
-    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 0.45s ease-out;
-    backface-visibility: hidden;
-  }
-  /* Mobile: disable 3D perspective entirely. One card at a time, flat,
-     no neighbour bleed. The component still renders neighbours but they
-     are hidden via opacity:0 so no text bleeds onto the active card. */
-  @media (max-width: 639px) {
-    .be-swivel-stage {
-      perspective: none;
-    }
-    .be-swivel-track {
-      transform-style: flat;
-    }
-    /* Hide non-active cards completely on mobile — no text bleed. */
-    .be-swivel-card[aria-hidden="true"] {
-      opacity: 0 !important;
-      pointer-events: none !important;
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .be-leadership-grid {
+      grid-template-columns: 1fr 1fr;
     }
   }
-  /* Card positional states are applied inline by the component based on
-     offset from active index. These classes provide the reduced-motion
-     override. */
-  @media (prefers-reduced-motion: reduce) {
-    .be-swivel-stage {
-      perspective: none;
-    }
-    .be-swivel-track {
-      transform-style: flat;
-    }
-    .be-swivel-card {
-      transition: opacity 0.2s ease-out;
+  @media (min-width: 1024px) {
+    .be-leadership-grid {
+      /* --be-grid-cols is set inline by the LeadershipGrid component
+         based on hover state. Default is three equal columns. */
+      grid-template-columns: var(--be-grid-cols, 1fr 1fr 1fr);
+      gap: 1.5rem;
+      transition: grid-template-columns 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     }
   }
 
-  /* Portrait treatment — thin yellow accent rule under treated portraits */
+  /* Single leadership card. Warm-white background, thin neutral border,
+     small yellow accent line, moderate corner radius, soft shadow only
+     on hover/expanded state. */
+  .be-leader-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 0.625rem;
+    background: var(--be-warm-white);
+    border: 1px solid var(--be-grey-250);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* Yellow accent line at the top of each card */
+  .be-leader-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--be-brand-yellow);
+    opacity: 0.85;
+    pointer-events: none;
+    z-index: 1;
+  }
+  @media (min-width: 1024px) {
+    /* Desktop hover: restrained 1.02 scale, enhanced border + shadow.
+       Only applied on devices that actually support hover. */
+    @media (hover: hover) {
+      .be-leader-card.be-leader-card-hovered {
+        transform: scale(1.02);
+        border-color: var(--be-yellow-400);
+        box-shadow:
+          0 18px 40px -16px rgba(2, 31, 73, 0.18),
+          0 4px 10px -4px rgba(2, 31, 73, 0.08);
+        z-index: 2;
+      }
+      .be-leader-card.be-leader-card-dimmed {
+        opacity: 0.92;
+      }
+    }
+  }
+  /* Mobile/tablet tap-to-expand: same shadow/border emphasis, no
+     scale (avoid layout shift on touch). */
+  .be-leader-card.be-leader-card-expanded {
+    border-color: var(--be-yellow-400);
+    box-shadow:
+      0 18px 40px -16px rgba(2, 31, 73, 0.18),
+      0 4px 10px -4px rgba(2, 31, 73, 0.08);
+    z-index: 2;
+  }
+
+  /* Biography reveal — uses grid-template-rows trick for smooth
+     height transition without measuring. Inner wrapper clips
+     overflow during the transition. Revealed on hover (desktop),
+     tap (mobile/tablet) AND on keyboard focus-within (accessibility). */
+  .be-leader-bio {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.3s ease-out;
+  }
+  .be-leader-bio > .be-leader-bio-inner {
+    overflow: hidden;
+    min-height: 0;
+  }
+  .be-leader-card.be-leader-card-hovered .be-leader-bio,
+  .be-leader-card.be-leader-card-expanded .be-leader-bio,
+  .be-leader-card:focus-within .be-leader-bio {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  /* Hovered dimmed cards still show their (collapsed) bio placeholder
+     so the grid height doesn't jump when transitioning in/out. */
+
+  @media (prefers-reduced-motion: reduce) {
+    .be-leadership-grid,
+    .be-leader-card,
+    .be-leader-card.be-leader-card-hovered,
+    .be-leader-card.be-leader-card-expanded,
+    .be-leader-bio {
+      transition: none;
+      transform: none;
+    }
+    /* Make sure bio content is still reachable without animation. */
+    .be-leader-card.be-leader-card-hovered .be-leader-bio,
+    .be-leader-card.be-leader-card-expanded .be-leader-bio,
+    .be-leader-card:focus-within .be-leader-bio {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+  }
+
+  /* Portrait treatment — thin yellow accent rule under treated portraits.
+     Kept for backwards compatibility (drawer/legacy portraits). */
   .be-leader-portrait-frame {
     position: relative;
   }
@@ -1035,18 +1119,6 @@
     letter-spacing: 0.01em;
     color: var(--be-charcoal-800);
     white-space: nowrap;
-  }
-
-  /* ──────────────────────────────────────────────────────────────
-     LEADERSHIP SWIVEL — active card hover refinement
-     A subtle lift + enhanced shadow when the active card is hovered,
-     signalling interactivity without breaking the coverflow layout.
-     ────────────────────────────────────────────────────────────── */
-  .be-swivel-card.be-swivel-card-active:hover {
-    transform: translateX(0) rotateY(0) scale(1.015) !important;
-    box-shadow: 0 18px 40px -16px rgba(0, 26, 67, 0.28),
-                0 4px 10px -4px rgba(0, 26, 67, 0.12);
-    border-color: var(--be-yellow-400);
   }
 
   /* ──────────────────────────────────────────────────────────────

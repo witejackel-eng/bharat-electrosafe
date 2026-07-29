@@ -12,7 +12,7 @@ const stats = [
 
 export default function AboutIntro() {
   return (
-    <SectionShell variant="hero" bg="bg-be-warm-white">
+    <SectionShell variant="hero" bg="be-page-top-tint">
       {/* Breadcrumb */}
       <div className="reveal-up mb-8">
         <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'About Us' }]} />

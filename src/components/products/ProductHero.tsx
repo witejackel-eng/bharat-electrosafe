@@ -70,7 +70,7 @@ export function ProductHero({ product }: ProductHeroProps) {
   return (
     <>
       {/* ── Main product hero (compact) ── */}
-      <SectionShell variant="productHero" bg="bg-be-warm-white" className="product-hero-compact">
+      <SectionShell variant="productHero" bg="be-page-top-tint" className="product-hero-compact">
         {/* Breadcrumb */}
         <Breadcrumb items={breadcrumbItems} className="mb-3 lg:mb-4" />
 

@@ -33,32 +33,63 @@ export interface SiteFAQ {
 }
 
 /* ────────────────────────────────────────────
-   Homepage FAQs — exactly four items.
+   Homepage FAQs — practical buyer questions.
    Used by:
      - src/components/home/HomeFAQCTA.tsx (visible accordion)
      - src/app/page.tsx (FAQStructuredData JSON-LD)
+   Wording rules:
+     - Electrical insulating mats reference IS 15652:2006 and
+       BIS Licence CM/L:8800129617 and ERDA/NTH test reports.
+     - Lead-time answers never invent exact timelines — they explain
+       that timing depends on product, dimensions, quantity and
+       delivery location, and should be confirmed during quotation.
+     - BharatMembrane and Bharat Hydro Seal are clearly stated to be
+       waterproofing/civil-protection products that do NOT inherit
+       IS 15652:2006 insulating-mat certification.
    ──────────────────────────────────────────── */
 
 export const homeFaqs: SiteFAQ[] = [
   {
-    question: 'What standards do your insulating mats comply with?',
+    question: 'Which standard do your electrical insulating mats conform to?',
     answer:
-      'Our electrical insulating mats are manufactured to IS 15652:2006 under BIS Licence CM/L:8800129617. Available supporting documents include ERDA and NTH test reports. Request the current document set for the exact product and thickness required.',
+      'Our electrical insulating mats are manufactured to IS 15652:2006 under BIS Licence CM/L:8800129617, with supporting ERDA and NTH test reports available on request. The mats also conform to IEC 61111 for international reference. We can share the current document set for the exact product, class and thickness required for your project approval or audit.',
   },
   {
-    question: 'Can you supply custom dimensions?',
+    question: 'How do I select the correct mat class for my operating voltage?',
     answer:
-      'Custom lengths and configurations can be quoted subject to the selected product, required dimensions, quantity and manufacturing feasibility. Share the complete requirement with the sales team for confirmation.',
+      'Mat class is selected based on the highest working voltage present at the installation. Class A is rated for a 3.3 kV working voltage, Class B for 11 kV and Class C for 33 kV. Choose the class that meets or exceeds the maximum voltage at the work location. When in doubt, share the substation or panel specifications with our technical team for a guided recommendation.',
   },
   {
-    question: 'How do I select the correct mat for my application?',
+    question: 'Are custom sizes, colours and surface patterns available?',
     answer:
-      'Mat selection depends on the maximum working voltage, required insulation class, installation environment and applicable project requirements. Provide the operating voltage and application details so the technical team can guide the selection.',
+      'Yes. Custom lengths, widths, colours and surface patterns — such as coin, hexa and strip configurations — can be quoted subject to the selected product, dimensions, quantity and manufacturing feasibility. Share the complete requirement with the sales team so we can confirm what is achievable and revert with a tailored offer.',
   },
   {
-    question: 'What is the lead time for an order?',
+    question: 'Where are electrical insulating mats commonly installed?',
     answer:
-      'Lead time is confirmed with each quotation after the product, dimensions, quantity, documentation requirements and delivery location have been reviewed.',
+      'Insulating mats are commonly installed in front of switchgear, distribution boards, control panels, substation work zones, generator rooms and other electrical installations where personnel may come into contact with live equipment. They are also used in front of HT and LT panels, around transformers and in any area where electrical safety flooring is specified by the project or statutory requirement.',
+  },
+  {
+    question:
+      'Are test reports, BIS documentation and technical certificates available?',
+    answer:
+      'Yes. Test reports from ERDA and NTH, the BIS Licence CM/L:8800129617 under IS 15652:2006, and supporting technical certificates are available on request. We can provide the current document set for the exact product, class and thickness required, along with any specific compliance declarations needed for your project approval or audit.',
+  },
+  {
+    question: 'What information is required to request a quotation?',
+    answer:
+      'To prepare an accurate quotation, please share: the product name, required class (if applicable), dimensions (length × width × thickness), quantity, surface pattern or colour preference (if any), delivery location and any specific documentation or compliance requirement. The more complete the brief, the faster we can revert with a tailored offer.',
+  },
+  {
+    question: 'What is the expected production or dispatch lead time?',
+    answer:
+      'Lead time depends on the product, dimensions, quantity, documentation requirements and delivery location. Standard products and dimensions typically dispatch faster, while custom sizes and bulk orders require additional production time. The exact timeline is confirmed with each quotation after the complete requirement has been reviewed.',
+  },
+  {
+    question:
+      'Do BharatMembrane and Bharat Hydro Seal follow the same electrical standards as insulating mats?',
+    answer:
+      'No. BharatMembrane and Bharat Hydro Seal are waterproofing and civil-protection products and do not inherit IS 15652:2006 insulating-mat certification, electrical insulation classes, the BIS insulating-mat licence or ERDA/NTH electrical-mat test reports. BharatMembrane is presented for applications covered by IS 15909:2020 and Bharat Hydro Seal references IS 15058:2002. They must not be specified as electrical safety mats.',
   },
 ];
 
