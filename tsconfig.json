@@ -23,6 +23,9 @@
         "name": "next"
       }
     ],
+    "types": [
+      "bun-types"
+    ],
     "paths": {
       "@/*": [
         "./src/*"
@@ -41,7 +44,6 @@
     "examples",
     "skills",
     "mini-services",
-    "upload",
-    "tests/security"
+    "upload"
   ]
 }
