@@ -946,3 +946,66 @@ Stage Summary:
 - Bharat Hydro Seal preserved in metadata (explicit mention in description) and in its dedicated /products/bharat-hydro-seal route (untouched).
 - Production canonical domain (https://bharatelectrosafe.com) wired through siteUrl + siteOgImage; no Vercel preview URLs in metadata.
 - Ready to commit and push to main (Vercel auto-deploys on push).
+
+---
+Task ID: 7
+Agent: main (continuation session)
+Task: Comprehensive fix — verify Vercel deployment matches GitHub main, rebuild product detail hero with 12-column grid, ensure product-assurance system is deployed, replace favicon with official BE symbol, build reliable OG/Twitter image system, separate canonicalOrigin from deploymentOrigin.
+
+Work Log:
+- ── DEPLOYMENT VERIFICATION ──
+- Checked git state on /home/z/my-project/bharat-electrosafe: branch main, HEAD = 5040629 (product-assurance cleanup commit), in sync with origin/main.
+- Checked live deployment headers:
+  • https://bharatelectrosafe.com/ → served by Hostinger (PHP/8.1.34, server: hcdn, panel: hpanel). This is the OLD legacy PHP site, NOT the new Next.js app. The user's DNS still points bharatelectrosafe.com at Hostinger.
+  • https://bharat-electrosafe.vercel.app/ → served by Vercel (server: Vercel, x-nextjs-prerender: 1, x-vercel-cache: HIT). This IS the new Next.js app, deployed from the latest commit.
+- Verified the Vercel preview deployment IS up to date with commit 5040629:
+  • Product-assurance system is live: HTML contains be-assurance-strip, be-assurance-grid, be-assurance-item with data-assurance-id attributes (6 items on EIM route).
+  • Favicon, OG image, Twitter image, apple icon, manifest all return HTTP 200 with correct content types.
+  • Manifest JSON correctly lists 4 PWA icons (192/512 standard + maskable).
+- Conclusion: The Vercel deployment IS correct and up to date. The "old content" the user sees on bharatelectrosafe.com is because the apex domain still points at Hostinger. This is a DNS issue the user must fix at their registrar — point bharatelectrosafe.com at Vercel (add the domain in the Vercel project dashboard, then update DNS A/ANAME records at Hostinger to Vercel's addresses).
+
+- ── PRODUCT HERO LAYOUT REBUILD ──
+- Rebuilt src/components/products/ProductHero.tsx:
+  • Replaced the old `flex flex-col lg:flex-row lg:w-[48%] / lg:w-[52%]` layout with a 12-column CSS grid: `grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start`.
+  • Text column: `lg:col-span-6 xl:col-span-5` — 6/12 at lg (1024–1279px) keeps the column wide enough that a long introduction (EIM, AGRBM) does not push the CTA below a 768px laptop viewport; 5/12 at xl (1280px+) delivers the requested editorial ratio with more gallery room.
+  • Gallery column: `lg:col-span-6 xl:col-span-7` — mirrors the text column split.
+  • Removed the previous `order-first lg:order-last` on the gallery div. The previous code put the gallery ABOVE the title on mobile, which broke the natural reading order. Now source order IS visual order on mobile: breadcrumb → badges → title → intro → quick facts → CTA → gallery.
+  • Added `min-w-0` to both grid children. Without this, CSS Grid tracks default to `min-width: auto` and refuse to shrink below their content's intrinsic min-content width. The H1's longest word ("BharatMembrane") and the carousel's thumbnail strip both have large min-content widths — without `min-w-0`, the grid overflows horizontally at 1024px.
+  • `items-start` keeps each side top-aligned so a tall gallery never drags the text block down, and a long intro never stretches the gallery frame.
+- Normalised src/components/products/ProductImageCarousel.tsx aspect ratio:
+  • Replaced `aspect-[4/3] sm:aspect-[16/11] lg:aspect-[16/10] min-h-[240px] sm:min-h-[280px] lg:min-h-[320px]` with a consistent `aspect-[4/3] min-h-[240px]`.
+  • Reason: at lg breakpoint with a 1024px viewport, the 6/12 gallery track is ~465px wide. With the old `lg:aspect-[16/10] lg:min-h-[320px]`, the min-height forced the viewport width to grow to 320 × 16/10 = 512px to satisfy the aspect-ratio + min-height pair, pushing the document 16px past the viewport edge (document.scrollWidth = 1040 > 1024).
+  • With a 4:3 ratio and no min-h at lg, the viewport width is always exactly the gallery track width (465px × 3/4 = 349px tall — well above any floor we would otherwise need), so no overflow is possible.
+  • Also matches the user's request for a "consistent gallery frame (4:3 aspect ratio)" across all breakpoints.
+- Image-fit metadata (object-contain for product shots, object-cover for contextual photos, optional object-position) was already in place via `ProductImage.fit` and the `imageFitClass()` helper — no changes needed.
+
+- ── CANONICAL ORIGIN / DEPLOYMENT ORIGIN SEPARATION ──
+- Refactored src/lib/site-url.ts to make the canonical/deployment origin distinction explicit and well-documented:
+  • Added `canonicalOrigin` export — hardcoded to 'https://bharatelectrosafe.com'. The permanent public domain, used in canonical <link>, sitemap <loc>, robots host, JSON-LD url/@id, Open Graph url. Never varies by deployment.
+  • Added `deploymentOrigin` export — env-driven, resolved in priority order: NEXT_PUBLIC_SITE_URL → VERCEL_PROJECT_PRODUCTION_URL → VERCEL_URL → canonicalOrigin (final fallback so metadataBase is never empty). VERCEL_PROJECT_PRODUCTION_URL is preferred over VERCEL_URL because the production alias is stable across deployments.
+  • `siteUrl` is now aliased to `canonicalOrigin` (preserves original behaviour — structured-data, sitemap, robots all get the canonical domain, even on preview deployments).
+  • Added `buildCanonicalUrl(path)` — routes through `canonicalOrigin`, used for canonical <link>, sitemap, JSON-LD.
+  • Added `buildDeploymentUrl(path)` — routes through `deploymentOrigin`, used for metadataBase-relative URLs.
+  • `buildUrl` kept as a backwards-compatible alias for `buildCanonicalUrl` so existing imports don't break.
+  • `PRODUCTION_DOMAIN` kept as a backwards-compatible alias for `canonicalOrigin`.
+  • Added `normaliseOrigin()` helper that trims, strips trailing slashes, and accepts values with or without a protocol — used by `deploymentOrigin` resolution so malformed env values don't crash the build.
+  • Indexing guard simplified: previously triple-gated on (1) NEXT_PUBLIC_ALLOW_INDEXING=true, (2) siteUrl === canonicalOrigin, (3) VERCEL_ENV is production/unset. Now double-gated on (1) NEXT_PUBLIC_ALLOW_INDEXING=true, (2) VERCEL_ENV is production/unset. The second condition (siteUrl === canonicalOrigin) was redundant because `canonicalOrigin` is hardcoded — `siteUrl` always equals `canonicalOrigin` by definition.
+- Updated src/app/layout.tsx:
+  • `metadataBase` now uses `deploymentOrigin` (instead of `siteUrl`). This is the ONE place we deliberately use the deployment origin rather than the canonical origin — Next.js resolves relative OG/Twitter image URLs (e.g. /opengraph-image.png) against metadataBase, so it must point at the deployment that actually serves the image. On a production deployment deploymentOrigin === canonicalOrigin; on a preview deployment they diverge — metadataBase follows the preview URL so crawlers fetch a reachable image, while every other URL field keeps pointing at the canonical domain.
+  • All other URL fields (canonical, openGraph.url, etc.) still use `siteUrl` (which is `canonicalOrigin`).
+  • Updated the metadata docstring to explain the canonicalOrigin vs deploymentOrigin distinction and the metadataBase exception.
+
+- ── TESTING ──
+- TypeScript type-check: 0 errors.
+- ESLint: 0 errors.
+- Playwright tests:
+  • tests/a11y/product-assurance.spec.ts: 113/113 passed.
+  • tests/a11y/product-hero-compress.spec.ts: 81/81 passed (was 79/81 before the carousel aspect-ratio fix; the 2 prior CTA-visibility failures at 1024×768 are now fixed by the wider 6/6 split at lg, and the 6 horizontal-overflow failures introduced by the first grid attempt are now fixed by the carousel 4:3 aspect-ratio normalisation).
+  • tests/a11y/accessibility.spec.ts: 65/65 passed (no regressions).
+
+Stage Summary:
+- Vercel deployment verified up to date with commit 5040629. The "old content" issue on bharatelectrosafe.com is a DNS problem (apex domain still points at Hostinger, not Vercel) — user must update DNS at their registrar to point the apex domain at Vercel.
+- Product hero rebuilt with a 12-column CSS grid (6/6 at lg, 5/7 at xl) and proper mobile content order (breadcrumb → title → description → specs → CTA → gallery). Carousel normalised to a consistent 4:3 aspect ratio across all breakpoints.
+- canonicalOrigin / deploymentOrigin separation made explicit in src/lib/site-url.ts. metadataBase now uses deploymentOrigin (so OG images resolve against the actual serving deployment); every other URL field uses canonicalOrigin (so preview deployments never pollute search results with *.vercel.app URLs).
+- All 259 regression tests pass (113 product-assurance + 81 product-hero-compress + 65 accessibility).
+- Ready to commit and push to main (Vercel auto-deploys on push).

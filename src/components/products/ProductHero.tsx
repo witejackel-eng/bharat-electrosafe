@@ -61,15 +61,36 @@ export function ProductHero({ product }: ProductHeroProps) {
 
   return (
     <>
-      {/* ── Main product hero (compact) ── */}
+      {/* ── Main product hero (12-column grid: 5 text / 7 gallery) ── */}
       <SectionShell variant="productHero" bg="be-page-top-tint" className="product-hero-compact">
-        {/* Breadcrumb */}
+        {/* Breadcrumb — first on every breakpoint */}
         <Breadcrumb items={breadcrumbItems} className="mb-3 lg:mb-4" />
 
-        {/* Desktop: 48/52 split */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
-          {/* ── Content side (48%) ── */}
-          <div className="lg:w-[48%] flex flex-col">
+        {/*
+          Desktop: 12-column CSS grid.
+            • lg (1024–1279px): 6/6 split — keeps the text column wide
+              enough that a long introduction (EIM, AGRBM) does not push
+              the CTA below a 768px-tall laptop viewport.
+            • xl (1280px+): 5/7 split — the requested editorial ratio,
+              with the gallery given more room to breathe.
+          Mobile/tablet (<1024px): single column, source order is the
+          visual order: badges → title → intro → quick facts → CTA →
+          gallery. (The previous `order-first lg:order-last` on the
+          gallery put it above the title on mobile, which broke the
+          natural reading order.)
+          `items-start` keeps each side top-aligned so a tall gallery
+          never drags the text block down, and a long intro never
+          stretches the gallery frame.
+          `min-w-0` on every grid child is mandatory — CSS Grid tracks
+          default to `min-width: auto`, which means a track refuses to
+          shrink below its content's intrinsic min-content width. The
+          carousel's thumbnail strip and the H1's longest word both
+          have large min-content widths; without `min-w-0` the grid
+          overflows horizontally at 1024px.
+        */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+          {/* ── Text side ── */}
+          <div className="min-w-0 lg:col-span-6 xl:col-span-5 flex flex-col">
             {/* Technical badges */}
             <div className="flex flex-wrap gap-2 mb-2.5 lg:mb-3">
               {product.badges.map((badge) => (
@@ -105,7 +126,9 @@ export function ProductHero({ product }: ProductHeroProps) {
               })}
             </div>
 
-            {/* CTA buttons */}
+            {/* CTA buttons — last item in the text column on mobile so the
+                gallery follows the CTA, matching the requested mobile order:
+                breadcrumb → title → description → specs → CTA → gallery. */}
             <div className="flex flex-wrap gap-3">
               <PrimaryButton href="/contact-us" size="lg">
                 Request a Quote
@@ -119,8 +142,8 @@ export function ProductHero({ product }: ProductHeroProps) {
             </div>
           </div>
 
-          {/* ── Media side (52%) ── */}
-          <div className="w-full min-w-0 lg:w-[52%] order-first lg:order-last">
+          {/* ── Media side ── */}
+          <div className="min-w-0 lg:col-span-6 xl:col-span-7">
             <ProductImageCarousel
               images={product.images.gallery}
               productName={product.name}

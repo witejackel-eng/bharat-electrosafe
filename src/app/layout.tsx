@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
 import { company } from "@/data/company";
-import { siteUrl, allowIndexing } from "@/lib/site-url";
+import { siteUrl, deploymentOrigin, allowIndexing } from "@/lib/site-url";
 import { siteOgImage, siteTwitterImage } from "@/lib/social-image";
 import { HomepageStructuredData } from "@/components/structured-data";
 
@@ -20,10 +20,20 @@ const manrope = Manrope({
 /**
  * Root metadata — Bharat Electrosafe.
  *
- * Canonical domain: https://bharatelectrosafe.com
- * metadataBase is environment-aware: it falls back to the permanent
- * production domain when NEXT_PUBLIC_SITE_URL is unset, so metadata
- * never identifies a Vercel preview URL as the canonical origin.
+ * Canonical domain: https://bharatelectrosafe.com (hardcoded as
+ * `canonicalOrigin` in `src/lib/site-url.ts`). Used for canonical
+ * <link>, Open Graph url, Twitter url, sitemap <loc>, robots host
+ * and JSON-LD url/@id — all routed through `siteUrl` / `buildUrl`,
+ * both of which alias to `canonicalOrigin`.
+ *
+ * `metadataBase` is the one place we deliberately use `deploymentOrigin`
+ * rather than `canonicalOrigin`. Next.js resolves relative OG/Twitter
+ * image URLs (e.g. `/opengraph-image.png`) against `metadataBase`, so it
+ * must point at the deployment that actually serves the image. On a
+ * production deployment `deploymentOrigin === canonicalOrigin`; on a
+ * preview deployment they diverge — `metadataBase` follows the preview
+ * URL so crawlers fetch a reachable image, while every other URL field
+ * keeps pointing at the canonical domain.
  *
  * Brand assets (favicons, apple icon, OG image, Twitter image) are wired
  * via Next.js App Router file conventions — no manual `icons` or
@@ -51,7 +61,7 @@ const siteDescription =
   'Manufacturer of electrical insulating mats, visible-safety mats, BharatMembrane and Bharat Hydro Seal solutions for industrial electrical and civil-protection applications.';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(deploymentOrigin),
   title: {
     default: `${company.name} | Electrical Insulating Mats Manufacturer India`,
     template: `%s | ${company.name}`,

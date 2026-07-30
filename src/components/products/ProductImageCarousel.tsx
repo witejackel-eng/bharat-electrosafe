@@ -119,13 +119,24 @@ export function ProductImageCarousel({
       onKeyDown={handleKeyDown}
     >
       {/* ── Main viewport ──
-          Fixed aspect ratio, so the slot is the same size before and after the
-          image arrives and the carousel contributes nothing to CLS. The
-          min-h fallback ensures the slot has a non-zero height even before
-          the aspect-ratio CSS computes (which silences the Next.js Image
-          "fill and height 0" warning during initial hydration). */}
+          Fixed 4:3 aspect ratio at every breakpoint — the same frame shape
+          on mobile, tablet and desktop, so the gallery never changes
+          proportions between routes or viewports. The min-h floor is set
+          only at the smallest breakpoint so a very narrow screen (360px)
+          still has a usable 240px-tall frame; above that, aspect-ratio
+          alone determines the height (465px width × 3/4 = 349px at lg,
+          which is well above any min-h we would otherwise need).
+
+          Why no lg:min-h-[320px]? Previously the carousel used
+          `lg:aspect-[16/10] lg:min-h-[320px]`, and at a 1024px viewport
+          the 6/12 gallery track (≈465px) was narrower than
+          320 × 16/10 = 512px. The browser grew the viewport width to
+          satisfy the aspect-ratio + min-height pair, pushing the
+          document 16px past the viewport edge. With a 4:3 ratio and no
+          min-h at lg, the viewport width is always exactly the
+          gallery track width, so no overflow is possible. */}
       <div
-        className="relative aspect-[4/3] sm:aspect-[16/11] lg:aspect-[16/10] min-h-[240px] sm:min-h-[280px] lg:min-h-[320px] overflow-hidden rounded-lg bg-be-warm-white touch-pan-y"
+        className="relative aspect-[4/3] min-h-[240px] overflow-hidden rounded-lg bg-be-warm-white touch-pan-y"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={() => (pointerStart.current = null)}
