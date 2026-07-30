@@ -276,14 +276,15 @@ export function Header() {
         className={cn(
           'sticky top-0 z-50 be-header-navy transition-all duration-300',
           compact && 'be-header-navy-compact',
-          // Header heights are tuned to the transparent header logo's
-          // aspect ratio (1589×580 ≈ 2.74:1) so the visible artwork is
-          // optically centred with equal clear space above and below.
-          //   Desktop (lg+): 82px bar, logo 180px wide → 65.7px tall →
-          //     (82−65.7)/2 ≈ 8.2px clear above AND below the wordmark,
+          // Header heights are tuned to the header logo's aspect ratio
+          // (872×335 ≈ 2.60:1) so the visible artwork is optically
+          // centred with equal clear space above and below.
+          //   Desktop (lg+): 82px bar, logo 180px wide → 69.2px tall →
+          //     (82−69.2)/2 ≈ 6.4px clear above AND below the wordmark,
           //     so it never touches the 2px yellow bottom rule.
-          //   Mobile/tablet (<lg): 64px bar, logo 140px wide → 51px tall
-          //     → ~6.5px clear, enough to clear the yellow rule at 360px.
+          //   Mobile/tablet (<lg): 64px bar, logo 140px wide → 53.8px
+          //     tall → ~5.1px clear, enough to clear the yellow rule at
+          //     360px.
           //   Compact (scrolled) shrinks both proportionally.
           compact ? 'h-[60px] lg:h-[68px]' : 'h-[64px] lg:h-[82px]'
         )}
@@ -311,21 +312,20 @@ export function Header() {
               className="shrink-0 flex items-center px-1.5 sm:px-2 py-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800 transition-shadow"
               aria-label="Bharat Electrosafe — Home"
             >
-              {/* Transparent header logo — 1589×580 (aspect ≈ 2.74:1),
-                  lossless WebP (127KB) sourced from the highest-resolution
-                  official artwork (public/images/brand/bharat-electrosafe-
-                  logo-full.png). Tightly cropped so the visible wordmark is
-                  centred within the canvas. Display widths ramp from mobile
-                  (140px) to desktop (180px); compact state when scrolled.
-                  `priority` because the logo is above the fold on every
-                  route. `object-contain` + `h-auto` preserves aspect ratio.
-                  The wrapper `items-center` + `py-1` keeps the artwork
-                  optically centred with ≥8px clear of the yellow rule. */}
+              {/* Header logo — 872×335 (aspect ≈ 2.60:1), lossless WebP
+                  cropped tightly (12px symmetric margin) from the official
+                  Bharat Electrosafe lockup. Display widths ramp from
+                  mobile (140px) to desktop (180px); compact state when
+                  scrolled. `priority` because the logo is above the fold
+                  on every route. `object-contain` + `h-auto` preserves
+                  aspect ratio. The wrapper `items-center` + `py-1` keeps
+                  the artwork optically centred with ≥5px clear of the
+                  yellow rule. */}
               <Image
                 src="/brand/bharat-electrosafe-header-logo.webp"
                 alt="Bharat Electrosafe logo"
-                width={1589}
-                height={580}
+                width={872}
+                height={335}
                 sizes="(max-width: 359px) 124px, (max-width: 1023px) 140px, 180px"
                 className={cn(
                   'object-contain object-left transition-all duration-300 h-auto w-[140px] lg:w-[180px]',
@@ -465,8 +465,8 @@ export function Header() {
                       <Image
                         src="/brand/bharat-electrosafe-header-logo.webp"
                         alt="Bharat Electrosafe logo"
-                        width={1589}
-                        height={580}
+                        width={872}
+                        height={335}
                         sizes="168px"
                         className="object-contain w-[168px] h-auto"
                       />
