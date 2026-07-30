@@ -276,9 +276,16 @@ export function Header() {
         className={cn(
           'sticky top-0 z-50 be-header-navy transition-all duration-300',
           compact && 'be-header-navy-compact',
-          // Compact desktop height ~64px, default desktop ~72px.
-          // Mobile stays at 60px for the entire scroll lifecycle.
-          compact ? 'h-[60px] md:h-16' : 'h-[60px] md:h-[72px]'
+          // Header heights are tuned to the transparent header logo's
+          // aspect ratio (1589×580 ≈ 2.74:1) so the visible artwork is
+          // optically centred with equal clear space above and below.
+          //   Desktop (lg+): 82px bar, logo 180px wide → 65.7px tall →
+          //     (82−65.7)/2 ≈ 8.2px clear above AND below the wordmark,
+          //     so it never touches the 2px yellow bottom rule.
+          //   Mobile/tablet (<lg): 64px bar, logo 140px wide → 51px tall
+          //     → ~6.5px clear, enough to clear the yellow rule at 360px.
+          //   Compact (scrolled) shrinks both proportionally.
+          compact ? 'h-[60px] lg:h-[68px]' : 'h-[64px] lg:h-[82px]'
         )}
       >
         {/* Responsive CSS Grid:
@@ -288,30 +295,41 @@ export function Header() {
             mathematically centred regardless of logo / CTA width. */}
         <div className="container-site page-horizontal-padding grid grid-cols-[minmax(0,1fr)_auto] items-center h-full gap-3 lg:grid-cols-[minmax(190px,1fr)_auto_minmax(190px,1fr)] lg:gap-4">
           {/* ── Column 1: Logo zone (left-aligned) ──
-              The transparent header logo sits directly on the navy band.
-              The image's own navy field matches the bar gradient so the
-              image boundary disappears — no visible square, no mismatched
-              blue rectangle. Focus ring is yellow on navy. */}
+              A transparent high-resolution header logo sits directly on
+              the solid navy band (#002659 — the exact colour eyedropped
+              from the official logo band). Because the artwork is
+              transparent and the band is one solid colour, the image
+              boundary disappears: no visible square, no mismatched navy
+              rectangle, no seam. The asset is tightly cropped (4px
+              symmetric transparent padding) so `align-items: center` +
+              `object-contain` centres the *visible artwork*, not just the
+              canvas — giving equal clear space above and below the
+              wordmark. Focus ring is yellow on navy. */}
           <div className="flex items-center justify-start min-w-0">
             <Link
               href="/"
               className="shrink-0 flex items-center px-1.5 sm:px-2 py-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800 transition-shadow"
               aria-label="Bharat Electrosafe — Home"
             >
-              {/* Transparent header logo — 891x349 (aspect ≈ 2.55:1).
-                  Display sizes ramp from mobile (130px) up to desktop
-                  (180px), with a compact state when scrolled (168px).
+              {/* Transparent header logo — 1589×580 (aspect ≈ 2.74:1),
+                  lossless WebP (127KB) sourced from the highest-resolution
+                  official artwork (public/images/brand/bharat-electrosafe-
+                  logo-full.png). Tightly cropped so the visible wordmark is
+                  centred within the canvas. Display widths ramp from mobile
+                  (140px) to desktop (180px); compact state when scrolled.
                   `priority` because the logo is above the fold on every
-                  route. WebP source (76KB) for fast LCP. */}
+                  route. `object-contain` + `h-auto` preserves aspect ratio.
+                  The wrapper `items-center` + `py-1` keeps the artwork
+                  optically centred with ≥8px clear of the yellow rule. */}
               <Image
-                src="/brand/bharat-electrosafe-logo-header.webp"
+                src="/brand/bharat-electrosafe-header-logo.webp"
                 alt="Bharat Electrosafe logo"
-                width={891}
-                height={349}
-                sizes="(max-width: 359px) 124px, (max-width: 429px) 130px, (max-width: 767px) 136px, (max-width: 1023px) 156px, 180px"
+                width={1589}
+                height={580}
+                sizes="(max-width: 359px) 124px, (max-width: 1023px) 140px, 180px"
                 className={cn(
-                  'object-contain transition-all duration-300 h-auto w-[124px] sm:w-[130px] md:w-[136px] lg:w-[180px]',
-                  compact && 'w-[116px] sm:w-[124px] md:w-[130px] lg:w-[168px]'
+                  'object-contain object-left transition-all duration-300 h-auto w-[140px] lg:w-[180px]',
+                  compact && 'w-[128px] lg:w-[160px]'
                 )}
                 priority
               />
@@ -445,12 +463,12 @@ export function Header() {
                   <SheetTitle className="flex items-center">
                     <Link href="/" onClick={() => setMobileOpen(false)}>
                       <Image
-                        src="/brand/bharat-electrosafe-logo-header.webp"
+                        src="/brand/bharat-electrosafe-header-logo.webp"
                         alt="Bharat Electrosafe logo"
-                        width={891}
-                        height={349}
-                        sizes="160px"
-                        className="object-contain w-[160px] h-auto"
+                        width={1589}
+                        height={580}
+                        sizes="168px"
+                        className="object-contain w-[168px] h-auto"
                       />
                     </Link>
                   </SheetTitle>

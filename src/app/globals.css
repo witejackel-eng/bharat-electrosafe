@@ -608,14 +608,20 @@
   /* ──────────────────────────────────────────────────────────────
      Product-hero laptop-height optimisation — tighter spacing on short
      desktop viewports for product-detail pages.
+
+     NOTE: A previous `max-height: 340px` rule on `.product-hero-carousel`
+     was removed — it constrained the whole carousel container (4:3
+     viewport + caption + thumbnail strip) below its natural height on
+     short-desktop viewports (≥1024px wide, ≤820px tall), which clipped
+     the viewport and pushed the caption/thumbnails into the gallery
+     frame, producing the confirmed product-gallery overlap across all
+     six product-detail routes. The carousel's height is now driven
+     solely by its 4:3 aspect-ratio viewport, so it cannot overlap.
      ────────────────────────────────────────────────────────────── */
   @media (min-width: 1024px) and (max-height: 820px) {
     .product-hero-compact {
       padding-top: 32px;
       padding-bottom: 32px;
-    }
-    .product-hero-compact .product-hero-carousel {
-      max-height: 340px;
     }
     .product-hero-compact .product-hero-h1 {
       margin-bottom: 10px;
@@ -745,15 +751,26 @@
 
   /* ──────────────────────────────────────────────────────────────
      UNIFIED NAVY HEADER
-     The deep Bharat Electrosafe navy is preserved as a single restrained
-     gradient. Excessive glow, glossy effects and visible colour patches
-     have been removed so the logo's own navy field disappears cleanly.
-     A 2px brand-yellow accent line sits beneath the main header bar and
-     a soft shadow lifts the bar without darkening the page.
+     The complete header band uses ONE solid navy — the exact colour
+     sampled (eyedropper mode) from the official Bharat Electrosafe
+     logo band in src/app/opengraph-image.png. The dominant navy pixel
+     cluster there is #002659 / #00275B (anti-aliased variants of the
+     same field); #002659 is the single most frequent value, so it is
+     the source of truth. The previous 110° gradient (#07386F → #031F49)
+     shifted away from the logo's native navy and created a visible
+     colour difference behind the logo. A transparent high-resolution
+     logo now sits on this single solid field, so there is no seam, box
+     or rectangle around the logo. A 2px brand-yellow accent line sits
+     beneath the main header bar; a soft shadow lifts the bar without
+     darkening the page.
      ────────────────────────────────────────────────────────────── */
   .be-header-navy {
     position: relative;
-    background: linear-gradient(110deg, #07386F 0%, #052B5D 52%, #031F49 100%);
+    /* Exact navy eyedropped from the official logo band (#002659 is the
+       mode of the navy pixel cluster in the OG image). Solid — no
+       gradient, no glow, no overlay — so the transparent logo artwork
+       merges seamlessly with the band. */
+    background: #002659;
     box-shadow: 0 5px 18px rgba(3, 31, 73, 0.14);
   }
   /* 2px brand-yellow accent line beneath the main header */
