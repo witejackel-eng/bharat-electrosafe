@@ -954,14 +954,16 @@
      Premium two-column composition on a warm off-white background.
 
        .be-split-hero                       — root <section>
-       .be-split-hero__desktop              — desktop wrapper (≥lg)
-       .be-split-hero__inner                — grid container (copy | visual)
-       .be-split-hero__copy                 — left text column (~42-44%)
-       .be-split-hero__visual               — right image frame (~56-58%)
+       .be-split-hero__inner                — grid container
+       .be-split-hero__copy-pre             — eyebrow + headline block
+       .be-split-hero__visual               — image frame column
+       .be-split-hero__copy-post            — paragraph + CTAs + badges
        .be-split-hero__image                — the <Image> (object-cover)
-       .be-split-hero__mobile-frame         — mobile full-width image wrapper
        .be-split-hero__headline             — H1, ~56-66px desktop
        .be-split-hero__lede                 — supporting paragraph
+       .be-split-hero__ctas                 — CTA button row
+       .be-split-hero__proof                — proof badges grid
+       .be-hero-cta                         — single CTA button (mobile-friendly)
 
      No text overlays the photograph. No readability scrim. The
      photograph is composed at asset-build time to keep the technician
@@ -969,45 +971,41 @@
      portion of the blue insulating mat in the foreground — so a flat
      `object-cover` crop with controlled `object-position` is enough.
      Total hero height fits comfortably in a 1366×768 laptop viewport.
+
+     CONTENT ORDER:
+       Desktop (≥1024px): [copy-pre + copy-post] left column | visual right
+       Tablet  (768-1023): same as desktop, slightly different ratios
+       Mobile  (<768px): copy-pre → visual → copy-post (single column)
+         so the photograph appears immediately under the headline.
      ────────────────────────────────────────────────────────────── */
   .be-split-hero {
     position: relative;
     background: var(--be-warm-white);
   }
+
+  /* ── Desktop / tablet-landscape (≥1024px): two-column split ── */
   .be-split-hero__inner {
     display: grid;
     grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+    grid-template-areas: "copy-pre visual" "copy-post visual";
     align-items: center;
     gap: clamp(2rem, 3vw, 3rem); /* 32–48px gap */
+    column-gap: clamp(2rem, 3vw, 3rem);
+    row-gap: 0;
     padding-top: clamp(48px, 5vw, 64px);
     padding-bottom: clamp(48px, 5vw, 64px);
   }
-  /* Mobile / tablet-portrait (<1024px) — stack copy above image,
-     full-bleed image below the copy block. */
-  @media (max-width: 1023px) {
-    .be-split-hero__inner {
-      grid-template-columns: 1fr;
-      gap: 0;
-      padding-top: clamp(40px, 5vw, 52px);
-      padding-bottom: 0;
-      padding-left: 0;
-      padding-right: 0;
-    }
-    .be-split-hero__copy {
-      padding-left: clamp(20px, 3vw, 56px);
-      padding-right: clamp(20px, 3vw, 56px);
-      padding-bottom: clamp(24px, 3vw, 32px);
-      max-width: 560px;
-      width: 100%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
-  .be-split-hero__copy {
-    /* Restrained line length for editorial hierarchy. */
+  .be-split-hero__copy-pre {
+    grid-area: copy-pre;
     max-width: 600px;
   }
+  .be-split-hero__copy-post {
+    grid-area: copy-post;
+    max-width: 600px;
+    margin-top: 1.25rem; /* 20px below headline */
+  }
   .be-split-hero__visual {
+    grid-area: visual;
     position: relative;
     width: 100%;
   }
@@ -1025,28 +1023,212 @@
       0 1px 2px rgba(2, 31, 73, 0.04),
       0 12px 32px -16px rgba(2, 31, 73, 0.18);
   }
-  /* Mobile visual frame — natural ~900×780 aspect (slightly taller
-     than 4:3 to preserve helmet + feet). Full-bleed (no border, no
-     radius) so the photograph reads as a deliberate scene. Hidden on
-     desktop. */
+  /* Mobile visual frame — 3:2 aspect (1080×720 source crop). Has
+     moderate corner radius, thin border, restrained shadow — same
+     treatment as product cards. Hidden on desktop. */
   .be-split-hero__visual-mobile {
     position: relative;
     width: 100%;
-    aspect-ratio: 900 / 780;
+    aspect-ratio: 1080 / 720;
     overflow: hidden;
     background: var(--be-grey-150);
-    border-top: 1px solid var(--be-grey-250);
-    border-bottom: 1px solid var(--be-grey-250);
+    border-radius: 0.5rem;
+    border: 1px solid var(--be-grey-250);
+    box-shadow:
+      0 1px 2px rgba(2, 31, 73, 0.04),
+      0 6px 16px -10px rgba(2, 31, 73, 0.14);
   }
   /* Responsive visibility swap. Both wrappers exist in the DOM so the
      alt text is available to screen readers on whichever viewport is
      active; CSS `display:none` removes the hidden one from the a11y
      tree so the scene is announced exactly once. */
   .be-split-hero__visual-mobile { display: none; }
-  @media (max-width: 1023px) {
+
+  /* ── Tablet portrait (768–1023px): balanced two-column ── */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .be-split-hero__inner {
+      grid-template-columns: minmax(0, 44fr) minmax(0, 56fr);
+      grid-template-areas: "copy-pre visual" "copy-post visual";
+      gap: 1.5rem 2rem;
+      padding-top: clamp(36px, 4vw, 48px);
+      padding-bottom: clamp(40px, 4vw, 52px);
+    }
+    .be-split-hero__copy-pre,
+    .be-split-hero__copy-post {
+      max-width: none;
+    }
+    .be-split-hero__headline {
+      font-size: clamp(2rem, 3.4vw, 2.75rem);
+    }
+  }
+
+  /* ── Mobile (<768px): single column, image after headline ── */
+  @media (max-width: 767px) {
+    .be-split-hero__inner {
+      /* minmax(0, 1fr) — without the explicit 0 min, grid items can
+         overflow when their inline-block content (e.g. the long
+         uppercase eyebrow) is wider than the column. */
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "copy-pre"
+        "visual"
+        "copy-post";
+      gap: 0;
+      padding-top: clamp(24px, 5vw, 32px);
+      padding-bottom: clamp(24px, 5vw, 32px);
+    }
+    .be-split-hero__copy-pre,
+    .be-split-hero__copy-post {
+      padding-left: clamp(16px, 5vw, 24px);
+      padding-right: clamp(16px, 5vw, 24px);
+      max-width: none;
+      min-width: 0;
+    }
+    .be-split-hero__visual {
+      margin-top: 1rem;    /* 16px above photograph */
+      margin-bottom: 1rem; /* 16px below photograph */
+      padding-left: clamp(16px, 5vw, 24px);
+      padding-right: clamp(16px, 5vw, 24px);
+      min-width: 0;
+    }
+    .be-split-hero__copy-post {
+      padding-left: clamp(16px, 5vw, 24px);
+      padding-right: clamp(16px, 5vw, 24px);
+      margin-top: 0;
+      max-width: none;
+    }
+    /* Swap visual wrappers — show mobile crop, hide desktop crop. */
     .be-split-hero__visual-desktop { display: none; }
     .be-split-hero__visual-mobile { display: block; }
   }
+  /* On ≥768px, show desktop crop (overrides the mobile display:block
+     in case of cascade order issues). */
+  @media (min-width: 768px) {
+    .be-split-hero__visual-desktop { display: block; }
+    .be-split-hero__visual-mobile { display: none; }
+  }
+
+  /* ── Eyebrow / headline / lede ── */
+  .be-split-hero__eyebrow {
+    margin-bottom: 0.75rem; /* 12px below eyebrow */
+  }
+  @media (max-width: 767px) {
+    .be-split-hero__eyebrow {
+      margin-bottom: 0.5rem; /* 8px on mobile */
+    }
+    /* The eyebrow is an inline-block element with all-caps tracking-widest
+       text. On narrow screens, force the eyebrow to wrap at word boundaries
+       so the long phrase "ELECTRICAL INSULATION FOR HIGH-RISK ENVIRONMENTS"
+       doesn't push the hero past the viewport width. */
+    .be-split-hero__eyebrow > span,
+    .be-split-hero__eyebrow span {
+      max-width: 100%;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+  }
+  .be-split-hero__headline {
+    font-size: clamp(2.5rem, 4.2vw, 4.125rem); /* ~56-66px desktop */
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    font-weight: 700;
+    max-width: 600px;
+    margin: 0;
+  }
+  @media (max-width: 1023px) {
+    .be-split-hero__headline {
+      font-size: clamp(2rem, 7vw, 2.75rem);
+      line-height: 1.06;
+    }
+  }
+  @media (max-width: 767px) {
+    .be-split-hero__headline {
+      /* Mobile target: ~38-44px at 390px width */
+      font-size: clamp(2.125rem, 8.5vw, 2.625rem); /* ~34-42px */
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+    }
+  }
+  .be-split-hero__lede {
+    font-size: 1.0625rem; /* ~17px desktop */
+    line-height: 1.55;
+    max-width: 540px;
+    margin: 0 0 1.25rem 0; /* 0 0 20px 0 */
+  }
+  @media (max-width: 767px) {
+    .be-split-hero__lede {
+      font-size: 1rem; /* 16px mobile */
+      line-height: 1.55;
+      margin-bottom: 1rem; /* 16px */
+    }
+  }
+
+  /* ── CTA buttons ──
+     Desktop: two side-by-side auto-width buttons.
+     Mobile (≥360px): two equal-width buttons in one row, 48-52px tall.
+     Mobile (<360px): stacked single-column. */
+  .be-split-hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  @media (max-width: 767px) {
+    .be-split-hero__ctas {
+      flex-wrap: nowrap; /* prefer one row */
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .be-split-hero__ctas .be-hero-cta {
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: 48px; /* 48-52px mobile touch target */
+      padding-left: 0.875rem;
+      padding-right: 0.875rem;
+      padding-top: 0.625rem;
+      padding-bottom: 0.625rem;
+      font-size: 0.9375rem; /* 15px */
+      white-space: nowrap;
+    }
+  }
+  @media (max-width: 359px) {
+    /* Very narrow screens — stack vertically */
+    .be-split-hero__ctas {
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
+    .be-split-hero__ctas .be-hero-cta {
+      width: 100%;
+    }
+  }
+
+  /* ── Proof badges ──
+     Desktop: single horizontal row with wrapping.
+     Mobile: compact two-column grid. */
+  .be-split-hero__proof {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  @media (max-width: 767px) {
+    .be-split-hero__proof {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 0.5rem;
+    }
+    .be-proof-badge {
+      padding: 0.25rem 0.5rem; /* tighter on mobile */
+      gap: 0.3125rem;
+      min-width: 0; /* allow shrink within grid cell */
+    }
+    .be-proof-badge__icon {
+      width: 0.875rem;
+      height: 0.875rem;
+      flex-shrink: 0;
+    }
+  }
+
+  /* ── Image entrance animation ── */
   .be-split-hero__image {
     /* Subtle one-shot fade-in on first paint; default state is fully
        visible so reduced-motion / no-JS users see it immediately.
@@ -1059,46 +1241,16 @@
   @starting-style {
     .be-split-hero__image { opacity: 0; }
   }
-  .be-split-hero__headline {
-    font-size: clamp(2.5rem, 4.2vw, 4.125rem); /* ~56-66px desktop */
-    line-height: 1.05;
-    letter-spacing: -0.022em;
-    font-weight: 700;
-    max-width: 600px;
-  }
-  @media (max-width: 1023px) {
-    .be-split-hero__headline {
-      font-size: clamp(2rem, 7vw, 2.75rem);
+  @media (prefers-reduced-motion: reduce) {
+    .be-split-hero__image {
+      transition: none;
+      opacity: 1;
     }
   }
-  .be-split-hero__lede {
-    font-size: 1.0625rem; /* ~17px */
-    line-height: 1.55;
-    max-width: 540px;
-  }
-  /* Tablet-portrait (768–1023px) — keep the same proportions but allow
-     the visual to shrink a little so neither column gets too narrow. */
-  @media (min-width: 768px) and (max-width: 1023px) {
-    .be-split-hero__inner {
-      grid-template-columns: minmax(0, 44fr) minmax(0, 56fr);
-      gap: 2rem;
-      padding-left: clamp(20px, 3vw, 56px);
-      padding-right: clamp(20px, 3vw, 56px);
-      padding-bottom: clamp(48px, 5vw, 64px);
-    }
-    .be-split-hero__copy {
-      padding-left: 0;
-      padding-right: 0;
-      padding-bottom: 0;
-      margin: 0;
-    }
-    .be-split-hero__headline {
-      font-size: clamp(2rem, 3.4vw, 2.75rem);
-    }
-  }
-  /* Short laptop viewports (≤820px tall) — keep the hero from forcing
-     the page to scroll. The grid naturally shrinks with the smaller
-     vertical padding clamp above. */
+
+  /* ── Short laptop viewports (≤820px tall) — keep the hero from
+     forcing the page to scroll. The grid naturally shrinks with the
+     smaller vertical padding clamp above. ── */
   @media (min-width: 1024px) and (max-height: 820px) {
     .be-split-hero__inner {
       padding-top: clamp(36px, 4vw, 48px);
@@ -1109,12 +1261,6 @@
     }
     .be-split-hero__lede {
       font-size: 1rem;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .be-split-hero__image {
-      transition: none;
-      opacity: 1;
     }
   }
 
@@ -1182,6 +1328,20 @@
     letter-spacing: 0.01em;
     color: var(--be-charcoal-800);
     white-space: nowrap;
+  }
+  /* Mobile override — must come AFTER the base rule above so the
+     cascade picks it up. Allows long labels (e.g. "BIS Licence
+     CM/L:8800129617") to wrap inside the two-column badge grid
+     instead of overflowing the viewport. */
+  @media (max-width: 767px) {
+    .be-proof-badge__label {
+      font-size: 0.625rem; /* 10px */
+      letter-spacing: 0;
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      line-height: 1.2;
+    }
   }
 
   /* ──────────────────────────────────────────────────────────────

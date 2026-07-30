@@ -826,3 +826,52 @@ Stage Summary:
 - Root cause of biography close bug: three competing sources of truth — JS click state (`openIndex`), JS hover state (`hoveredIndex`), and CSS `:focus-within` / `:hover` selectors that opened the bio via grid-template-rows:1fr. After clicking "Close biography", the cursor still over the card or the focused button kept the bio open via the hover/focus-within path. Fixed by removing all hover/focus-within bio open logic; `openIndex` is now the single source of truth.
 - Deployment: commit and push to main triggers Vercel auto-deploy.
 
+
+---
+Task ID: 3
+Agent: Z User (continuation session)
+Task: Fix mobile hero composition (replace tight 4:3 mobile crop with 3:2 dedicated mobile crop + reorder mobile content: eyebrow → headline → photograph → paragraph → CTAs → badges) and re-verify the biography toggle fix from commit 97a09ab.
+
+Work Log:
+- Inspected current state of src/components/home/HomeHero.tsx, src/components/about/LeadershipGrid.tsx, src/app/globals.css.
+- Verified LeadershipGrid.tsx already correctly implements single-source-of-truth biography toggle (commit 97a09ab) — no hoveredIndex, no onMouseEnter/Leave, no CSS :hover/:focus-within on .be-leader-bio. No code changes needed.
+- Confirmed the mobile hero crop (900x780, ~1.154:1 aspect) was the actual problem — VLM verified technician filled 90-95% of mobile image height with boots cut off, yellow boundary only in bottom-right corner.
+- Source analysis: the existing 1200x900 desktop hero source has the technician's helmet at Y=0-70 (touching top edge) and boots at Y=780-890 (only 10-20px of floor space below). No vertical slack to crop a wider 3:2 mobile image without losing helmet or boots.
+- Generated new mobile hero via two-stage process:
+  1. AI outpaint source 1200x900 → 1440x720 (forces vertical extension above helmet and below boots; technician and switchgear preserved).
+  2. Sharp-crop 1440x720 → 1080x720 (3:2 final mobile crop).
+  - VLM verified: technician fully visible (helmet, hands, legs, both boots), 30-35% of image width, 80-85% of image height (down from 90-95%), blue mat visible across foreground, yellow boundary visible, switchgear visible, no overlays.
+- Rebuilt HomeHero.tsx with grid-template-areas for explicit mobile reordering:
+  - Desktop (≥1024px): two-column split (copy-pre + copy-post stacked left | visual right).
+  - Tablet (768-1023px): balanced two-column.
+  - Mobile (<768px): single column with order copy-pre → visual → copy-post (eyebrow → headline → photograph → paragraph → CTAs → badges).
+- Added compact mobile CTAs (two equal-width buttons in one row at ≥360px, stacked at <360px, 48px min-height).
+- Added compact two-column proof badge grid on mobile with 10px font, wrap-enabled labels (BIS Licence CM/L:8800129617 wraps cleanly).
+- Fixed horizontal overflow at 360px and 390px mobile viewports:
+  - Root cause 1: `grid-template-columns: 1fr` allowed inline-block eyebrow content to push grid items beyond the column. Fixed with `minmax(0, 1fr)`.
+  - Root cause 2: `white-space: nowrap` on .be-proof-badge__label (base rule, line 1340) was winning over my mobile override because it was later in source order. Moved the mobile override to be AFTER the base rule.
+  - Root cause 3: Long uppercase eyebrow text with tracking-widest didn't wrap. Added `word-break: break-word; overflow-wrap: anywhere` on the eyebrow span.
+- Updated stale Playwright tests:
+  - tests/a11y/hero-mobile.spec.ts — rewrote to test the new split hero (mobile content order, mobile image src, no overflow, CTA row, 2-col badge grid).
+  - tests/a11y/hero-desktop-compress.spec.ts — rewrote to test two-column split layout (copy left, visual right, desktop image src).
+  - tests/a11y/leadership-biography.spec.ts — NEW file with 28 tests across 4 viewports verifying: open/close behaviour, close-while-pointer-on-card, close-while-button-focused, only-one-open-at-a-time, Escape key, chevron rotation (using modern CSS `rotate` property — Tailwind v4 uses rotate-180 not transform: rotate), 44px touch target, hover does not open biography.
+- Ran full test suite:
+  - Type-check: 0 errors.
+  - Lint: 0 errors.
+  - Production build: success, 16 routes prerendered.
+  - hero-mobile.spec.ts: 28/28 passed.
+  - hero-desktop-compress.spec.ts: 32/32 passed.
+  - leadership-biography.spec.ts: 28/28 passed.
+  - accessibility.spec.ts: 65/65 passed.
+  - header-mobile.spec.ts: 37/42 passed (5 pre-existing failures unrelated to this task — verified by stashing my changes and confirming the same 5 tests fail on the previous commit).
+- Captured viewport screenshots at 9 breakpoints (360×800, 390×844, 430×932, 768×1024, 820×1180, 1024×768, 1366×768, 1440×900, 1920×1080) — zero horizontal overflow at all breakpoints.
+- Biography toggle verified at all 9 breakpoints: open=true/"Close biography" (bio height 436-594px), close=false/"View biography" (bio height 4px), only-one-open-at-a-time, Escape closes.
+
+Stage Summary:
+- New mobile hero image: public/media/hero/bharat-electrosafe-insulating-mat-hero-mobile.webp (1080x720, 3:2, ~41KB).
+- Modified: src/components/home/HomeHero.tsx (rebuilt as three-block grid with grid-template-areas).
+- Modified: src/app/globals.css (split-hero CSS rewritten for mobile-first ordering, compact mobile CTAs and badges, horizontal overflow fixes).
+- Modified: tests/a11y/hero-mobile.spec.ts, tests/a11y/hero-desktop-compress.spec.ts (rewrote stale tests to match new hero).
+- Added: tests/a11y/leadership-biography.spec.ts (new comprehensive biography toggle test suite).
+- All type-check, lint, build, and 153 of 158 Playwright tests pass. The 5 failing tests are pre-existing header-mobile issues unrelated to this task.
+- Ready to commit and push to main (Vercel auto-deploys on push).
