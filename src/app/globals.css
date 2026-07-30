@@ -823,8 +823,15 @@
      enlarge the card, scale it, or change grid column ratios. Only
      the biography area inside the card expands/collapses, smoothly
      animating the card's height by the amount needed for the bio.
-     Desktop hover, keyboard focus-within, and mobile tap all toggle
-     the biography reveal. Reduced-motion shortens the transition.
+
+     SINGLE SOURCE OF TRUTH: `openIndex` in LeadershipGrid.tsx.
+     The biography on a card opens ONLY when that card's index matches
+     `openIndex`. There is no `hoveredIndex`, no `isOpen || isHovered`
+     combination, no CSS `:hover` selector that opens the biography,
+     and no CSS `:focus-within` selector that opens the biography.
+     Hover may change only border colour and a very subtle shadow; it
+     never controls biography visibility. Reduced-motion shortens the
+     transition.
      ────────────────────────────────────────────────────────────── */
   .be-leadership-grid {
     display: grid;
@@ -847,8 +854,9 @@
 
   /* Single leadership card. Warm-white background, thin neutral border,
      small yellow accent line, moderate corner radius. No scale transform,
-     no enlargement on hover — only a very subtle border + shadow lift
-     when the biography is open so the user can see which card is active. */
+     no enlargement. Hover changes only border colour + a very subtle
+     shadow; the open state adds a stronger yellow border + shadow so the
+     user can see which card is active. */
   .be-leader-card {
     position: relative;
     display: flex;
@@ -873,17 +881,8 @@
     pointer-events: none;
     z-index: 1;
   }
-  /* No hover scale. No dimming of neighbouring cards. The only visual
-     change when a biography is open (hover, focus-within, or tap) is a
-     subtle yellow-tinted border + soft shadow. */
-  .be-leader-card.be-leader-card-expanded,
-  .be-leader-card:focus-within {
-    border-color: var(--be-yellow-400);
-    box-shadow:
-      0 10px 24px -12px rgba(2, 31, 73, 0.14),
-      0 2px 6px -2px rgba(2, 31, 73, 0.06);
-  }
-  /* Touch (no hover) only gets the expanded-state emphasis. */
+  /* Open state — applied via JS only when `openIndex === index`.
+     Adds yellow border + soft shadow. Hover never adds this class. */
   .be-leader-card.be-leader-card-expanded {
     border-color: var(--be-yellow-400);
     box-shadow:
@@ -893,8 +892,9 @@
 
   /* Biography reveal — uses grid-template-rows trick for smooth
      height transition without measuring. Inner wrapper clips
-     overflow during the transition. Revealed when toggled open
-     (JS state) AND on keyboard focus-within (accessibility).
+     overflow during the transition. Revealed ONLY when the toggle
+     button is clicked (JS adds `be-leader-bio-open`). No `:hover`
+     and no `:focus-within` selectors open the biography.
      250–350ms transition per spec. */
   .be-leader-bio {
     display: grid;
@@ -911,9 +911,9 @@
     padding-left: 0.75rem;
     margin-top: 0.25rem;
   }
-  .be-leader-card.be-leader-card-expanded .be-leader-bio,
-  .be-leader-card .be-leader-bio-open,
-  .be-leader-card:focus-within .be-leader-bio {
+  /* Single open path: the JS-applied `be-leader-bio-open` class.
+     No `:hover`, no `:focus-within`. */
+  .be-leader-bio.be-leader-bio-open {
     grid-template-rows: 1fr;
     opacity: 1;
   }
@@ -927,9 +927,7 @@
       transform: none;
     }
     /* Make sure bio content is still reachable without animation. */
-    .be-leader-card.be-leader-card-expanded .be-leader-bio,
-    .be-leader-card .be-leader-bio-open,
-    .be-leader-card:focus-within .be-leader-bio {
+    .be-leader-bio.be-leader-bio-open {
       grid-template-rows: 1fr;
       opacity: 1;
     }
@@ -951,90 +949,170 @@
   }
 
   /* ──────────────────────────────────────────────────────────────
-     PHOTOGRAPHIC HOMEPAGE HERO
-     Full-bleed switchgear-room photograph with HTML content overlay
-     positioned over the open left side. The mat stays visible across
-     the lower foreground and the technician stays right-of-centre.
+     SPLIT HOMEPAGE HERO
+     ──────────────────────────────────────────────────────────────
+     Premium two-column composition on a warm off-white background.
 
-     Layers:
-       .be-photo-hero              — root <section>
-       .be-photo-hero__desktop     — full-bleed image holder (≥lg)
-       .be-photo-hero__image       — the <Image> (object-cover)
-       .be-photo-hero__scrim       — left-to-right warm-white
-                                     readability gradient (left only)
-       .be-photo-hero__content     — text container, max-width 600px
-       .be-photo-hero__headline    — H1, ~58-68px desktop
-       .be-photo-hero__lede        — supporting paragraph
+       .be-split-hero                       — root <section>
+       .be-split-hero__desktop              — desktop wrapper (≥lg)
+       .be-split-hero__inner                — grid container (copy | visual)
+       .be-split-hero__copy                 — left text column (~42-44%)
+       .be-split-hero__visual               — right image frame (~56-58%)
+       .be-split-hero__image                — the <Image> (object-cover)
+       .be-split-hero__mobile-frame         — mobile full-width image wrapper
+       .be-split-hero__headline             — H1, ~56-66px desktop
+       .be-split-hero__lede                 — supporting paragraph
+
+     No text overlays the photograph. No readability scrim. The
+     photograph is composed at asset-build time to keep the technician
+     (head, hands, feet), the switchgear being operated, and a large
+     portion of the blue insulating mat in the foreground — so a flat
+     `object-cover` crop with controlled `object-position` is enough.
+     Total hero height fits comfortably in a 1366×768 laptop viewport.
      ────────────────────────────────────────────────────────────── */
-  .be-photo-hero {
+  .be-split-hero {
     position: relative;
     background: var(--be-warm-white);
   }
-  .be-photo-hero__desktop {
-    position: relative;
-    width: 100%;
-    /* Desktop hero height: ~620px on standard laptops, ~680px on tall
-       desktops. Kept above the 590px minimum from the brief. */
-    min-height: 620px;
-    height: clamp(620px, 78vh, 680px);
-    overflow: hidden;
-    background: #031F49; /* navy fallback before image loads */
+  .be-split-hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+    align-items: center;
+    gap: clamp(2rem, 3vw, 3rem); /* 32–48px gap */
+    padding-top: clamp(48px, 5vw, 64px);
+    padding-bottom: clamp(48px, 5vw, 64px);
   }
-  @media (min-width: 1024px) and (max-height: 820px) {
-    .be-photo-hero__desktop {
-      min-height: 590px;
-      height: 590px;
+  /* Mobile / tablet-portrait (<1024px) — stack copy above image,
+     full-bleed image below the copy block. */
+  @media (max-width: 1023px) {
+    .be-split-hero__inner {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding-top: clamp(40px, 5vw, 52px);
+      padding-bottom: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .be-split-hero__copy {
+      padding-left: clamp(20px, 3vw, 56px);
+      padding-right: clamp(20px, 3vw, 56px);
+      padding-bottom: clamp(24px, 3vw, 32px);
+      max-width: 560px;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
-  .be-photo-hero__image {
+  .be-split-hero__copy {
+    /* Restrained line length for editorial hierarchy. */
+    max-width: 600px;
+  }
+  .be-split-hero__visual {
+    position: relative;
+    width: 100%;
+  }
+  /* Desktop visual frame — 4:3 aspect, restrained radius, thin neutral
+     border, very subtle shadow. Hidden on mobile. */
+  .be-split-hero__visual-desktop {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: var(--be-grey-150);
+    border: 1px solid var(--be-grey-250);
+    box-shadow:
+      0 1px 2px rgba(2, 31, 73, 0.04),
+      0 12px 32px -16px rgba(2, 31, 73, 0.18);
+  }
+  /* Mobile visual frame — natural ~900×780 aspect (slightly taller
+     than 4:3 to preserve helmet + feet). Full-bleed (no border, no
+     radius) so the photograph reads as a deliberate scene. Hidden on
+     desktop. */
+  .be-split-hero__visual-mobile {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 900 / 780;
+    overflow: hidden;
+    background: var(--be-grey-150);
+    border-top: 1px solid var(--be-grey-250);
+    border-bottom: 1px solid var(--be-grey-250);
+  }
+  /* Responsive visibility swap. Both wrappers exist in the DOM so the
+     alt text is available to screen readers on whichever viewport is
+     active; CSS `display:none` removes the hidden one from the a11y
+     tree so the scene is announced exactly once. */
+  .be-split-hero__visual-mobile { display: none; }
+  @media (max-width: 1023px) {
+    .be-split-hero__visual-desktop { display: none; }
+    .be-split-hero__visual-mobile { display: block; }
+  }
+  .be-split-hero__image {
     /* Subtle one-shot fade-in on first paint; default state is fully
-       visible so reduced-motion / no-JS users see it immediately. */
+       visible so reduced-motion / no-JS users see it immediately.
+       object-position keeps the technician (centred in the source
+       crop) and the switchgear being operated in frame. */
+    object-position: 50% 50%;
     opacity: 1;
     transition: opacity 0.6s ease-out;
   }
   @starting-style {
-    .be-photo-hero__image { opacity: 0; }
+    .be-split-hero__image { opacity: 0; }
   }
-  .be-photo-hero__scrim {
-    /* Restrained readability gradient over the LEFT region only.
-       Fades to transparent at 66% so the technician (right-of-centre)
-       and the mat remain visible. Tuned to the attached photo's
-       naturally open left side. */
-    background: linear-gradient(
-      90deg,
-      rgba(252, 251, 247, 0.98) 0%,
-      rgba(252, 251, 247, 0.92) 30%,
-      rgba(252, 251, 247, 0.48) 48%,
-      rgba(252, 251, 247, 0)    66%
-    );
-    pointer-events: none;
-  }
-  .be-photo-hero__content {
-    /* Holds eyebrow / headline / lede / CTAs / proof badges. */
-    max-width: 600px;
-  }
-  .be-photo-hero__headline {
-    font-size: clamp(2.5rem, 4.6vw, 4.25rem); /* ~58-68px desktop */
+  .be-split-hero__headline {
+    font-size: clamp(2.5rem, 4.2vw, 4.125rem); /* ~56-66px desktop */
     line-height: 1.05;
     letter-spacing: -0.022em;
     font-weight: 700;
     max-width: 600px;
   }
-  .be-photo-hero__lede {
-    font-size: 1.0625rem;
+  @media (max-width: 1023px) {
+    .be-split-hero__headline {
+      font-size: clamp(2rem, 7vw, 2.75rem);
+    }
+  }
+  .be-split-hero__lede {
+    font-size: 1.0625rem; /* ~17px */
     line-height: 1.55;
     max-width: 540px;
   }
-  @media (min-width: 1024px) and (max-height: 820px) {
-    .be-photo-hero__headline {
-      font-size: clamp(2.25rem, 3.6vw, 3.25rem);
+  /* Tablet-portrait (768–1023px) — keep the same proportions but allow
+     the visual to shrink a little so neither column gets too narrow. */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .be-split-hero__inner {
+      grid-template-columns: minmax(0, 44fr) minmax(0, 56fr);
+      gap: 2rem;
+      padding-left: clamp(20px, 3vw, 56px);
+      padding-right: clamp(20px, 3vw, 56px);
+      padding-bottom: clamp(48px, 5vw, 64px);
     }
-    .be-photo-hero__lede {
+    .be-split-hero__copy {
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 0;
+      margin: 0;
+    }
+    .be-split-hero__headline {
+      font-size: clamp(2rem, 3.4vw, 2.75rem);
+    }
+  }
+  /* Short laptop viewports (≤820px tall) — keep the hero from forcing
+     the page to scroll. The grid naturally shrinks with the smaller
+     vertical padding clamp above. */
+  @media (min-width: 1024px) and (max-height: 820px) {
+    .be-split-hero__inner {
+      padding-top: clamp(36px, 4vw, 48px);
+      padding-bottom: clamp(36px, 4vw, 48px);
+    }
+    .be-split-hero__headline {
+      font-size: clamp(2.125rem, 3.4vw, 3rem);
+    }
+    .be-split-hero__lede {
       font-size: 1rem;
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .be-photo-hero__image {
+    .be-split-hero__image {
       transition: none;
       opacity: 1;
     }
@@ -1432,22 +1510,17 @@
 /* ──────────────────────────────────────────────────────────────
    LEADERSHIP CARD HOVER (outside @layer so :hover wins over
    Tailwind v4 base/preflight). On hover-capable devices only,
-   hovering a leadership card reveals its biography (height grows
-   by the exact amount needed for the bio) and applies a subtle
-   yellow border + soft shadow. Card width and scale never change.
-   Disabled on touch devices (no hover) — there, the toggle button
-   is the only way to open the bio. Also disabled under
-   prefers-reduced-motion (handled by the @media block above).
+   hovering a leadership card changes ONLY the border colour and
+   applies a very subtle soft shadow — never the biography. Card
+   width and scale never change. Biography visibility is controlled
+   exclusively by the JS-applied `.be-leader-bio-open` class
+   (driven by `openIndex` in LeadershipGrid.tsx).
    ────────────────────────────────────────────────────────────── */
 @media (hover: hover) {
   .be-leader-card:hover {
     border-color: var(--be-yellow-400);
     box-shadow:
-      0 10px 24px -12px rgba(2, 31, 73, 0.14),
-      0 2px 6px -2px rgba(2, 31, 73, 0.06);
-  }
-  .be-leader-card:hover .be-leader-bio {
-    grid-template-rows: 1fr;
-    opacity: 1;
+      0 6px 18px -10px rgba(2, 31, 73, 0.10),
+      0 1px 4px -1px rgba(2, 31, 73, 0.04);
   }
 }

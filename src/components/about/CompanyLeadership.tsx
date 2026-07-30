@@ -75,12 +75,12 @@ export default function CompanyLeadership() {
       </div>
 
       {/* ── Leadership ────────────────────────────────────────────
-          Clean three-column leadership grid (desktop) with hover
-          expansion. Each card shows portrait, name, role, short bio,
-          expertise labels and a “View biography” indicator. Hovering
-          (desktop) or tapping “Read biography” (mobile/tablet)
-          reveals the fuller biography and leadership focus inside
-          the same card — no drawer, no carousel, no overlap.
+          Clean three-column leadership grid (desktop). Each card
+          shows portrait, name, role, short bio, expertise labels and
+          a “View biography” toggle button. Clicking the button
+          (mouse, keyboard, or tap) reveals the fuller biography and
+          leadership focus inside the same card — no drawer, no
+          carousel, no overlap. Only one biography is open at a time.
 
           All biographical content comes from src/data/team.ts. The
           component does not duplicate or rewrite any profile text. */}
@@ -88,7 +88,7 @@ export default function CompanyLeadership() {
         <SectionHeader
           eyebrow="Leadership"
           title="The people guiding Bharat Electrosafe"
-          supportingText="Meet the directors shaping the company’s manufacturing, finance, quality, operations, partnerships and international development. Hover a card on desktop or tap “Read biography” on mobile to see the fuller profile."
+          supportingText="Meet the directors shaping the company’s manufacturing, finance, quality, operations, partnerships and international development. Tap “View biography” on any card to read the fuller profile."
         />
 
         <div className="mt-10 lg:mt-12">

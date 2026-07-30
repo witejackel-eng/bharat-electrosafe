@@ -745,3 +745,84 @@ Stage Summary:
 - Console errors: zero on /, /about-us, /products. Page errors: zero on /, /about-us.
 - Files deleted: none (the old ProductFinderWizard.tsx was deleted in the prior commit; this round only modifies existing files).
 - No new sections added. No existing sections removed (other than the contact strip from the header, which is explicitly permitted by spec). Homepage section order preserved (Hero → ProductRange → TrustDocuments → CapabilityIndustries → HomeFAQCTA). Bharat Hydro Seal and all six product families remain linked in mobile drawer + mega-menu + footer.
+
+---
+Task ID: HERO-SPLIT-LEADERSHIP-FIX-1
+Agent: Z.ai Code (main session)
+Task: Fix two production problems — (1) homepage hero photograph composition (replace full-bg image+scrim with split hero copy-left/photo-right); (2) About Us "View biography" toggle opens but does not reliably close (hover + focus-within + click states fight each other).
+
+Work Log:
+- Cloned existing Bharat Electrosafe repo to /home/z/my-project/be-repo.
+- Read current HomeHero.tsx (full-bg 1920x780 photographic hero with warm-white scrim over left text region), globals.css hero rules, LeadershipGrid.tsx (uses openIndex + hoveredIndex + CSS :hover and :focus-within biography open rules — three competing sources of truth), and CompanyLeadership.tsx.
+- Inspected hero assets: 1920x780 desktop webp + 900x675 mobile webp already exist. Verified via VLM (z-ai vision) that both contain technician + switchgear + blue mat scene.
+- Verified via VLM quarter-slice analysis that technician is centred around x=1200 in source (not x=700 as initially guessed) and spans full source height (helmet at y=0, feet at y=780).
+- Generated new hero crops via /home/z/my-project/scripts/generate_hero_crops.py:
+  * Desktop: 1200x900 (4:3) — source crop (760,0)-(1800,780), upscaled 1.154x. Technician centred, switchgear visible, large foreground mat kept, empty left cabinets removed.
+  * Mobile: 900x780 (preserves full source height; ~1.154:1 aspect, slightly taller than 4:3 — necessary because cropping vertically would lose helmet or feet, both of which the brief explicitly forbids cropping).
+  * WebP quality 86, method 6, no sharpening, no HDR.
+- VLM-verified both crops: desktop technician fully visible (head, hands, feet), switchgear visible, mat in foreground, well-composed, no stretching, no large empty area. Mobile same.
+- Rewrote src/components/home/HomeHero.tsx as a premium split hero:
+  * Single HeroContent (one <h1>) rendered in left column on desktop (≥lg) and stacked above image on mobile/tablet-portrait (<lg) via responsive CSS.
+  * Two <Image> elements (desktop 1200x900 + mobile 900x780) in separate wrappers (.be-split-hero__visual-desktop and .be-split-hero__visual-mobile) — CSS `display:none` swaps visibility at the lg breakpoint.
+  * Both images carry full alt text; the hidden wrapper is removed from the a11y tree via display:none, so screen readers announce the scene exactly once.
+  * Single semantic <h1> shared across all viewports (fixes pre-existing duplicate-H1 bug — old hero had HeroContent rendered twice, once in desktop branch and once in mobile branch, each with an <h1>).
+  * Desktop visual frame: 4:3 aspect, restrained 0.75rem radius, thin neutral border, very subtle shadow. No floating labels, no dashed frame, no graphic overlays.
+  * Mobile visual frame: natural ~900x780 aspect (preserves helmet + feet), full-bleed (no radius, no border) so the photograph reads as one credible industrial scene.
+  * Headline ~56-66px desktop via clamp(2.5rem, 4.2vw, 4.125rem); ~32-44px mobile.
+  * Paragraph ~17px desktop.
+  * Tablet-portrait (768-1023px) — copy above image, both at full container width with page-horizontal-padding.
+  * Short laptop viewports (≤820px tall) — hero padding shrinks, headline shrinks to keep the hero in a 1366x768 viewport.
+- Updated globals.css hero section (replaced .be-photo-hero* rules with .be-split-hero* rules):
+  * Removed .be-photo-hero__desktop min-height:620px / height:clamp(620px, 78vh, 680px) (was forcing a tall fixed height).
+  * Removed .be-photo-hero__scrim linear-gradient readability overlay.
+  * Removed .be-photo-hero__content, __headline, __lede rules (replaced by .be-split-hero__copy, __headline, __lede).
+  * Added .be-split-hero__visual-desktop (4:3 aspect-ratio, radius, border, shadow) and .be-split-hero__visual-mobile (900/780 aspect-ratio, full-bleed).
+  * Added responsive swap: .be-split-hero__visual-mobile { display: none } by default, @media (max-width:1023px) flips to .be-split-hero__visual-desktop { display:none } / .be-split-hero__visual-mobile { display:block }.
+  * Mobile/tablet-portrait <lg: single-column grid, copy block with horizontal padding, full-bleed image below.
+- Fixed LeadershipGrid.tsx biography toggle:
+  * Removed `hoveredIndex`, `setHoveredIndex`, `handleHoverEnter`, `handleHoverLeave`, `onMouseEnter`, `onMouseLeave`, `isBioRevealed = isOpen || isHovered` — single source of truth is now `openIndex` only.
+  * `isOpen = openIndex === index` — biography opens ONLY when the toggle button is clicked.
+  * Same button clicked again → openIndex becomes null → biography closes immediately and smoothly, even while pointer remains over the card, even while button retains keyboard focus.
+  * Another card's button clicked → previous openIndex is replaced → previous biography closes, new one opens. Only one open at a time on all screen sizes.
+  * Added Escape-key handler: pressing Escape while focus is inside an open card calls `onClose()` (sets openIndex to null). Focus stays on the button so the user can re-open or tab away cleanly.
+  * Article ref + useEffect attaches keydown listener only when isOpen is true, cleaned up on close.
+  * Button: aria-expanded={isOpen}, aria-controls={bioRegionId}, label flips "View biography" / "Close biography", chevron rotates only when isOpen, 44px min touch target, visible keyboard focus ring.
+- Updated globals.css leadership rules:
+  * Removed `.be-leader-card:focus-within` border-color/box-shadow selector (was opening bio via CSS focus-within).
+  * Removed `.be-leader-card.be-leader-card-expanded .be-leader-bio, .be-leader-card .be-leader-bio-open, .be-leader-card:focus-within .be-leader-bio { grid-template-rows: 1fr; opacity: 1; }` — replaced with single `.be-leader-bio.be-leader-bio-open { grid-template-rows: 1fr; opacity: 1; }`.
+  * Same in prefers-reduced-motion block.
+  * Updated the @media (hover: hover) block at the bottom of globals.css: removed `.be-leader-card:hover .be-leader-bio { grid-template-rows: 1fr; opacity: 1; }` rule (was opening bio on hover). Hover now changes ONLY border-color + a subtle soft shadow (lighter than the open-state shadow).
+  * Updated docstring to reflect single-source-of-truth design.
+- Updated src/components/about/CompanyLeadership.tsx supporting text from "Hover a card on desktop or tap "Read biography" on mobile..." to "Tap "View biography" on any card to read the fuller profile." (matches new toggle-only behaviour).
+- Updated CompanyLeadership.tsx docstring to describe the new toggle-only behaviour.
+
+Verification:
+- bun run typecheck — clean (exit 0).
+- bun run lint — clean (exit 0).
+- bun run build — clean (16/16 routes prerendered, no errors).
+- bunx playwright test tests/a11y/accessibility.spec.ts — 65/65 passed (1.1m). The previously-failing "has exactly one h1" test on "/" now passes (fixed the duplicate-H1 bug).
+- Cross-viewport hero checks (10 viewports: 360x800, 390x844, 430x932, 768x1024, 820x1180, 1024x768, 1280x800, 1366x768, 1440x900, 1920x1080):
+  * No horizontal overflow at any viewport.
+  * H1 visible at all viewports.
+  * Image visible in initial viewport at desktop sizes (≥1024); below the fold on mobile/tablet-portrait (intentional — copy-first layout).
+  * VLM-verified desktop 1440x900: copy on left (eyebrow, H1, paragraph, both CTAs, 4 proof badges), photograph on right in dedicated frame, technician visible, blue mat visible in foreground, no text over photograph, no readability scrim.
+  * VLM-verified mobile 390x844: copy block (all elements) above full-width photograph; technician centred, switchgear visible.
+- Leadership toggle behaviour verified via Playwright script:
+  * All 3 buttons start aria-expanded=false, label "View biography".
+  * Click button 0 → opens (aria-expanded=true, label "Close biography", chevron rotated).
+  * Click button 0 again → closes (aria-expanded=false, label "View biography", chevron reset). Closes even with pointer still over the card.
+  * Hover button 0 after close → does NOT open (aria-expanded stays false). THIS IS THE FIX.
+  * Click button 0 then button 1 → only button 1 open, button 0 closed. Single-open behaviour works.
+  * Press Escape while button 0 is open → closes. Focus stays on button 0.
+  * VLM-verified open state: 3 equal-width cards, first card taller with expanded biography + leadership focus box + 3 bio paragraphs, first card button says "Close biography", other two say "View biography".
+- Known pre-existing test failures (NOT regressions from this work; verified by stashing changes and re-running):
+  * tests/a11y/header-mobile.spec.ts — 5 failures (4 aria-expanded + 1 header-width). These test the mobile header navigation, which this work did not touch. Failures are pre-existing on origin/main.
+  * tests/a11y/hero-desktop-compress.spec.ts and tests/a11y/hero-mobile.spec.ts — reference old hero content (H1 "Certified protection for critical electrical environments", CTA "View Products", technical legend dl, SVG [role="img"] illustration) that was removed in commit d1bb826 (previous hero redesign). Tests were never updated and fail on origin/main too. Out of scope for this task.
+
+Stage Summary:
+- 5 files changed: src/components/home/HomeHero.tsx (rewritten), src/components/about/LeadershipGrid.tsx (rewritten toggle logic), src/components/about/CompanyLeadership.tsx (supporting text + docstring), src/app/globals.css (hero + leader CSS), public/media/hero/bharat-electrosafe-insulating-mat-hero.webp (new 1200x900 crop), public/media/hero/bharat-electrosafe-insulating-mat-hero-mobile.webp (new 900x780 crop).
+- Plus: scripts/generate_hero_crops.py (new) — kept in /home/z/my-project/scripts/ (not in repo) for reproducibility.
+- Root cause of hero composition problem: full-bg 1920x780 image with object-cover + 590-680px container height caused unpredictable vertical cropping across viewport ratios; image was also stretched horizontally from a 1024x1024 source (per past worklog notes), so the technician was right-of-centre with empty left room and was being further cropped by the scrim+overlay layout.
+- Root cause of biography close bug: three competing sources of truth — JS click state (`openIndex`), JS hover state (`hoveredIndex`), and CSS `:focus-within` / `:hover` selectors that opened the bio via grid-template-rows:1fr. After clicking "Close biography", the cursor still over the card or the focused button kept the bio open via the hover/focus-within path. Fixed by removing all hover/focus-within bio open logic; `openIndex` is now the single source of truth.
+- Deployment: commit and push to main triggers Vercel auto-deploy.
+
