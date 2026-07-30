@@ -323,23 +323,13 @@ export const industriesServed = [
   'Heavy industry',
 ] as const;
 
-/**
- * The Tata Precision relationship, conservatively worded.
- *
- * The original company website presents Tata Precision Industries (India)
- * Limited in connection with the electrical insulating-mat range. Current
- * commercial wording and logo usage are subject to company confirmation
- * and are not strengthened here. This object is kept for internal
- * reference only — it is not rendered on any public page until the client
- * has approved exact wording, logo usage and the meaning of
- * "marketed by" / "manufactured under their standards".
- *
- * See docs/CLIENT_CONTENT_CONFIRMATION.md for the open confirmation items.
- */
+/** Tata Precision Industries (India) Limited — referenced on the company's
+ *  own website in connection with the insulating-mat range. Not rendered on
+ *  public pages until wording is approved. */
 export const manufacturingCollaboration = {
   partner: 'Tata Precision Industries (India) Limited',
   statement:
-    'The original company website presents Tata Precision Industries (India) Limited in connection with the electrical insulating-mat range. Current commercial wording and logo usage are subject to company confirmation.',
+    'Tata Precision Industries (India) Limited is referenced on the company website in connection with the insulating-mat range.',
   logo: '/brand/marketed-by-tata-precision.webp',
   alt: 'Tata Precision Industries (India) Limited logo',
 };

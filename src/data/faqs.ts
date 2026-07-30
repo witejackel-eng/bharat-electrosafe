@@ -1,26 +1,8 @@
 /**
  * FAQ data — single source of truth for the visible FAQ accordions.
  *
- * The visible FAQ components (HomeFAQCTA, ProductFAQ) consume these
- * arrays. FAQPage JSON-LD is intentionally NOT emitted (spec section
- * 17: Google removed FAQ rich-result display in 2026; obsolete FAQ
- * schema provides no meaningful search-result benefit). The visible
- * FAQ content is retained for users.
- *
- * Wording rules:
- *   - Electrical insulating products (electrical-insulating-mats,
- *     coloured-strip-insulating-mats, bi-color-insulating-mats,
- *     auto-glow-reflective-band-insulating-mats) may reference
- *     IS 15652:2006, BIS Licence CM/L:8800129617, and ERDA/NTH test reports.
- *   - BharatMembrane must NOT inherit IS 15652, electrical insulation
- *     classes, the BIS insulating-mat licence, or ERDA/NTH electrical-mat
- *     claims. It references IS 15909:2020 conservatively.
- *   - Bharat Hydro Seal must NOT inherit IS 15652, electrical insulation
- *     classes, the BIS insulating-mat licence, or ERDA/NTH electrical-mat
- *     claims. It references IS 15058:2002 conservatively.
- *   - CPRI is NOT referenced anywhere. No CPRI document has been verified.
- *   - No claim is described as "BIS approval" unless a genuine
- *     product-specific approval document has been verified.
+ * FAQPage JSON-LD is intentionally not emitted because Google removed
+ * FAQ rich-result display. The visible FAQ content is retained for users.
  */
 
 import type { ProductData } from './products';
@@ -34,22 +16,8 @@ export interface SiteFAQ {
   answer: string;
 }
 
-/* ────────────────────────────────────────────
-   Homepage FAQs — practical buyer questions.
-   Used by:
-     - src/components/home/HomeFAQCTA.tsx (visible accordion)
-     - src/components/home/HomeFAQ.tsx (visible accordion)
-   FAQPage JSON-LD is intentionally not emitted (spec section 17).
-   Wording rules:
-     - Electrical insulating mats reference IS 15652:2006 and
-       BIS Licence CM/L:8800129617 and ERDA/NTH test reports.
-     - Lead-time answers never invent exact timelines — they explain
-       that timing depends on product, dimensions, quantity and
-       delivery location, and should be confirmed during quotation.
-     - BharatMembrane and Bharat Hydro Seal are clearly stated to be
-       waterproofing/civil-protection products that do NOT inherit
-       IS 15652:2006 insulating-mat certification.
-   ──────────────────────────────────────────── */
+/* Homepage FAQs — practical buyer questions.
+   FAQPage JSON-LD is intentionally not emitted. */
 
 export const homeFaqs: SiteFAQ[] = [
   {
@@ -85,12 +53,8 @@ export const homeFaqs: SiteFAQ[] = [
   },
 ];
 
-/* ────────────────────────────────────────────
-   Product-specific FAQs keyed by slug.
-   Each array is consumed by the visible ProductFAQ accordion on the
-   matching product route. FAQPage JSON-LD is intentionally not
-   emitted (spec section 17).
-   ──────────────────────────────────────────── */
+/* Product-specific FAQs keyed by slug.
+   FAQPage JSON-LD is intentionally not emitted. */
 
 export const productFaqsBySlug: Record<string, SiteFAQ[]> = {
   /* ── Electrical insulating mats ── */
@@ -268,13 +232,7 @@ export const productFaqsBySlug: Record<string, SiteFAQ[]> = {
   ],
 };
 
-/* ────────────────────────────────────────────
-   Lookup helper — used by product page routes
-   (for JSON-LD) and by ProductFAQ (for the
-   visible accordion). Both callers receive the
-   same array reference, so the visible content
-   and the schema cannot drift apart.
-   ──────────────────────────────────────────── */
+/* Lookup helper — used by product page routes and ProductFAQ. */
 
 export function getProductFaqs(product: ProductData): SiteFAQ[] {
   return productFaqsBySlug[product.slug] ?? [];

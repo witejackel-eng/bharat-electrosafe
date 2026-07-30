@@ -8,9 +8,14 @@ const siteUrl =
 /**
  * Content-Security-Policy.
  *
- * Interim policy uses `script-src 'self' 'unsafe-inline'` so Next.js inline
- * bootstrap scripts are not blocked. `unsafe-eval` is never added.
- * Resend is server-side only and is not listed in browser connect-src.
+ * Uses `script-src 'self' 'unsafe-inline'` so Next.js inline bootstrap
+ * scripts are not blocked. `unsafe-eval` is never added. Resend is
+ * server-side only and is not listed in browser connect-src.
+ *
+ * The `unsafe-inline` limitation is a known moderate residual risk for
+ * this static marketing site. A nonce-based CSP would require dynamic
+ * rendering or middleware that adds architectural complexity beyond
+ * what is justified for this content-first site.
  */
 const cspHeader = [
   "default-src 'self'",
@@ -19,17 +24,12 @@ const cspHeader = [
   "img-src 'self' data: https:",
   "font-src 'self'",
   "connect-src 'self'",
-  /* The About page embeds two company YouTube videos via the no-cookie
-     host (click-to-load). The Contact Us page no longer uses any iframe
-     for the map — the static SVG preview is a plain clickable link that
-     opens Google Maps in a new tab, which works around ad-blockers,
-     privacy extensions and corporate firewalls that were blocking the
-     OpenStreetMap embed. Nothing else may be framed. */
-  "frame-src 'self' https://www.youtube-nocookie.com",
+  "frame-src https://www.youtube-nocookie.com",
   "object-src 'none'",
   "base-uri 'self'",
   "frame-ancestors 'none'",
   "form-action 'self'",
+  "manifest-src 'self'",
   isProduction ? 'upgrade-insecure-requests' : '',
 ].filter(Boolean);
 
@@ -55,11 +55,14 @@ const securityHeaders = [
     value:
       'camera=(), microphone=(), geolocation=(), browsing-topics=(), interest-cohort=()',
   },
+  /* HSTS: using a safe rollout value without preload. The preload list
+     requires the client to control all subdomains and support HTTPS on
+     every one. If that is verified, preload can be added later. */
   ...(isProduction
     ? [
         {
           key: 'Strict-Transport-Security',
-          value: 'max-age=63072000; includeSubDomains; preload',
+          value: 'max-age=63072000; includeSubDomains',
         },
       ]
     : []),
@@ -68,19 +71,8 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   output: 'standalone',
   reactStrictMode: true,
-  /* Allow dev-server resources (_next/*, HMR websocket) to be served when
-     the sandbox/browser reaches the dev server via 127.0.0.1 while the
-     server reports its origin as localhost. Silences the Next.js 16
-     "Cross origin request detected" warning and prevents the dev server
-     from dropping requests under sandbox browser load. */
-  allowedDevOrigins: ['http://127.0.0.1', 'http://localhost', 'http://21.0.13.102'],
-  /* Pin the workspace root. Without this Turbopack walks up to the first
-     lockfile it finds, which on a developer machine can be a directory above
-     the repo — it then compiles unrelated files that happen to sit at
-     `src/` there. */
-  turbopack: {
-    root: __dirname,
-  },
+  poweredByHeader: false,
+  allowedDevOrigins: ['http://127.0.0.1', 'http://localhost'],
   async headers() {
     return [
       {
@@ -90,7 +82,7 @@ const nextConfig: NextConfig = {
     ];
   },
   async redirects() {
-    // Permanent PHP → new-route redirects (multi-page routes, not anchors)
+    // Permanent PHP → new-route redirects
     const phpRedirects: Array<{ source: string; destination: string }> = [
       { source: '/index.php', destination: '/' },
       { source: '/about-us.php', destination: '/about-us' },
@@ -100,7 +92,6 @@ const nextConfig: NextConfig = {
       { source: '/bi-color-insulating-mats.php', destination: '/products/bi-color-insulating-mats' },
       { source: '/auto-glow-reflective-band-insulating-mat.php', destination: '/products/auto-glow-reflective-band-insulating-mats' },
       { source: '/bharat-membrane.php', destination: '/products/bharat-membrane' },
-      /* The old BharatHydro Seal PHP URL now redirects to the new product page. */
       { source: '/BharatHydro-Seal.php', destination: '/products/bharat-hydro-seal' },
     ];
 

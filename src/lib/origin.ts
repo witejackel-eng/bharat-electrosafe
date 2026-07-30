@@ -1,17 +1,9 @@
 /**
  * Origin validation utilities for cross-site form protection.
  *
- * Section 16 of the corrective-engineering master prompt:
- * do NOT use `startsWith()` — compare parsed origins exactly.
- *
- * The allow-list is built from:
- *   - NEXT_PUBLIC_SITE_URL
- *   - VERCEL_PROJECT_PRODUCTION_URL (production alias, e.g. project.vercel.app)
- *   - VERCEL_URL (current deployment, https prepended if no protocol)
- *   - http://localhost:3000 (only when NODE_ENV !== 'production')
- *
- * This keeps the contact route file focused on email logic while
- * origin validation lives in one auditable place.
+ * Origins are compared exactly — substring/startsWith matching is never used.
+ * The allow-list is built from environment variables so that preview deploys
+ * and local development work without code changes.
  */
 
 /**
