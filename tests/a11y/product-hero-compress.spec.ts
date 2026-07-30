@@ -77,8 +77,11 @@ for (const route of productRoutes) {
     });
 
     test('Trust strip is visible in a connected band', async ({ page }) => {
-      // The trust strip is in a separate compact section after the hero
-      const trustItems = page.locator('main ul li').filter({ has: page.locator('svg') });
+      // The shared ProductAssuranceGrid renders a section with the semantic
+      // heading "Product assurance" and one <li> per assurance item.
+      const trustItems = page.locator(
+        'section[aria-labelledby="product-assurance-heading"] .be-assurance-item'
+      );
       const firstTrust = trustItems.first();
       await expect(firstTrust).toBeVisible();
       // Trust strip should be near or below viewport (it's in the connected band)

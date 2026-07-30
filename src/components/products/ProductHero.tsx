@@ -15,9 +15,6 @@ import {
   Building,
   Shield,
   Download,
-  FileText,
-  Truck,
-  Headphones,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
@@ -26,6 +23,7 @@ import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { SectionShell } from '@/components/ui/SectionShell';
 import { ProductImageCarousel } from '@/components/products/ProductImageCarousel';
+import { ProductAssuranceGrid } from '@/components/products/ProductAssuranceGrid';
 import type { ProductData } from '@/data/products';
 
 /* ── Icon mapping ── */
@@ -44,12 +42,6 @@ const iconMap: Record<string, LucideIcon> = {
   building: Building,
   shield: Shield,
 };
-
-const staticTrustIndicators = [
-  { icon: FileText, label: 'Technical documentation available on request' },
-  { icon: Truck, label: 'Delivery confirmed with each quotation' },
-  { icon: Headphones, label: 'Technical support available' },
-];
 
 /* ── Component ── */
 
@@ -138,30 +130,8 @@ export function ProductHero({ product }: ProductHeroProps) {
         </div>
       </SectionShell>
 
-      {/* ── Trust strip — compact connected band below main hero ── */}
-      <SectionShell variant="compact" bg="bg-be-yellow-50" topRule>
-        <ul className="flex flex-wrap gap-x-6 gap-y-2.5 px-1">
-          {product.trustPoints.map((point) => (
-            <li key={point} className="flex items-center gap-2">
-              <Shield className="size-4 shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
-              <span className="text-metadata font-semibold uppercase tracking-wide text-be-charcoal-950">
-                {point}
-              </span>
-            </li>
-          ))}
-          {staticTrustIndicators.map((item) => {
-            const Icon = item.icon;
-            return (
-              <li key={item.label} className="flex items-center gap-2">
-                <Icon className="size-4 shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
-                <span className="text-metadata font-semibold uppercase tracking-wide text-be-charcoal-950">
-                  {item.label}
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-      </SectionShell>
+      {/* ── Shared product assurance strip ── */}
+      <ProductAssuranceGrid product={product} />
     </>
   );
 }

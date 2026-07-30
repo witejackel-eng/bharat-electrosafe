@@ -128,25 +128,128 @@ export interface ProductImages {
 }
 
 /**
- * Short trust statements rendered in the product hero strip.
+ * Product assurance items — the short trust statements rendered in the
+ * compact band directly beneath each product hero.
  *
- * Per-product rather than global: the mat range is made under IS 15652:2006
- * and a BIS licence, the geo-membrane is not. Applying one array to every
- * product is how `IS 15652:2006 Certified` ended up on BharatMembrane.
+ * ### Why stable IDs?
+ *
+ * The previous implementation stored trust statements as plain strings and
+ * merged two uncontrolled arrays in the hero component — `product.trustPoints`
+ * plus a hard-coded `staticTrustIndicators` list. Both arrays contained a
+ * documentation entry (one said "Technical documentation available", the
+ * other said "Technical documentation available on request"), and because
+ * they were only compared as raw strings, both rendered at once on
+ * BharatMembrane. That is how the screenshot ended up with two
+ * "TECHNICAL DOCUMENTATION AVAILABLE" labels above each other.
+ *
+ * Stable semantic IDs fix this at the data layer. Every assurance item
+ * belongs to exactly one category. When product-specific items are merged
+ * with the shared defaults, deduplication happens by ID — so a product
+ * cannot end up with two documentation entries even if its own data lists
+ * one and the defaults also list one.
+ *
+ * ### Why per-product rather than global?
+ *
+ * The mat range is made under IS 15652:2006 and a BIS licence; the
+ * geo-membrane is not. Applying one array to every product is how
+ * `IS 15652:2006 Certified` previously ended up on BharatMembrane.
  */
-export const matTrustPoints: string[] = [
-  'IS 15652:2006',
-  'BIS Licence CM/L:8800129617',
-  'ERDA / NTH tested',
-  'Technical documentation available',
+export type AssuranceId =
+  | 'standard'
+  | 'bis-licence'
+  | 'testing'
+  | 'material'
+  | 'construction'
+  | 'profile'
+  | 'joining'
+  | 'documentation'
+  | 'delivery'
+  | 'technical-support';
+
+export interface ProductAssurance {
+  id: AssuranceId;
+  /** Sentence-case label, e.g. "Documentation available on request". */
+  label: string;
+}
+
+/**
+ * Assurance items that are true of every Bharat Electrosafe product line —
+ * documentation is available on request, delivery is confirmed with each
+ * quotation, and technical support is available.
+ *
+ * These are merged into every product's `assuranceItems` by
+ * `getProductAssuranceItems()`. If a product-specific item already uses the
+ * same ID (e.g. a product redefines `documentation` with a stronger claim),
+ * the product-specific item wins and the default is dropped.
+ */
+export const defaultAssuranceItems: ProductAssurance[] = [
+  { id: 'documentation', label: 'Documentation available on request' },
+  { id: 'delivery', label: 'Delivery schedule confirmed with quotation' },
+  { id: 'technical-support', label: 'Technical support available' },
 ];
 
-export const membraneTrustPoints: string[] = [
-  'IS 15909:2020',
-  'PVC geo-membrane',
-  'Thermally welded seams',
-  'Technical documentation available',
+/**
+ * Assurance items specific to the four electrical-insulating-mat products.
+ *
+ * Published identically across all four mat pages of the source site, so
+ * defined once and shared — the four mat products cannot drift apart.
+ */
+export const matAssuranceItems: ProductAssurance[] = [
+  { id: 'standard', label: 'IS 15652:2006' },
+  { id: 'bis-licence', label: 'BIS Licence CM/L:8800129617' },
+  { id: 'testing', label: 'ERDA / NTH tested' },
 ];
+
+/**
+ * Assurance items specific to BharatMembrane.
+ *
+ * The geo-membrane is not made under IS 15652:2006 and carries no BIS
+ * insulating-mat licence, so those IDs are absent here. Adding them back
+ * anywhere in the membrane data would re-introduce the original screenshot
+ * bug; the regression tests in `tests/a11y/product-assurance.spec.ts`
+ * guard against that.
+ */
+export const membraneAssuranceItems: ProductAssurance[] = [
+  { id: 'standard', label: 'IS 15909:2020' },
+  { id: 'material', label: 'PVC geo-membrane' },
+  { id: 'joining', label: 'Thermally welded seams' },
+];
+
+/**
+ * Merge a product's own assurance items with the shared defaults,
+ * deduplicating by `id`.
+ *
+ * Product-specific items come first (in their declared order), then any
+ * default item whose `id` is not already present is appended. This means a
+ * product can override a default by re-declaring the same ID with a
+ * different label, and no product can ever render two items with the same
+ * category.
+ */
+export function mergeAssuranceItems(
+  productItems: ProductAssurance[],
+  defaults: ProductAssurance[] = defaultAssuranceItems
+): ProductAssurance[] {
+  const seen = new Set<AssuranceId>(productItems.map((item) => item.id));
+  const merged: ProductAssurance[] = [...productItems];
+  for (const def of defaults) {
+    if (!seen.has(def.id)) {
+      merged.push(def);
+      seen.add(def.id);
+    }
+  }
+  return merged;
+}
+
+/**
+ * Resolve the final assurance items to render for a given product.
+ *
+ * The single entry point used by `ProductAssuranceGrid`. Components never
+ * read `product.assuranceItems` directly — they go through this helper so
+ * the merge + dedup behaviour cannot be bypassed.
+ */
+export function getProductAssuranceItems(product: ProductData): ProductAssurance[] {
+  return mergeAssuranceItems(product.assuranceItems);
+}
 
 export type ProductCategory =
   | 'electrical-insulation'
@@ -177,8 +280,13 @@ export interface ProductData {
   shortName: string;
   category: ProductCategory;
   images: ProductImages;
-  /** Statements safe to show for this product specifically. */
-  trustPoints: string[];
+  /**
+   * Product-specific assurance items rendered in the compact band beneath
+   * the hero. Shared defaults (documentation / delivery / technical-support)
+   * are merged in by `getProductAssuranceItems()` — do not add those IDs
+   * here unless the product genuinely overrides the default label.
+   */
+  assuranceItems: ProductAssurance[];
   description: string;
   introduction: string;
   badges: string[];
@@ -385,7 +493,7 @@ const electricalInsulatingMats: ProductData = {
        installation, the slot stays empty and the shot is requested in
        docs/PRODUCT-PHOTOGRAPHY-GAPS.md. */
   },
-  trustPoints: matTrustPoints,
+  assuranceItems: matAssuranceItems,
   description:
     'Class A, B and C electrical insulating mats manufactured for IS 15652:2006 requirements, under BIS Licence CM/L:8800129617, for control panels, substations and industrial floors.',
   introduction:
@@ -527,7 +635,7 @@ const colouredStripInsulatingMats: ProductData = {
     overview: csimGallery[2],
     application: csimGallery[4],
   },
-  trustPoints: matTrustPoints,
+  assuranceItems: matAssuranceItems,
   description:
     'IS 15652:2006 insulating mats with a high-visibility yellow strip that marks safe pathways and hazard-zone boundaries around live electrical installations.',
   introduction:
@@ -669,7 +777,7 @@ const biColorInsulatingMats: ProductData = {
     gallery: bcimGallery,
     overview: bcimGallery[1],
   },
-  trustPoints: matTrustPoints,
+  assuranceItems: matAssuranceItems,
   description:
     'IS 15652:2006 insulating mats with a dual-tone colour scheme that serves as a clear indicator of safety boundaries while enhancing visual appeal in the workspace.',
   introduction:
@@ -824,7 +932,7 @@ const autoGlowReflectiveBandMats: ProductData = {
     gallery: agrimGallery,
     overview: agrimGallery[2],
   },
-  trustPoints: matTrustPoints,
+  assuranceItems: matAssuranceItems,
   description:
     'IS 15652:2006 insulating mats with auto-glow or reflective bands that keep walkways and hazard zones visible when normal lighting fails.',
   introduction:
@@ -982,7 +1090,7 @@ const bharatMembrane: ProductData = {
     overview: bmGallery[4],
     application: bmGallery[5],
   },
-  trustPoints: membraneTrustPoints,
+  assuranceItems: membraneAssuranceItems,
   description:
     'PVC geo-membrane to IS 15909:2020 for tunnel waterproofing, containment and barrier protection in civil and environmental engineering.',
   introduction:
@@ -1189,11 +1297,11 @@ const bharatHydroSeal: ProductData = {
        slot stays empty rather than showing a bare concrete structure in which
        the product cannot be found. */
   },
-  trustPoints: [
-    'IS 15058-2002',
-    'PVC water stop',
-    'Multiple profiles',
-    'Weldable at intersections',
+  assuranceItems: [
+    { id: 'standard', label: 'IS 15058-2002' },
+    { id: 'material', label: 'PVC water stop' },
+    { id: 'profile', label: 'Multiple profiles' },
+    { id: 'joining', label: 'Weldable at intersections' },
   ],
   description:
     'PVC water stop seals to IS 15058-2002 for construction and expansion joints in concrete structures — water tanks, dams, basements, tunnels and sewage treatment plants.',
