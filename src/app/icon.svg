@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bharat Electrosafe favicon — official BE symbol on a square deep-navy
+     background derived from the company header (#00275B, be-navy-800).
+
+     The BE monogram (lightning-bolt "B" + "E") is the official mark used
+     across all company stationery. Path data is taken verbatim from
+     public/logo.svg; only the background fill and animation were changed.
+
+     Design rules:
+       • Square 30×30 viewBox — fills the favicon canvas edge-to-edge.
+       • Deep navy #00275B background — matches the site header.
+       • White BE symbol — maximum contrast at 16×16 and 32×32.
+       • No text, no border, no shadow, no gradient, no animation.
+       • Rounded corners on the background give a slightly softer feel
+         at large sizes without sacrificing small-size clarity. -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+	 viewBox="0 0 30 30" role="img" aria-label="Bharat Electrosafe BE monogram">
+	<!-- Deep-navy rounded square background -->
+	<path fill="#00275B" d="M24.51,28.51H5.49c-2.21,0-4-1.79-4-4V5.49c0-2.21,1.79-4,4-4h19.03c2.21,0,4,1.79,4,4v19.03
+		C28.51,26.72,26.72,28.51,24.51,28.51z"/>
+	<!-- Official BE symbol — three white strokes forming the
+	     lightning-bolt B + E monogram -->
+	<g>
+		<path fill="#FFFFFF" d="M15.47,7.1l-1.3,1.85c-0.2,0.29-0.54,0.47-0.9,0.47h-7.1V7.09C6.16,7.1,15.47,7.1,15.47,7.1z"/>
+		<polygon fill="#FFFFFF" points="24.3,7.1 13.14,22.91 5.7,22.91 16.86,7.1"/>
+		<path fill="#FFFFFF" d="M14.53,22.91l1.31-1.86c0.2-0.29,0.54-0.47,0.9-0.47h7.09v2.33H14.53z"/>
+	</g>
+</svg>

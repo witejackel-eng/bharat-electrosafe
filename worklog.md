@@ -875,3 +875,74 @@ Stage Summary:
 - Added: tests/a11y/leadership-biography.spec.ts (new comprehensive biography toggle test suite).
 - All type-check, lint, build, and 153 of 158 Playwright tests pass. The 5 failing tests are pre-existing header-mobile issues unrelated to this task.
 - Ready to commit and push to main (Vercel auto-deploys on push).
+
+---
+Task ID: 4
+Agent: Z User (Industry References + brand assets session)
+Task: Redesign the homepage statistics + Industry References section (statistics cards, footnote, organisation logo grid, About Us link) and rebuild the site-wide favicon, app icons, OG image, Twitter image and metadata.
+
+Work Log:
+- Cloned repo and inspected current state of src/components/home/TrustDocuments.tsx (the section containing certifications grid + scaleFacts pills + LogoRail marquee + About Us link), src/data/trust.ts (scaleFacts data, organisationReferences), src/components/ui/LogoRail.tsx (marquee component), src/app/layout.tsx (metadata), src/app/manifest.ts (no manifest existed — only static public/site.webmanifest).
+- Audited existing brand assets:
+  - public/logo.svg: official BE symbol (lightning-bolt B + E) on charcoal #2D2D2D rounded square with breathing animation.
+  - public/brand/bharat-electrosafe-logo-header.png (891×349 RGBA): the official horizontal wordmark used in the site header.
+  - public/media/hero/bharat-electrosafe-insulating-mat-hero.webp (1200×900): final desktop hero photograph (technician + insulating mat + switchgear).
+  - public/brand/og-bharat-electrosafe.png and twitter-card-bharat-electrosafe.png: existing 1200×630 / 1200×600 social images — not generated from real logo + real hero photo.
+  - public/images/brand/: old favicon files, only single-size 16×16 favicon.ico, plain RGB apple-touch-icon.png.
+- ── HOMEPAGE STATISTICS + INDUSTRY REFERENCES REBUILD ──
+- Added `shortLabel` + `companyStated` fields to `scaleFacts` in src/data/trust.ts (preserved original `label` for any other consumers).
+- Added `organisationReferenceEyebrow`, `organisationReferenceTitle`, `organisationReferenceCtaLabel` exports to src/data/trust.ts.
+- Created new src/components/ui/LogoGrid.tsx (static, accessible, equal-height grid component): 2 cols mobile / 3 cols tablet / 4 cols desktop; cells with white bg, thin neutral border, ~100-120px height; logos with `object-fit: contain`; subtle hover border/background change; accurate `${name} logo` alt text; no animation.
+- Rewrote src/components/home/TrustDocuments.tsx with new layout:
+  • A. Certifications grid (preserved unchanged).
+  • B. Three statistic cards (11+ Countries served*, 1,000+ Customers*, 6 Product families) with asterisk on first two, footnote "*Company-stated figures." in muted text below.
+  • C. Industry References heading group (eyebrow + heading + supporting copy, centred, ~680px max-width).
+  • D. Logo grid container (white bg, thin border, ~24px padding) wrapping the new LogoGrid component.
+  • E. About Us link "View awards and leadership" with right-arrow icon, dark navy text, yellow underline on hover, visible keyboard focus ring.
+- Appended CSS in src/app/globals.css for `.be-stat-card`, `.be-stat-card__accent`, `.be-stat-card__number`, `.be-stat-card__asterisk`, `.be-stat-card__label`, `.be-stat-footnote`, `.be-industry-eyebrow`, `.be-industry-title`, `.be-industry-note`, `.be-logo-grid-container`, `.be-logo-grid`, `.be-logo-grid__cell`, `.be-logo-grid__image-wrap`, `.be-logo-grid__fallback`, `.be-about-link` — all with `prefers-reduced-motion` support.
+- ── FAVICON + APP ICONS + OG + TWITTER + METADATA REBUILD ──
+- Created src/app/icon.svg — official BE symbol (lightning-bolt B + E paths lifted verbatim from public/logo.svg) on a square deep-navy #00275B background. No text, no border, no shadow, no animation. 30×30 viewBox.
+- Created scripts/build-brand-icons.py — uses CairoSVG + Pillow to render: src/app/favicon.ico (multi-size 16/32/48), src/app/apple-icon.png (180×180), public/icons/icon-192.png, public/icons/icon-512.png, public/icons/icon-192-maskable.png, public/icons/icon-512-maskable.png. Maskable variants render the BE symbol at 64% canvas size so it stays inside Android's 80%-radius safe zone.
+- Created scripts/build-social-images.py — composes 1200×630 PNG using PIL:
+  • Left 55%: deep-navy #00275B panel with subtle vertical gradient → logo-header.png at top-left (260px wide) → bold white headline "Electrical Insulating Mats Engineered for Safer Workplaces" → pale grey supporting line → 60px yellow accent bar → bold yellow trust line "IS 15652:2006 · BIS Licensed · ERDA / NTH Tested" → bold yellow "bharatelectrosafe.com" at bottom. All text ≥60px from every edge.
+  • Right 45%: hero photograph (bharat-electrosafe-insulating-mat-hero.webp), scaled to 630px tall and center-cropped to 540px wide so technician + insulating mat + switchgear remain visible.
+  • Thin yellow seam between the two panels as a brand connect.
+- Wrote output to src/app/opengraph-image.png and src/app/twitter-image.png (both 1200×630, 360KB each).
+- Created src/app/opengraph-image.alt.txt and src/app/twitter-image.alt.txt with the alt text "Bharat Electrosafe electrical insulating mat protecting a technician working in an industrial switchgear room."
+- Created src/app/manifest.ts — PWA manifest: name/short_name "Bharat Electrosafe", description mentioning Bharat Hydro Seal, start_url '/', display 'standalone', background_color '#FCFBF7' (warm-white, matches body), theme_color '#00275B' (navy, matches header), 4 icon entries (192/512 standard + maskable).
+- Created src/lib/social-image.ts — centralised `siteOgImage` and `siteTwitterImage` constants (object form with url/width/height/alt) so every route emits both `og:image:alt` and `twitter:image:alt` for screen-reader users.
+- Updated src/app/layout.tsx metadata:
+  • Title default: "Bharat Electrosafe | Electrical Insulating Mats Manufacturer India".
+  • Title template: "%s | Bharat Electrosafe".
+  • Description: "Manufacturer of electrical insulating mats, visible-safety mats, BharatMembrane and Bharat Hydro Seal solutions for industrial electrical and civil-protection applications." (Bharat Hydro Seal preserved per spec.)
+  • openGraph.locale: 'en_IN'.
+  • openGraph.images and twitter.images: set to [siteOgImage] and [siteTwitterImage] from the shared utility.
+  • Removed manual `icons` config — App Router file conventions auto-wire icon.svg, favicon.ico, apple-icon.png.
+- Updated src/app/page.tsx, src/app/products/page.tsx, src/app/about-us/page.tsx, src/app/contact-us/page.tsx to use [siteOgImage] / [siteTwitterImage] from the shared utility (preserving unique per-page titles and descriptions per spec).
+- Updated src/lib/product-metadata.ts: product-specific OG images preserved (electrical-insulating-mats, coloured-strip, bi-color, auto-glow, bharat-membrane); fallback for products without a specific image (e.g. bharat-hydro-seal) now uses the shared site-wide OG/Twitter image (with alt text) instead of the old generic /brand/og-bharat-electrosafe.png.
+- ── TESTING ──
+- Created tests/a11y/industry-references.spec.ts — 12 tests:
+  • 10 responsive breakpoint tests (360×800, 390×844, 430×932, 768×1024, 820×1180, 1024×768, 1280×720, 1366×768, 1440×900, 1920×1080) verifying: 3 stat cards with correct values, footnote present, eyebrow + heading + supporting copy present, 8 logo cells present, About Us link with correct label and arrow, no horizontal scroll, every cell and card fully inside viewport.
+  • Favicon + OG asset reachability test (HTTP 200 for /favicon.ico, /icon.svg, /apple-icon.png, /opengraph-image.png, /twitter-image.png, /manifest.webmanifest).
+  • HTML metadata correctness test (favicon link, svg icon link, apple-touch-icon link, manifest link, og:image + og:image:alt, twitter:image + twitter:image:alt, description contains "Bharat Hydro Seal").
+- Verified per-route OG metadata:
+  • / → /opengraph-image.png (site-wide)
+  • /products → /opengraph-image.png (site-wide)
+  • /products/bharat-hydro-seal → /opengraph-image.png (site-wide, no product-specific image — falls back correctly)
+  • /products/electrical-insulating-mats → /media/products/.../01-blue-coin-mat.webp (product-specific, preserved)
+  • /about-us → /opengraph-image.png (site-wide)
+  • /contact-us → /opengraph-image.png (site-wide)
+  • All routes: og:image URL is absolute https://bharatelectrosafe.com/... (production domain, not Vercel preview).
+- Type-check: 0 errors.
+- Lint: 0 errors.
+- Production build: success, 22 routes prerendered (5 new icon/OG/manifest routes auto-detected by Next.js App Router file conventions).
+- Industry-references.spec.ts: 12/12 passed.
+- accessibility.spec.ts: 65/65 passed (no regressions).
+- header-mobile.spec.ts: 5 pre-existing failures (aria-expanded + header width stability) — verified these fail on the previous commit too, NOT caused by my changes.
+
+Stage Summary:
+- New files: src/app/icon.svg, src/app/favicon.ico, src/app/apple-icon.png, src/app/opengraph-image.png, src/app/opengraph-image.alt.txt, src/app/twitter-image.png, src/app/twitter-image.alt.txt, src/app/manifest.ts, src/lib/social-image.ts, src/components/ui/LogoGrid.tsx, public/icons/icon-192.png, public/icons/icon-512.png, public/icons/icon-192-maskable.png, public/icons/icon-512-maskable.png, scripts/build-brand-icons.py, scripts/build-social-images.py, tests/a11y/industry-references.spec.ts.
+- Modified: src/app/layout.tsx, src/app/page.tsx, src/app/products/page.tsx, src/app/about-us/page.tsx, src/app/contact-us/page.tsx, src/lib/product-metadata.ts, src/components/home/TrustDocuments.tsx, src/data/trust.ts, src/app/globals.css.
+- Bharat Hydro Seal preserved in metadata (explicit mention in description) and in its dedicated /products/bharat-hydro-seal route (untouched).
+- Production canonical domain (https://bharatelectrosafe.com) wired through siteUrl + siteOgImage; no Vercel preview URLs in metadata.
+- Ready to commit and push to main (Vercel auto-deploys on push).

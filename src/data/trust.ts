@@ -230,8 +230,16 @@ export const organisationReferences: OrganisationLogo[] = [
 ];
 
 export const organisationReferenceHeading = 'Industry references';
+/** Eyebrow shown above the section heading. */
+export const organisationReferenceEyebrow = 'INDUSTRY REFERENCES';
+/** Section heading — describes coverage without claiming every organisation
+ *  is a current client (a claim the source site does not substantiate). */
+export const organisationReferenceTitle =
+  'Organisations represented across critical industries';
 export const organisationReferenceNote =
   'Organisations presented on Bharat Electrosafe\u2019s original company website.';
+/** Compact CTA label for the About Us link. */
+export const organisationReferenceCtaLabel = 'View awards and leadership';
 
 /* ────────────────────────────────────────────
    Company scale
@@ -241,11 +249,30 @@ export const organisationReferenceNote =
  * Wording is fixed to the source About page. "Customers stated by the
  * company" is not clumsiness — it is the qualifier that keeps a company
  * self-statement from reading as an independently verified figure.
+ *
+ * `shortLabel` is the compact label used inside the homepage statistic cards
+ * — the "company-stated" qualifier is moved to a footnote so the cards stay
+ * scannable without losing the conservative wording.
  */
 export const scaleFacts = [
-  { value: '11+', label: 'Countries served (company-stated)' },
-  { value: '1,000+', label: 'Customers stated by the company' },
-  { value: String(productFamilyCount), label: 'Product families' },
+  {
+    value: '11+',
+    label: 'Countries served (company-stated)',
+    shortLabel: 'Countries served',
+    companyStated: true,
+  },
+  {
+    value: '1,000+',
+    label: 'Customers stated by the company',
+    shortLabel: 'Customers',
+    companyStated: true,
+  },
+  {
+    value: String(productFamilyCount),
+    label: 'Product families',
+    shortLabel: 'Product families',
+    companyStated: false,
+  },
 ] as const;
 
 /* ────────────────────────────────────────────

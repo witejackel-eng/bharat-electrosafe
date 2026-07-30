@@ -21,6 +21,7 @@
 import type { Metadata } from 'next';
 import { ProductData } from '@/data/products';
 import { allowIndexing, buildUrl } from '@/lib/site-url';
+import { siteOgImage, siteTwitterImage } from '@/lib/social-image';
 
 /**
  * SEO titles per product slug — specific and factual, not keyword-stuffed.
@@ -66,8 +67,12 @@ const productTitles: Record<string, ProductTitleSet> = {
  * entry below is landscape, and every one shows the product — the previous
  * BharatMembrane card was the brand logo on a black field, which told a reader
  * nothing about a geomembrane.
+ *
+ * Products WITHOUT an entry here (e.g. bharat-hydro-seal) fall back to the
+ * site-wide OG/Twitter image from `@/lib/social-image` so every product
+ * route still gets a complete social card.
  */
-const productOgImages: Record<string, string> = {
+const productOgImages: Partial<Record<string, string>> = {
   'electrical-insulating-mats':
     '/media/products/electrical-insulating-mats/gallery/01-blue-coin-mat.webp',
   'coloured-strip-insulating-mats':
@@ -84,6 +89,12 @@ const productOgImages: Record<string, string> = {
 /**
  * Generate a full Metadata object for a product page from the central
  * product data. Returns not-found metadata for invalid slugs.
+ *
+ * When a product has a dedicated social-card image (see `productOgImages`),
+ * both `openGraph.images` and `twitter.images` use that product-specific
+ * asset. When no product-specific image exists (e.g. bharat-hydro-seal),
+ * both fall back to the site-wide OG/Twitter image from
+ * `@/lib/social-image` so the route always has a complete social card.
  */
 export function generateProductMetadata(product: ProductData): Metadata {
   const slug = product.slug;
@@ -93,7 +104,32 @@ export function generateProductMetadata(product: ProductData): Metadata {
   };
   const description = product.description;
   const canonicalUrl = buildUrl(`/products/${slug}`);
-  const ogImage = productOgImages[slug] ?? '/brand/og-bharat-electrosafe.png';
+  const ogImage = productOgImages[slug];
+
+  const ogImages = ogImage
+    ? [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${product.name} — ${description}`,
+        },
+      ]
+    : [siteOgImage];
+  // Twitter image — when a product-specific image exists, wrap it as an
+  // object so `twitter:image:alt` is emitted alongside `twitter:image`.
+  // Without alt, screen-reader users browsing Twitter link previews get
+  // no description of the image.
+  const twitterImages = ogImage
+    ? [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${product.name} — ${description}`,
+        },
+      ]
+    : [siteTwitterImage];
 
   return {
     title: titleSet.pageTitle,
@@ -106,20 +142,13 @@ export function generateProductMetadata(product: ProductData): Metadata {
       description,
       url: canonicalUrl,
       type: 'website',
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: `${product.name} — ${description}`,
-        },
-      ],
+      images: ogImages,
     },
     twitter: {
       card: 'summary_large_image',
       title: titleSet.socialTitle,
       description,
-      images: [ogImage],
+      images: twitterImages,
     },
     robots: allowIndexing
       ? { index: true, follow: true }

@@ -1684,3 +1684,217 @@
       0 1px 4px -1px rgba(2, 31, 73, 0.04);
   }
 }
+
+/* ──────────────────────────────────────────────────────────────
+   Homepage — Industry References section rebuild
+   ──────────────────────────────────────────────────────────────
+   Three statistic cards + a static organisation logo grid replace
+   the previous pill badges + marquee. Goal: surface the company's
+   reach and references in 2–3 seconds without animation, clipping,
+   or per-card "company-stated" clutter.
+   ────────────────────────────────────────────────────────────── */
+
+/* ── Statistic cards ───────────────────────────────────────────
+   Three equal cards in one row (centred, max-width ~840px).
+   Dominant number, short label, small yellow top accent, white bg,
+   thin pale-yellow border, moderate radius, restrained shadow. */
+.be-stat-grid {
+  width: 100%;
+}
+
+.be-stat-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 28px 16px 24px;
+  background: var(--be-white, #FFFFFF);
+  border: 1px solid var(--be-yellow-100, #FFF4BE);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px -1px rgba(2, 31, 73, 0.04);
+  overflow: hidden;
+  min-height: 132px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.be-stat-card:hover {
+  border-color: var(--be-yellow-400, #FFD43B);
+  box-shadow: 0 4px 14px -8px rgba(2, 31, 73, 0.10);
+}
+
+/* Restrained yellow top accent — a thin bar, not a heavy block. */
+.be-stat-card__accent {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 3px;
+  background: var(--be-yellow-500, #FFC400);
+  border-radius: 0 0 2px 2px;
+}
+
+.be-stat-card__number {
+  font-size: clamp(2.1rem, 4.2vw, 2.6rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-align: center;
+}
+
+.be-stat-card__asterisk {
+  font-size: 0.55em;
+  vertical-align: super;
+  color: var(--be-yellow-600, #DFAA00);
+  margin-left: 2px;
+  font-weight: 700;
+}
+
+.be-stat-card__label {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
+  text-align: center;
+}
+
+/* Footnote — visually secondary, muted. */
+.be-stat-footnote {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  max-width: 840px;
+}
+
+/* ── Industry References heading group ─────────────────────────
+   Eyebrow + heading + supporting copy, centred, controlled width. */
+.be-industry-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding-left: 12px;
+  border-left: 2px solid var(--be-yellow-500, #FFC400);
+}
+
+.be-industry-title {
+  max-width: 680px;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.be-industry-note {
+  max-width: 680px;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── Logo grid container ───────────────────────────────────────
+   Compact structured grid wrapper with thin neutral border and
+   ~24px internal padding so no logo touches the edge. */
+.be-logo-grid-container {
+  width: 100%;
+  background: var(--be-white, #FFFFFF);
+  border: 1px solid var(--be-grey-250, #E5E5E5);
+  border-radius: 14px;
+  padding: 20px clamp(16px, 2vw, 28px);
+  /* No top yellow bar here — the section already has a yellow
+     top accent on the SectionShell; adding another would be
+     heavy-handed. */
+}
+
+/* ── Logo grid cells ───────────────────────────────────────────
+   Equal-height white cells, thin neutral border, generous padding.
+   Logos use `object-fit: contain` so aspect ratios are preserved
+   and no logo is stretched or cropped. Cells hover-warm to brand
+   yellow for a subtle interactivity cue. */
+.be-logo-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.be-logo-grid__cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--be-white, #FFFFFF);
+  border: 1px solid var(--be-grey-250, #E5E5E5);
+  border-radius: 10px;
+  /* Cell height stays in the 100–120px band on every breakpoint. */
+  min-height: 100px;
+  height: 108px;
+  padding: 14px 18px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  overflow: hidden;
+}
+
+.be-logo-grid__cell:hover {
+  border-color: var(--be-yellow-400, #FFD43B);
+  background-color: var(--be-yellow-50, #FFFBE8);
+}
+
+/* Image wrapper — `position: relative` + fixed sub-cell height
+   gives the inner `next/image` (`fill`) a defined box. The logo
+   occupies ~60% of the cell height (60–70% range), centred. */
+.be-logo-grid__image-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fallback when no logo src is available — render the org name as
+   a centred, medium-weight label so the cell is never empty. */
+.be-logo-grid__fallback {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--be-charcoal-800, #38383A);
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* ── About Us link ─────────────────────────────────────────────
+   Quiet text link, dark navy text, yellow arrow + underline on
+   hover, visible keyboard focus. Sits ~28px below the logo grid. */
+.be-about-link {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  padding: 6px 4px;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.be-about-link:hover {
+  color: var(--be-navy-900, #001F4D);
+  border-bottom-color: var(--be-yellow-500, #FFC400);
+}
+
+.be-about-link:focus-visible {
+  outline: 2px solid var(--be-yellow-500, #FFC400);
+  outline-offset: 2px;
+}
+
+/* ── Reduced motion: stat cards & logo cells stay calm ──────── */
+@media (prefers-reduced-motion: reduce) {
+  .be-stat-card,
+  .be-logo-grid__cell,
+  .be-about-link {
+    transition: none;
+  }
+}
+

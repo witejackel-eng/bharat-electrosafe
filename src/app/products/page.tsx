@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { allowIndexing, buildUrl } from '@/lib/site-url';
+import { siteOgImage, siteTwitterImage } from '@/lib/social-image';
 import { ProductsPageStructuredData } from '@/components/structured-data';
 import ProductsClient from './ProductsClient';
 
@@ -23,21 +24,14 @@ export const metadata: Metadata = {
       'Explore six product families for electrical insulation, hazard visibility and waterproofing.',
     url: buildUrl('/products'),
     type: 'website',
-    images: [
-      {
-        url: '/brand/og-bharat-electrosafe.png',
-        width: 1200,
-        height: 630,
-        alt: 'Bharat Electrosafe — Product range overview',
-      },
-    ],
+    images: [siteOgImage],
   },
   twitter: {
     card: 'summary_large_image',
     title: FULL_TITLE,
     description:
       'Explore six product families for electrical insulation, hazard visibility and waterproofing.',
-    images: ['/brand/og-bharat-electrosafe.png'],
+    images: [siteTwitterImage],
   },
   robots: allowIndexing
     ? { index: true, follow: true }
