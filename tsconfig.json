@@ -41,6 +41,7 @@
     "examples",
     "skills",
     "mini-services",
-    "upload"
+    "upload",
+    "tests/security"
   ]
 }

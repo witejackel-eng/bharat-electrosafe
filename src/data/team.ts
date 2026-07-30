@@ -1,25 +1,9 @@
 /**
  * Leadership and company values for the About section.
  *
- * This file contains only finished, public-facing copy. Internal
- * verification notes, source commentary, client-confirmation
- * questions and unverified figures live ONLY in
- * `docs/CONTENT_VERIFICATION.md` and
- * `docs/CLIENT_CONTENT_CONFIRMATION.md` — never here.
- *
- * Public-content rules:
- *  - Short biography: standalone intro, no repetition with the
- *    expanded paragraph.
- *  - Expanded biography: a single concise role paragraph that adds
- *    new information (no repeated sentences, no disclaimers, no
- *    source-document references).
- *  - No "visionary", "distinguished", "inspirational", "accomplished
- *    entrepreneur", "global leader", "role model" or similar
- *    exaggerated adjectives.
- *  - No Tata Precision commentary inside any biography.
- *  - No unconfirmed figures (years of experience, prior employers,
- *    qualifications, institutions, export countries, customer counts).
- *  - Sentence case throughout.
+ * Content rules: short biography is a standalone intro; expanded
+ * biography adds new information without repetition. No exaggerated
+ * adjectives, no unconfirmed figures, sentence case throughout.
  */
 
 export interface Leader {
@@ -91,7 +75,7 @@ export interface Value {
   description: string;
 }
 
-/** Mission, vision and values, aligned with spec section 22. */
+/** Mission, vision and values. */
 export const companyValues: Value[] = [
   {
     title: 'Mission',
