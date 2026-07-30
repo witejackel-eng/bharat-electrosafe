@@ -17,11 +17,11 @@ import { cn } from '@/lib/utils';
  * biography visibility.
  *
  * Behaviour:
- *   • Click "View biography" → opens that biography (`openIndex = index`).
- *   • Click "Close biography" (same button) → closes immediately and
+ *   • Click "Know more" → opens that biography (`openIndex = index`).
+ *   • Click "Show less" (same button) → closes immediately and
  *     smoothly, even while the pointer remains over the card and even
  *     while the button retains keyboard focus.
- *   • Click another card's "View biography" → closes the previous
+ *   • Click another card's "Know more" → closes the previous
  *     biography and opens the new one. Only one open at a time on all
  *     screen sizes.
  *   • Pressing Escape while focus is inside an open card closes it
@@ -39,8 +39,12 @@ import { cn } from '@/lib/utils';
  *   • Cards are <article> elements with descriptive aria-labels.
  *   • Toggle button is a real <button> with `aria-expanded` and
  *     `aria-controls` pointing to the biography region.
- *   • Button label flips between "View biography" / "Close biography".
- *   • Chevron rotates only when `isOpen` is true.
+ *   • Visible button label flips between "Know more" / "Show less".
+ *   • `aria-label` includes the leader's name so screen-reader users
+ *     hear e.g. "Know more about Vishnu Gupta" / "Show less about
+ *     Vishnu Gupta".
+ *   • Chevron rotates only when `isOpen` is true (down when collapsed,
+ *     up when expanded).
  *   • 44px minimum touch target, visible keyboard focus ring.
  *   • Escape closes the open biography without moving focus.
  */
@@ -237,17 +241,21 @@ function LeaderCard({
         {/* ── Toggle button ────────────────────────────────
             Real <button> with aria-expanded + aria-controls. Works
             on every device: desktop click, mobile tap, keyboard
-            Enter/Space. Label flips between "View biography" /
-            "Close biography". 44px minimum touch target. */}
+            Enter/Space. Visible label flips between "Know more" /
+            "Show less". `aria-label` includes the leader's name for
+            screen-reader users. 44px minimum touch target. */}
         <button
           id={buttonId}
           type="button"
           onClick={() => onToggle(index)}
           aria-expanded={isOpen}
           aria-controls={bioRegionId}
+          aria-label={isOpen
+            ? `Show less about ${leader.name}`
+            : `Know more about ${leader.name}`}
           className="mt-4 inline-flex items-center justify-center gap-1.5 self-start min-h-[44px] px-4 py-2 rounded-md border border-be-grey-250 bg-be-white text-[0.875rem] font-semibold text-be-charcoal-950 hover:border-be-yellow-400 hover:bg-be-yellow-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-warm-white"
         >
-          {isOpen ? 'Close biography' : 'View biography'}
+          {isOpen ? 'Show less' : 'Know more'}
           <ChevronDown
             className={cn(
               'size-4 transition-transform duration-200',

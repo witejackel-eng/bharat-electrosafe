@@ -1009,3 +1009,25 @@ Stage Summary:
 - canonicalOrigin / deploymentOrigin separation made explicit in src/lib/site-url.ts. metadataBase now uses deploymentOrigin (so OG images resolve against the actual serving deployment); every other URL field uses canonicalOrigin (so preview deployments never pollute search results with *.vercel.app URLs).
 - All 259 regression tests pass (113 product-assurance + 81 product-hero-compress + 65 accessibility).
 - Ready to commit and push to main (Vercel auto-deploys on push).
+
+---
+Task ID: leadership-content-cleanup
+Agent: Super Z
+Task: Remove leaked internal editorial notes from public leadership biographies; change button labels to Know more / Show less; add public-content leakage regression test.
+
+Work Log:
+- Audited src/data/team.ts and found internal editorial notes leaked into public biographies (references to docs/CLIENT_CONTENT_CONFIRMATION.md, "retained in docs", "published only after client approval", "original company profile records", "original company website presents", Tata Precision commentary).
+- Rewrote src/data/team.ts with the approved polished public copy from spec sections 3 and 7. Short bios are standalone intros; expanded bios are single concise role paragraphs with no repetition of the short bio and no internal notes. Updated leadershipFocus and expertise tags to match spec.
+- Removed the Tata Precision paragraph from Vishnu Gupta's biography entirely (spec section 4).
+- Updated src/components/about/LeadershipGrid.tsx: button visible label flips between "Know more" / "Show less"; aria-label includes the leader's name ("Know more about Vishnu Gupta" / "Show less about Vishnu Gupta"). Preserved the single openIndex state source, chevron rotation, 44px touch target, Escape-to-close, aria-expanded and aria-controls.
+- Updated src/components/about/CompanyLeadership.tsx supporting text and JSDoc from "View biography" to "Know more".
+- Updated tests/a11y/leadership-biography.spec.ts button-label assertions to match the new "Know more" / "Show less" labels.
+- Added tests/a11y/public-content-leakage.spec.ts: regression test that crawls all 10 public routes and asserts rendered HTML, visible text, page title, meta description, Open Graph, Twitter, JSON-LD and image alt text contain none of the forbidden internal editorial phrases. Includes a leadership-specific test that expands every biography and verifies no internal notes appear, plus a Tata Precision commentary absence test.
+- Added tests/a11y/leadership-responsive.spec.ts: responsive interaction tests at 10 viewports (360x800, 390x844, 430x932, 768x1024, 820x1180, 1024x768, 1280x800, 1366x768, 1440x900, 1920x1080) covering equal collapsed presentation, Know more / Show less toggle, one-card-at-a-time, no overflow, 44px touch target, no section overlap, and name-based aria-labels.
+
+Stage Summary:
+- Root cause: previous content-correction pass stored internal verification notes inside the public leadership biographies in src/data/team.ts, which were rendered verbatim on the About page.
+- Files modified: src/data/team.ts, src/components/about/LeadershipGrid.tsx, src/components/about/CompanyLeadership.tsx, tests/a11y/leadership-biography.spec.ts.
+- Files added: tests/a11y/public-content-leakage.spec.ts, tests/a11y/leadership-responsive.spec.ts.
+- Internal documentation preserved: docs/CONTENT_VERIFICATION.md and docs/CLIENT_CONTENT_CONFIRMATION.md are unchanged and remain the single home for verification notes.
+- Validation: typecheck PASS, lint PASS, webpack build PASS (23 routes). Verified rendered HTML: 0 leaked phrases across all 10 public routes; button labels are "Know more" / "Show less"; aria-labels include leader names; all three biographies match the approved copy; no Tata Precision commentary in any biography.

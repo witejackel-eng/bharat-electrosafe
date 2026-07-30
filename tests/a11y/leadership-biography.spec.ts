@@ -4,9 +4,9 @@ import { test, expect } from '@playwright/test';
  * Leadership biography toggle tests for Bharat Electrosafe About page.
  *
  * Verifies the single-source-of-truth biography toggle behaviour:
- *   • Click "View biography" → opens that biography (aria-expanded=true,
- *     label flips to "Close biography", chevron rotates).
- *   • Click "Close biography" (same button) → closes immediately and
+ *   • Click "Know more" → opens that biography (aria-expanded=true,
+ *     label flips to "Show less", chevron rotates).
+ *   • Click "Show less" (same button) → closes immediately and
  *     smoothly, even while the pointer remains over the card and even
  *     while the button retains keyboard focus.
  *   • Opening another card's biography closes the previous one. Only
@@ -43,14 +43,14 @@ for (const vp of viewports) {
       await page.locator('.be-leadership-grid').first().waitFor({ state: 'visible', timeout: 10000 });
     });
 
-    test('Click "View biography" opens the biography', async ({ page }) => {
+    test('Click "Know more" opens the biography', async ({ page }) => {
       const buttons = page.locator('.be-leadership-grid button[aria-expanded]');
       const firstBtn = buttons.first();
       const bioId = await firstBtn.getAttribute('aria-controls');
 
       // Initial state: collapsed
       await expect(firstBtn).toHaveAttribute('aria-expanded', 'false');
-      await expect(firstBtn).toContainText('View biography');
+      await expect(firstBtn).toContainText('Know more');
 
       // Click to open
       await firstBtn.click();
@@ -58,7 +58,7 @@ for (const vp of viewports) {
 
       // Now expanded
       await expect(firstBtn).toHaveAttribute('aria-expanded', 'true');
-      await expect(firstBtn).toContainText('Close biography');
+      await expect(firstBtn).toContainText('Show less');
 
       // Biography region is visible
       const bio = page.locator(`#${bioId}`);
@@ -67,7 +67,7 @@ for (const vp of viewports) {
       expect(bioBox!.height).toBeGreaterThan(50);
     });
 
-    test('Click "Close biography" closes immediately, even with pointer over card and button focused', async ({ page }) => {
+    test('Click "Show less" closes immediately, even with pointer over card and button focused', async ({ page }) => {
       const buttons = page.locator('.be-leadership-grid button[aria-expanded]');
       const firstBtn = buttons.first();
       const bioId = await firstBtn.getAttribute('aria-controls');
@@ -86,7 +86,7 @@ for (const vp of viewports) {
 
       // Now collapsed
       await expect(firstBtn).toHaveAttribute('aria-expanded', 'false');
-      await expect(firstBtn).toContainText('View biography');
+      await expect(firstBtn).toContainText('Know more');
 
       // Biography region is collapsed (height ~ 0, opacity 0)
       const bio = page.locator(`#${bioId}`);
