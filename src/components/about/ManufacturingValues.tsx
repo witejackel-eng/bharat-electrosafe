@@ -11,8 +11,8 @@ export default function ManufacturingValues() {
       <div className="reveal-up mb-10">
         <SectionHeader
           eyebrow="Manufacturing & Quality"
-          title="Certified Production Process"
-          supportingText="Our manufacturing facility produces certified insulating mats under controlled conditions, with in-process quality checks and third-party testing at every production stage."
+          title="Manufacturing and quality approach"
+          supportingText="Bharat Electrosafe produces standard and project-specific insulating-mat configurations with options for class, thickness, surface pattern, dimensions and visible-safety markings. Technical and commercial requirements are reviewed during quotation."
         />
       </div>
 
@@ -62,8 +62,8 @@ export default function ManufacturingValues() {
         <DataTable
           headers={['Stage 1', 'Stage 2', 'Stage 3']}
           rows={[
-            ['Raw material inspection', 'In-process testing', 'Final product certification'],
-            ['IS 15652:2006 compliance', 'BIS licensed production', 'ERDA/NTH verified'],
+            ['Raw material inspection', 'In-process testing', 'Final product documentation'],
+            ['IS 15652:2006 requirements', 'BIS licensed production', 'ERDA / NTH tested'],
             ['Thickness verification', 'Voltage class testing', 'Dimensional accuracy checks'],
           ]}
         />

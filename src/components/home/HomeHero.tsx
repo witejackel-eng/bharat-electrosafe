@@ -13,8 +13,8 @@ interface ProofItem {
 const proofItems: ProofItem[] = [
   { label: 'IS 15652:2006', icon: ShieldCheck },
   { label: 'BIS Licence CM/L:8800129617', icon: BadgeCheck },
-  { label: 'ERDA / NTH Tested', icon: FlaskConical },
-  { label: 'Conforming to IEC 61111', icon: Globe2 },
+  { label: 'ERDA / NTH tested', icon: FlaskConical },
+  { label: 'IEC 61111 information available on request', icon: Globe2 },
 ];
 
 const HERO_IMG_ALT =

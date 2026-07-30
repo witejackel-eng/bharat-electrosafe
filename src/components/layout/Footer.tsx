@@ -108,7 +108,7 @@ function BrandColumn() {
       </Link>
       {/* Brand description — 15px, medium-dark grey, comfortable reading. */}
       <p className="text-[0.9375rem] text-be-grey-700 leading-[1.65] max-w-[300px]">
-        Certified electrical insulating mats and engineered protection products for substations, switchrooms, utilities and industry.
+        Bharat Electrosafe manufactures electrical insulating mats and engineered PVC products for electrical-safety and civil-protection applications.
       </p>
       <div className="flex items-center gap-3 pt-0.5">
         <IconButton href={`mailto:${company.email}`} label="Email Bharat Electrosafe">

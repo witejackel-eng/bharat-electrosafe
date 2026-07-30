@@ -8,20 +8,20 @@ import ProductsClient from './ProductsClient';
    "| Bharat Electrosafe" suffix because the root layout template appends
    it automatically. Open Graph and Twitter receive the final full branded
    title. */
-const PAGE_TITLE = 'Products — Electrical Insulation and Engineered Protection';
+const PAGE_TITLE = 'Electrical Insulating Mats and Civil Protection Products';
 const FULL_TITLE = `${PAGE_TITLE} | Bharat Electrosafe`;
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description:
-    'Explore six product families for electrical insulation, hazard visibility and waterproofing. Compare features and find the right product for your application.',
+    'Explore electrical insulating mats, coloured-strip, bi-color and visibility-band variants, PVC geo-membranes and water-stop profiles from Bharat Electrosafe.',
   alternates: {
     canonical: buildUrl('/products'),
   },
   openGraph: {
     title: FULL_TITLE,
     description:
-      'Explore six product families for electrical insulation, hazard visibility and waterproofing.',
+      'Explore electrical insulating mats, coloured-strip, bi-color and visibility-band variants, PVC geo-membranes and water-stop profiles from Bharat Electrosafe.',
     url: buildUrl('/products'),
     type: 'website',
     images: [siteOgImage],
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: FULL_TITLE,
     description:
-      'Explore six product families for electrical insulation, hazard visibility and waterproofing.',
+      'Explore electrical insulating mats, coloured-strip, bi-color and visibility-band variants, PVC geo-membranes and water-stop profiles from Bharat Electrosafe.',
     images: [siteTwitterImage],
   },
   robots: allowIndexing

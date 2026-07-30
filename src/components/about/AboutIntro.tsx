@@ -5,9 +5,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { SectionShell } from '@/components/ui/SectionShell';
 
 const stats = [
-  { value: '25+', label: 'Years of experience' },
-  { value: '5', label: 'Product families' },
-  { value: '6', label: 'Industries served' },
+  { value: '6', label: 'Product families' },
+  { value: 'A · B · C', label: 'Insulation classes' },
+  { value: 'IS 15652:2006', label: 'Manufacturing standard' },
 ];
 
 export default function AboutIntro() {
@@ -26,11 +26,10 @@ export default function AboutIntro() {
             About Bharat Electrosafe
           </h1>
           <p className="text-body-large text-be-grey-650 max-w-xl mb-8">
-            Bharat Electrosafe is a certified manufacturer of electrical insulating mats
-            and engineered protection products, serving India&apos;s power utilities,
-            substations, railways and industrial infrastructure. Our products comply with
-            IS 15652:2006 and are tested by ERDA and NTH, ensuring certified quality and
-            application reliability across critical electrical environments nationwide.
+            Bharat Electrosafe manufactures electrical insulating mats and engineered PVC
+            products for electrical-safety and civil-protection applications. The product
+            portfolio includes standard insulating mats, visible-safety variants, PVC
+            geo-membranes and water-stop profiles.
           </p>
 
           {/* Key facts (merged from AboutStats) */}

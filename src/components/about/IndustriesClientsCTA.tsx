@@ -40,7 +40,7 @@ export default function IndustriesClientsCTA() {
             <SectionHeader
               eyebrow="Industries We Serve"
               title="Across Critical Infrastructure"
-              supportingText="Our certified products protect people and assets in the most demanding electrical environments."
+              supportingText="Bharat Electrosafe supplies products for power utilities, switchgear installations, railways, manufacturing facilities and infrastructure projects."
             />
           </div>
 
@@ -63,10 +63,10 @@ export default function IndustriesClientsCTA() {
             })}
           </div>
 
-          {/* Client/institutional LogoRail */}
+          {/* Industry-reference LogoRail */}
           <div className="reveal-up mt-12">
             <p className="text-metadata text-be-grey-650 mb-4 text-center uppercase tracking-wide font-semibold">
-              Verified By & Trusted By
+              Organisations represented on the original company website
             </p>
             <div className="rounded-lg border border-be-grey-250 p-4 bg-be-white">
               <LogoRail logos={clientLogos} />

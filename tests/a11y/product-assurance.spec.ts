@@ -101,7 +101,7 @@ for (const route of productRoutes) {
       for (let i = 0; i < count; i++) {
         const text = (await items.nth(i).textContent())?.trim() ?? '';
         // A label is "all-caps" if it has at least 4 letters and every letter
-        // is uppercase. IS 15652:2006 / IS 15909:2020 / IS 15058-2002 / BIS
+        // is uppercase. IS 15652:2006 / IS 15909:2020 / IS 15058:2002 / BIS
         // Licence CM/L:8800129617 / ERDA / NTH tested are intentionally mixed
         // case (letters + digits + punctuation), so they will not trigger.
         const letters = text.replace(/[^A-Za-z]/g, '');
@@ -215,11 +215,11 @@ test.describe('Bharat Hydro Seal — civil-product certification correctness', (
     }
   });
 
-  test('lists IS 15058-2002 as the standard', async ({ page }) => {
+  test('lists IS 15058:2002 as the standard', async ({ page }) => {
     const items = await readAssuranceItems(page);
     const standard = items.find((i) => i.id === 'standard');
     expect(standard, `items: ${JSON.stringify(items)}`).toBeDefined();
-    expect(standard!.label).toBe('IS 15058-2002');
+    expect(standard!.label).toBe('IS 15058:2002');
   });
 
   test('lists PVC water stop as the material', async ({ page }) => {

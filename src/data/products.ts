@@ -495,9 +495,9 @@ const electricalInsulatingMats: ProductData = {
   },
   assuranceItems: matAssuranceItems,
   description:
-    'Class A, B and C electrical insulating mats manufactured for IS 15652:2006 requirements, under BIS Licence CM/L:8800129617, for control panels, substations and industrial floors.',
+    'Class A, B and C electrical insulating mats for switchgear, control panels, substations and industrial electrical installations.',
   introduction:
-    'Bharat Electrosafe Electrical Insulating Mats are manufactured for IS 15652:2006 requirements under BIS Licence CM/L:8800129617. Class A, Class B and Class C cover working voltages of 3.3 kV, 11 kV and 33 kV respectively, giving operators an insulating barrier at floor level around AC and DC control panels, substations and switchrooms. Every metre carries the ISI marking, and the range is supported by ERDA / NTH test documentation.',
+    'Electrical insulating mats manufactured for IS 15652:2006 requirements under BIS Licence CM/L:8800129617. Class A, B and C configurations cover working voltages of 3.3 kV, 11 kV and 33 kV respectively, providing an insulating standing surface for personnel working around switchgear, control panels, substations and related electrical equipment.',
   badges: ['IS 15652:2006', 'CM/L:8800129617', 'Class A / B / C', 'ISI marked'],
   quickFacts: [
     { icon: 'zap', label: 'Working voltage', value: '3.3 kV – 33 kV' },
@@ -637,9 +637,9 @@ const colouredStripInsulatingMats: ProductData = {
   },
   assuranceItems: matAssuranceItems,
   description:
-    'IS 15652:2006 insulating mats with a high-visibility yellow strip that marks safe pathways and hazard-zone boundaries around live electrical installations.',
+    'Electrical insulating mats with high-visibility strips for route marking and safety-zone demarcation around electrical installations.',
   introduction:
-    'Clear demarcation of hazardous zones is essential in preventing accidents. Coloured Strip Insulating Mats are manufactured for IS 15652:2006 requirements under BIS Licence CM/L:8800129617, with bold coloured markings that act as visual guides — creating safe pathways around high-risk electrical installations while delivering the same Class A, B and C insulation as the standard range.',
+    'Electrical insulating mats with a high-visibility coloured strip for clearer marking of operating zones, walkways and safety boundaries around electrical installations. Manufactured for IS 15652:2006 requirements under BIS Licence CM/L:8800129617.',
   badges: ['IS 15652:2006', 'CM/L:8800129617', 'Boundary marking', 'ISI marked'],
   quickFacts: [
     { icon: 'palette', label: 'Marking', value: 'High-visibility strip' },
@@ -779,9 +779,9 @@ const biColorInsulatingMats: ProductData = {
   },
   assuranceItems: matAssuranceItems,
   description:
-    'IS 15652:2006 insulating mats with a dual-tone colour scheme that serves as a clear indicator of safety boundaries while enhancing visual appeal in the workspace.',
+    'Dual-layer Class A, B and C electrical insulating mats with contrasting colour construction and anti-skid surface options.',
   introduction:
-    'Where functionality meets aesthetic innovation, Bi-Color Insulating Mats redefine industrial safety with a striking dual-tone design. A sophisticated two-tone colour scheme not only enhances visual appeal but also serves as a clear indicator of safety boundaries. Manufactured under BIS Licence CM/L:8800129617.',
+    'Dual-layer electrical insulating mats with contrasting colour layers for visible identification of the surface construction and safety area. Manufactured for IS 15652:2006 requirements under BIS Licence CM/L:8800129617, available in Class A, B and C configurations.',
   badges: ['IS 15652:2006', 'CM/L:8800129617', 'Dual-tone design', 'ISI marked'],
   quickFacts: [
     { icon: 'palette', label: 'Design', value: 'Dual-tone colour scheme' },
@@ -934,9 +934,9 @@ const autoGlowReflectiveBandMats: ProductData = {
   },
   assuranceItems: matAssuranceItems,
   description:
-    'IS 15652:2006 insulating mats with auto-glow or reflective bands that keep walkways and hazard zones visible when normal lighting fails.',
+    'Electrical insulating mats with auto-glow or reflective bands for improved route and boundary visibility in low-light operating areas.',
   introduction:
-    'When the lights go out, safety should never fade. Auto-Glow Band Insulating Mats carry a glow-in-the-dark band that illuminates pathways in emergency situations. Reflective Band Insulating Mats instead integrate high-visibility reflective strips into the same robust insulating platform. Both variants are manufactured for IS 15652:2006 requirements under BIS Licence CM/L:8800129617 and retain full dielectric strength.',
+    'Electrical insulating mats with auto-glow or reflective bands for improved route and boundary visibility in low-light operating areas. Manufactured for IS 15652:2006 requirements under BIS Licence CM/L:8800129617, available in Class A, B and C configurations.',
   badges: ['IS 15652:2006', 'CM/L:8800129617', 'Auto-glow', 'Reflective band'],
   quickFacts: [
     { icon: 'sun', label: 'Auto-Glow', value: 'Glow-in-the-dark band' },
@@ -944,27 +944,27 @@ const autoGlowReflectiveBandMats: ProductData = {
     { icon: 'zap', label: 'Working Voltage', value: '3.3 kV – 33 kV' },
   ],
   overviewText:
-    'A specially engineered glow-in-the-dark band lights the environment, guiding movement and highlighting hazard zones without any power supply. The reflective variant outlines work areas clearly under torchlight or emergency lighting. In both cases the band is built into a mat that retains high dielectric strength, keeps its anti-slip texture, and withstands industrial conditions including moisture and chemical exposure without losing its glow.',
+    'These variants combine the insulating-mat platform with either an auto-glow band or a reflective band. The added band supports visual route marking and boundary identification where ambient lighting may be limited. The band is a visibility aid and does not provide emergency lighting; specific glow duration and brightness figures are confirmed against the current product documentation, which is available on request.',
   keyBenefits: [
     {
       icon: 'sun',
-      text: 'Luminous glow band lights the environment and highlights hazard zones',
+      text: 'Auto-glow band for low-light visibility',
     },
     {
       icon: 'scan-eye',
-      text: 'Reflective band outlines work areas clearly in low-light conditions',
+      text: 'Reflective band for visibility under incident light',
     },
     {
       icon: 'shield',
-      text: 'Dielectric strength retained alongside the luminous properties',
+      text: 'Class A, B and C options on the standard insulating-mat platform',
     },
     {
       icon: 'grip',
-      text: 'Anti-slip textured pattern provides a secure base on any surface',
+      text: 'Anti-skid surface options retained alongside the visibility band',
     },
     {
       icon: 'droplets',
-      text: 'Withstands moisture and chemical exposure without losing its glow',
+      text: 'Standard and project-specific configurations available',
     },
   ],
   specifications: matSpecifications,
@@ -987,28 +987,28 @@ const autoGlowReflectiveBandMats: ProductData = {
   applications: [
     {
       icon: 'door-open',
-      name: 'Emergency Exit Routes',
-      description: 'Glow or reflective guidance towards exits when lighting fails',
+      name: 'Switchgear rooms',
+      description: 'Visibility marking around switchgear where ambient light is limited',
     },
     {
       icon: 'moon',
-      name: 'Low-Light Substations',
-      description: 'Navigation aid in substations on emergency or reduced lighting',
+      name: 'Substations',
+      description: 'Route and boundary marking in substations on reduced lighting',
     },
     {
       icon: 'mountain',
-      name: 'Underground Facilities',
+      name: 'Underground facilities',
       description: 'Pathway marking in vaults, tunnels and cable galleries',
     },
     {
       icon: 'train-front',
-      name: 'Railways',
-      description: 'Guidance on electrified platforms and in railway substations',
+      name: 'Railway electrical facilities',
+      description: 'Visibility marking on electrified platforms and in railway substations',
     },
     {
       icon: 'route',
-      name: 'Industrial Escape Routes',
-      description: 'Marked routes through plants with live electrical equipment',
+      name: 'Industrial electrical installations',
+      description: 'Route marking through plants with live electrical equipment',
     },
   ],
   documents: matDocuments,
@@ -1092,9 +1092,9 @@ const bharatMembrane: ProductData = {
   },
   assuranceItems: membraneAssuranceItems,
   description:
-    'PVC geo-membrane to IS 15909:2020 for tunnel waterproofing, containment and barrier protection in civil and environmental engineering.',
+    'PVC geo-membranes for tunnel waterproofing, containment, lining and barrier applications in civil and environmental projects.',
   introduction:
-    'BharatMembrane is a range of PVC geo-membranes developed by Bharat Electrosafe for tunnel waterproofing, containment and barrier protection in civil and environmental engineering applications. The material is engineered for chemical resistance, UV stability and mechanical strength. Request the current product documentation for the exact membrane grade and project approval requirements.',
+    'BharatMembrane is a range of PVC geo-membranes for tunnel waterproofing, containment, lining and barrier applications in civil and environmental engineering projects. Referenced standard: IS 15909:2020. Product profile, thickness, welding method and suitability should be reviewed against the project specification before selection.',
   badges: ['IS 15909:2020', 'PVC geo-membrane', 'Thermally weldable', 'Custom fabrication'],
   quickFacts: [
     { icon: 'droplets', label: 'Function', value: 'Waterproofing and containment' },
@@ -1298,19 +1298,19 @@ const bharatHydroSeal: ProductData = {
        the product cannot be found. */
   },
   assuranceItems: [
-    { id: 'standard', label: 'IS 15058-2002' },
+    { id: 'standard', label: 'IS 15058:2002' },
     { id: 'material', label: 'PVC water stop' },
     { id: 'profile', label: 'Multiple profiles' },
     { id: 'joining', label: 'Weldable at intersections' },
   ],
   description:
-    'PVC water stop seals to IS 15058-2002 for construction and expansion joints in concrete structures — water tanks, dams, basements, tunnels and sewage treatment plants.',
+    'PVC and rubber water-stop profiles for construction and expansion joints in concrete structures.',
   introduction:
-    'Bharat Hydro Seal is a PVC water-stop product intended for construction and expansion joints in concrete structures. The profiles are designed to reduce water passage through properly designed and installed joints. Product profile, dimensions, joining method and suitability must be selected according to the project conditions.',
-  badges: ['IS 15058-2002', 'PVC Water Stop', 'Multiple profiles', 'Weldable at intersections'],
+    'Bharat Hydro Seal water-stop profiles are designed to reduce water passage through properly constructed construction and expansion joints in concrete structures. Referenced standard: IS 15058:2002. Profile selection depends on joint type, movement, water pressure, installation method and project specification.',
+  badges: ['IS 15058:2002', 'PVC Water Stop', 'Multiple profiles', 'Weldable at intersections'],
   quickFacts: [
     { icon: 'droplets', label: 'Function', value: 'Water stop sealing for construction joints' },
-    { icon: 'ruler', label: 'Standard', value: 'IS 15058-2002' },
+    { icon: 'ruler', label: 'Standard', value: 'IS 15058:2002' },
     { icon: 'shield', label: 'Material', value: 'PVC and rubber compounds' },
   ],
   overviewText:
@@ -1326,18 +1326,18 @@ const bharatHydroSeal: ProductData = {
     headers: ['Property', 'Specification'],
     rows: [
       ['Material', 'PVC and rubber compound water stop'],
-      ['Standard', 'IS 15058-2002'],
+      ['Standard', 'IS 15058:2002'],
       ['Profile Types', 'Centre bulb, dumbbell and ribbed configurations'],
       ['Joint Types', 'Construction joints and expansion joints'],
       ['Resistance', 'Designed to resist water pressure, chemicals and weathering'],
       ['Mechanical', 'Tensile strength and flexibility to accommodate joint movement'],
-      ['Jointing Method', 'Weldable at intersections for continuous seals'],
+      ['Jointing Method', 'Weldable at intersections for a continuous system'],
       ['Service Life', 'Service life depends on product selection, installation quality, operating conditions, exposure and maintenance'],
     ],
   },
   materialProperties: [
     { label: 'Base Material', value: 'PVC and rubber compounds' },
-    { label: 'Standard', value: 'IS 15058-2002' },
+    { label: 'Standard', value: 'IS 15058:2002' },
     { label: 'Function', value: 'Reduces water passage through properly designed and installed joints' },
     { label: 'Chemical Resistance', value: 'Designed to resist chemicals and corrosion' },
     { label: 'Weathering Resistance', value: 'Designed to resist environmental stress' },
@@ -1359,34 +1359,34 @@ const bharatHydroSeal: ProductData = {
     'Clean the concrete surface at the joint location before positioning the water stop',
     'Place the water stop centrally in the joint with the bulb aligned to the joint plane',
     'Secure the water stop in position before pouring the next concrete lift',
-    'Weld intersections and terminations to form a continuous seal',
+    'Weld intersections and terminations to form a continuous system',
     'Inspect the installed water stop for proper alignment before covering',
   ],
   applications: [
     {
       icon: 'droplets',
-      name: 'Water Tanks & Reservoirs',
-      description: 'Water stop sealing for water storage tanks and reservoir construction joints',
+      name: 'Water tanks and reservoirs',
+      description: 'Water-stop profiles for water storage tanks and reservoir construction joints',
     },
     {
       icon: 'waves',
-      name: 'Dams & Canals',
-      description: 'Sealing expansion and construction joints in dam and canal structures',
+      name: 'Dams and canals',
+      description: 'Water-stop profiles for expansion and construction joints in dam and canal structures',
     },
     {
       icon: 'trash-2',
-      name: 'Sewage Treatment Plants',
-      description: 'Chemical-resistant water stops for sewage treatment plant construction',
+      name: 'Sewage treatment plants',
+      description: 'Water-stop profiles for sewage treatment plant construction',
     },
     {
       icon: 'mountain',
-      name: 'Basements & Underground Structures',
-      description: 'Water stop protection for basement and underground construction joints',
+      name: 'Basements and underground structures',
+      description: 'Water-stop profiles for basement and underground construction joints',
     },
     {
       icon: 'person-swim',
-      name: 'Swimming Pools & Tunnels',
-      description: 'Water-tight sealing for swimming pools and tunnel construction',
+      name: 'Swimming pools and tunnels',
+      description: 'Water-stop profiles for swimming pools and tunnel construction',
     },
   ],
   documents: [
@@ -1572,6 +1572,6 @@ export const productComparisonData: ProductComparisonRow[] = [
     primaryPurpose: 'Construction-joint water sealing',
     distinguishingFeature: 'PVC water stop profile',
     typicalApplication: 'Concrete joints and water-retaining structures',
-    applicableStandard: 'IS 15058-2002',
+    applicableStandard: 'IS 15058:2002',
   },
 ];

@@ -8,20 +8,20 @@ import AboutUsShell from './AboutUsShell';
    "| Bharat Electrosafe" suffix because the root layout template appends
    it automatically. Open Graph and Twitter receive the final full branded
    title. */
-const PAGE_TITLE = 'About — Electrical Safety Manufacturer';
+const PAGE_TITLE = 'About Bharat Electrosafe';
 const FULL_TITLE = `${PAGE_TITLE} | Bharat Electrosafe`;
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description:
-    'Bharat Electrosafe manufactures electrical insulating mats and engineered PVC membranes in Noida, India. ISO 9001, ISO 14001 and ISO 45001 certified, with BIS-licensed production under IS 15652:2006.',
+    'Learn about Bharat Electrosafe, its electrical insulating-mat and engineered PVC product range, leadership, manufacturing approach and documentation.',
   alternates: {
     canonical: buildUrl('/about-us'),
   },
   openGraph: {
     title: FULL_TITLE,
     description:
-      'Bharat Electrosafe manufactures electrical insulating mats and engineered PVC membranes in Noida, India. ISO-certified with BIS-licensed production under IS 15652:2006.',
+      'Learn about Bharat Electrosafe, its electrical insulating-mat and engineered PVC product range, leadership, manufacturing approach and documentation.',
     url: buildUrl('/about-us'),
     type: 'website',
     images: [siteOgImage],
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: FULL_TITLE,
     description:
-      'Bharat Electrosafe manufactures electrical insulating mats and engineered PVC membranes in Noida, India. ISO-certified with BIS-licensed production.',
+      'Learn about Bharat Electrosafe, its electrical insulating-mat and engineered PVC product range, leadership, manufacturing approach and documentation.',
     images: [siteTwitterImage],
   },
   robots: allowIndexing

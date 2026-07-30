@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SectionShell } from '@/components/ui/SectionShell';
-import { products, productFamilyCount, imageFitClass, productCategories } from '@/data/products';
+import { products, imageFitClass, productCategories } from '@/data/products';
 
 function ProductCard({ product, index }: { product: typeof products[number]; index: number }) {
   /* The one approved card image, from central product data — never a
@@ -73,8 +73,8 @@ export default function ProductRange() {
       <div className="reveal-up mb-8">
         <SectionHeader
           eyebrow="PRODUCT RANGE"
-          title="Our product range"
-          supportingText={`${productFamilyCount} product families designed for electrical insulation, hazard visibility, waterproofing and civil protection.`}
+          title="Products for electrical safety and civil protection"
+          supportingText="Six product families covering electrical insulation, visible hazard demarcation, tunnel and containment lining, and construction-joint water stopping."
         />
       </div>
 

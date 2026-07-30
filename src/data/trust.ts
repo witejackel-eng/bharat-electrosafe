@@ -282,22 +282,34 @@ export const scaleFacts = [
 /** Condensed from the source site's "Why Choose Us" list. Nothing added. */
 export const capabilityPoints = [
   {
-    title: 'Integrated manufacturing',
+    title: 'Insulating-mat compound and product manufacturing',
     description:
-      'An integrated setup running from compound manufacturing through to the finished insulating mat.',
+      'An integrated production setup running from compound manufacturing through to the finished insulating mat.',
   },
   {
-    title: 'Modern machinery',
-    description: 'A manufacturing setup equipped with modern machinery.',
-  },
-  {
-    title: 'In-house testing lab',
-    description: 'A full testing lab facility, including high-voltage testing.',
-  },
-  {
-    title: 'Customisation and qualified staff',
+    title: 'Class A, B and C product configurations',
     description:
-      'Products customised to requirement, supported by qualified technical and production staff and ERDA-qualified reports.',
+      'Production configurations covering Class A (3.3 kV), Class B (11 kV) and Class C (33 kV) insulating mats.',
+  },
+  {
+    title: 'Anti-skid surface options',
+    description:
+      'Coin, dot and hexa-pattern surface configurations.',
+  },
+  {
+    title: 'Visible-safety variants',
+    description:
+      'Coloured-strip, bi-color and auto-glow / reflective band variants on the standard insulating-mat platform.',
+  },
+  {
+    title: 'Project-specific dimensions',
+    description:
+      'Standard rolls and project-specific lengths quoted against the enquiry.',
+  },
+  {
+    title: 'Product documentation and enquiry support',
+    description:
+      'Available documentation is confirmed for the selected product during quotation.',
   },
 ] as const;
 
@@ -312,17 +324,24 @@ export const industriesServed = [
 ] as const;
 
 /**
- * The Tata Precision relationship, worded to match the source About page.
- * The source says mats are manufactured under Tata Precision's standards and
- * marketed through Tata Precision Industries (India) Ltd. — it does not
- * describe ownership, acquisition or exclusivity, so neither does this.
+ * The Tata Precision relationship, conservatively worded.
+ *
+ * The original company website presents Tata Precision Industries (India)
+ * Limited in connection with the electrical insulating-mat range. Current
+ * commercial wording and logo usage are subject to company confirmation
+ * and are not strengthened here. This object is kept for internal
+ * reference only — it is not rendered on any public page until the client
+ * has approved exact wording, logo usage and the meaning of
+ * "marketed by" / "manufactured under their standards".
+ *
+ * See docs/CLIENT_CONTENT_CONFIRMATION.md for the open confirmation items.
  */
 export const manufacturingCollaboration = {
   partner: 'Tata Precision Industries (India) Limited',
   statement:
-    'Bharat Electrosafe\u2019s insulating mats are manufactured under the standards of Tata Precision Industries (India) Limited, and are marketed through them.',
+    'The original company website presents Tata Precision Industries (India) Limited in connection with the electrical insulating-mat range. Current commercial wording and logo usage are subject to company confirmation.',
   logo: '/brand/marketed-by-tata-precision.webp',
-  alt: 'Marketed by Tata Precision Industries (India) Limited',
+  alt: 'Tata Precision Industries (India) Limited logo',
 };
 
 export const manufacturingImage = {

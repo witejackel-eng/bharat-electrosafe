@@ -40,22 +40,26 @@ const productTitles: Record<string, ProductTitleSet> = {
     socialTitle: 'Electrical Insulating Mats to IS 15652:2006 | Bharat Electrosafe',
   },
   'coloured-strip-insulating-mats': {
-    pageTitle: 'Coloured Strip Insulating Mats',
-    socialTitle: 'Coloured Strip Insulating Mats | Bharat Electrosafe',
+    pageTitle: 'Coloured Strip Electrical Insulating Mats',
+    socialTitle: 'Coloured Strip Electrical Insulating Mats | Bharat Electrosafe',
   },
   'bi-color-insulating-mats': {
     pageTitle: 'Bi-Color Electrical Insulating Mats',
     socialTitle: 'Bi-Color Electrical Insulating Mats | Bharat Electrosafe',
   },
   'auto-glow-reflective-band-insulating-mats': {
-    pageTitle: 'Auto-Glow Insulating Mats',
-    socialTitle: 'Auto-Glow Insulating Mats | Bharat Electrosafe',
+    pageTitle: 'Auto-Glow and Reflective Band Insulating Mats',
+    socialTitle: 'Auto-Glow and Reflective Band Insulating Mats | Bharat Electrosafe',
   },
   /* BharatMembrane is a product brand name — keeping it in the title is
      intentional, not accidental site-name repetition. */
   'bharat-membrane': {
-    pageTitle: 'PVC Geomembrane Manufacturer India | BharatMembrane',
-    socialTitle: 'PVC Geomembrane Manufacturer India | BharatMembrane',
+    pageTitle: 'BharatMembrane PVC Geo-Membrane',
+    socialTitle: 'BharatMembrane PVC Geo-Membrane | Bharat Electrosafe',
+  },
+  'bharat-hydro-seal': {
+    pageTitle: 'Bharat Hydro Seal PVC and Rubber Water Stops',
+    socialTitle: 'Bharat Hydro Seal PVC and Rubber Water Stops | Bharat Electrosafe',
   },
 };
 

@@ -58,7 +58,7 @@ export default function BHSClient({ product }: { product: ProductData }) {
             <SectionHeader
               eyebrow="Water Stop Properties"
               title="Product Specifications"
-              supportingText="BharatHydro Seal water stops are manufactured to IS 15058-2002, offering reliable water-tight sealing across a range of joint configurations and pressure conditions."
+              supportingText="Bharat Hydro Seal water stops reference IS 15058:2002 and are available in multiple profile configurations for construction and expansion joints in concrete structures."
             />
 
             <DataTable

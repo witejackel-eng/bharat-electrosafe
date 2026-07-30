@@ -8,20 +8,20 @@ import ContactUsClient from './ContactUsClient';
    "| Bharat Electrosafe" suffix because the root layout template appends
    it automatically. Open Graph and Twitter receive the final full branded
    title. */
-const PAGE_TITLE = 'Contact & Request a Product Quotation';
+const PAGE_TITLE = 'Contact Bharat Electrosafe';
 const FULL_TITLE = `${PAGE_TITLE} | Bharat Electrosafe`;
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description:
-    'Request a quotation for electrical insulating mats or PVC geomembrane. Contact Bharat Electrosafe in Noida, India for product enquiries and technical support.',
+    'Contact Bharat Electrosafe for product specifications, technical documentation, dimensions, availability and quotations.',
   alternates: {
     canonical: buildUrl('/contact-us'),
   },
   openGraph: {
     title: FULL_TITLE,
     description:
-      'Request a quotation for electrical insulating mats or PVC geomembrane. Contact Bharat Electrosafe in Noida, India.',
+      'Contact Bharat Electrosafe for product specifications, technical documentation, dimensions, availability and quotations.',
     url: buildUrl('/contact-us'),
     type: 'website',
     images: [siteOgImage],
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: FULL_TITLE,
     description:
-      'Request a quotation for electrical insulating mats or PVC geomembrane. Contact Bharat Electrosafe in Noida, India.',
+      'Contact Bharat Electrosafe for product specifications, technical documentation, dimensions, availability and quotations.',
     images: [siteTwitterImage],
   },
   robots: allowIndexing
