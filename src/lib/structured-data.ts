@@ -1,17 +1,25 @@
 /**
  * Structured Data (JSON-LD) — Centralised utility for Bharat Electrosafe.
  *
- * Every schema object is built from central data (company, products) and the
- * canonical site URL helper. No fake prices, ratings, reviews, SKUs, GTINs,
- * MPNs, stock status, shipping data, or offer expiry dates are ever emitted.
+ * SEO strategy (spec section 17):
  *
- * The site is quotation-led, not fixed-price ecommerce. Offer markup is
- * omitted when no public price exists.
+ *   - Homepage emits Organization + WebSite only. LocalBusiness is omitted
+ *     because the registered-office address is not independently verified
+ *     as a customer-facing premises, and the spec forbids emitting
+ *     conflicting Organization + LocalBusiness entities.
+ *   - Products hub emits CollectionPage + ItemList + BreadcrumbList.
+ *   - Product pages emit WebPage + BreadcrumbList. The previous Product
+ *     schema is replaced with WebPage because the site is quotation-led
+ *     with no public fixed price, availability or review data — emitting
+ *     Product without an Offer triggers Google Rich Results errors.
+ *   - FAQPage structured data is removed entirely. Google removed FAQ
+ *     rich-result display in 2026, and obsolete FAQ schema provides no
+ *     meaningful search-result benefit. Visible FAQ content is retained.
+ *   - No fake prices, ratings, reviews, SKUs, GTINs, MPNs, stock status,
+ *     shipping data, or offer expiry dates are ever emitted.
  *
  * Entity IDs use the production domain and stable fragment identifiers so
  * that Google can merge entities across pages.
- *
- * Sections 2–8 of the Phase 5 specification.
  */
 
 import { siteUrl, buildUrl } from '@/lib/site-url';
@@ -19,7 +27,6 @@ import { company } from '@/data/company';
 import {
   products,
   type ProductData,
-  type Document,
 } from '@/data/products';
 
 /* ────────────────────────────────────────────
@@ -28,10 +35,13 @@ import {
 
 export const ORG_ID = `${siteUrl}/#organization`;
 export const WEBSITE_ID = `${siteUrl}/#website`;
-export const LOCAL_BUSINESS_ID = `${siteUrl}/#localbusiness`;
 
 export function productId(slug: string): string {
   return `${siteUrl}/products/${slug}#product`;
+}
+
+export function webPageId(path: string): string {
+  return `${buildUrl(path)}#webpage`;
 }
 
 export function breadcrumbId(path: string): string {
@@ -39,7 +49,7 @@ export function breadcrumbId(path: string): string {
 }
 
 /* ────────────────────────────────────────────
-   Organisation schema (Section 3)
+   Organisation schema
    ──────────────────────────────────────────── */
 
 export function organisationSchema() {
@@ -75,7 +85,7 @@ export function organisationSchema() {
 }
 
 /* ────────────────────────────────────────────
-   WebSite schema (Section 4)
+   WebSite schema
    ──────────────────────────────────────────── */
 
 export function websiteSchema() {
@@ -94,92 +104,48 @@ export function websiteSchema() {
 }
 
 /* ────────────────────────────────────────────
-   Product schema (Section 5)
+   WebPage schema (used for product pages)
    ──────────────────────────────────────────── */
 
 /**
- * Product-specific `additionalProperty` values.
- * Electrical mats use IS 15652:2006 properties.
- * BharatMembrane uses geomembrane properties.
- * BharatMembrane does NOT inherit electrical-insulating-mat properties.
+ * Product-page WebPage schema.
+ *
+ * The previous Product schema is replaced with WebPage because the site
+ * is quotation-led — there is no public fixed price, availability, or
+ * review data. Emitting Product without an Offer triggers Google Rich
+ * Results errors. WebPage + BreadcrumbList is the accurate, truthful
+ * representation.
  */
-function productAdditionalProperties(product: ProductData) {
-  const slug = product.slug;
-  const props: Array<{ '@type': string; name: string; value: string }> = [];
-
-  if (
-    slug === 'electrical-insulating-mats' ||
-    slug === 'coloured-strip-insulating-mats' ||
-    slug === 'bi-color-insulating-mats' ||
-    slug === 'auto-glow-reflective-band-insulating-mats'
-  ) {
-    // Electrical insulating mats — verified properties from IS 15652:2006
-    props.push(
-      { '@type': 'PropertyValue', name: 'Standard', value: 'IS 15652:2006' },
-      { '@type': 'PropertyValue', name: 'Class', value: 'A / B / C' },
-      { '@type': 'PropertyValue', name: 'Working Voltage', value: 'Up to 33 kV (Class C)' },
-      { '@type': 'PropertyValue', name: 'Material', value: 'Elastomer' },
-      { '@type': 'PropertyValue', name: 'Surface Pattern', value: 'Anti-skid' },
-    );
-  } else if (slug === 'bharat-membrane') {
-    // BharatMembrane — civil/engineering properties
-    props.push(
-      { '@type': 'PropertyValue', name: 'Material', value: 'PVC' },
-      { '@type': 'PropertyValue', name: 'Standard', value: 'IS 15909:2020' },
-      { '@type': 'PropertyValue', name: 'Seam Method', value: 'Wedge welding' },
-      { '@type': 'PropertyValue', name: 'Application Type', value: 'Geomembrane' },
-    );
-  }
-
-  return props;
-}
-
-export function productSchema(product: ProductData) {
+export function productPageSchema(product: ProductData) {
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
-    '@type': 'Product',
-    '@id': productId(product.slug),
+    '@type': 'WebPage',
+    '@id': webPageId(`/products/${product.slug}`),
     name: product.name,
     description: product.description,
     url: buildUrl(`/products/${product.slug}`),
-    brand: {
-      '@type': 'Brand',
-      name: company.name,
+    isPartOf: {
+      '@id': WEBSITE_ID,
     },
-    manufacturer: {
-      '@type': 'Organization',
+    about: {
       '@id': ORG_ID,
     },
-    category: product.category === 'electrical-insulation'
-      ? 'Electrical Insulating Mats'
-      : 'Construction Materials',
   };
 
   /* Product images — the approved gallery, in its curated order, so the hero
-     is first. The card image is deliberately excluded: it is a small crop of a
-     photograph already listed here, and Google asks for the high-resolution
-     asset rather than a thumbnail. Deduplicated because `overview` and
-     `application` point at gallery members. */
+     is first. Deduplicated because `overview` and `application` point at
+     gallery members. */
   if (product.images.gallery.length > 0) {
     schema.image = Array.from(
       new Set(product.images.gallery.map((image) => image.src))
     ).map((src) => (src.startsWith('http') ? src : `${siteUrl}${src}`));
   }
 
-  // Additional properties — product-specific, never cross-contaminated
-  const additionalProps = productAdditionalProperties(product);
-  if (additionalProps.length > 0) {
-    schema.additionalProperty = additionalProps;
-  }
-
-  // NO aggregateRating, review, SKU, GTIN, MPN, price, offer, or stock
-  // The site is quotation-led, not fixed-price ecommerce.
-
   return schema;
 }
 
 /* ────────────────────────────────────────────
-   Breadcrumb schema (Section 6)
+   Breadcrumb schema
    ──────────────────────────────────────────── */
 
 export interface BreadcrumbItem {
@@ -202,127 +168,43 @@ export function breadcrumbSchema(items: BreadcrumbItem[], path: string) {
 }
 
 /* ────────────────────────────────────────────
-   FAQ schema (Section 7)
+   CollectionPage + ItemList — products hub
    ──────────────────────────────────────────── */
 
-export interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-export function faqSchema(faqs: FAQItem[], path: string) {
+/**
+ * CollectionPage schema for the /products hub.
+ *
+ * Combines a CollectionPage with an ItemList of all six genuine product
+ * pages, so search engines understand the catalogue structure without
+ * any fabricated SKUs, prices or availability.
+ */
+export function productsCollectionPageSchema() {
   return {
     '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    '@id': `${siteUrl}${path}#faq`,
-    mainEntity: faqs.map((faq) => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: faq.answer,
-      },
-    })),
-  };
-}
-
-/* ────────────────────────────────────────────
-   LocalBusiness schema (Section 8)
-   ──────────────────────────────────────────── */
-
-export function localBusinessSchema() {
-  const schema: Record<string, unknown> = {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    '@id': LOCAL_BUSINESS_ID,
-    name: company.name,
-    url: siteUrl,
-    telephone: company.phonePrimary,
-    email: company.email,
-    logo: `${siteUrl}/images/brand/bharat-electrosafe-logo.png`,
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: `${company.address.line1}, ${company.address.line2}`,
-      addressLocality: company.address.city,
-      addressRegion: company.address.state,
-      postalCode: company.address.pincode,
-      addressCountry: company.address.country,
+    '@type': 'CollectionPage',
+    '@id': webPageId('/products'),
+    name: 'Electrical Insulating Mats and Civil Protection Products',
+    description:
+      'Explore electrical insulating mats, coloured-strip, bi-color and visibility-band variants, PVC geo-membranes and water-stop profiles from Bharat Electrosafe.',
+    url: buildUrl('/products'),
+    isPartOf: {
+      '@id': WEBSITE_ID,
     },
-    // Connect to the Organisation entity via shared @id strategy
-    parentOrganization: {
+    about: {
       '@id': ORG_ID,
     },
-  };
-
-  // Opening hours: only emit openingHoursSpecification when the client has
-  // verified the current operating schedule via company.officeHours.verified.
-  // Until then, omit entirely — no fabricated openingHoursSpecification.
-  if (company.officeHours.verified && company.officeHours.rows.length > 0) {
-    const dayMap: Record<string, string> = {
-      'Monday – Friday': 'Mo-Fr',
-      'Monday–Friday': 'Mo-Fr',
-      Saturday: 'Sa',
-      Sunday: 'Su',
-    };
-    const specs: Array<{
-      '@type': string;
-      dayOfWeek: string;
-      opens?: string;
-      closes?: string;
-    }> = [];
-    for (const row of company.officeHours.rows) {
-      const dayOfWeek = dayMap[row.day] ?? row.day;
-      if ('closed' in row && row.closed) {
-        specs.push({ '@type': 'OpeningHoursSpecification', dayOfWeek });
-      } else {
-        // Parse "9:00 AM – 6:00 PM" into opens/closes.
-        const match = row.hours.match(
-          /(\d{1,2}:\d{2}\s*[AP]M)\s*[–-]\s*(\d{1,2}:\d{2}\s*[AP]M)/i,
-        );
-        if (match) {
-          specs.push({
-            '@type': 'OpeningHoursSpecification',
-            dayOfWeek,
-            opens: match[1].toUpperCase().replace(/\s/g, ''),
-            closes: match[2].toUpperCase().replace(/\s/g, ''),
-          });
-        }
-      }
-    }
-    if (specs.length > 0) {
-      schema.openingHoursSpecification = specs;
-    }
-  }
-
-  // Do NOT fabricate: geo coordinates, priceRange, ratings, reviews,
-  // service radius, or unverified opening hours.
-
-  return schema;
-}
-
-/* ────────────────────────────────────────────
-   ItemList schema — homepage product range
-   Surfaces the homepage's product range as an ItemList so search engines can
-   understand the site's product catalogue structure. Each entry links to the
-   real product page and carries the product name — no fabricated SKUs, prices
-   or availability.
-   ──────────────────────────────────────────── */
-
-export function homepageItemListSchema() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    '@id': `${siteUrl}/#product-list`,
-    name: 'Bharat Electrosafe product range',
-    description:
-      'Electrical insulating mats and engineered protection products manufactured to IS 15652:2006 and IS 15909:2020.',
-    numberOfItems: products.length,
-    itemListElement: products.map((product, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name: product.name,
-      url: buildUrl(`/products/${product.slug}`),
-    })),
+    mainEntity: {
+      '@type': 'ItemList',
+      '@id': `${siteUrl}/products#product-list`,
+      name: 'Bharat Electrosafe product range',
+      numberOfItems: products.length,
+      itemListElement: products.map((product, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: product.name,
+        url: buildUrl(`/products/${product.slug}`),
+      })),
+    },
   };
 }
 

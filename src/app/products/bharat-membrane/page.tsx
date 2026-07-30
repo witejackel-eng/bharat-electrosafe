@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import { getProductBySlug } from '@/data/products';
 import { generateProductMetadata } from '@/lib/product-metadata';
 import { ProductPageStructuredData } from '@/components/structured-data';
-import { getProductFaqs } from '@/data/faqs';
 import BMClient from './BMClient';
 
 const product = getProductBySlug('bharat-membrane');
@@ -14,14 +13,9 @@ if (!product) {
 export const metadata: Metadata = generateProductMetadata(product!);
 
 export default function BharatMembranePage() {
-  const faqs = getProductFaqs(product!);
-
   return (
     <>
-      <ProductPageStructuredData
-        productSlug="bharat-membrane"
-        faqs={faqs}
-      />
+      <ProductPageStructuredData productSlug="bharat-membrane" />
       <BMClient product={product!} />
     </>
   );

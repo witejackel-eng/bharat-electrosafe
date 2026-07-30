@@ -118,7 +118,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+    <html lang="en-IN" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         {/* Google Search Console verification — only output when a real
             value exists. Do not commit a real verification token. */}
@@ -128,10 +128,13 @@ export default function RootLayout({
             content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION}
           />
         )}
-        {/* Structured data: Organisation, WebSite, LocalBusiness schemas.
-            Uses the centralised structured-data utility with @id, verified
-            fields only, and the production domain. No fake sameAs, foundingDate,
-            numberOfEmployees, or unverified claims. */}
+        {/* Structured data: Organization + WebSite schemas.
+            Uses the centralised structured-data utility with @id,
+            verified fields only, and the production domain. No
+            LocalBusiness (registered office not verified as
+            customer-facing), no FAQPage (spec section 17), no fake
+            sameAs, foundingDate, numberOfEmployees, or unverified
+            claims. */}
         <HomepageStructuredData />
       </head>
       <body

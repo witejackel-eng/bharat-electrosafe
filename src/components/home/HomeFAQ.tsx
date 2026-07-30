@@ -2,9 +2,10 @@
 import { FAQ, type FAQItem } from '@/components/ui/FAQ';
 import { homeFaqs } from '@/data/faqs';
 
-/* Single source of truth: the visible homepage FAQ accordion consumes the
-   same `homeFaqs` array that the homepage FAQStructuredData JSON-LD
-   consumes in src/app/page.tsx. The two can never drift apart. */
+/* The visible homepage FAQ accordion consumes the central `homeFaqs`
+   array from src/data/faqs. FAQPage JSON-LD is intentionally not
+   emitted (spec section 17: Google removed FAQ rich-result display
+   in 2026). The visible FAQ content is retained for users. */
 const faqItems: FAQItem[] = homeFaqs;
 
 export default function HomeFAQ() {

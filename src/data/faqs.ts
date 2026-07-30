@@ -1,9 +1,11 @@
 /**
- * FAQ data — single source of truth for the entire site.
+ * FAQ data — single source of truth for the visible FAQ accordions.
  *
- * Both the visible FAQ components (HomeFAQCTA, ProductFAQ) and the JSON-LD
- * FAQ structured data (FAQStructuredData, ProductPageStructuredData) consume
- * these exact arrays. There is no second array anywhere in the codebase.
+ * The visible FAQ components (HomeFAQCTA, ProductFAQ) consume these
+ * arrays. FAQPage JSON-LD is intentionally NOT emitted (spec section
+ * 17: Google removed FAQ rich-result display in 2026; obsolete FAQ
+ * schema provides no meaningful search-result benefit). The visible
+ * FAQ content is retained for users.
  *
  * Wording rules:
  *   - Electrical insulating products (electrical-insulating-mats,
@@ -36,7 +38,8 @@ export interface SiteFAQ {
    Homepage FAQs — practical buyer questions.
    Used by:
      - src/components/home/HomeFAQCTA.tsx (visible accordion)
-     - src/app/page.tsx (FAQStructuredData JSON-LD)
+     - src/components/home/HomeFAQ.tsx (visible accordion)
+   FAQPage JSON-LD is intentionally not emitted (spec section 17).
    Wording rules:
      - Electrical insulating mats reference IS 15652:2006 and
        BIS Licence CM/L:8800129617 and ERDA/NTH test reports.
@@ -84,10 +87,9 @@ export const homeFaqs: SiteFAQ[] = [
 
 /* ────────────────────────────────────────────
    Product-specific FAQs keyed by slug.
-   Each array is consumed by both the visible ProductFAQ accordion
-   and the ProductPageStructuredData FAQPage JSON-LD on the matching
-   product route — so the visible content and the schema are always
-   character-for-character identical.
+   Each array is consumed by the visible ProductFAQ accordion on the
+   matching product route. FAQPage JSON-LD is intentionally not
+   emitted (spec section 17).
    ──────────────────────────────────────────── */
 
 export const productFaqsBySlug: Record<string, SiteFAQ[]> = {

@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import { getProductBySlug } from '@/data/products';
 import { generateProductMetadata } from '@/lib/product-metadata';
 import { ProductPageStructuredData } from '@/components/structured-data';
-import { getProductFaqs } from '@/data/faqs';
 import BiColorClient from './BiColorClient';
 
 const product = getProductBySlug('bi-color-insulating-mats');
@@ -14,14 +13,9 @@ if (!product) {
 export const metadata: Metadata = generateProductMetadata(product!);
 
 export default function BiColorInsulatingMatsPage() {
-  const faqs = getProductFaqs(product!);
-
   return (
     <>
-      <ProductPageStructuredData
-        productSlug="bi-color-insulating-mats"
-        faqs={faqs}
-      />
+      <ProductPageStructuredData productSlug="bi-color-insulating-mats" />
       <BiColorClient product={product!} />
     </>
   );

@@ -6,27 +6,34 @@
  * so that all schemas use consistent entity IDs, the production domain,
  * and verified data from central sources.
  *
+ * SEO strategy (spec section 17):
+ *
+ *   - Homepage: Organization + WebSite (no LocalBusiness — registered
+ *     office is not independently verified as customer-facing premises).
+ *   - Products hub: CollectionPage + ItemList + BreadcrumbList.
+ *   - Product pages: WebPage + BreadcrumbList (no Product schema — site
+ *     is quotation-led, no public Offer).
+ *   - About / Contact: BreadcrumbList.
+ *   - FAQPage structured data is removed entirely (spec section 17).
+ *     Visible FAQ content is retained.
+ *
  * No fake prices, ratings, reviews, SKUs, GTINs, MPNs, stock status,
  * shipping data, or offer expiry dates are ever emitted.
- *
- * Sections 2–8 of the Phase 5 specification.
  */
 
 import {
   websiteSchema,
   organisationSchema,
-  localBusinessSchema,
-  productSchema,
+  productPageSchema,
+  productsCollectionPageSchema,
   breadcrumbSchema,
-  faqSchema,
   serializeJsonLd,
   type BreadcrumbItem,
-  type FAQItem,
 } from '@/lib/structured-data';
 import { products } from '@/data/products';
 
 /* ────────────────────────────────────────────
-   Homepage: Organisation + WebSite + LocalBusiness
+   Homepage: Organization + WebSite
    ──────────────────────────────────────────── */
 
 export function HomepageStructuredData() {
@@ -44,26 +51,19 @@ export function HomepageStructuredData() {
           __html: serializeJsonLd(websiteSchema()),
         }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: serializeJsonLd(localBusinessSchema()),
-        }}
-      />
     </>
   );
 }
 
 /* ────────────────────────────────────────────
-   Product page: Product + Breadcrumb schema
+   Product page: WebPage + Breadcrumb schema
    ──────────────────────────────────────────── */
 
 interface ProductPageStructuredDataProps {
   productSlug: string;
-  faqs?: FAQItem[];
 }
 
-export function ProductPageStructuredData({ productSlug, faqs }: ProductPageStructuredDataProps) {
+export function ProductPageStructuredData({ productSlug }: ProductPageStructuredDataProps) {
   const product = products.find((p) => p.slug === productSlug);
   if (!product) return null;
 
@@ -78,7 +78,7 @@ export function ProductPageStructuredData({ productSlug, faqs }: ProductPageStru
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: serializeJsonLd(productSchema(product)),
+          __html: serializeJsonLd(productPageSchema(product)),
         }}
       />
       <script
@@ -87,20 +87,12 @@ export function ProductPageStructuredData({ productSlug, faqs }: ProductPageStru
           __html: serializeJsonLd(breadcrumbSchema(breadcrumbItems, `/products/${product.slug}`)),
         }}
       />
-      {faqs && faqs.length > 0 && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: serializeJsonLd(faqSchema(faqs, `/products/${product.slug}`)),
-          }}
-        />
-      )}
     </>
   );
 }
 
 /* ────────────────────────────────────────────
-   Products index: Breadcrumb schema
+   Products index: CollectionPage + Breadcrumb schema
    ──────────────────────────────────────────── */
 
 export function ProductsPageStructuredData() {
@@ -110,12 +102,20 @@ export function ProductsPageStructuredData() {
   ];
 
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: serializeJsonLd(breadcrumbSchema(breadcrumbItems, '/products')),
-      }}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(productsCollectionPageSchema()),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(breadcrumbSchema(breadcrumbItems, '/products')),
+        }}
+      />
+    </>
   );
 }
 
@@ -154,28 +154,6 @@ export function ContactPageStructuredData() {
       type="application/ld+json"
       dangerouslySetInnerHTML={{
         __html: serializeJsonLd(breadcrumbSchema(breadcrumbItems, '/contact-us')),
-      }}
-    />
-  );
-}
-
-/* ────────────────────────────────────────────
-   FAQ page: standalone FAQ schema
-   ──────────────────────────────────────────── */
-
-interface FAQStructuredDataProps {
-  faqs: FAQItem[];
-  path: string;
-}
-
-export function FAQStructuredData({ faqs, path }: FAQStructuredDataProps) {
-  if (!faqs || faqs.length === 0) return null;
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: serializeJsonLd(faqSchema(faqs, path)),
       }}
     />
   );

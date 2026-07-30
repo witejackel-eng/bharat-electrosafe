@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import { allowIndexing, buildUrl } from '@/lib/site-url';
 import { siteOgImage, siteTwitterImage } from '@/lib/social-image';
-import { FAQStructuredData } from '@/components/structured-data';
-import { homeFaqs } from '@/data/faqs';
 import HomeClient from './HomeClient';
 
 /**
@@ -25,6 +23,12 @@ import HomeClient from './HomeClient';
  * Title and description overrides remain so social platforms see the
  * hand-tuned SEO title and the Bharat-Hydro-Seal-inclusive description
  * rather than the more generic root default.
+ *
+ * FAQPage structured data is intentionally NOT emitted here. Spec
+ * section 17: "Remove FAQPage structured data from this commercial
+ * website. Google removed FAQ rich-result display in 2026, and
+ * obsolete FAQ schema provides no meaningful search-result benefit
+ * here." The visible FAQ accordion is retained for users.
  */
 export const metadata: Metadata = {
   /* Absolute title — the SEO title already includes the brand, so we
@@ -35,14 +39,14 @@ export const metadata: Metadata = {
     absolute: 'Electrical Insulating Mats Manufacturer India | Bharat Electrosafe',
   },
   description:
-    'Manufacturer of electrical insulating mats, visible-safety mats, BharatMembrane and Bharat Hydro Seal solutions for industrial electrical and civil-protection applications.',
+    'Manufacturer of electrical insulating mats, visible-safety mat variants, BharatMembrane PVC geo-membranes and Bharat Hydro Seal water stops for industrial applications.',
   alternates: {
     canonical: buildUrl('/'),
   },
   openGraph: {
     title: 'Electrical Insulating Mats Manufacturer India | Bharat Electrosafe',
     description:
-      'Manufacturer of electrical insulating mats, visible-safety mats, BharatMembrane and Bharat Hydro Seal solutions for industrial electrical and civil-protection applications.',
+      'Manufacturer of electrical insulating mats, visible-safety mat variants, BharatMembrane PVC geo-membranes and Bharat Hydro Seal water stops for industrial applications.',
     url: buildUrl('/'),
     type: 'website',
     images: [siteOgImage],
@@ -51,7 +55,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Electrical Insulating Mats Manufacturer India | Bharat Electrosafe',
     description:
-      'Manufacturer of electrical insulating mats, visible-safety mats, BharatMembrane and Bharat Hydro Seal solutions for industrial electrical and civil-protection applications.',
+      'Manufacturer of electrical insulating mats, visible-safety mat variants, BharatMembrane PVC geo-membranes and Bharat Hydro Seal water stops for industrial applications.',
     images: [siteTwitterImage],
   },
   robots: allowIndexing
@@ -60,10 +64,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return (
-    <>
-      <FAQStructuredData path="/" faqs={homeFaqs} />
-      <HomeClient />
-    </>
-  );
+  return <HomeClient />;
 }

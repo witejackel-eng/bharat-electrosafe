@@ -8,7 +8,7 @@ import ContactUsClient from './ContactUsClient';
    "| Bharat Electrosafe" suffix because the root layout template appends
    it automatically. Open Graph and Twitter receive the final full branded
    title. */
-const PAGE_TITLE = 'Contact Bharat Electrosafe';
+const PAGE_TITLE = 'Contact Bharat Electrosafe for Product Enquiries';
 const FULL_TITLE = `${PAGE_TITLE} | Bharat Electrosafe`;
 
 export const metadata: Metadata = {

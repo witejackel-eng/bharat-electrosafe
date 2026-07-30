@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import { getProductBySlug } from '@/data/products';
 import { generateProductMetadata } from '@/lib/product-metadata';
 import { ProductPageStructuredData } from '@/components/structured-data';
-import { getProductFaqs } from '@/data/faqs';
 import CSIMClient from './CSIMClient';
 
 const product = getProductBySlug('coloured-strip-insulating-mats');
@@ -14,14 +13,9 @@ if (!product) {
 export const metadata: Metadata = generateProductMetadata(product!);
 
 export default function ColouredStripInsulatingMatsPage() {
-  const faqs = getProductFaqs(product!);
-
   return (
     <>
-      <ProductPageStructuredData
-        productSlug="coloured-strip-insulating-mats"
-        faqs={faqs}
-      />
+      <ProductPageStructuredData productSlug="coloured-strip-insulating-mats" />
       <CSIMClient product={product!} />
     </>
   );

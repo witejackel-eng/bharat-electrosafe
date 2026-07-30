@@ -278,44 +278,38 @@ test.describe('Standards formatting', () => {
 });
 
 /* ────────────────────────────────────────────────────────────────
-   10. FAQ schema must match visible FAQ text — the homepage
-       FAQPage JSON-LD must reference the same questions that
-       appear in the visible accordion.
+   10. FAQ schema is intentionally absent (spec section 17).
+       Google removed FAQ rich-result display in 2026; FAQPage
+       schema provides no meaningful search-result benefit. The
+       visible FAQ accordion is retained for users.
    ──────────────────────────────────────────────────────────────── */
 
-test.describe('FAQ schema vs visible FAQ', () => {
-  test('homepage FAQ schema questions match the visible accordion', async ({ page }) => {
+test.describe('FAQPage schema absence (spec section 17)', () => {
+  test('homepage does not emit FAQPage JSON-LD', async ({ page }) => {
     await page.goto('/');
-
-    // Pull the FAQPage JSON-LD
-    const faqScript = await page.locator('script[type="application/ld+json"]').allTextContents();
-    const faqJson = faqScript.find((s) => s.includes('"FAQPage"'));
-    expect(faqJson, 'no FAQPage JSON-LD on homepage').toBeDefined();
-
-    const parsed = JSON.parse(faqJson!);
-    const schemaQuestions = parsed.mainEntity.map(
-      (q: { name: string }) => q.name
-    );
-
-    // Pull the visible FAQ questions from the accordion buttons
-    const visibleQuestions = await page
-      .locator('#faq button[type="button"], [aria-labelledby*="faq"] button[type="button"]')
+    const blocks = await page
+      .locator('script[type="application/ld+json"]')
       .allTextContents();
-
-    // If the visible-questions selector missed (markup varies), fall back
-    // to checking the section's headings.
-    if (visibleQuestions.length === 0) {
-      const headingTexts = await page.locator('#faq h3, #faq h2').allTextContents();
-      for (const q of schemaQuestions) {
-        const matched = headingTexts.some((h) => h.includes(q));
-        expect(matched, `schema question not visible: "${q}"`).toBe(true);
-      }
-      return;
-    }
-
-    for (const q of schemaQuestions) {
-      const matched = visibleQuestions.some((v) => v.includes(q));
-      expect(matched, `schema question not visible: "${q}"`).toBe(true);
+    for (const block of blocks) {
+      const parsed = JSON.parse(block);
+      const type = parsed['@type'];
+      const typeStr = Array.isArray(type) ? type.join(',') : String(type);
+      expect(typeStr).not.toMatch(/FAQPage/);
     }
   });
+
+  for (const route of productRoutes) {
+    test(`${route} does not emit FAQPage JSON-LD`, async ({ page }) => {
+      await page.goto(route);
+      const blocks = await page
+        .locator('script[type="application/ld+json"]')
+        .allTextContents();
+      for (const block of blocks) {
+        const parsed = JSON.parse(block);
+        const type = parsed['@type'];
+        const typeStr = Array.isArray(type) ? type.join(',') : String(type);
+        expect(typeStr).not.toMatch(/FAQPage/);
+      }
+    });
+  }
 });

@@ -7,9 +7,9 @@ import { SectionShell } from '@/components/ui/SectionShell';
 import { ShieldCheck, Phone, MessageCircle } from 'lucide-react';
 import { homeFaqs } from '@/data/faqs';
 
-/* Single source of truth: the visible homepage FAQ accordion consumes the
-   same `homeFaqs` array that the homepage FAQStructuredData JSON-LD
-   consumes in src/app/page.tsx. The two can never drift apart. */
+/* The visible homepage FAQ accordion consumes the central `homeFaqs`
+   array from src/data/faqs. FAQPage JSON-LD is intentionally not
+   emitted (spec section 17). The visible FAQ content is retained. */
 const faqItems: FAQItem[] = homeFaqs;
 
 export default function HomeFAQCTA() {
