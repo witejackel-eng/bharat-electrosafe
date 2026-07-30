@@ -24,11 +24,11 @@ export default function manifest(): MetadataRoute.Manifest {
     name: 'Bharat Electrosafe',
     short_name: 'Bharat Electrosafe',
     description:
-      'Manufacturer of electrical insulating mats, visible-safety mats, BharatMembrane and Bharat Hydro Seal solutions for industrial electrical and civil-protection applications.',
+      'Manufacturer of electrical insulating mats, visible-safety mats, BharatMembrane and Bharat Hydro Seal products for industrial electrical and civil-protection applications.',
     start_url: '/',
     display: 'standalone',
     background_color: '#FCFBF7',
-    theme_color: '#00275B',
+    theme_color: '#002659',
     icons: [
       {
         src: '/icons/icon-192.png',

@@ -1,9 +1,20 @@
 /**
  * Centralised social-preview image metadata for Bharat Electrosafe.
  *
- * The OG image (`src/app/opengraph-image.png`) and Twitter image
- * (`src/app/twitter-image.png`) are 1200×630 PNGs served at the site
- * root by Next.js App Router file conventions.
+ * Two parallel copies of each social image exist:
+ *   • `src/app/opengraph-image.png` and `src/app/twitter-image.png` —
+ *     served at the site root by Next.js App Router file conventions
+ *     (auto-emitted as <meta property="og:image"> / <meta name="twitter:image">).
+ *   • `public/og/bharat-electrosafe-og-v2.png` and
+ *     `public/og/bharat-electrosafe-twitter-v2.png` — explicit versioned
+ *     copies served from /og/ with a `-v2` suffix so social-platform
+ *     caches (which key on URL) are forced to re-fetch after a brand
+ *     refresh. These are the URLs declared in `openGraph.images` /
+ *     `twitter.images` so crawlers hit the versioned file directly.
+ *
+ * Both copies are byte-identical 1200×630 PNGs composed from the official
+ * Bharat Electrosafe logo (left panel, navy background) and the approved
+ * hero photograph of a technician at switchgear (right panel).
  *
  * Routes that DO NOT have a product-specific social image should import
  * `siteOgImage` and `siteTwitterImage` and spread them into the route's
@@ -14,17 +25,24 @@
  * (even with `images` omitted), so explicit wiring is required.
  */
 
-/** OG image URL — served at site root by App Router file convention. */
-export const SITE_OG_IMAGE_URL = '/opengraph-image.png';
-/** Twitter image URL — served at site root by App Router file convention. */
-export const SITE_TWITTER_IMAGE_URL = '/twitter-image.png';
+/**
+ * OG image URL — versioned public path so social-platform caches
+ * (Facebook, LinkedIn, WhatsApp, Twitter, Slack) re-fetch after a brand
+ * refresh. The same file is also served at `/opengraph-image.png` by the
+ * App Router file convention, but we point crawlers at the versioned URL
+ * so a future `...-v3.png` rotation is cache-bustable without touching
+ * the file-convention path.
+ */
+export const SITE_OG_IMAGE_URL = '/og/bharat-electrosafe-og-v2.png';
+/** Twitter image URL — same versioning rationale as the OG image. */
+export const SITE_TWITTER_IMAGE_URL = '/og/bharat-electrosafe-twitter-v2.png';
 
 /**
  * Accurate alt text describing the OG/Twitter image contents.
  * Reads naturally to screen readers and social-platform crawlers.
  */
 export const SITE_SOCIAL_IMAGE_ALT =
-  'Bharat Electrosafe electrical insulating mat protecting a technician working in an industrial switchgear room.';
+  'Bharat Electrosafe electrical insulating mat protecting a technician working near industrial switchgear.';
 
 /** OG image dimensions — both files are 1200×630 PNGs. */
 export const SITE_SOCIAL_IMAGE_WIDTH = 1200;

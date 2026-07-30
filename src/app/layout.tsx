@@ -58,7 +58,7 @@ const manrope = Manrope({
  * at /products/bharat-hydro-seal with dedicated metadata.
  */
 const siteDescription =
-  'Manufacturer of electrical insulating mats, visible-safety mats, BharatMembrane and Bharat Hydro Seal solutions for industrial electrical and civil-protection applications.';
+  'Manufacturer of electrical insulating mats, visible-safety mats, BharatMembrane and Bharat Hydro Seal products for industrial electrical and civil-protection applications.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(deploymentOrigin),
@@ -107,7 +107,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: '#00275B',
+  themeColor: '#002659',
   width: 'device-width',
   initialScale: 1,
 };
