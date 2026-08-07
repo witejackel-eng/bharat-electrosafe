@@ -33,6 +33,7 @@ export function SecondaryButton({
         className={cn(baseClasses, className)}
         aria-disabled={disabled}
         target={target}
+        rel={target === '_blank' ? 'noopener noreferrer' : undefined}
       >
         {children}
       </Link>

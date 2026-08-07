@@ -15,7 +15,15 @@ const siteUrl =
  * The `unsafe-inline` limitation is a known moderate residual risk for
  * this static marketing site. A nonce-based CSP would require dynamic
  * rendering or middleware that adds architectural complexity beyond
- * what is justified for this content-first site.
+ * what is justified for this content-first site. The risk is mitigated
+ * by:
+ *   - No user-generated content is rendered as HTML
+ *   - JSON-LD uses safe serialisation (< → \u003c)
+ *   - SRI is not practical for Next.js inline chunks
+ *   - The site has no authentication / sensitive client-side state
+ *
+ * If a nonce-based approach becomes practical in a future Next.js
+ * version, upgrade to nonce-based script-src.
  */
 const cspHeader = [
   "default-src 'self'",
@@ -55,9 +63,10 @@ const securityHeaders = [
     value:
       'camera=(), microphone=(), geolocation=(), browsing-topics=(), interest-cohort=()',
   },
-  /* HSTS: using a safe rollout value without preload. The preload list
-     requires the client to control all subdomains and support HTTPS on
-     every one. If that is verified, preload can be added later. */
+  /* HSTS: using a safe rollout value with includeSubDomains.
+     The preload list requires the client to control all subdomains and
+     support HTTPS on every one. If that is verified, preload can be
+     added later. */
   ...(isProduction
     ? [
         {
@@ -66,6 +75,18 @@ const securityHeaders = [
         },
       ]
     : []),
+  /* Cross-Origin isolation headers — safe for this site which has no
+     cross-origin dependencies (no OAuth popups, no cross-origin workers,
+     no SharedArrayBuffer usage). These headers provide defence-in-depth
+     against cross-origin attacks. */
+  {
+    key: 'Cross-Origin-Opener-Policy',
+    value: 'same-origin',
+  },
+  {
+    key: 'Cross-Origin-Resource-Policy',
+    value: 'same-origin',
+  },
 ];
 
 const nextConfig: NextConfig = {
@@ -75,9 +96,24 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ['http://127.0.0.1', 'http://localhost'],
   async headers() {
     return [
+      // Security headers for all page routes
       {
         source: '/:path*',
         headers: securityHeaders,
+      },
+      // API routes: no-store, noindex
+      {
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store',
+          },
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
+          },
+        ],
       },
     ];
   },
@@ -95,12 +131,26 @@ const nextConfig: NextConfig = {
       { source: '/BharatHydro-Seal.php', destination: '/products/bharat-hydro-seal' },
     ];
 
+    // www → non-www redirect (supplements middleware, works at Vercel edge)
+    const wwwRedirect = {
+      source: '/:path*',
+      has: [
+        {
+          type: 'host' as const,
+          value: 'www.bharatelectrosafe.com',
+        },
+      ],
+      destination: 'https://bharatelectrosafe.com/:path*',
+      permanent: true,
+    };
+
     return [
       ...phpRedirects.map((r) => ({
         source: r.source,
         destination: r.destination,
         permanent: true,
       })),
+      wwwRedirect,
     ];
   },
 };

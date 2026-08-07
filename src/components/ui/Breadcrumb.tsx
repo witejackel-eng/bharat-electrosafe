@@ -15,12 +15,13 @@ interface BreadcrumbProps {
 }
 
 /**
- * Breadcrumb — semantic navigation trail with BreadcrumbList JSON-LD.
+ * Breadcrumb — semantic navigation trail (visual only).
  *
- * Upgraded from the original (which was visual-only) to also emit
- * schema.org BreadcrumbList structured data so search engines can display
- * the trail in SERP results. Adds a leading Home icon, focus rings, and
- * label truncation for long product names.
+ * Structured data (BreadcrumbList JSON-LD) is emitted by the
+ * server-side structured-data component (src/components/structured-data.tsx)
+ * which generates canonical absolute URLs. This presentational component
+ * renders only the visible breadcrumb navigation — it does NOT emit its
+ * own BreadcrumbList schema to avoid duplicate structured data.
  *
  * Accessibility:
  *   • `<nav aria-label="Breadcrumb">` landmark
@@ -29,30 +30,8 @@ interface BreadcrumbProps {
  *   • Focus-visible ring via .focus-ring utility
  */
 export function Breadcrumb({ items, className }: BreadcrumbProps) {
-  // Build BreadcrumbList JSON-LD for SEO. Only emitted when crumbs have
-  // hrefs (i.e. a real trail, not a single stub).
-  const ldJson =
-    items.length > 1
-      ? {
-          '@context': 'https://schema.org',
-          '@type': 'BreadcrumbList',
-          itemListElement: items.map((item, index) => ({
-            '@type': 'ListItem',
-            position: index + 1,
-            name: item.label,
-            ...(item.href ? { item: item.href } : {}),
-          })),
-        }
-      : null;
-
   return (
     <nav aria-label="Breadcrumb" className={cn('flex items-center min-w-0', className)}>
-      {ldJson && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(ldJson) }}
-        />
-      )}
       <ol className="flex flex-wrap items-center gap-1 text-metadata text-be-grey-550 min-w-0">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;

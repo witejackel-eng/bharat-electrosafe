@@ -19,12 +19,14 @@ Key characteristics:
 
 ## 2. Live and Production Domains
 
-| Environment | URL |
-|---|---|
-| Production (Vercel) | [https://bharat-electrosafe.vercel.app/](https://bharat-electrosafe.vercel.app/) |
-| Production domain | [https://bharatelectrosafe.com](https://bharatelectrosafe.com) |
+| Environment | URL | Behaviour |
+|---|---|---|
+| Production domain | [https://bharatelectrosafe.com](https://bharatelectrosafe.com) | Canonical — serves the site normally |
+| Vercel alias | [https://bharat-electrosafe.vercel.app/](https://bharat-electrosafe.vercel.app/) | 308 redirect to canonical domain |
+| www subdomain | [https://www.bharatelectrosafe.com](https://www.bharatelectrosafe.com) | 308 redirect to canonical domain |
+| Preview deployments | `*.vercel.app` | NOT redirected — usable for QA |
 
-The canonical origin is hardcoded as `https://bharatelectrosafe.com` in `src/lib/site-url.ts`. All canonical URLs, sitemap entries, robots host, structured-data `@id` fields, and Open Graph URLs resolve against this origin — never against a `*.vercel.app` preview URL.
+The canonical origin is hardcoded as `https://bharatelectrosafe.com` in `src/lib/site-url.ts`. All canonical URLs, sitemap entries, robots host, structured-data `@id` fields, and Open Graph URLs resolve against this origin — never against a `*.vercel.app` preview URL. Middleware (`src/middleware.ts`) enforces host-level redirects for the Vercel alias and www subdomain.
 
 ---
 
@@ -271,17 +273,22 @@ Copy `.env.example` to `.env.local` and fill in the values. Production values be
 
 | Variable | Required | Description |
 |---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | Yes | Canonical domain of the website. Must be `https://bharatelectrosafe.com` in production. Used for canonical URLs, sitemap, robots.txt, OG URLs, and JSON-LD. |
-| `NEXT_PUBLIC_ALLOW_INDEXING` | Yes | Set `true` only in the Vercel Production environment. Controls whether search engines may index the site. Subject to triple-gate verification (see Section 14). |
+| `NEXT_PUBLIC_SITE_URL` | Yes | Canonical domain of the website. Must be `https://bharatelectrosafe.com` in production. Used for deployment origin resolution. |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | No | Google Search Console verification token. Only output when a real value exists. Do not commit a real token — add it via the Vercel dashboard. |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | No | Cloudflare Turnstile site key for the contact-form invisible bot-protection widget. Required only if `TURNSTILE_SECRET_KEY` is also set. |
 
 ### Server (secrets — never use `NEXT_PUBLIC_` prefix)
 
 | Variable | Required | Description |
 |---|---|---|
+| `ALLOW_INDEXING` | Yes | Set `true` only in the Vercel Production environment after the domain is verified. Server-only (not exposed to browser). Falls back to `NEXT_PUBLIC_ALLOW_INDEXING` if unset (backwards compatibility). |
+| `NEXT_PUBLIC_ALLOW_INDEXING` | Deprecated | Legacy indexing flag. Prefer `ALLOW_INDEXING` (server-only). Ignored when `ALLOW_INDEXING` is set. |
 | `RESEND_API_KEY` | Yes | API key for Resend email delivery. Format: `re_xxxxxxxxxxxx`. |
 | `CONTACT_FROM_EMAIL` | Yes | Sender email address for contact-form enquiries. Must be a domain verified with Resend. |
 | `CONTACT_TO_EMAIL` | No | Recipient email address. Defaults to the company email if not set. |
+| `UPSTASH_REDIS_REST_URL` | No | Upstash Redis REST API URL for distributed rate limiting across serverless instances. Without this, rate limiting falls back to per-instance in-memory tracking. |
+| `UPSTASH_REDIS_REST_TOKEN` | No | Upstash Redis REST API token. Must be set if `UPSTASH_REDIS_REST_URL` is set. |
+| `TURNSTILE_SECRET_KEY` | No | Cloudflare Turnstile secret key for server-side token verification. If not set, Turnstile verification is skipped gracefully (other protections remain active). |
 
 ---
 
@@ -314,21 +321,23 @@ The contact form is a full-stack feature with strict security controls:
 - **Zod** schema validates fields client-side before submission (name, email, phone, enquiry type, message, plus optional product-specific fields).
 - A hidden **honeypot** field (`website`) must remain empty — bots that fill it are silently rejected.
 - A **timing field** (`_formOpenAt`) records when the form was opened; submissions faster than 3 seconds are silently rejected.
+- **Cloudflare Turnstile** widget (when configured) provides invisible bot protection without visual CAPTCHA puzzles.
 
 ### Server Side (`src/app/api/contact/route.ts`)
 
 1. **Content-type enforcement** — only `application/json` accepted.
 2. **Request body size limit** — 32 KB maximum.
-3. **Exact origin validation** — the `Origin` or `Referer` header must match the allow-list (built from `NEXT_PUBLIC_SITE_URL`, `VERCEL_URL`, `VERCEL_PROJECT_PRODUCTION_URL`, and `localhost` in development). Substring/`startsWith` matching is never used.
-4. **Rate limiting** — in-memory, 5 requests per IP per 10-minute window. Upstash Redis is recommended for production serverless durability.
+3. **Exact origin validation** — the `Origin` or `Referer` header must match the allow-list (built from `NEXT_PUBLIC_SITE_URL`, `VERCEL_URL`, `VERCEL_PROJECT_PRODUCTION_URL`, canonical domain, www domain, and `localhost` in development). Substring/`startsWith` matching is never used.
+4. **Distributed rate limiting** — Upstash Redis when configured (5 req/IP/10 min across all serverless instances), with conservative in-memory fallback per instance when Redis is unavailable.
 5. **Zod strict schema** — `z.strictObject()` rejects unknown fields; all strings are trimmed and validated.
 6. **Honeypot check** — the hidden `website` field must be empty. Filled honeypots receive a 200 response with a generic success message to avoid confirming the field's existence.
 7. **Timing check** — form must be open for at least 3 seconds and no more than 1 hour.
-8. **HTML escaping** — all user content is HTML-escaped before insertion into the email body.
-9. **Resend delivery** — emails are sent server-side via the Resend API. The sender address (`CONTACT_FROM_EMAIL`) must be a Resend-verified domain.
-10. **Redacted logging** — logs contain no PII (only name length, enquiry type, and boolean flags).
-11. **Cache-Control: no-store** — API responses are never cached.
-12. **Honest delivery messages** — if email delivery fails, the response includes direct-contact fallback details (phone, WhatsApp, email, address).
+8. **Cloudflare Turnstile verification** — server-side token validation against Cloudflare's Siteverify API. Gracefully skipped when `TURNSTILE_SECRET_KEY` is not configured.
+9. **HTML escaping** — all user content is HTML-escaped before insertion into the email body.
+10. **Resend delivery** — emails are sent server-side via the Resend API. The sender address (`CONTACT_FROM_EMAIL`) must be a Resend-verified domain.
+11. **Redacted logging** — logs contain no PII (only name length, enquiry type, and boolean flags).
+12. **Cache-Control: no-store + X-Robots-Tag: noindex** — API responses are never cached and never indexed.
+13. **Honest delivery messages** — if email delivery fails, the response includes direct-contact fallback details (phone, WhatsApp, email, address).
 
 ---
 
@@ -346,21 +355,42 @@ Applied to all routes via `next.config.ts`:
 | `Referrer-Policy` | `strict-origin-when-cross-origin` |
 | `Permissions-Policy` | `camera=(), microphone=(), geolocation=(), browsing-topics=(), interest-cohort=()` |
 | `Strict-Transport-Security` | `max-age=63072000; includeSubDomains` (production only) |
+| `Cross-Origin-Opener-Policy` | `same-origin` |
+| `Cross-Origin-Resource-Policy` | `same-origin` |
+
+API routes additionally receive:
+
+| Header | Value |
+|---|---|
+| `Cache-Control` | `no-store` |
+| `X-Robots-Tag` | `noindex, nofollow` |
 
 Notable: `unsafe-eval` is never included in the CSP. The `unsafe-inline` limitation for scripts is a known moderate residual risk for this static marketing site; a nonce-based CSP would add architectural complexity beyond what is justified.
 
+### Canonical Domain Enforcement (Middleware)
+
+`src/middleware.ts` enforces that only `https://bharatelectrosafe.com` serves indexable content:
+
+- `www.bharatelectrosafe.com` → 308 redirect to `https://bharatelectrosafe.com`
+- `bharat-electrosafe.vercel.app` → 308 redirect to `https://bharatelectrosafe.com`
+- Vercel preview deployments (`*-git-*.vercel.app`) are NOT redirected (usable for QA)
+- Localhost is never redirected
+
 ### Application-Level Controls
 
-- **Exact origin validation** on contact form — no substring matching.
+- **Exact origin validation** on contact form — no substring matching. Canonical and www domains always allowed.
 - **Zod strict schema** — rejects unknown fields and validates all inputs.
 - **HTML escaping** of all user content in email bodies.
 - **Honeypot + timing anti-spam** — hidden field and minimum form-open duration.
-- **Rate limiting** — in-memory (5 req/IP/10 min); Upstash Redis recommended for production.
-- **Cache-Control: no-store** on all API responses.
+- **Distributed rate limiting** — Upstash Redis (5 req/IP/10 min) with in-memory fallback when Redis is unavailable.
+- **Cloudflare Turnstile** — invisible bot protection with server-side token verification. Gracefully disabled when not configured.
+- **Cache-Control: no-store + X-Robots-Tag: noindex** on all API responses.
 - **Redacted logging** — no PII in server logs.
 - **`.env` exclusion from git** — `.gitignore` prevents environment files from being committed.
 - **Subject-header injection prevention** — CR/LF characters stripped from enquiry-type values.
 - **Powered-By header removed** — `poweredByHeader: false` in Next.js config.
+- **Safe JSON-LD serialisation** — `<` characters escaped as `\u003c` to prevent XSS via `dangerouslySetInnerHTML`.
+- **External link safety** — `target="_blank"` links always include `rel="noopener noreferrer"`.
 
 ---
 
@@ -370,20 +400,28 @@ Notable: `unsafe-eval` is never included in the CSP. The `unsafe-inline` limitat
 
 Search-engine indexing is enabled **only** when all three conditions are true:
 
-1. `NEXT_PUBLIC_ALLOW_INDEXING === 'true'` — explicit opt-in.
+1. `ALLOW_INDEXING === 'true'` (server-only env var, not exposed to browser). Falls back to `NEXT_PUBLIC_ALLOW_INDEXING` for backwards compatibility.
 2. The canonical origin is exactly `https://bharatelectrosafe.com` — always true (hardcoded in `src/lib/site-url.ts`).
 3. `VERCEL_ENV === 'production'` or `VERCEL_ENV` is unset — not a Vercel preview deployment.
 
 This prevents any single misconfiguration from exposing a non-production deployment to search engines.
 
+### Canonical Domain Enforcement
+
+- **Middleware** (`src/middleware.ts`) redirects `www.bharatelectrosafe.com` and `bharat-electrosafe.vercel.app` to `https://bharatelectrosafe.com` with 308 status.
+- **Next.js redirects** supplement middleware for `www` → non-www at the routing level.
+- Preview deployments are never redirected, preserving their QA usability.
+
 ### SEO Features
 
 - **Canonical URLs** — every page declares a self-referencing canonical `<link>` via `buildCanonicalUrl()`. No page inherits the homepage canonical.
-- **Dynamic sitemap** — `src/app/sitemap.ts` generates an XML sitemap with all routes when indexing is enabled.
-- **Dynamic robots.txt** — `src/app/robots.ts` allows or disallows all crawling based on the indexing gate. The sitemap URL is only exposed when indexing is enabled.
-- **Structured data** — Organization + WebSite schemas on the homepage; CollectionPage + ItemList on the products hub; WebPage + BreadcrumbList on product pages. No fake prices, ratings, reviews, SKUs, or unverified claims are ever emitted.
+- **Dynamic sitemap** — `src/app/sitemap.ts` generates an XML sitemap with all routes when indexing is enabled. Returns empty when indexing is disabled (no misleading staging sitemap).
+- **Dynamic robots.txt** — `src/app/robots.ts` allows or disallows crawling based on the indexing gate. API and `_next` paths are always disallowed. The sitemap URL is only exposed when indexing is enabled.
+- **Structured data** — Organization + WebSite schemas on the homepage; CollectionPage + ItemList on the products hub; WebPage + BreadcrumbList on product pages. No fake prices, ratings, reviews, SKUs, or unverified claims are ever emitted. One BreadcrumbList per page (server-side only; the visual Breadcrumb component does not emit duplicate schema).
+- **Social metadata** — OG and Twitter images use absolute canonical URLs (`https://bharatelectrosafe.com/og/...`) so staging/preview hosts never leak into social metadata.
 - **Preview noindex** — all preview and staging deployments emit `noindex, nofollow` by default.
 - **Google Search Console** — verification meta tag is only output when `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` is set.
+- **Sitemap lastModified omitted** — no misleading stale or dynamic dates; truthful signals only.
 
 ---
 
@@ -475,13 +513,6 @@ The site is deployed on Vercel with the following configuration:
 - **Output mode**: Standalone.
 - **Framework preset**: Next.js (auto-detected).
 
-### Deployment Checklist
-
-1. Ensure all environment variables are set in the Vercel dashboard (see Section 10).
-2. Set `NEXT_PUBLIC_ALLOW_INDEXING=true` **only** in the Production environment.
-3. Verify the deployment URL resolves correctly before mapping the custom domain.
-4. Run `bun run check` locally before pushing.
-
 ---
 
 ## 19. Domain Configuration
@@ -490,10 +521,23 @@ The site is deployed on Vercel with the following configuration:
 |---|---|
 | Production domain | `bharatelectrosafe.com` |
 | HTTPS | Enforced (Vercel automatic SSL + HSTS header) |
-| WWW redirect | `www.bharatelectrosafe.com` → `bharatelectrosafe.com` (301) |
-| Vercel deployment alias | `bharat-electrosafe.vercel.app` |
+| WWW redirect | `www.bharatelectrosafe.com` → `bharatelectrosafe.com` (308 via middleware + Next.js redirect) |
+| Vercel alias redirect | `bharat-electrosafe.vercel.app` → `bharatelectrosafe.com` (308 via middleware) |
+| Preview deployments | NOT redirected — usable for QA |
 
 The canonical origin is hardcoded as `https://bharatelectrosafe.com` in `src/lib/site-url.ts`. The `deploymentOrigin` is resolved dynamically from environment variables so that preview deployments use their actual URL for `metadataBase` (OG image resolution) while keeping canonical URLs pointing at the production domain.
+
+### Safe Production Launch Sequence
+
+1. Deploy latest code with `ALLOW_INDEXING=false` (or unset).
+2. Attach `bharatelectrosafe.com` to the Vercel project.
+3. Verify `https://bharatelectrosafe.com` works correctly.
+4. Verify `https://bharat-electrosafe.vercel.app` redirects to the canonical domain.
+5. Verify `https://www.bharatelectrosafe.com` redirects to the canonical domain.
+6. Test `robots.txt`, `sitemap.xml`, canonical tags, structured data, contact form, and security headers.
+7. Set `ALLOW_INDEXING=true` in the Vercel **Production** environment only.
+8. Redeploy.
+9. Verify production again — pages should be indexable only on `bharatelectrosafe.com`.
 
 ---
 

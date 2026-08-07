@@ -20,7 +20,7 @@
 
 import type { Metadata } from 'next';
 import { ProductData } from '@/data/products';
-import { allowIndexing, buildUrl } from '@/lib/site-url';
+import { allowIndexing, buildUrl, canonicalOrigin } from '@/lib/site-url';
 import { siteOgImage, siteTwitterImage } from '@/lib/social-image';
 
 /**
@@ -113,7 +113,7 @@ export function generateProductMetadata(product: ProductData): Metadata {
   const ogImages = ogImage
     ? [
         {
-          url: ogImage,
+          url: `${canonicalOrigin}${ogImage}`,
           width: 1200,
           height: 630,
           alt: `${product.name} — ${description}`,
@@ -127,7 +127,7 @@ export function generateProductMetadata(product: ProductData): Metadata {
   const twitterImages = ogImage
     ? [
         {
-          url: ogImage,
+          url: `${canonicalOrigin}${ogImage}`,
           width: 1200,
           height: 630,
           alt: `${product.name} — ${description}`,

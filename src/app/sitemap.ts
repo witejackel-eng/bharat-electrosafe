@@ -5,13 +5,17 @@
  * every product page. Uses the central site URL helper so that
  * every entry resolves against the official production domain.
  *
- * lastModified is omitted unless a genuine content update date is
- * available — we do not falsely tell search engines that every page
- * changes on every deployment.
+ * When indexing is disabled, returns an empty array so that no
+ * misleading production URLs are exposed from staging/preview.
+ *
+ * lastModified is intentionally omitted — we do not falsely tell search
+ * engines that every page changes on every deployment. If reliable
+ * content-modification dates become available in future, they can be
+ * added per-entry.
  */
 
 import type { MetadataRoute } from 'next';
-import { buildUrl } from '@/lib/site-url';
+import { buildUrl, allowIndexing } from '@/lib/site-url';
 import { products } from '@/data/products';
 
 const staticPages: { path: string; priority: number; changeFrequency: 'monthly' | 'yearly' }[] = [
@@ -22,6 +26,11 @@ const staticPages: { path: string; priority: number; changeFrequency: 'monthly' 
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  // When indexing is disabled, do not expose a misleading production sitemap
+  if (!allowIndexing) {
+    return [];
+  }
+
   const staticEntries: MetadataRoute.Sitemap = staticPages.map(
     ({ path, priority, changeFrequency }) => ({
       url: buildUrl(path),

@@ -4,7 +4,19 @@
  * Origins are compared exactly — substring/startsWith matching is never used.
  * The allow-list is built from environment variables so that preview deploys
  * and local development work without code changes.
+ *
+ * The canonical production domain is always included as an allowed origin,
+ * even if it differs from the deployment origin (e.g. on preview deploys).
+ * The www subdomain is also allowed so that form submissions from
+ * www.bharatelectrosafe.com are accepted (middleware redirects www to
+ * non-www, but the browser may submit from the www origin before the
+ * redirect completes).
  */
+
+/** The canonical production origin */
+const CANONICAL_ORIGIN = 'https://bharatelectrosafe.com';
+/** The www variant — accepted for origin validation (redirected by middleware) */
+const WWW_ORIGIN = 'https://www.bharatelectrosafe.com';
 
 /**
  * Parse a raw header value (origin, referer, etc.) and return its origin.
@@ -26,6 +38,13 @@ export function parseOrigin(value: string | null | undefined): string | null {
  */
 export function getAllowedOrigins(): string[] {
   const allowed = new Set<string>();
+
+  // Always allow the canonical production domain
+  allowed.add(CANONICAL_ORIGIN);
+
+  // Always allow the www variant (middleware redirects it, but form
+  // submissions may originate from www before redirect)
+  allowed.add(WWW_ORIGIN);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   if (siteUrl) {

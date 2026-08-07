@@ -3,15 +3,19 @@ import { z } from 'zod';
 import { Resend } from 'resend';
 import { company } from '@/data/company';
 import { isAllowedOrigin, parseOrigin } from '@/lib/origin';
+import { checkRateLimit } from '@/lib/rate-limit';
+import { verifyTurnstile } from '@/lib/turnstile';
 
 /**
  * Contact form API route.
  *
  * Security controls: HTML-escaped user input, strict Zod schema with
  * .strict(), exact origin validation, content-type enforcement, request
- * size limits, honeypot + timing anti-spam, rate limiting, server-side
+ * size limits, honeypot + timing anti-spam, distributed rate limiting
+ * (Upstash Redis with in-memory fallback), Cloudflare Turnstile bot
+ * protection (graceful degradation when unconfigured), server-side
  * Resend delivery, redacted logging, honest delivery messages with
- * direct-contact fallback, Cache-Control: no-store.
+ * direct-contact fallback, Cache-Control: no-store, X-Robots-Tag: noindex.
  */
 
 export const runtime = 'nodejs';
@@ -23,8 +27,6 @@ export const runtime = 'nodejs';
 const MAX_BODY_BYTES = 32 * 1024; // 32 KB
 const MIN_FORM_SECONDS = 3; // minimum time form must be open
 const MAX_FORM_SECONDS = 3600; // 1 hour — reject stale forms
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
-const RATE_LIMIT_MAX_REQUESTS = 5; // per IP per window
 
 // ---------------------------------------------------------------------------
 // HTML escaping — prevents XSS in email content
@@ -37,40 +39,6 @@ function escapeHtml(value: string): string {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;');
-}
-
-// ---------------------------------------------------------------------------
-// Rate limiting — in-memory for development; Upstash Redis recommended
-// for production serverless durability
-// ---------------------------------------------------------------------------
-
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-
-/** Clean up expired entries periodically */
-function cleanupRateLimits(): void {
-  const now = Date.now();
-  for (const [key, entry] of rateLimitMap) {
-    if (now > entry.resetAt) rateLimitMap.delete(key);
-  }
-}
-
-function checkRateLimit(ip: string): { allowed: boolean; retryAfterMs: number } {
-  cleanupRateLimits();
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return { allowed: true, retryAfterMs: 0 };
-  }
-
-  if (entry.count >= RATE_LIMIT_MAX_REQUESTS) {
-    const retryAfterMs = entry.resetAt - now;
-    return { allowed: false, retryAfterMs };
-  }
-
-  entry.count += 1;
-  return { allowed: true, retryAfterMs: 0 };
 }
 
 // ---------------------------------------------------------------------------
@@ -111,6 +79,8 @@ const contactSchema = z.strictObject({
   website: z.string().max(0).optional().default(''),
   // Anti-spam: timing — form open timestamp (ms epoch)
   _formOpenAt: z.string().optional(),
+  // Turnstile: client-side verification token
+  turnstileToken: z.string().trim().max(2048).optional(),
 });
 
 type ContactInput = z.infer<typeof contactSchema>;
@@ -234,11 +204,14 @@ function getClientIp(req: Request): string {
 }
 
 // ---------------------------------------------------------------------------
-// No-store response helper
+// No-store + noindex response helper
 // ---------------------------------------------------------------------------
 
-function noStoreHeaders(): HeadersInit {
-  return { 'Cache-Control': 'no-store' };
+function apiHeaders(): HeadersInit {
+  return {
+    'Cache-Control': 'no-store',
+    'X-Robots-Tag': 'noindex, nofollow',
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -251,7 +224,7 @@ export async function POST(req: Request) {
   if (!contentType.includes('application/json')) {
     return NextResponse.json(
       { ok: false, message: 'Unsupported content type.' },
-      { status: 415, headers: noStoreHeaders() },
+      { status: 415, headers: apiHeaders() },
     );
   }
 
@@ -260,7 +233,7 @@ export async function POST(req: Request) {
   if (contentLength && parseInt(contentLength, 10) > MAX_BODY_BYTES) {
     return NextResponse.json(
       { ok: false, message: 'Request too large.' },
-      { status: 413, headers: noStoreHeaders() },
+      { status: 413, headers: apiHeaders() },
     );
   }
 
@@ -273,20 +246,20 @@ export async function POST(req: Request) {
         message:
           'This form can only be submitted from the official Bharat Electrosafe website.',
       },
-      { status: 403, headers: noStoreHeaders() },
+      { status: 403, headers: apiHeaders() },
     );
   }
 
-  // --- Rate limiting ---
+  // --- Rate limiting (Upstash Redis with in-memory fallback) ---
   const clientIp = getClientIp(req);
-  const rateCheck = checkRateLimit(clientIp);
+  const rateCheck = await checkRateLimit(clientIp);
   if (!rateCheck.allowed) {
     return NextResponse.json(
       { ok: false, message: 'Too many requests. Please try again later.' },
       {
         status: 429,
         headers: {
-          ...noStoreHeaders(),
+          ...apiHeaders(),
           'Retry-After': String(Math.ceil(rateCheck.retryAfterMs / 1000)),
         },
       },
@@ -300,14 +273,14 @@ export async function POST(req: Request) {
     if (rawBody.length > MAX_BODY_BYTES) {
       return NextResponse.json(
         { ok: false, message: 'Request too large.' },
-        { status: 413, headers: noStoreHeaders() },
+        { status: 413, headers: apiHeaders() },
       );
     }
     payload = JSON.parse(rawBody);
   } catch {
     return NextResponse.json(
       { ok: false, message: 'Invalid request body.' },
-      { status: 400, headers: noStoreHeaders() },
+      { status: 400, headers: apiHeaders() },
     );
   }
 
@@ -319,7 +292,7 @@ export async function POST(req: Request) {
       : 'Please check the form fields and try again.';
     return NextResponse.json(
       { ok: false, message },
-      { status: 400, headers: noStoreHeaders() },
+      { status: 400, headers: apiHeaders() },
     );
   }
 
@@ -330,7 +303,7 @@ export async function POST(req: Request) {
     // Silently accept but do not deliver — avoids confirming the honeypot exists
     return NextResponse.json(
       { ok: true, message: 'Thank you for your enquiry. Your message has been delivered to Bharat Electrosafe.' },
-      { status: 200, headers: noStoreHeaders() },
+      { status: 200, headers: apiHeaders() },
     );
   }
 
@@ -343,15 +316,24 @@ export async function POST(req: Request) {
       // Too fast — silently reject
       return NextResponse.json(
         { ok: true, message: 'Thank you for your enquiry. Your message has been delivered to Bharat Electrosafe.' },
-        { status: 200, headers: noStoreHeaders() },
+        { status: 200, headers: apiHeaders() },
       );
     }
     if (elapsed > MAX_FORM_SECONDS) {
       return NextResponse.json(
         { ok: false, message: 'The form has expired. Please reload and try again.' },
-        { status: 400, headers: noStoreHeaders() },
+        { status: 400, headers: apiHeaders() },
       );
     }
+  }
+
+  // --- Cloudflare Turnstile verification ---
+  const turnstileResult = await verifyTurnstile(input.turnstileToken, clientIp);
+  if (!turnstileResult.verified) {
+    return NextResponse.json(
+      { ok: false, message: turnstileResult.reason || 'Verification failed. Please try again.' },
+      { status: 400, headers: apiHeaders() },
+    );
   }
 
   // --- Resend configuration ---
@@ -371,7 +353,7 @@ export async function POST(req: Request) {
           address: company.address.full,
         },
       },
-      { status: 503, headers: noStoreHeaders() },
+      { status: 503, headers: apiHeaders() },
     );
   }
 
@@ -403,7 +385,7 @@ export async function POST(req: Request) {
         message:
           'We could not deliver your message right now. Please reach us directly using the contact details below.',
       },
-      { status: 500, headers: noStoreHeaders() },
+      { status: 500, headers: apiHeaders() },
     );
   }
 
@@ -442,7 +424,7 @@ export async function POST(req: Request) {
             address: company.address.full,
           },
         },
-        { status: 503, headers: noStoreHeaders() },
+        { status: 503, headers: apiHeaders() },
       );
     }
 
@@ -459,7 +441,7 @@ export async function POST(req: Request) {
         message:
           'Thank you for your enquiry. Your message has been delivered to Bharat Electrosafe.',
       },
-      { status: 200, headers: noStoreHeaders() },
+      { status: 200, headers: apiHeaders() },
     );
   } catch (err) {
     console.error('[contact] Unexpected delivery failure', {
@@ -482,7 +464,7 @@ export async function POST(req: Request) {
           address: company.address.full,
         },
       },
-      { status: 503, headers: noStoreHeaders() },
+      { status: 503, headers: apiHeaders() },
     );
   }
 }

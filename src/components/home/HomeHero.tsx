@@ -87,7 +87,7 @@ export default function HomeHero() {
           </div>
 
           <h1 className="be-split-hero__headline text-be-charcoal-950">
-            Protection engineered between people and electrical risk.
+            Electrical Insulating Mats — Protection Engineered Between People and Risk
           </h1>
         </div>
 

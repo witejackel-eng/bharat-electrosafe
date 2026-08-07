@@ -32,17 +32,25 @@
  *
  * Indexing is enabled ONLY when ALL of the following are true:
  *
- *   1. NEXT_PUBLIC_ALLOW_INDEXING === 'true'
+ *   1. ALLOW_INDEXING === 'true' (server-only env var, not exposed to browser)
+ *      Backwards compatible: also checks NEXT_PUBLIC_ALLOW_INDEXING if
+ *      ALLOW_INDEXING is not set.
  *   2. The canonical origin is exactly https://bharatelectrosafe.com
  *      (always true — `canonicalOrigin` is hardcoded)
  *   3. The deployment is production (VERCEL_ENV === 'production'),
  *      or VERCEL_ENV is unset (local development / non-Vercel hosting
  *      where the operator is responsible for setting the env correctly)
+ *   4. The request host matches the canonical domain (enforced by
+ *      middleware which redirects non-canonical hosts)
  *
  * This prevents a preview deployment from becoming indexable even if
- * NEXT_PUBLIC_ALLOW_INDEXING=true is accidentally inherited from the
- * Production environment, because preview deployments have
+ * ALLOW_INDEXING=true is accidentally inherited from the Production
+ * environment, because preview deployments have
  * VERCEL_ENV === 'preview' (condition 3 fails).
+ *
+ * By using a server-only ALLOW_INDEXING variable (no NEXT_PUBLIC_ prefix),
+ * the indexing configuration is not exposed in browser bundles, making it
+ * harder to misconfigure accidentally.
  */
 
 /** The official production domain — hardcoded as the canonical origin. */
@@ -109,32 +117,44 @@ export const siteUrl: string = canonicalOrigin;
  * Whether the current deployment is a Vercel production deployment.
  * VERCEL_ENV is set by Vercel to 'production', 'preview', or 'development'.
  * When VERCEL_ENV is unset (local dev or non-Vercel hosting), we treat it
- * as 'production' so the operator controls indexing via NEXT_PUBLIC_SITE_URL
- * and NEXT_PUBLIC_ALLOW_INDEXING alone.
+ * as 'production' so the operator controls indexing via ALLOW_INDEXING
+ * alone.
  */
 const isVercelProduction =
   !process.env.VERCEL_ENV || process.env.VERCEL_ENV === 'production';
 
 /**
- * Whether the deployment origin is exactly the official production domain.
- * Detects whether the deployment is being served from the canonical domain
- * (true production) or from a preview/staging origin.
+ * Resolve the indexing flag from environment.
+ *
+ * Prefers the server-only ALLOW_INDEXING variable. Falls back to
+ * NEXT_PUBLIC_ALLOW_INDEXING for backwards compatibility with existing
+ * Vercel deployments that have already set NEXT_PUBLIC_ALLOW_INDEXING.
+ *
+ * Both are checked so a migration from NEXT_PUBLIC_ALLOW_INDEXING to
+ * ALLOW_INDEXING is seamless — set the new variable in Vercel, then
+ * optionally remove the old one.
  */
-const isOfficialDomain = deploymentOrigin === canonicalOrigin;
+function resolveIndexingFlag(): boolean {
+  // Server-only variable takes priority (not exposed to browser)
+  if (process.env.ALLOW_INDEXING !== undefined) {
+    return process.env.ALLOW_INDEXING === 'true';
+  }
+  // Backwards compatibility: fall back to public variable
+  return process.env.NEXT_PUBLIC_ALLOW_INDEXING === 'true';
+}
 
 /**
  * Whether indexing is enabled. Triple-gated so that no single
  * misconfiguration can expose a non-production deployment:
  *
- *   1. NEXT_PUBLIC_ALLOW_INDEXING === 'true' (explicit opt-in)
+ *   1. ALLOW_INDEXING === 'true' (explicit opt-in, server-only)
  *   2. canonicalOrigin is the official domain (always true — hardcoded)
  *   3. VERCEL_ENV is 'production' or unset (not a Vercel preview)
  *
  * Defaults to false for local, preview and staging environments.
  */
 export const allowIndexing: boolean =
-  process.env.NEXT_PUBLIC_ALLOW_INDEXING === 'true' &&
-  isVercelProduction;
+  resolveIndexingFlag() && isVercelProduction;
 
 /**
  * Build an absolute URL against the canonical origin — used for canonical
@@ -156,6 +176,10 @@ export function buildCanonicalUrl(path: string): string {
  * Build an absolute URL against the deployment origin — used for
  * metadataBase-relative URLs (OG image, Twitter image) that must resolve
  * against the deployment that actually serves them.
+ *
+ * In production where deploymentOrigin === canonicalOrigin, this returns
+ * canonical URLs. In preview deployments, it returns the preview URL so
+ * social platforms can actually fetch the image.
  *
  * @param path — route path, e.g. '/opengraph-image.png'
  * @returns absolute deployment URL

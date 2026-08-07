@@ -16,6 +16,12 @@
  * Bharat Electrosafe logo (left panel, navy background) and the approved
  * hero photograph of a technician at switchgear (right panel).
  *
+ * Social image URLs always use the canonical domain (bharatelectrosafe.com)
+ * so that preview/staging deployments never leak their *.vercel.app host
+ * into social metadata. Next.js resolves relative URLs against metadataBase
+ * (which is deploymentOrigin), but we provide absolute URLs here so the
+ * domain is always canonical regardless of metadataBase.
+ *
  * Routes that DO NOT have a product-specific social image should import
  * `siteOgImage` and `siteTwitterImage` and spread them into the route's
  * `openGraph` and `twitter` metadata objects. This guarantees every
@@ -25,17 +31,17 @@
  * (even with `images` omitted), so explicit wiring is required.
  */
 
+import { canonicalOrigin } from '@/lib/site-url';
+
 /**
- * OG image URL — versioned public path so social-platform caches
- * (Facebook, LinkedIn, WhatsApp, Twitter, Slack) re-fetch after a brand
- * refresh. The same file is also served at `/opengraph-image.png` by the
- * App Router file convention, but we point crawlers at the versioned URL
- * so a future `...-v3.png` rotation is cache-bustable without touching
- * the file-convention path.
+ * OG image URL — absolute canonical URL so social platforms always
+ * reference the production domain, never a staging/preview host.
+ * The `-v2` suffix forces social-platform caches to re-fetch after
+ * a brand refresh; a future `...-v3.png` rotation is cache-bustable.
  */
-export const SITE_OG_IMAGE_URL = '/og/bharat-electrosafe-og-v2.png';
-/** Twitter image URL — same versioning rationale as the OG image. */
-export const SITE_TWITTER_IMAGE_URL = '/og/bharat-electrosafe-twitter-v2.png';
+export const SITE_OG_IMAGE_URL = `${canonicalOrigin}/og/bharat-electrosafe-og-v2.png`;
+/** Twitter image URL — absolute canonical URL, same versioning rationale. */
+export const SITE_TWITTER_IMAGE_URL = `${canonicalOrigin}/og/bharat-electrosafe-twitter-v2.png`;
 
 /**
  * Accurate alt text describing the OG/Twitter image contents.
@@ -51,6 +57,9 @@ export const SITE_SOCIAL_IMAGE_HEIGHT = 630;
 /**
  * Site-wide OG image entry — spread into `openGraph.images` on routes
  * without a product-specific image.
+ *
+ * Uses absolute canonical URL so social platforms always see the
+ * production domain, never a staging/preview host.
  *
  * @example
  * import { siteOgImage } from '@/lib/social-image';
@@ -69,10 +78,8 @@ export const siteOgImage = {
  * Site-wide Twitter image entry — spread into `twitter.images` on
  * routes without a product-specific image.
  *
- * Provided as an object (not a bare URL string) so Next.js emits
- * `twitter:image:alt` alongside `twitter:image` — Twitter cards
- * support alt text and it improves accessibility for screen-reader
- * users browsing link previews.
+ * Uses absolute canonical URL so Twitter card validators always see
+ * the production domain.
  *
  * @example
  * import { siteTwitterImage } from '@/lib/social-image';
