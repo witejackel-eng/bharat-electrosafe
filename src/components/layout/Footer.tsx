@@ -502,8 +502,19 @@ export function Footer() {
             &copy; {currentYear} {company.name}. All rights reserved.
           </p>
           <p className="text-[0.84375rem] text-be-charcoal-800 leading-relaxed text-center sm:text-right">
-            IS 15652:2006 · BIS Licence CM/L:8800129617 · Made in India
+            IS 15652:2006 · BIS Licence CM/L:8800129617 · India
           </p>
+        </div>
+        {/* Developer credit — subtle, muted, ~12px */}
+        <div className="container-site page-horizontal-padding pb-3 pt-1 text-center">
+          <a
+            href="https://dev-aditya.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[0.75rem] text-be-grey-400 hover:text-be-grey-600 transition-colors leading-relaxed"
+          >
+            Website by Aditya ↗
+          </a>
         </div>
       </div>
     </footer>
