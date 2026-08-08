@@ -5,28 +5,34 @@ import { MobileStickyCTA } from '@/components/ui/MobileStickyCTA';
 import { RevealObserver } from '@/components/ui/RevealObserver';
 import AboutIntro from '@/components/about/AboutIntro';
 import CompanyLeadership from '@/components/about/CompanyLeadership';
+import BESBrands from '@/components/about/BESBrands';
+import VisionMission from '@/components/about/VisionMission';
+import ValuesSection from '@/components/about/ValuesSection';
+import WhyChooseUs from '@/components/about/WhyChooseUs';
 import ManufacturingValues from '@/components/about/ManufacturingValues';
 import AwardsCertifications from '@/components/about/AwardsCertifications';
+import ClientsProjects from '@/components/about/ClientsProjects';
+import ActiveParticipation from '@/components/about/ActiveParticipation';
 import AboutCTA from '@/components/about/AboutCTA';
 
 /**
  * AboutUsShell — Server Component.
  *
- * Previously this was a Client Component (`AboutUsClient`) that created its
- * own IntersectionObserver to drive `.reveal-up` entrance animations. That
- * duplicated the shared `RevealObserver` infrastructure already used on the
- * homepage and added unnecessary client JS to the About route.
+ * Section order per client direction:
+ *   1. Who We Are        (AboutIntro)
+ *   2. Leadership         (CompanyLeadership — flip cards only)
+ *   3. BES Brands         (BESBrands)
+ *   4. Vision & Mission   (VisionMission — navy band)
+ *   5. Values             (ValuesSection — blue/yellow palette)
+ *   6. Why Choose Us      (WhyChooseUs — source-supported only)
+ *   7. Manufacturing      (ManufacturingValues)
+ *   8. Awards / Certs     (AwardsCertifications — no industry participation)
+ *   9. Clients & Projects (ClientsProjects)
+ *  10. Active Participation (ActiveParticipation — videos)
+ *  11. CTA                (AboutCTA)
  *
- * Now it is a Server Component that renders the page shell (Header, main,
- * Footer, BackToTop) and mounts a single `<RevealObserver />` — the same
- * progressive-enhancement island the homepage uses. The RevealObserver is a
- * tiny Client Component that toggles the `revealed` CSS class on `.reveal-up`
- * elements as they scroll into view. If JS is disabled, the content remains
- * visible (the reduced-motion CSS fallback sets opacity:1 on `.reveal-up`).
- *
- * All page content (AboutIntro, CompanyLeadership, ManufacturingValues,
- * AwardsCertifications, AboutCTA) is server-rendered for SEO, accessibility,
- * and optimal LCP.
+ * The shared <RevealObserver /> drives `.reveal-up` entrance animations.
+ * All page content is server-rendered for SEO, accessibility, and optimal LCP.
  */
 
 export default function AboutUsShell() {
@@ -34,15 +40,27 @@ export default function AboutUsShell() {
     <div className="min-h-screen flex flex-col bg-be-warm-white">
       <Header />
       <main className="flex-1">
-        {/* 1. Company intro + key facts */}
+        {/* 1. Who We Are */}
         <AboutIntro />
         {/* 2. Leadership */}
         <CompanyLeadership />
-        {/* 3. Manufacturing, values, capability */}
+        {/* 3. BES Brands */}
+        <BESBrands />
+        {/* 4. Vision & Mission */}
+        <VisionMission />
+        {/* 5. Values */}
+        <ValuesSection />
+        {/* 6. Why Choose Us */}
+        <WhyChooseUs />
+        {/* 7. Manufacturing / capability */}
         <ManufacturingValues />
-        {/* 4. Awards, certifications, org references */}
+        {/* 8. Awards, certifications, memberships */}
         <AwardsCertifications />
-        {/* 5. CTA */}
+        {/* 9. Clients & Projects */}
+        <ClientsProjects />
+        {/* 10. Active Participation */}
+        <ActiveParticipation />
+        {/* 11. CTA */}
         <AboutCTA />
       </main>
       <Footer />

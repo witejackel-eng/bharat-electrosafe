@@ -180,8 +180,8 @@ export function CompareModal({
                 <CompareCell key={`cat-${p.slug}`}>
                   <span className="inline-block px-2 py-0.5 rounded-md bg-be-yellow-50 text-be-charcoal-950 text-xs font-semibold">
                     {p.category === 'electrical-insulation'
-                      ? 'Electrical Insulation'
-                      : 'Waterproofing'}
+                      ? 'Electrical Insulating Mats'
+                      : 'Waterproofing Solutions'}
                   </span>
                 </CompareCell>
               ))}

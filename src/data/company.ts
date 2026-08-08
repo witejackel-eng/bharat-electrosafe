@@ -63,7 +63,7 @@ export const company = {
   legalName: 'Bharat Electrosafe',
   tagline: 'Electrical Safety. Engineered Right.',
   description:
-    'Manufacturer of electrical insulating mats and engineered PVC membranes for industrial, civil and environmental safety applications.',
+    "Bharat Electrosafe — India's trusted name in precision-engineered electrical safety, industrial safety, infrastructure protection, PVC flooring and waterproofing solutions.",
 
   // Contact details — single source of truth
   // Legacy named accessors for backward compatibility

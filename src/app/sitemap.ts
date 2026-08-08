@@ -21,6 +21,9 @@ import { products } from '@/data/products';
 const staticPages: { path: string; priority: number; changeFrequency: 'monthly' | 'yearly' }[] = [
   { path: '/', priority: 1.0, changeFrequency: 'monthly' },
   { path: '/products', priority: 0.9, changeFrequency: 'monthly' },
+  { path: '/products/international-iec-61111', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/products/pvc-flooring-solutions', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/products/other-products', priority: 0.7, changeFrequency: 'monthly' },
   { path: '/about-us', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/contact-us', priority: 0.8, changeFrequency: 'yearly' },
 ];
@@ -45,5 +48,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  // New product-category pages (international-iec-61111, pvc-flooring-solutions,
+  // other-products) are included above as static pages because they are not
+  // part of the `products` registry array — they have no ProductData entry.
   return [...staticEntries, ...productEntries];
 }

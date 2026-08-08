@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Zap, Droplets, Layers, Package } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
@@ -18,13 +19,76 @@ import { CompareToggle } from '@/components/products/CompareToggle';
 import { CompareBar } from '@/components/products/CompareBar';
 import { CompareModal } from '@/components/products/CompareModal';
 import {
-  productNavigationByCategory,
+  productNavGroups,
+  ProductNavGroup,
+  ProductNavSubGroup,
+  ProductNavLeaf,
+  categoryVisuals,
+} from '@/data/product-navigation';
+import {
   productComparisonData,
-  productCategories,
-  productFamilyCount,
+  productNavigationItems,
   imageFitClass,
-  ProductCategory,
+  ProductComparisonRow,
 } from '@/data/products';
+
+/* ────────────────────────────────────────────
+   Group icon map
+   ──────────────────────────────────────────── */
+
+const groupIconMap: Record<string, React.ElementType> = {
+  'electrical-insulating-mats': Zap,
+  'water-proofing-solutions': Droplets,
+  'pvc-flooring-solutions': Layers,
+  'other-products': Package,
+};
+
+/* ────────────────────────────────────────────
+   Thumbnail lookup — maps product slug → ProductNavItem
+   for the 6 registry products that have real thumbnails.
+   ──────────────────────────────────────────── */
+
+const thumbnailLookup = new Map(
+  productNavigationItems.map((p) => [p.slug, p]),
+);
+
+/** Extract the base slug from an href like /products/electrical-insulating-mats or /products/other-products#rubber-sheet */
+function slugFromHref(href: string): string {
+  const path = href.split('#')[0]; // strip anchor
+  return path.replace(/^\/products\//, '');
+}
+
+/* ────────────────────────────────────────────
+   Extended comparison data — includes IEC, PVC, Other
+   ──────────────────────────────────────────── */
+
+const extendedComparisonData: ProductComparisonRow[] = [
+  ...productComparisonData,
+  {
+    name: 'International Insulating Mats',
+    slug: 'international-iec-61111',
+    primaryPurpose: 'Operator insulation for IEC markets',
+    distinguishingFeature: 'IEC 61111:2009 Class 0–4 classification',
+    typicalApplication: 'Export markets requiring IEC compliance',
+    applicableStandard: 'IEC 61111:2009',
+  },
+  {
+    name: 'PVC Flooring Solutions',
+    slug: 'pvc-flooring-solutions',
+    primaryPurpose: 'Industrial and commercial flooring',
+    distinguishingFeature: 'Bharat Smart Floor — PVC flooring system',
+    typicalApplication: 'Factories, electrical rooms and commercial spaces',
+    applicableStandard: 'IS 3462:1986',
+  },
+  {
+    name: 'Other Products',
+    slug: 'other-products',
+    primaryPurpose: 'Industrial rubber and ESD products',
+    distinguishingFeature: 'Rubber Sheet, Hose Pipe, ESD Mat, Conveyor Belt',
+    typicalApplication: 'General industrial and electrostatic-safe environments',
+    applicableStandard: 'On request',
+  },
+];
 
 /* ────────────────────────────────────────────
    CompareBarHost — renders the sticky compare bar + modal.
@@ -35,14 +99,13 @@ function CompareBarHost() {
   const { selected } = useCompare();
   const [modalRequested, setModalRequested] = useState(false);
 
-  // Map of slug → product name for display in the bar/modal
+  // Map of slug → product name for display in the bar/modal.
+  // Build from productNavigationItems (registry products) since
+  // compare only works for the 6 products with full data.
   const selectedNames = useMemo(() => {
     const map: Record<string, string> = {};
-    // Build from the navigation items so we don't need a full product lookup
-    Object.values(productNavigationByCategory).forEach((items) => {
-      items.forEach((p) => {
-        map[p.slug] = p.name;
-      });
+    productNavigationItems.forEach((p) => {
+      map[p.slug] = p.name;
     });
     return map;
   }, []);
@@ -83,12 +146,13 @@ function ProductsHero() {
         </div>
 
         <h1 className="text-products-hero-h1 text-be-charcoal-950 mb-4">
-          Electrical insulation and engineered protection products
+          Electrical safety, waterproofing, PVC flooring and industrial products
         </h1>
 
         <p className="text-body-large text-be-grey-650 mb-6">
-          Explore {productFamilyCount} product families for electrical safety, hazard
-          demarcation, waterproofing and construction-joint protection.
+          Four product groups — from domestic insulating mats to waterproofing
+          membranes, PVC flooring and industrial rubber products — each built
+          around a specific protection or performance requirement.
         </p>
 
         <div className="flex flex-wrap gap-3">
@@ -105,96 +169,161 @@ function ProductsHero() {
 }
 
 /* ────────────────────────────────────────────
-   Section 2: Product family grid
+   Section 2: Product family grid (4-group hierarchy)
    ──────────────────────────────────────────── */
 
-function ProductFamilyGrid() {
-  const categoryOrder: ProductCategory[] = [
-    'electrical-insulation',
-    'waterproofing-civil-protection',
-  ];
+/** Render a single product leaf as a card. */
+function ProductLeafCard({ leaf, group }: { leaf: ProductNavLeaf; group: ProductNavGroup }) {
+  const slug = slugFromHref(leaf.href);
+  const registryItem = thumbnailLookup.get(slug);
+  const visual = categoryVisuals.find((v) => v.groupId === group.id);
+  const GroupIcon = groupIconMap[group.id] ?? Zap;
 
+  return (
+    <div className="be-card-glow hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+      <Link
+        href={leaf.href}
+        className="flex flex-col flex-1"
+        aria-label={`View ${leaf.name}`}
+      >
+        {/* Yellow accent line */}
+        <div className="h-1 bg-be-yellow-500 group-hover:h-1.5 transition-all duration-300" />
+
+        {/* Group label badge */}
+        <div className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md bg-be-yellow-500/90 text-be-charcoal-950 text-[0.65rem] font-bold tracking-wide shadow-sm">
+          {group.name}
+        </div>
+
+        {/* Image area */}
+        <div className="relative w-full overflow-hidden bg-be-cream aspect-[4/3]">
+          {registryItem ? (
+            <Image
+              src={registryItem.thumbnail.src}
+              alt={registryItem.thumbnail.alt}
+              fill
+              className={imageFitClass(registryItem.thumbnail)}
+              style={
+                registryItem.thumbnail.position
+                  ? { objectPosition: registryItem.thumbnail.position }
+                  : undefined
+              }
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+            />
+          ) : visual && !visual.isPlaceholder ? (
+            <Image
+              src={visual.src}
+              alt={visual.alt}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+            />
+          ) : (
+            /* Icon placeholder for groups without real images */
+            <div className="absolute inset-0 flex items-center justify-center">
+              <GroupIcon className="size-16 text-be-grey-350" aria-hidden="true" />
+            </div>
+          )}
+          <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/10 transition-colors duration-300" />
+        </div>
+
+        {/* Text content */}
+        <div className="flex flex-col gap-2 p-4 flex-1">
+          <h3 className="text-card-title text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
+            {leaf.name}
+          </h3>
+          <p className="text-sm text-be-grey-650 leading-relaxed line-clamp-2">
+            {leaf.description}
+          </p>
+          <div className="mt-2 text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors">
+            <span className="be-underline-grow inline-block">View Product</span>
+          </div>
+        </div>
+      </Link>
+
+      {/* Compare toggle — only for registry products (the 6 with full data) */}
+      {registryItem && (
+        <div className="px-4 pb-4 -mt-1">
+          <CompareToggle slug={registryItem.slug} productName={registryItem.name} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ProductFamilyGrid() {
   return (
     <SectionShell variant="standard" bg="bg-be-white" topRule id="product-grid">
       <div className="reveal-up mb-8">
         <SectionHeader
           eyebrow="PRODUCT FAMILIES"
           title="Our product range"
-          supportingText="Six product families across two categories, each designed around a specific protection requirement."
+          supportingText="Four product groups organised by application — choose a category, then a product, then request a quote."
         />
       </div>
 
-      {categoryOrder.map((catId) => {
-        const catInfo = productCategories[catId];
-        const items = productNavigationByCategory[catId];
+      {productNavGroups.map((group) => {
+        const GroupIcon = groupIconMap[group.id] ?? Zap;
+
         return (
-          <div key={catId} className="mb-10 last:mb-0">
-            {/* Category heading */}
+          <div key={group.id} className="mb-10 last:mb-0">
+            {/* Group heading */}
             <div className="flex items-center gap-3 mb-5 reveal-up">
               <div className="h-1 w-8 bg-be-yellow-500 rounded" aria-hidden="true" />
+              <GroupIcon className="size-5 text-be-charcoal-950" aria-hidden="true" />
               <h2 className="text-lg font-semibold text-be-charcoal-950 uppercase tracking-wide">
-                {catInfo.displayName}
+                {group.name}
               </h2>
+              {group.description && (
+                <span className="hidden sm:inline text-sm text-be-grey-650 font-normal normal-case tracking-normal">
+                  — {group.description}
+                </span>
+              )}
             </div>
 
-            {/* Product cards grid */}
-            <div className="stagger-reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-              {items.map((product) => (
-                <div
-                  key={product.slug}
-                  className="be-card-glow hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300"
-                >
-                  <Link
-                    href={product.href}
-                    className="flex flex-col flex-1"
-                    aria-label={`View ${product.name}`}
-                  >
-                    {/* Yellow accent line */}
-                    <div className="h-1 bg-be-yellow-500 group-hover:h-1.5 transition-all duration-300" />
+            {group.hasSubGroups ? (
+              /* Render sub-groups with their headings */
+              (group.children as ProductNavSubGroup[]).map((subGroup) => (
+                <div key={subGroup.name} className="mb-6 last:mb-0">
+                  {/* Sub-group heading */}
+                  <div className="flex items-center gap-2 mb-3 ml-2 reveal-up">
+                    <div className="h-0.5 w-5 bg-be-grey-350 rounded" aria-hidden="true" />
+                    <h3 className="text-sm font-semibold text-be-grey-650 uppercase tracking-wider">
+                      {subGroup.name}
+                    </h3>
+                    {subGroup.href && (
+                      <Link
+                        href={subGroup.href}
+                        className="text-xs font-medium text-be-yellow-text hover:text-be-yellow-text-hover transition-colors"
+                      >
+                        View all →
+                      </Link>
+                    )}
+                  </div>
 
-                    {/* Category label */}
-                    <div className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md bg-be-yellow-500/90 text-be-charcoal-950 text-[0.65rem] font-bold tracking-wide shadow-sm">
-                      {catInfo.displayName}
-                    </div>
-
-                    {/* Image area */}
-                    <div className="relative w-full overflow-hidden bg-be-cream aspect-[4/3]">
-                      <Image
-                        src={product.thumbnail.src}
-                        alt={product.thumbnail.alt}
-                        fill
-                        className={imageFitClass(product.thumbnail)}
-                        style={
-                          product.thumbnail.position
-                            ? { objectPosition: product.thumbnail.position }
-                            : undefined
-                        }
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                      />
-                      <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/10 transition-colors duration-300" />
-                    </div>
-
-                    {/* Text content */}
-                    <div className="flex flex-col gap-2 p-4 flex-1">
-                      <h3 className="text-card-title text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
-                        {product.name}
-                      </h3>
-                      <p className="text-sm text-be-grey-650 leading-relaxed line-clamp-2">
-                        {product.description}
-                      </p>
-                      <div className="mt-2 text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors">
-                        <span className="be-underline-grow inline-block">View Product</span>
-                      </div>
-                    </div>
-                  </Link>
-
-                  {/* Compare toggle — outside the link so clicks don't navigate */}
-                  <div className="px-4 pb-4 -mt-1">
-                    <CompareToggle slug={product.slug} productName={product.name} />
+                  {/* Leaf cards grid */}
+                  <div className="stagger-reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                    {subGroup.items.map((leaf) => (
+                      <ProductLeafCard key={leaf.href} leaf={leaf} group={group} />
+                    ))}
                   </div>
                 </div>
-              ))}
-            </div>
+              ))
+            ) : group.href ? (
+              /* Single-link group (e.g. PVC Flooring) — show as one prominent card */
+              <div className="stagger-reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                <ProductLeafCard
+                  leaf={{ name: group.name, href: group.href, description: group.description ?? '' }}
+                  group={group}
+                />
+              </div>
+            ) : (
+              /* Direct leaf items (e.g. Other Products) */
+              <div className="stagger-reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                {(group.children as ProductNavLeaf[]).map((leaf) => (
+                  <ProductLeafCard key={leaf.href} leaf={leaf} group={group} />
+                ))}
+              </div>
+            )}
           </div>
         );
       })}
@@ -213,7 +342,7 @@ function ComparisonTable() {
         <SectionHeader
           eyebrow="COMPARISON"
           title="Product comparison"
-          supportingText="Compare features and applications across all six product families to find the right solution."
+          supportingText="Compare features and applications across all product groups to find the right solution."
         />
       </div>
 
@@ -245,7 +374,7 @@ function ComparisonTable() {
             </tr>
           </thead>
           <tbody>
-            {productComparisonData.map((row, i) => (
+            {extendedComparisonData.map((row, i) => (
               <tr
                 key={row.slug}
                 className={i % 2 === 0 ? 'bg-be-white' : 'bg-be-cream'}
@@ -278,7 +407,7 @@ function ComparisonTable() {
 
       {/* Mobile: stacked comparison cards */}
       <div className="md:hidden flex flex-col gap-4 reveal-up">
-        {productComparisonData.map((row) => (
+        {extendedComparisonData.map((row) => (
           <Link
             key={row.slug}
             href={`/products/${row.slug}`}
@@ -313,7 +442,7 @@ function ComparisonTable() {
 }
 
 /* ────────────────────────────────────────────
-   Section 4: Selection guidance
+   Section 4: Selection guidance (4 groups)
    ──────────────────────────────────────────── */
 
 function SelectionGuidance() {
@@ -323,18 +452,18 @@ function SelectionGuidance() {
         <SectionHeader
           eyebrow="SELECTION GUIDE"
           title="Which product do I need?"
-          supportingText="A practical guide to choosing the right product family for your application."
+          supportingText="A practical guide to choosing the right product group for your application."
         />
       </div>
 
       <div className="reveal-up max-w-3xl mx-auto">
         <div className="flex flex-col gap-5">
-          {/* Electrical Insulation products */}
+          {/* 1. Electrical Insulating Mats */}
           <div className="rounded-lg border border-be-grey-250 bg-be-yellow-50/30 p-5">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-1 w-8 bg-be-yellow-500 rounded" aria-hidden="true" />
               <h3 className="text-base font-semibold text-be-charcoal-950 uppercase tracking-wide">
-                Electrical Insulation
+                Electrical Insulating Mats
               </h3>
             </div>
 
@@ -342,36 +471,24 @@ function SelectionGuidance() {
               <li className="flex items-start gap-2">
                 <span className="text-be-yellow-text font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
                 <div>
-                  <strong className="text-be-charcoal-950">Choose Electrical Insulating Mats</strong> when the requirement is operator protection near live electrical equipment.
+                  <strong className="text-be-charcoal-950">Choose Domestic Mats (IS 15652:2006)</strong> for operator protection near live electrical equipment in the Indian market — Class A through Class D.
                 </div>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-be-yellow-text font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
                 <div>
-                  <strong className="text-be-charcoal-950">Choose Coloured Strip Mats</strong> when electrical insulation and visible hazard-zone demarcation are both required.
-                </div>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-be-yellow-text font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
-                <div>
-                  <strong className="text-be-charcoal-950">Choose Bi-Color Mats</strong> when a dual-colour surface or visible layer differentiation is required.
-                </div>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-be-yellow-text font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
-                <div>
-                  <strong className="text-be-charcoal-950">Choose Auto-Glow / Reflective Band Mats</strong> when guidance must remain visible in low-light or emergency conditions.
+                  <strong className="text-be-charcoal-950">Choose International / Global (IEC 61111:2009)</strong> for IEC-compliant insulating mats required by export or international projects — Class 0 through Class 4.
                 </div>
               </li>
             </ul>
           </div>
 
-          {/* Waterproofing products */}
+          {/* 2. Water Proofing Solutions */}
           <div className="rounded-lg border border-be-grey-250 bg-be-cream/50 p-5">
             <div className="flex items-center gap-3 mb-4">
               <div className="h-1 w-8 bg-be-charcoal-800 rounded" aria-hidden="true" />
               <h3 className="text-base font-semibold text-be-charcoal-950 uppercase tracking-wide">
-                Waterproofing and Civil Protection
+                Water Proofing Solutions
               </h3>
             </div>
 
@@ -379,7 +496,51 @@ function SelectionGuidance() {
               <li className="flex items-start gap-2">
                 <span className="text-be-charcoal-800 font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
                 <div>
-                  <strong className="text-be-charcoal-950">Choose BharatMembrane</strong> when the requirement is waterproofing, lining or containment.
+                  <strong className="text-be-charcoal-950">Choose Geo Membrane Lining (BharatMembrane)</strong> when the requirement is waterproofing, lining or containment for tunnels, civil works or environmental projects.
+                </div>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-be-charcoal-800 font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
+                <div>
+                  <strong className="text-be-charcoal-950">Choose Water Stop Seal (Bharat Hydro Seal)</strong> for PVC water-stop profiles at concrete construction joints in water-retaining structures.
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          {/* 3. PVC Flooring Solutions */}
+          <div className="rounded-lg border border-be-grey-250 bg-be-yellow-50/20 p-5">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-1 w-8 bg-be-yellow-500 rounded" aria-hidden="true" />
+              <h3 className="text-base font-semibold text-be-charcoal-950 uppercase tracking-wide">
+                PVC Flooring Solutions
+              </h3>
+            </div>
+
+            <ul className="flex flex-col gap-3 text-sm text-be-grey-650">
+              <li className="flex items-start gap-2">
+                <span className="text-be-yellow-text font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
+                <div>
+                  <strong className="text-be-charcoal-950">Choose Bharat Smart Floor</strong> for industrial, electrical-room or commercial PVC flooring conforming to IS 3462:1986.
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          {/* 4. Other Products */}
+          <div className="rounded-lg border border-be-grey-250 bg-be-cream/30 p-5">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-1 w-8 bg-be-charcoal-800 rounded" aria-hidden="true" />
+              <h3 className="text-base font-semibold text-be-charcoal-950 uppercase tracking-wide">
+                Other Products
+              </h3>
+            </div>
+
+            <ul className="flex flex-col gap-3 text-sm text-be-grey-650">
+              <li className="flex items-start gap-2">
+                <span className="text-be-charcoal-800 font-bold mt-0.5" aria-hidden="true">&#x2022;</span>
+                <div>
+                  <strong className="text-be-charcoal-950">Rubber Sheet, Rubber Hose Pipe, ESD Mat, Conveyor Belt</strong> — industrial rubber and electrostatic-discharge products for general and specialist environments. Request specifications for each.
                 </div>
               </li>
             </ul>
@@ -479,11 +640,11 @@ export default function ProductsClient() {
 
           {/* 1. Hero */}
           <ProductsHero />
-          {/* 2. Product family grid */}
+          {/* 2. Product family grid (4-group hierarchy) */}
           <ProductFamilyGrid />
-          {/* 3. Comparison table */}
+          {/* 3. Comparison table (expanded) */}
           <ComparisonTable />
-          {/* 4. Selection guidance (static reference) */}
+          {/* 4. Selection guidance (4 groups) */}
           <SelectionGuidance />
           {/* 5. Technical help CTA */}
           <TechnicalHelpCTA />

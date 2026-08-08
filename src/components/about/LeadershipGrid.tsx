@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import type { Leader } from '@/data/team';
 import { cn } from '@/lib/utils';
@@ -17,7 +17,9 @@ import { cn } from '@/lib/utils';
  * read inside the card via overflow-y scroll.
  *
  * Interaction:
- *   • Desktop: hover OR click toggles the flip.
+ *   • Desktop: hover enters → flips; hover leaves → un-flips.
+ *             Click toggles "lock" — a locked card stays flipped even on
+ *             hover-leave. Click again to unlock. Escape always unlocks.
  *   • Mobile/Tablet: tap toggles the flip (hover does not exist).
  *   • Keyboard: Enter/Space toggles; Escape returns to portrait.
  *
@@ -25,13 +27,15 @@ import { cn } from '@/lib/utils';
  *   • aria-expanded on the toggle button.
  *   • Back-face content hidden from screen readers when not flipped
  *     (aria-hidden on the back face when collapsed).
- *   • Clear focus ring.
+ *   • Focus-visible ring on interactive elements.
  *   • prefers-reduced-motion: replaces 3D flip with immediate/fade change.
  *
  * Layout:
  *   • Desktop (≥1024px): three equal columns, fixed card height.
  *   • Tablet (640–1023px): two columns.
  *   • Mobile (<640px): one column.
+ *
+ * Touch targets: all interactive buttons have min-h-[44px] for mobile.
  */
 
 interface LeadershipGridProps {
@@ -61,30 +65,65 @@ interface LeaderFlipCardProps {
   index: number;
 }
 
+/** Check whether the primary pointer supports hover (desktop). */
+function isHoverCapablePointer(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(hover: hover)').matches;
+}
+
 function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const isLockedRef = useRef(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const buttonId = `leader-flip-toggle-${index}`;
   const bioRegionId = `leader-flip-bio-${index}`;
 
+  /* ── Flip helpers ── */
+
+  /** Toggle flip — used by click/tap and keyboard */
   const handleToggle = useCallback(() => {
-    setIsFlipped((prev) => !prev);
+    setIsFlipped((prev) => {
+      const next = !prev;
+      // When toggling on via click/tap, lock the card so hover-leave
+      // doesn't immediately un-flip it on desktop.
+      // When toggling off, always unlock.
+      isLockedRef.current = next;
+      return next;
+    });
   }, []);
 
-  // Escape returns to portrait state
-  useEffect(() => {
-    if (!isFlipped) return;
-    const handleKeyDown = (event: KeyboardEvent) => {
+  /** Explicitly un-flip (Escape key) */
+  const handleEscape = useCallback(() => {
+    setIsFlipped(false);
+    isLockedRef.current = false;
+  }, []);
+
+  /** Desktop hover enter — flip if not locked */
+  const handleMouseEnter = useCallback(() => {
+    if (!isHoverCapablePointer()) return;
+    if (!isLockedRef.current) {
+      setIsFlipped(true);
+    }
+  }, []);
+
+  /** Desktop hover leave — un-flip only if not locked */
+  const handleMouseLeave = useCallback(() => {
+    if (!isHoverCapablePointer()) return;
+    if (!isLockedRef.current) {
+      setIsFlipped(false);
+    }
+  }, []);
+
+  /** Keyboard handler for the card wrapper */
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
-        setIsFlipped(false);
+        handleEscape();
       }
-    };
-    const node = cardRef.current;
-    if (!node) return;
-    node.addEventListener('keydown', handleKeyDown);
-    return () => node.removeEventListener('keydown', handleKeyDown);
-  }, [isFlipped]);
+    },
+    [handleEscape]
+  );
 
   return (
     <div
@@ -93,6 +132,11 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
         'be-leader-flip-card',
         isFlipped && 'be-leader-flip-card-flipped'
       )}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onKeyDown={handleKeyDown}
+      /* Allow focus to reach the card so Escape works when card is focused */
+      tabIndex={-1}
     >
       {/* ── Front face — Portrait presentation ── */}
       <div className="be-leader-flip-front" aria-hidden={isFlipped || undefined}>
@@ -124,7 +168,7 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
             {leader.role}
           </p>
 
-          {/* Toggle button on front */}
+          {/* Toggle button on front — 44px touch target */}
           <button
             id={buttonId}
             type="button"
@@ -132,7 +176,7 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
             aria-expanded={isFlipped}
             aria-controls={bioRegionId}
             aria-label={`View profile of ${leader.name}`}
-            className="mt-3 inline-flex items-center justify-center gap-1.5 self-start min-h-[44px] px-4 py-2 rounded-md bg-be-navy-800 text-[0.8125rem] font-semibold text-be-white hover:bg-be-navy-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-warm-white"
+            className="mt-3 inline-flex items-center justify-center gap-1.5 self-start min-h-[44px] min-w-[44px] px-4 py-2 rounded-md bg-be-navy-800 text-[0.8125rem] font-semibold text-be-white hover:bg-be-navy-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-warm-white"
           >
             View Profile
           </button>
@@ -202,7 +246,7 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
             </div>
           </div>
 
-          {/* Back button — always visible at bottom */}
+          {/* Back button — always visible at bottom, 44px touch target */}
           <div className="p-4 sm:p-5 border-t border-be-grey-250">
             <button
               type="button"
@@ -210,7 +254,7 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
               aria-expanded={isFlipped}
               aria-controls={bioRegionId}
               aria-label={`Return to portrait of ${leader.name}`}
-              className="inline-flex items-center justify-center gap-1.5 min-h-[44px] px-4 py-2 rounded-md border border-be-grey-250 bg-be-white text-[0.8125rem] font-semibold text-be-charcoal-950 hover:border-be-yellow-400 hover:bg-be-yellow-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-warm-white w-full"
+              className="inline-flex items-center justify-center gap-1.5 min-h-[44px] min-w-[44px] px-4 py-2 rounded-md border border-be-grey-250 bg-be-white text-[0.8125rem] font-semibold text-be-charcoal-950 hover:border-be-yellow-400 hover:bg-be-yellow-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-warm-white w-full"
             >
               Back
             </button>

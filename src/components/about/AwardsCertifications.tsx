@@ -2,8 +2,6 @@
 
 import Image from 'next/image';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { Eyebrow } from '@/components/ui/Eyebrow';
-import { YouTubeFacade } from '@/components/media/YouTubeFacade';
 import { SectionShell } from '@/components/ui/SectionShell';
 import { awards, allTrustMarks } from '@/data/trust';
 
@@ -14,26 +12,9 @@ import { awards, allTrustMarks } from '@/data/trust';
  * carries content the source site actually publishes. Nothing is added here to
  * balance a grid — the layout adapts to however many verified items exist.
  *
- * The two videos are the company's own YouTube uploads, embedded through a
- * click-to-load facade so no third-party request is made on page load.
+ * Industry participation videos have been moved to the dedicated
+ * ActiveParticipation component.
  */
-
-const videos = [
-  {
-    videoId: 'e9jF3JYMLco',
-    title: 'Plast India 2026 @ Bharat Mandpam - Delhi',
-    poster: '/media/videos/e9jF3JYMLco.jpg',
-    posterAlt:
-      'Insulating mat samples in several colours laid out on an exhibition stand table',
-  },
-  {
-    videoId: 's6PHbPrf-lQ',
-    title: 'Interview with Make In India Conclave @ ABP News',
-    poster: '/media/videos/s6PHbPrf-lQ.jpg',
-    posterAlt:
-      'Vishnu Gupta being interviewed on stage at the Make in India Conclave',
-  },
-];
 
 export default function AwardsCertifications() {
   return (
@@ -118,22 +99,6 @@ export default function AwardsCertifications() {
             </li>
           ))}
         </ul>
-
-        {/* ── Industry participation (compact sub-section, not a new page section) ── */}
-        <div className="reveal-up flex flex-col gap-6 rounded-lg border border-be-grey-250 bg-be-warm-white p-6 lg:p-8">
-          <div className="flex flex-col gap-2">
-            <Eyebrow>Industry Participation</Eyebrow>
-            <h3 className="text-card-title text-be-charcoal-950">
-              Events and company media
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {videos.map((video) => (
-              <YouTubeFacade key={video.videoId} {...video} />
-            ))}
-          </div>
-        </div>
       </div>
     </SectionShell>
   );

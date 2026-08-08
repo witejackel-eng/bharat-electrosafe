@@ -183,9 +183,9 @@ export function productsCollectionPageSchema() {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     '@id': webPageId('/products'),
-    name: 'Electrical Insulating Mats and Civil Protection Products',
+    name: 'Electrical Insulating Mats, Waterproofing, PVC Flooring & Other Products',
     description:
-      'Explore electrical insulating mats, coloured-strip, bi-color and visibility-band variants, PVC geo-membranes and water-stop profiles from Bharat Electrosafe.',
+      'Explore electrical insulating mats (IS 15652 & IEC 61111), waterproofing solutions, PVC flooring and other industrial products from Bharat Electrosafe.',
     url: buildUrl('/products'),
     isPartOf: {
       '@id': WEBSITE_ID,

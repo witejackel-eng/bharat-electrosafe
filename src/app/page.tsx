@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     absolute: 'Electrical Insulating Mats Manufacturer India | Bharat Electrosafe',
   },
   description:
-    'Manufacturer of electrical insulating mats, visible-safety mat variants, BharatMembrane PVC geo-membranes and Bharat Hydro Seal water stops for industrial applications.',
+    'Manufacturer of electrical insulating mats, PVC flooring and waterproofing solutions, BharatMembrane PVC geo-membranes and Bharat Hydro Seal water stops for industrial applications.',
   alternates: {
     canonical: buildUrl('/'),
   },

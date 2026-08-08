@@ -3,11 +3,46 @@
 import Image from 'next/image';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { SectionShell } from '@/components/ui/SectionShell';
+import { ShieldCheck, Layers, Droplets, Zap } from 'lucide-react';
 
-const stats = [
-  { value: '6', label: 'Product families' },
-  { value: 'A · B · C', label: 'Insulation classes' },
-  { value: 'IS 15652:2006', label: 'Manufacturing standard' },
+/**
+ * AboutIntro — "Who We Are" hero section.
+ *
+ * Two-column layout with client-provided company description and
+ * product-range summary. Uses a manufacturing/product image (NOT the
+ * old Tata-branded visual).
+ *
+ * Content source: client About docx.
+ */
+
+const productRange = [
+  {
+    icon: Zap,
+    title: 'High Voltage Electrical Insulating Mats',
+    standard: 'IS 15652 & IEC 61111',
+  },
+  {
+    icon: Layers,
+    title: 'Geo Membrane Lining Solutions',
+    standard: 'IS 15909:2020',
+  },
+  {
+    icon: Droplets,
+    title: 'Water Proofing Solutions',
+    standard: 'BharatHydro Water Stop Seals, IS 15058:2002',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'PVC Flooring Solutions',
+    standard: 'IS 3462:1986',
+  },
+];
+
+const otherProducts = [
+  'Rubber Sheets',
+  'Rubber Hose Pipes',
+  'ESD Mats',
+  'Conveyor Belts',
 ];
 
 export default function AboutIntro() {
@@ -18,42 +53,70 @@ export default function AboutIntro() {
         <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'About Us' }]} />
       </div>
 
-      {/* 55/45 split layout */}
+      {/* Two-column layout */}
       <div className="flex flex-col lg:flex-row gap-10 lg:gap-12 items-start">
-        {/* Left — page title + introduction */}
+        {/* Left — Who We Are */}
         <div className="lg:w-[55%] reveal-up">
+          <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-3">
+            Who We Are
+          </p>
           <h1 className="text-page-h1 text-be-charcoal-950 mb-6">
             About Bharat Electrosafe
           </h1>
           <p className="text-body-large text-be-grey-650 max-w-xl mb-8">
-            Bharat Electrosafe manufactures electrical insulating mats and engineered PVC
-            products for electrical-safety and civil-protection applications. The product
-            portfolio includes standard insulating mats, visible-safety variants, PVC
-            geo-membranes and water-stop profiles.
+            Bharat Electrosafe — India&apos;s trusted name in precision-engineered
+            electrical safety, industrial safety, infrastructure protection, PVC
+            flooring, and waterproofing solutions. Proudly contributing to the
+            nation&apos;s safety and development under the Make in India initiative,
+            we are committed to delivering high-quality products that protect
+            lives, ensure compliance, and support critical industrial, commercial,
+            and infrastructure operations across multiple sectors.
           </p>
 
-          {/* Key facts (merged from AboutStats) */}
-          <div className="grid grid-cols-3 gap-8 lg:gap-12">
-            {stats.map((stat) => (
-              <div key={stat.label} className="flex flex-col items-start gap-2">
-                <span className="text-3xl font-bold text-be-charcoal-950 tabular-nums">
-                  {stat.value}
-                </span>
-                <div className="h-1 w-10 bg-be-yellow-500 rounded-full" />
-                <span className="text-metadata text-be-grey-650 uppercase tracking-wider leading-relaxed">
-                  {stat.label}
-                </span>
+          {/* Product range highlights */}
+          <div className="flex flex-col gap-4">
+            {productRange.map(({ icon: Icon, title, standard }) => (
+              <div
+                key={title}
+                className="flex items-start gap-3 p-3 rounded-lg bg-be-cream/60"
+              >
+                <div className="flex items-center justify-center w-9 h-9 rounded-md bg-be-yellow-50 shrink-0 mt-0.5">
+                  <Icon className="h-4.5 w-4.5 text-be-yellow-text" aria-hidden="true" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-be-charcoal-950 leading-snug">
+                    {title}
+                  </p>
+                  <p className="text-metadata text-be-grey-650 mt-0.5">
+                    {standard}
+                  </p>
+                </div>
               </div>
             ))}
+
+            {/* Other Products row */}
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-be-cream/60">
+              <div className="flex items-center justify-center w-9 h-9 rounded-md bg-be-yellow-50 shrink-0 mt-0.5">
+                <Layers className="h-4.5 w-4.5 text-be-yellow-text" aria-hidden="true" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-be-charcoal-950 leading-snug">
+                  Other Products
+                </p>
+                <p className="text-metadata text-be-grey-650 mt-0.5">
+                  {otherProducts.join(' • ')}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Right — company/product visual */}
+        {/* Right — manufacturing/product visual */}
         <div className="lg:w-[45%] reveal-up">
           <div className="rounded-lg overflow-hidden">
             <Image
-              src="/media/home/about-overview.webp"
-              alt="Bharat Electrosafe — Manufacturing and electrical safety"
+              src="/media/hero/bharat-electrosafe-insulating-mat-hero.webp"
+              alt="Bharat Electrosafe — precision-engineered electrical safety products"
               width={800}
               height={500}
               className="w-full h-auto object-cover"

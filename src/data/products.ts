@@ -264,12 +264,12 @@ export interface ProductCategoryInfo {
 export const productCategories: Record<ProductCategory, ProductCategoryInfo> = {
   'electrical-insulation': {
     id: 'electrical-insulation',
-    displayName: 'Electrical Insulation',
+    displayName: 'Electrical Insulating Mats',
     selectionPurpose: 'Operator protection near live electrical equipment',
   },
   'waterproofing-civil-protection': {
     id: 'waterproofing-civil-protection',
-    displayName: 'Waterproofing and Civil Protection',
+    displayName: 'Waterproofing Solutions',
     selectionPurpose: 'Waterproofing, containment and construction-joint sealing',
   },
 };

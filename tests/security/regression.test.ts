@@ -267,11 +267,12 @@ describe('Frontend security', () => {
       },
     );
     const output = await new Response(proc.stdout).text();
-    // All uses should be in structured-data.tsx or Breadcrumb.tsx for JSON-LD
+    // All uses should be in structured-data.tsx, Breadcrumb.tsx, or page files
+    // that emit JSON-LD structured data (new product pages)
     const lines = output.split('\n').filter((l) => l.trim().length > 0);
     for (const line of lines) {
       expect(line).toMatch(
-        /structured-data\.tsx|Breadcrumb\.tsx/,
+        /structured-data\.tsx|Breadcrumb\.tsx|page\.tsx/,
       );
     }
     // Verify that the JSON-LD serialization escapes < to prevent XSS

@@ -13,11 +13,9 @@ import {
   ChevronDown,
   ArrowRight,
   Zap,
-  Shield,
-  Eye,
-  Sun,
   Droplets,
-  Waves,
+  Layers,
+  Package,
 } from 'lucide-react';
 import {
   Sheet,
@@ -36,31 +34,20 @@ import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import { cn } from '@/lib/utils';
 import {
-  productNavigationByCategory,
-  productCategories,
-  ProductCategory,
-} from '@/data/products';
+  productNavGroups,
+  type ProductNavSubGroup,
+  type ProductNavLeaf,
+} from '@/data/product-navigation';
 
 /* ────────────────────────────────────────────
-   Category order for navigation display
+   Group icon mapping for mega-menu
    ──────────────────────────────────────────── */
 
-const categoryOrder: ProductCategory[] = [
-  'electrical-insulation',
-  'waterproofing-civil-protection',
-];
-
-/* ────────────────────────────────────────────
-   Product icon mapping for mega-menu
-   ──────────────────────────────────────────── */
-
-const productIconMap: Record<string, React.ReactNode> = {
+const groupIconMap: Record<string, React.ReactNode> = {
   'electrical-insulating-mats': <Zap className="size-4" />,
-  'coloured-strip-insulating-mats': <Eye className="size-4" />,
-  'bi-color-insulating-mats': <Shield className="size-4" />,
-  'auto-glow-reflective-band-insulating-mats': <Sun className="size-4" />,
-  'bharat-membrane': <Droplets className="size-4" />,
-  'bharat-hydro-seal': <Waves className="size-4" />,
+  'water-proofing-solutions': <Droplets className="size-4" />,
+  'pvc-flooring-solutions': <Layers className="size-4" />,
+  'other-products': <Package className="size-4" />,
 };
 
 /* ────────────────────────────────────────────
@@ -80,6 +67,7 @@ export function Header() {
   const [compact, setCompact] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [expandedMobileGroups, setExpandedMobileGroups] = useState<Set<string>>(new Set());
   const openTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const megaMenuRef = useRef<HTMLDivElement>(null);
@@ -246,9 +234,21 @@ export function Header() {
     };
   }, [clearOpenTimeout, clearCloseTimeout]);
 
-  // Get the electrical insulation and waterproofing items
-  const electricalItems = productNavigationByCategory['electrical-insulation'];
-  const waterproofingItems = productNavigationByCategory['waterproofing-civil-protection'];
+  // Toggle mobile group expansion
+  const toggleMobileGroup = useCallback((groupId: string) => {
+    setExpandedMobileGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(groupId)) next.delete(groupId);
+      else next.add(groupId);
+      return next;
+    });
+  }, []);
+
+  // Split product groups for mega-menu layout
+  // Group 0 (Electrical Insulating Mats) → left/large column
+  // Groups 1–3 → right/secondary column
+  const primaryGroup = productNavGroups[0];
+  const secondaryGroups = productNavGroups.slice(1);
 
   return (
     /* `display: contents` lets the <header> element provide semantics without
@@ -520,39 +520,122 @@ export function Header() {
                             View All Products
                           </Link>
 
-                          {/* Products grouped by category */}
-                          {categoryOrder.map((catId) => {
-                            const catInfo = productCategories[catId];
-                            const items = productNavigationByCategory[catId];
+                          {/* Product groups from new 4-group hierarchy */}
+                          {productNavGroups.map((group) => {
+                            const isExpanded = expandedMobileGroups.has(group.id);
+                            const icon = groupIconMap[group.id] || <Zap className="size-3.5" />;
+
+                            /* Single-link group (e.g. PVC Flooring Solutions) —
+                               render as a direct navigation link. */
+                            const isSingleLink =
+                              !group.hasSubGroups &&
+                              group.children.length === 1 &&
+                              group.href;
+
+                            if (isSingleLink) {
+                              const leaf = group.children[0] as ProductNavLeaf;
+                              return (
+                                <Link
+                                  key={group.id}
+                                  href={group.href || leaf.href}
+                                  className={cn(
+                                    'flex items-center gap-3 px-5 py-3 pl-8 text-sm font-medium transition-colors min-h-[44px]',
+                                    pathname === (group.href || leaf.href)
+                                      ? 'text-be-brand-yellow bg-white/8'
+                                      : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow'
+                                  )}
+                                  onClick={() => setMobileOpen(false)}
+                                  aria-current={pathname === (group.href || leaf.href) ? 'page' : undefined}
+                                >
+                                  <span className="text-be-brand-yellow shrink-0" aria-hidden="true">
+                                    {icon}
+                                  </span>
+                                  {group.name}
+                                </Link>
+                              );
+                            }
+
+                            /* Expandable group — nested disclosure */
                             return (
-                              <div key={catId}>
-                                {/* Category label */}
-                                <div className="px-5 pl-8 py-1.5 text-[0.7rem] font-semibold text-white/50 uppercase tracking-wider">
-                                  {catInfo.displayName}
-                                </div>
-                                {items.map((product) => (
-                                  <Link
-                                    key={product.slug}
-                                    href={product.href}
-                                    className={cn(
-                                      'flex items-center gap-3 px-5 py-3 pl-8 text-sm transition-colors min-h-[44px]',
-                                      pathname === product.href
-                                        ? 'text-be-brand-yellow bg-white/8'
-                                        : 'text-white/80 hover:bg-white/6 hover:text-be-brand-yellow'
-                                    )}
-                                    onClick={() => setMobileOpen(false)}
-                                    aria-current={pathname === product.href ? 'page' : undefined}
-                                  >
+                              <div key={group.id}>
+                                {/* Group trigger button */}
+                                <button
+                                  type="button"
+                                  className={cn(
+                                    'flex items-center justify-between w-full px-5 py-3 pl-8 text-sm font-medium transition-colors min-h-[44px]',
+                                    isExpanded
+                                      ? 'text-be-brand-yellow bg-white/8'
+                                      : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow'
+                                  )}
+                                  onClick={() => toggleMobileGroup(group.id)}
+                                  aria-expanded={isExpanded}
+                                >
+                                  <span className="flex items-center gap-3">
                                     <span className="text-be-brand-yellow shrink-0" aria-hidden="true">
-                                      {productIconMap[product.slug] || <Zap className="size-3.5" />}
+                                      {icon}
                                     </span>
-                                    <div className="min-w-0">
-                                      <div className="font-medium leading-snug">
-                                        {product.name}
-                                      </div>
-                                    </div>
-                                  </Link>
-                                ))}
+                                    {group.name}
+                                  </span>
+                                  <ChevronDown
+                                    className={cn(
+                                      'size-4 transition-transform duration-200',
+                                      isExpanded && 'rotate-180'
+                                    )}
+                                    aria-hidden="true"
+                                    focusable="false"
+                                  />
+                                </button>
+
+                                {/* Expanded group content */}
+                                {isExpanded && (
+                                  <div className="flex flex-col">
+                                    {group.hasSubGroups
+                                      ? (group.children as ProductNavSubGroup[]).map((subGroup) => (
+                                          <div key={subGroup.name}>
+                                            {/* Sub-group label */}
+                                            <div className="px-5 pl-12 py-1.5 text-[0.7rem] font-semibold text-white/50 uppercase tracking-wider">
+                                              {subGroup.name}
+                                            </div>
+                                            {subGroup.items.map((item) => (
+                                              <Link
+                                                key={item.href}
+                                                href={item.href}
+                                                className={cn(
+                                                  'flex items-center gap-3 px-5 py-2.5 pl-12 text-sm transition-colors min-h-[44px]',
+                                                  pathname === item.href
+                                                    ? 'text-be-brand-yellow bg-white/8'
+                                                    : 'text-white/80 hover:bg-white/6 hover:text-be-brand-yellow'
+                                                )}
+                                                onClick={() => setMobileOpen(false)}
+                                                aria-current={pathname === item.href ? 'page' : undefined}
+                                              >
+                                                <div className="min-w-0">
+                                                  <div className="font-medium leading-snug">{item.name}</div>
+                                                </div>
+                                              </Link>
+                                            ))}
+                                          </div>
+                                        ))
+                                      : (group.children as ProductNavLeaf[]).map((item) => (
+                                          <Link
+                                            key={item.href}
+                                            href={item.href}
+                                            className={cn(
+                                              'flex items-center gap-3 px-5 py-2.5 pl-12 text-sm transition-colors min-h-[44px]',
+                                              pathname === item.href
+                                                ? 'text-be-brand-yellow bg-white/8'
+                                                : 'text-white/80 hover:bg-white/6 hover:text-be-brand-yellow'
+                                            )}
+                                            onClick={() => setMobileOpen(false)}
+                                            aria-current={pathname === item.href ? 'page' : undefined}
+                                          >
+                                            <div className="min-w-0">
+                                              <div className="font-medium leading-snug">{item.name}</div>
+                                            </div>
+                                          </Link>
+                                        ))}
+                                  </div>
+                                )}
                               </div>
                             );
                           })}
@@ -626,68 +709,158 @@ export function Header() {
             onKeyDown={handleMegaMenuKeyDown}
             aria-label="Product categories"
           >
-            {/* Two-column layout */}
-            <div className="flex max-h-[370px]">
-              {/* Left column: Electrical Insulation (4 products) */}
+            {/* Two-column layout: left = primary group, right = secondary groups */}
+            <div className="flex">
+              {/* ── Left column: Electrical Insulating Mats (with sub-groups) ── */}
               <div className="flex-1 p-4 border-r border-be-grey-250">
                 <div className="text-[0.7rem] font-semibold text-be-grey-650 uppercase tracking-wider px-2 mb-2">
-                  {productCategories['electrical-insulation'].displayName}
+                  {primaryGroup.name}
                 </div>
-                <div className="flex flex-col gap-0.5" role="group" aria-label="Electrical insulation products">
-                  {electricalItems.map((product) => (
-                    <Link
-                      key={product.slug}
-                      href={product.href}
-                      role="menuitem"
-                      className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-be-yellow-50 transition-colors group"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      {/* Icon */}
-                      <span className="flex items-center justify-center size-8 rounded-md bg-be-cream text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0" aria-hidden="true">
-                        {productIconMap[product.slug] || <Zap className="size-4" />}
-                      </span>
-                      <div className="min-w-0">
-                        <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors leading-snug">
-                          {product.name}
-                        </div>
-                        <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
-                          {product.description}
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
+                {(primaryGroup.children as ProductNavSubGroup[]).map((subGroup, sgIdx) => (
+                  <div
+                    key={subGroup.name}
+                    className={cn(sgIdx > 0 && 'mt-3')}
+                    role="group"
+                    aria-label={subGroup.name}
+                  >
+                    <div className="text-xs font-semibold text-be-charcoal-800 px-2 mb-1.5">
+                      {subGroup.name}
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      {subGroup.items.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          role="menuitem"
+                          className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-be-yellow-50 transition-colors group"
+                          onClick={() => setDropdownOpen(false)}
+                        >
+                          <span
+                            className="flex items-center justify-center size-8 rounded-md bg-be-cream text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0"
+                            aria-hidden="true"
+                          >
+                            {groupIconMap[primaryGroup.id] || <Zap className="size-4" />}
+                          </span>
+                          <div className="min-w-0">
+                            <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors leading-snug">
+                              {item.name}
+                            </div>
+                            <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
+                              {item.description}
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              {/* Right column: Waterproofing & Civil Protection + View all */}
+              {/* ── Right column: Water Proofing, PVC Flooring, Other Products ── */}
               <div className="w-[280px] p-4 bg-be-cream/40 flex flex-col">
-                <div className="text-[0.7rem] font-semibold text-be-grey-650 uppercase tracking-wider px-2 mb-2">
-                  {productCategories['waterproofing-civil-protection'].displayName}
-                </div>
-                <div className="flex flex-col gap-0.5" role="group" aria-label="Waterproofing and civil protection products">
-                  {waterproofingItems.map((product) => (
-                    <Link
-                      key={product.slug}
-                      href={product.href}
-                      role="menuitem"
-                      className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-be-white transition-colors group"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      {/* Icon */}
-                      <span className="flex items-center justify-center size-8 rounded-md bg-be-white text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0" aria-hidden="true">
-                        {productIconMap[product.slug] || <Droplets className="size-4" />}
-                      </span>
-                      <div className="min-w-0">
-                        <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors leading-snug">
-                          {product.name}
-                        </div>
-                        <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
-                          {product.description}
-                        </div>
+                {secondaryGroups.map((group) => {
+                  const icon = groupIconMap[group.id] || <Zap className="size-4" />;
+
+                  /* Single-link group (e.g. PVC Flooring Solutions) — render as
+                     one clickable row rather than a heading + list. */
+                  const isSingleLink =
+                    !group.hasSubGroups &&
+                    group.children.length === 1 &&
+                    group.href;
+
+                  if (isSingleLink) {
+                    const leaf = group.children[0] as ProductNavLeaf;
+                    return (
+                      <div key={group.id} className="mb-3">
+                        <Link
+                          href={group.href || leaf.href}
+                          role="menuitem"
+                          className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-be-white transition-colors group"
+                          onClick={() => setDropdownOpen(false)}
+                        >
+                          <span
+                            className="flex items-center justify-center size-8 rounded-md bg-be-white text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0"
+                            aria-hidden="true"
+                          >
+                            {icon}
+                          </span>
+                          <div className="min-w-0">
+                            <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors leading-snug">
+                              {group.name}
+                            </div>
+                            {group.description && (
+                              <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
+                                {group.description}
+                              </div>
+                            )}
+                          </div>
+                        </Link>
                       </div>
-                    </Link>
-                  ))}
-                </div>
+                    );
+                  }
+
+                  /* Multi-item group (sub-groups or leaf list) */
+                  return (
+                    <div key={group.id} className="mb-3">
+                      <div className="text-[0.7rem] font-semibold text-be-grey-650 uppercase tracking-wider px-2 mb-2">
+                        {group.name}
+                      </div>
+                      <div className="flex flex-col gap-0.5" role="group" aria-label={group.name}>
+                        {group.hasSubGroups
+                          ? (group.children as ProductNavSubGroup[]).flatMap((subGroup) =>
+                              subGroup.items.map((item) => (
+                                <Link
+                                  key={item.href}
+                                  href={item.href}
+                                  role="menuitem"
+                                  className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-be-white transition-colors group"
+                                  onClick={() => setDropdownOpen(false)}
+                                >
+                                  <span
+                                    className="flex items-center justify-center size-8 rounded-md bg-be-white text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0"
+                                    aria-hidden="true"
+                                  >
+                                    {icon}
+                                  </span>
+                                  <div className="min-w-0">
+                                    <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors leading-snug">
+                                      {item.name}
+                                    </div>
+                                    <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
+                                      {item.description}
+                                    </div>
+                                  </div>
+                                </Link>
+                              ))
+                            )
+                          : (group.children as ProductNavLeaf[]).map((item) => (
+                              <Link
+                                key={item.href}
+                                href={item.href}
+                                role="menuitem"
+                                className="flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-be-white transition-colors group"
+                                onClick={() => setDropdownOpen(false)}
+                              >
+                                <span
+                                  className="flex items-center justify-center size-8 rounded-md bg-be-white text-be-charcoal-800 group-hover:bg-be-yellow-500 group-hover:text-be-white transition-colors shrink-0"
+                                  aria-hidden="true"
+                                >
+                                  {icon}
+                                </span>
+                                <div className="min-w-0">
+                                  <div className="text-sm font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors leading-snug">
+                                    {item.name}
+                                  </div>
+                                  <div className="text-metadata text-be-grey-650 mt-0.5 leading-snug line-clamp-1">
+                                    {item.description}
+                                  </div>
+                                </div>
+                              </Link>
+                            ))}
+                      </div>
+                    </div>
+                  );
+                })}
 
                 {/* View all products link */}
                 <div className="mt-auto pt-4 border-t border-be-grey-250">

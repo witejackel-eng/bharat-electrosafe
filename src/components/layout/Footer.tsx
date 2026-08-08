@@ -10,38 +10,22 @@ import {
 import { cn } from '@/lib/utils';
 import { company, phones, locations } from '@/data/company';
 import {
-  productNavigationItems,
-  productCategories,
-  ProductCategory,
-} from '@/data/products';
+  productNavGroups,
+  ProductNavGroup,
+  ProductNavSubGroup,
+  ProductNavLeaf,
+} from '@/data/product-navigation';
 import { officeMapsDirectionsUrl } from '@/components/contact/ContactIntro';
 
 /* ────────────────────────────────────────────
    Shared data structures (single source)
    ──────────────────────────────────────────── */
 
-const categoryOrder: ProductCategory[] = [
-  'electrical-insulation',
-  'waterproofing-civil-protection',
-];
-
 const companyLinks = [
   { name: 'Home', href: '/' },
   { name: 'About Us', href: '/about-us' },
   { name: 'Contact Us', href: '/contact-us' },
 ];
-
-/* Footer product labels — shortened where needed to avoid awkward
-   multi-line wrapping. The full official names remain on the product
-   pages themselves. */
-const footerProductLabels: Record<string, string> = {
-  'electrical-insulating-mats': 'Electrical Insulating Mats',
-  'coloured-strip-insulating-mats': 'Coloured Strip Mats',
-  'bi-color-insulating-mats': 'Bi-Color Insulating Mats',
-  'auto-glow-reflective-band-insulating-mats': 'Auto-Glow / Reflective Mats',
-  'bharat-membrane': 'BharatMembrane',
-  'bharat-hydro-seal': 'Bharat Hydro Seal',
-};
 
 /* Shortened footer address used in column 4 + mobile Contact accordion.
    Linked to the exact Google Maps destination. The full address remains
@@ -95,7 +79,7 @@ function IconButton({
 
 function BrandColumn() {
   return (
-    <div className="flex flex-col gap-3.5">
+    <div className="flex flex-col gap-2.5">
       <Link href="/" aria-label="Bharat Electrosafe — home">
         <Image
           src="/brand/bharat-electrosafe-footer-logo.webp"
@@ -107,8 +91,8 @@ function BrandColumn() {
         />
       </Link>
       {/* Brand description — 15px, medium-dark grey, comfortable reading. */}
-      <p className="text-[0.9375rem] text-be-grey-700 leading-[1.65] max-w-[300px]">
-        Bharat Electrosafe manufactures electrical insulating mats and engineered PVC products for electrical-safety and civil-protection applications.
+      <p className="text-[0.9375rem] text-be-grey-700 leading-[1.65] max-w-[340px]">
+        Bharat Electrosafe — India&apos;s trusted name in precision-engineered electrical safety, industrial safety, infrastructure protection, PVC flooring and waterproofing solutions.
       </p>
       <div className="flex items-center gap-3 pt-0.5">
         <IconButton href={`mailto:${company.email}`} label="Email Bharat Electrosafe">
@@ -158,7 +142,7 @@ function CompanyColumn() {
 }
 
 /* ────────────────────────────────────────────
-   Products column — all six families
+   Products column — four-group hierarchy
    ──────────────────────────────────────────── */
 
 function ProductsColumn() {
@@ -175,31 +159,112 @@ function ProductsColumn() {
         View All Products
       </Link>
       <div className="flex flex-col gap-4">
-        {categoryOrder.map((catId) => {
-          const catInfo = productCategories[catId];
-          const items = productNavigationItems.filter((p) => p.category === catId);
-          return (
-            <div key={catId}>
-              {/* Category label — 12.5px, semibold, charcoal-800. */}
-              <p className="text-[0.78125rem] font-semibold text-be-charcoal-800 uppercase tracking-[0.08em] mb-1.5">
-                {catInfo.displayName}
+        {productNavGroups.map((group) => (
+          <ProductGroupBlock key={group.id} group={group} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Renders a single top-level product group in the footer. */
+function ProductGroupBlock({ group }: { group: ProductNavGroup }) {
+  return (
+    <div>
+      {/* Group label — 12.5px, semibold, charcoal-800. */}
+      <p className="text-[0.78125rem] font-semibold text-be-charcoal-800 uppercase tracking-[0.08em] mb-1.5">
+        {group.name}
+      </p>
+      {group.hasSubGroups ? (
+        <div className="flex flex-col gap-2.5">
+          {(group.children as ProductNavSubGroup[]).map((sub) => (
+            <div key={sub.name}>
+              <p className="text-[0.6875rem] font-medium text-be-grey-600 uppercase tracking-[0.06em] mb-1">
+                {sub.name}
               </p>
-              <ul className="flex flex-col gap-2">
-                {items.map((product) => (
-                  <li key={product.slug}>
+              <ul className="flex flex-col gap-1.5">
+                {sub.items.map((item) => (
+                  <li key={item.href}>
                     <Link
-                      href={product.href}
-                      className={cn('text-base font-medium leading-normal', footerLinkBase)}
+                      href={item.href}
+                      className={cn('text-[0.8125rem] font-medium leading-normal', footerLinkBase)}
                     >
-                      {footerProductLabels[product.slug] ?? product.name}
+                      {item.name}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <ul className="flex flex-col gap-1.5">
+          {(group.children as ProductNavLeaf[]).map((item) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                className={cn('text-[0.8125rem] font-medium leading-normal', footerLinkBase)}
+              >
+                {item.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+/** Renders a product group inside the mobile Products accordion with
+   nested disclosure for sub-groups. */
+function MobileProductGroup({ group }: { group: ProductNavGroup }) {
+  return (
+    <div>
+      <p className="text-[0.78125rem] font-semibold text-be-charcoal-800 uppercase tracking-[0.08em] py-1">
+        {group.name}
+      </p>
+      {group.hasSubGroups ? (
+        <div className="flex flex-col gap-2 ml-2">
+          {(group.children as ProductNavSubGroup[]).map((sub) => (
+            <div key={sub.name}>
+              <p className="text-[0.6875rem] font-medium text-be-grey-600 uppercase tracking-[0.06em] py-0.5">
+                {sub.name}
+              </p>
+              <ul className="flex flex-col gap-0.5 ml-2">
+                {sub.items.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        'text-[0.8125rem] font-medium py-1.5 min-h-[44px] inline-flex items-center',
+                        footerLinkBase
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <ul className="flex flex-col gap-0.5 ml-2">
+          {(group.children as ProductNavLeaf[]).map((item) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                className={cn(
+                  'text-[0.8125rem] font-medium py-1.5 min-h-[44px] inline-flex items-center',
+                  footerLinkBase
+                )}
+              >
+                {item.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
@@ -337,7 +402,7 @@ export function Footer() {
       {/* ── Main footer content ── */}
       <div className="container-site page-horizontal-padding pt-11 pb-9 lg:pt-12 lg:pb-10">
         {/* ────────── Desktop / tablet layout ────────── */}
-        <nav aria-label="Footer company navigation" className="hidden md:grid md:grid-cols-2 md:gap-x-10 md:gap-y-12 lg:grid-cols-[1.1fr_0.65fr_1.2fr_1.1fr] lg:gap-x-12 lg:gap-y-0">
+        <nav aria-label="Footer company navigation" className="hidden md:grid md:grid-cols-2 md:gap-x-10 md:gap-y-12 lg:grid-cols-[1.4fr_0.65fr_1.2fr_1.1fr] lg:gap-x-12 lg:gap-y-0">
           {/* Row 1, Col 1 — Brand (lg: col 1) */}
           <div className="lg:pr-8">
             <BrandColumn />
@@ -407,32 +472,9 @@ export function Footer() {
                   >
                     View All Products
                   </Link>
-                  {categoryOrder.map((catId) => {
-                    const catInfo = productCategories[catId];
-                    const items = productNavigationItems.filter((p) => p.category === catId);
-                    return (
-                      <div key={catId}>
-                        <p className="text-[0.78125rem] font-semibold text-be-charcoal-800 uppercase tracking-[0.08em] py-1">
-                          {catInfo.displayName}
-                        </p>
-                        <ul className="flex flex-col gap-1 mt-0.5">
-                          {items.map((product) => (
-                            <li key={product.slug}>
-                              <Link
-                                href={product.href}
-                                className={cn(
-                                  'text-base font-medium py-2 min-h-[44px] inline-flex items-center',
-                                  footerLinkBase
-                                )}
-                              >
-                                {footerProductLabels[product.slug] ?? product.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    );
-                  })}
+                  {productNavGroups.map((group) => (
+                    <MobileProductGroup key={group.id} group={group} />
+                  ))}
                 </div>
               </AccordionContent>
             </AccordionItem>

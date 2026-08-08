@@ -73,7 +73,7 @@ const assets = [
   { from: path.join(USE, 'BES Logo without BG.png'), to: 'brand/bharat-electrosafe-logo.webp', width: 512, subject: 'Bharat Electrosafe primary logo, transparent' },
   { from: path.join(USE, 'BharatMembrane without BG.png'), to: 'brand/bharat-membrane-logo.webp', width: 512, subject: 'BharatMembrane sub-brand logo, transparent' },
   { from: path.join(USE, 'INSULATICAA logo without BG.png'), to: 'brand/insulaticaa-logo.webp', width: 512, subject: 'INSULATICAA sub-brand logo, transparent' },
-  { from: path.join(SITE, 'marketed-by-tata.png'), to: 'brand/marketed-by-tata-precision.webp', width: 320, subject: 'Tata Precision Industries (India) Ltd. marketing attribution mark' },
+  /* marketed-by-tata entry removed — Tata branding no longer used */
 
   /* ── Home ── */
   { from: path.join(SITE, 'slider', 'slider-bg5.png'), to: 'media/home/hero.webp', width: 1920, subject: 'Insulating mat hero composition' },

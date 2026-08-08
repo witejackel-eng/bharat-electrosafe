@@ -30,13 +30,13 @@ const HERO_IMG_ALT =
  *
  * Composition:
  *   Desktop / tablet-landscape (≥1024px):
- *     • Two-column grid: ~42% copy left, ~58% visual right, 32–48px gap.
+ *     • Two-column grid: ~50% copy left, ~50% visual right, 32–48px gap.
  *     • Hero vertical padding ~48–64px; total height fits comfortably in
  *       a 1366×768 laptop viewport (no forced 680px minimum).
  *     • Image frame: 4:3 aspect, object-cover, restrained radius, thin
  *       neutral border, very subtle shadow.
  *   Tablet-portrait (768–1023px):
- *     • Balanced two-column: ~44% copy left, ~56% visual right, 32px gap.
+ *     • Balanced two-column: ~48% copy left, ~52% visual right, 32px gap.
  *   Mobile (<768px):
  *     • Single column, content order:
  *         1. Eyebrow

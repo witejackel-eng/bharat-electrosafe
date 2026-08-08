@@ -1007,7 +1007,7 @@
        .be-split-hero__visual               — image frame column
        .be-split-hero__copy-post            — paragraph + CTAs + badges
        .be-split-hero__image                — the <Image> (object-cover)
-       .be-split-hero__headline             — H1, ~56-66px desktop
+       .be-split-hero__headline             — H1, ~48-56px desktop
        .be-split-hero__lede                 — supporting paragraph
        .be-split-hero__ctas                 — CTA button row
        .be-split-hero__proof                — proof badges grid
@@ -1034,7 +1034,7 @@
   /* ── Desktop / tablet-landscape (≥1024px): two-column split ── */
   .be-split-hero__inner {
     display: grid;
-    grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+    grid-template-columns: minmax(0, 50fr) minmax(0, 50fr);
     grid-template-areas: "copy-pre visual" "copy-post visual";
     align-items: center;
     gap: clamp(2rem, 3vw, 3rem); /* 32–48px gap */
@@ -1045,12 +1045,10 @@
   }
   .be-split-hero__copy-pre {
     grid-area: copy-pre;
-    max-width: 600px;
   }
   .be-split-hero__copy-post {
     grid-area: copy-post;
-    max-width: 600px;
-    margin-top: 1.25rem; /* 20px below headline */
+    margin-top: 0.75rem; /* 12px below headline — tighter to close visual gap */
   }
   .be-split-hero__visual {
     grid-area: visual;
@@ -1095,18 +1093,14 @@
   /* ── Tablet portrait (768–1023px): balanced two-column ── */
   @media (min-width: 768px) and (max-width: 1023px) {
     .be-split-hero__inner {
-      grid-template-columns: minmax(0, 44fr) minmax(0, 56fr);
+      grid-template-columns: minmax(0, 48fr) minmax(0, 52fr);
       grid-template-areas: "copy-pre visual" "copy-post visual";
       gap: 1.5rem 2rem;
       padding-top: clamp(36px, 4vw, 48px);
       padding-bottom: clamp(40px, 4vw, 52px);
     }
-    .be-split-hero__copy-pre,
-    .be-split-hero__copy-post {
-      max-width: none;
-    }
     .be-split-hero__headline {
-      font-size: clamp(2rem, 3.4vw, 2.75rem);
+      font-size: clamp(2rem, 3.2vw, 2.75rem);
     }
   }
 
@@ -1176,11 +1170,10 @@
     }
   }
   .be-split-hero__headline {
-    font-size: clamp(2.5rem, 4.2vw, 4.125rem); /* ~56-66px desktop */
-    line-height: 1.05;
-    letter-spacing: -0.022em;
+    font-size: clamp(2.375rem, 3.8vw, 3.5rem); /* ~48-56px desktop, 3 balanced lines */
+    line-height: 1.12;
+    letter-spacing: -0.015em;
     font-weight: 700;
-    max-width: 600px;
     margin: 0;
   }
   @media (max-width: 1023px) {
@@ -1305,7 +1298,7 @@
       padding-bottom: clamp(36px, 4vw, 48px);
     }
     .be-split-hero__headline {
-      font-size: clamp(2.125rem, 3.4vw, 3rem);
+      font-size: clamp(2rem, 3vw, 2.75rem);
     }
     .be-split-hero__lede {
       font-size: 1rem;
@@ -1718,12 +1711,14 @@
 /* ──────────────────────────────────────────────────────────────
    LEADERSHIP FLIP CARD HOVER (outside @layer so :hover wins over
    Tailwind v4 base/preflight). On hover-capable devices only,
-   hovering a leadership flip card adds a subtle shadow.
-   The flip is controlled by click/tap/keyboard only — hover does NOT
-   trigger the flip.
+   hovering an UNFLIPPED leadership card adds a subtle shadow.
+   The flip itself is controlled by JS (hover on desktop, click/tap
+   on mobile, keyboard). The :not(.be-leader-flip-card-flipped)
+   guard prevents the hover shadow from overriding the stronger
+   flipped-state shadow/border.
    ────────────────────────────────────────────────────────────── */
 @media (hover: hover) {
-  .be-leader-flip-card:hover {
+  .be-leader-flip-card:hover:not(.be-leader-flip-card-flipped) {
     border-color: var(--be-yellow-400);
     box-shadow:
       0 6px 18px -10px rgba(2, 31, 73, 0.10),
