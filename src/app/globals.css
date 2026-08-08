@@ -837,18 +837,21 @@
      A clean three-column grid (desktop) / two-column (tablet) /
      one-column (mobile) layout. No carousel, no rotation, no overlap.
      All cards stay equal width at all times — hovering does NOT
-     enlarge the card, scale it, or change grid column ratios. Only
-     the biography area inside the card expands/collapses, smoothly
-     animating the card's height by the amount needed for the bio.
-
-     SINGLE SOURCE OF TRUTH: `openIndex` in LeadershipGrid.tsx.
-     The biography on a card opens ONLY when that card's index matches
-     `openIndex`. There is no `hoveredIndex`, no `isOpen || isHovered`
-     combination, no CSS `:hover` selector that opens the biography,
-     and no CSS `:focus-within` selector that opens the biography.
-     Hover may change only border colour and a very subtle shadow; it
-     never controls biography visibility. Reduced-motion shortens the
-     transition.
+     enlarge the card, scale it, or change grid column ratios. Each card
+     has a front (portrait) and back (biography) face that flips on the
+     Y-axis. The card does NOT expand the page vertically. Biography
+     scrolls inside the fixed card. Hover does not trigger the flip —
+     only click/tap/keyboard does. Reduced-motion replaces the 3D flip
+     with an opacity fade.
+     ────────────────────────────────────────────────────────────── */
+  /* ──────────────────────────────────────────────────────────────
+     LEADERSHIP FLIP-CARD GRID
+     Portfolio-style flip cards reproducing the original
+     bharatelectrosafe.com/about-us.php interaction.
+     Each card has a front (portrait) and back (biography) face.
+     The card swivels on the Y-axis — the card itself does NOT
+     expand the page vertically. Biography is read inside the
+     card via overflow-y scroll.
      ────────────────────────────────────────────────────────────── */
   .be-leadership-grid {
     display: grid;
@@ -863,30 +866,36 @@
   }
   @media (min-width: 1024px) {
     .be-leadership-grid {
-      /* Three equal columns, always. No grid-template-columns transition. */
       grid-template-columns: 1fr 1fr 1fr;
       gap: 1.5rem;
     }
   }
 
-  /* Single leadership card. Warm-white background, thin neutral border,
-     small yellow accent line, moderate corner radius. No scale transform,
-     no enlargement. Hover changes only border colour + a very subtle
-     shadow; the open state adds a stronger yellow border + shadow so the
-     user can see which card is active. */
-  .be-leader-card {
+  /* Flip card container — establishes 3D perspective */
+  .be-leader-flip-card {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
     border-radius: 0.625rem;
-    background: var(--be-warm-white);
     border: 1px solid var(--be-grey-250);
-    transition: box-shadow 0.28s ease-out,
-                border-color 0.28s ease-out;
+    background: var(--be-warm-white);
+    overflow: hidden;
+    /* Fixed height so the card does not expand the page */
+    height: 480px;
+    perspective: 1000px;
+    transition: box-shadow 0.3s ease-out, border-color 0.3s ease-out;
   }
+  @media (min-width: 640px) {
+    .be-leader-flip-card {
+      height: 520px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .be-leader-flip-card {
+      height: 560px;
+    }
+  }
+
   /* Yellow accent line at the top of each card */
-  .be-leader-card::before {
+  .be-leader-flip-card::before {
     content: "";
     position: absolute;
     top: 0;
@@ -896,73 +905,95 @@
     background: var(--be-brand-yellow);
     opacity: 0.85;
     pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Front and back faces — absolutely positioned, full card coverage */
+  .be-leader-flip-front,
+  .be-leader-flip-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+  }
+
+  /* Front face — default visible */
+  .be-leader-flip-front {
+    transform: rotateY(0deg);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Back face — hidden behind by default, flipped to front when active */
+  .be-leader-flip-back {
+    transform: rotateY(180deg);
+    z-index: 0;
+  }
+  .be-leader-flip-back-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  /* Custom scrollbar for biography scroll area */
+  .be-flip-card-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--be-grey-400) transparent;
+  }
+  .be-flip-card-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  .be-flip-card-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .be-flip-card-scroll::-webkit-scrollbar-thumb {
+    background-color: var(--be-grey-400);
+    border-radius: 2px;
+  }
+
+  /* Flipped state — front rotates away, back rotates to front */
+  .be-leader-flip-card-flipped .be-leader-flip-front {
+    transform: rotateY(-180deg);
+    z-index: 0;
+  }
+  .be-leader-flip-card-flipped .be-leader-flip-back {
+    transform: rotateY(0deg);
     z-index: 1;
   }
-  /* Open state — applied via JS only when `openIndex === index`.
-     Adds yellow border + soft shadow. Hover never adds this class. */
-  .be-leader-card.be-leader-card-expanded {
+
+  /* Flipped card border accent */
+  .be-leader-flip-card-flipped {
     border-color: var(--be-yellow-400);
     box-shadow:
       0 10px 24px -12px rgba(2, 31, 73, 0.14),
       0 2px 6px -2px rgba(2, 31, 73, 0.06);
   }
 
-  /* Biography reveal — uses grid-template-rows trick for smooth
-     height transition without measuring. Inner wrapper clips
-     overflow during the transition. Revealed ONLY when the toggle
-     button is clicked (JS adds `be-leader-bio-open`). No `:hover`
-     and no `:focus-within` selectors open the biography.
-     250–350ms transition per spec. */
-  .be-leader-bio {
-    display: grid;
-    grid-template-rows: 0fr;
-    opacity: 0;
-    transition: grid-template-rows 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 0.25s ease-out;
-  }
-  .be-leader-bio > .be-leader-bio-inner {
-    overflow: hidden;
-    min-height: 0;
-    /* Subtle yellow left accent inside the expanded area — restrained. */
-    border-left: 2px solid var(--be-brand-yellow);
-    padding-left: 0.75rem;
-    margin-top: 0.25rem;
-  }
-  /* Single open path: the JS-applied `be-leader-bio-open` class.
-     No `:hover`, no `:focus-within`. */
-  .be-leader-bio.be-leader-bio-open {
-    grid-template-rows: 1fr;
-    opacity: 1;
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .be-leadership-grid,
-    .be-leader-card,
-    .be-leader-card.be-leader-card-expanded,
-    .be-leader-bio {
+    .be-leader-flip-card,
+    .be-leader-flip-front,
+    .be-leader-flip-back {
       transition: none;
+    }
+    /* For reduced motion, use opacity fade instead of 3D rotation */
+    .be-leader-flip-front {
       transform: none;
     }
-    /* Make sure bio content is still reachable without animation. */
-    .be-leader-bio.be-leader-bio-open {
-      grid-template-rows: 1fr;
+    .be-leader-flip-back {
+      transform: none;
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+    }
+    .be-leader-flip-card-flipped .be-leader-flip-front {
+      transform: none;
+      opacity: 0;
+    }
+    .be-leader-flip-card-flipped .be-leader-flip-back {
+      transform: none;
       opacity: 1;
     }
-  }
-
-  /* Portrait treatment — thin yellow accent rule under treated portraits.
-     Kept for backwards compatibility (drawer/legacy portraits). */
-  .be-leader-portrait-frame {
-    position: relative;
-  }
-  .be-leader-portrait-frame::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, var(--be-brand-yellow) 0%, var(--be-brand-blue) 100%);
   }
 
   /* ──────────────────────────────────────────────────────────────
@@ -1685,16 +1716,14 @@
 }
 
 /* ──────────────────────────────────────────────────────────────
-   LEADERSHIP CARD HOVER (outside @layer so :hover wins over
+   LEADERSHIP FLIP CARD HOVER (outside @layer so :hover wins over
    Tailwind v4 base/preflight). On hover-capable devices only,
-   hovering a leadership card changes ONLY the border colour and
-   applies a very subtle soft shadow — never the biography. Card
-   width and scale never change. Biography visibility is controlled
-   exclusively by the JS-applied `.be-leader-bio-open` class
-   (driven by `openIndex` in LeadershipGrid.tsx).
+   hovering a leadership flip card adds a subtle shadow.
+   The flip is controlled by click/tap/keyboard only — hover does NOT
+   trigger the flip.
    ────────────────────────────────────────────────────────────── */
 @media (hover: hover) {
-  .be-leader-card:hover {
+  .be-leader-flip-card:hover {
     border-color: var(--be-yellow-400);
     box-shadow:
       0 6px 18px -10px rgba(2, 31, 73, 0.10),

@@ -45,7 +45,7 @@ supports it.
 |---|---|---|---|---|---|---|---|
 | Brand name | Whole site | `src/data/company.ts` | "Bharat Electrosafe" | Original company website | Original-site sourced | No | Used as public brand name. |
 | Legal entity name | Structured data only | `src/data/company.ts` | "Bharat Electrosafe" (not "Pvt. Ltd.") | No registration document in repo | Confirmation required | Yes | Spec section 4 forbids "Bharat Electrosafe Pvt. Ltd." until a registration document confirms the exact legal name. The PlastIndia 2026 plaque photographed on the original site is engraved "Bharatelectrosafe Pvt. Ltd." — kept only as a quoted plaque caption, not as the public legal-name claim. |
-| Registered-office address | Footer, contact page, structured data | `src/data/company.ts` | "704, 7th Floor, I-thum, Tower A, Plot No. A-40, Sector 62, Noida 201309, Uttar Pradesh, India" | Original company website | Original-site sourced | Yes | Spec section 28 lists the address; the layout in the public wording matches the spec. |
+| Registered-office address | Footer, contact page, structured data | `src/data/company.ts` | "814, 8th Floor, I-thum, Tower A, Plot No. A-40, Sector 62, Noida 201309, Uttar Pradesh, India" | Original company website | Original-site sourced | Yes | Spec section 28 lists the address; the layout in the public wording matches the spec. |
 | Manufacturing-facility location | Not stated publicly | N/A | Not stated | N/A | Confirmation required | Yes | Spec section 4 forbids stating the manufacturing facility is in Noida unless directly confirmed. |
 | Office hours | Not rendered (OfficeHours component returns null) | `src/data/company.ts` (`verified: false`) | Not displayed | Original company website | Confirmation required | Yes | `company.officeHours.verified` is `false`. No `openingHoursSpecification` is emitted in structured data. |
 | Phone numbers | Footer, contact page | `src/data/company.ts` | "+91 7617494968" and "+91 9667171444" | Original company website | Original-site sourced | Yes | Confirm before launch. |
@@ -129,7 +129,7 @@ supports it.
 | Phone (primary) | Footer, contact page | `src/data/company.ts` | "+91 7617494968" | Original company website | Original-site sourced | Yes | Confirm before launch. |
 | Phone (secondary) | Footer, contact page | `src/data/company.ts` | "+91 9667171444" | Original company website | Original-site sourced | Yes | Confirm before launch. |
 | Email | Footer, contact page | `src/data/company.ts` | "info@bharatelectrosafe.com" | Original company website | Original-site sourced | Yes | Confirm before launch. |
-| Address | Footer, contact page, structured data | `src/data/company.ts` | "704, 7th Floor, I-thum, Tower A, Plot No. A-40, Sector 62, Noida 201309, Uttar Pradesh, India" | Original company website | Original-site sourced | Yes | Confirm before launch. |
+| Address | Footer, contact page, structured data | `src/data/company.ts` | "814, 8th Floor, I-thum, Tower A, Plot No. A-40, Sector 62, Noida 201309, Uttar Pradesh, India" | Original company website | Original-site sourced | Yes | Confirm before launch. |
 | Response time SLA | Not stated | N/A | Not displayed | N/A | Removed | Yes | Spec section 28 forbids promising a response time unless operationally confirmed. |
 
 ## 11. Auto-glow / reflective band performance

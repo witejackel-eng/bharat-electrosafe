@@ -105,7 +105,7 @@ export default function CompanyLeadership() {
       {/* ── Leadership ────────────────────────────────────────────
           Clean three-column leadership grid (desktop). Each card
           shows portrait, name, role, short bio, expertise labels and
-          a “Know more” toggle button. Clicking the button
+          a “View Profile” button. Clicking the button
           (mouse, keyboard, or tap) reveals the fuller biography and
           leadership focus inside the same card — no drawer, no
           carousel, no overlap. Only one biography is open at a time.
@@ -116,7 +116,7 @@ export default function CompanyLeadership() {
         <SectionHeader
           eyebrow="Leadership"
           title="The people guiding Bharat Electrosafe"
-          supportingText="Meet the directors shaping the company’s manufacturing, finance, quality, operations, partnerships and international development. Tap “Know more” on any card to read the fuller profile."
+          supportingText="Meet the directors shaping the company’s manufacturing, finance, quality, operations, partnerships and international development. Tap a card to view the detailed profile."
         />
 
         <div className="mt-10 lg:mt-12">

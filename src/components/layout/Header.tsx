@@ -327,8 +327,8 @@ export function Header() {
               <Image
                 src="/brand/bharat-electrosafe-header-logo.webp"
                 alt="Bharat Electrosafe logo"
-                width={3412}
-                height={1257}
+                width={720}
+                height={202}
                 sizes="(max-width: 359px) 124px, (max-width: 1023px) 140px, 180px"
                 className={cn(
                   'object-contain object-left transition-all duration-300 h-auto w-[140px] lg:w-[180px]',
@@ -468,8 +468,8 @@ export function Header() {
                       <Image
                         src="/brand/bharat-electrosafe-header-logo.webp"
                         alt="Bharat Electrosafe logo"
-                        width={3412}
-                        height={1257}
+                        width={720}
+                        height={202}
                         sizes="168px"
                         className="object-contain w-[168px] h-auto"
                       />

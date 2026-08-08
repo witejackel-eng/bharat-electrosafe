@@ -23,7 +23,7 @@
  */
 
 import { siteUrl, buildUrl } from '@/lib/site-url';
-import { company } from '@/data/company';
+import { company, phones } from '@/data/company';
 import {
   products,
   type ProductData,
@@ -61,7 +61,7 @@ export function organisationSchema() {
     legalName: company.legalName,
     url: siteUrl,
     email: company.email,
-    telephone: company.phonePrimary,
+    telephone: phones.length === 1 ? phones[0].display : phones.map((p) => p.display),
     description: company.description,
     logo: `${siteUrl}/images/brand/bharat-electrosafe-logo.png`,
     address: {

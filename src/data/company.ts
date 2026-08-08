@@ -7,6 +7,57 @@
 
 import { productFamilyCount } from './products';
 
+/* ────────────────────────────────────────────
+   Phone numbers — typed list
+   ────────────────────────────────────────────
+   Prefer iterating `phones` over hardcoding phonePrimary / phoneSecondary
+   / phoneTertiary. Legacy named accessors are kept for backward
+   compatibility with components that have not been migrated yet. */
+
+export interface PhoneEntry {
+  /** Human-readable display string, e.g. "+91 98703 94721" */
+  display: string;
+  /** Machine-readable tel: value, e.g. "+919870394721" */
+  tel: string;
+}
+
+export const phones: PhoneEntry[] = [
+  { display: '+91 76174 94968', tel: '+917617494968' },
+  { display: '+91 96671 71444', tel: '+919667171444' },
+  { display: '+91 98703 94721', tel: '+919870394721' },
+] as const;
+
+/* ────────────────────────────────────────────
+   Locations — client-confirmed list
+   ────────────────────────────────────────────
+   These are locations where Bharat Electrosafe operates.
+   We use the neutral "Locations" heading — we do NOT assert
+   each one is an "Office", "Branch", "Factory" or "Dealer"
+   unless the client explicitly confirms that status. */
+
+export const locations: string[] = [
+  'Guwahati',
+  'Jammu',
+  'Udaipur',
+  'Coimbatore',
+  'Pune',
+  'Indore',
+  'Raipur',
+  'Surat',
+  'Jabalpur',
+  'Kanpur',
+  'Prayagraj',
+  'Cochin',
+  'Visakhapatnam (Vizag)',
+  'Hyderabad',
+  'Dehradun',
+  'Ambala',
+  'Chandigarh',
+  'Ludhiana',
+  'Jalandhar',
+  'Delhi NCR',
+] as const;
+
 export const company = {
   name: 'Bharat Electrosafe',
   legalName: 'Bharat Electrosafe',
@@ -15,10 +66,11 @@ export const company = {
     'Manufacturer of electrical insulating mats and engineered PVC membranes for industrial, civil and environmental safety applications.',
 
   // Contact details — single source of truth
-  phonePrimary: '+91 7617494968',
-  phonePrimaryTel: '+917617494968',
-  phoneSecondary: '+91 9667171444',
-  phoneSecondaryTel: '+919667171444',
+  // Legacy named accessors for backward compatibility
+  phonePrimary: phones[0].display,
+  phonePrimaryTel: phones[0].tel,
+  phoneSecondary: phones[1].display,
+  phoneSecondaryTel: phones[1].tel,
   email: 'info@bharatelectrosafe.com',
   whatsapp: {
     href: 'https://wa.me/917617494968',
@@ -26,13 +78,13 @@ export const company = {
   },
 
   address: {
-    line1: '704, 7th Floor, I-thum, Tower A',
+    line1: '814, 8th Floor, I-thum, Tower A',
     line2: 'Plot No. A-40, Sector-62',
     city: 'Noida',
     state: 'Uttar Pradesh',
     pincode: '201309',
     country: 'India',
-    full: '704, 7th Floor, I-thum, Tower A, Plot No. A-40, Sector-62, Noida-201309, Uttar Pradesh, India',
+    full: '814, 8th Floor, I-thum, Tower A, Plot No. A-40, Sector-62, Noida-201309, Uttar Pradesh, India',
   },
 
   /* Office hours — verified flag controls whether the OfficeHours component

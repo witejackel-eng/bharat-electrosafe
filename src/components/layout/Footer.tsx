@@ -8,7 +8,7 @@ import {
   AccordionContent,
 } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
-import { company } from '@/data/company';
+import { company, phones, locations } from '@/data/company';
 import {
   productNavigationItems,
   productCategories,
@@ -98,10 +98,10 @@ function BrandColumn() {
     <div className="flex flex-col gap-3.5">
       <Link href="/" aria-label="Bharat Electrosafe — home">
         <Image
-          src="/images/brand/bharat-electrosafe-logo-full.webp"
+          src="/brand/bharat-electrosafe-footer-logo.webp"
           alt="Bharat Electrosafe logo"
-          width={170}
-          height={64}
+          width={400}
+          height={104}
           className="object-contain w-[150px] lg:w-[165px] h-auto"
           priority
         />
@@ -241,18 +241,21 @@ function ContactEnquiriesColumn() {
             <span className="break-words">{company.email}</span>
           </a>
         </li>
-        <li>
-          <a
-            href={`tel:${company.phonePrimaryTel}`}
-            className={cn(
-              'flex items-center gap-2.5 text-base text-be-charcoal-800 py-1.5 min-h-[44px] border-t border-be-grey-250',
-              footerLinkBase
-            )}
-          >
-            <Phone className="size-[18px] shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
-            <span>{company.phonePrimary}</span>
-          </a>
-        </li>
+        {/* All phone numbers from the central data source */}
+        {phones.map((phone, idx) => (
+          <li key={phone.tel}>
+            <a
+              href={`tel:${phone.tel}`}
+              className={cn(
+                'flex items-center gap-2.5 text-base text-be-charcoal-800 py-1.5 min-h-[44px] border-t border-be-grey-250',
+                footerLinkBase
+              )}
+            >
+              <Phone className="size-[18px] shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
+              <span>{phone.display}</span>
+            </a>
+          </li>
+        ))}
         <li>
           <a
             href={company.whatsapp.href}
@@ -293,6 +296,33 @@ function ContactEnquiriesColumn() {
 }
 
 /* ────────────────────────────────────────────
+   Locations column — compact multi-column list
+   ────────────────────────────────────────────
+   Client-confirmed location list. Uses neutral "Locations" heading —
+   we do NOT assert each one is an "Office", "Branch", "Factory" or
+   "Dealer" unless explicitly confirmed. */
+
+function LocationsBlock() {
+  return (
+    <div className="flex flex-col gap-3">
+      <h2 className="text-[0.875rem] font-semibold text-be-charcoal-950 uppercase tracking-[0.06em]">
+        Locations
+      </h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-1.5">
+        {locations.map((loc) => (
+          <span
+            key={loc}
+            className="text-[0.8125rem] text-be-charcoal-800 leading-snug"
+          >
+            {loc}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ────────────────────────────────────────────
    Footer component
    ──────────────────────────────────────────── */
 
@@ -306,23 +336,14 @@ export function Footer() {
 
       {/* ── Main footer content ── */}
       <div className="container-site page-horizontal-padding pt-11 pb-9 lg:pt-12 lg:pb-10">
-        {/* ────────── Desktop / tablet layout ──────────
-            - md (768–1024px): deliberate 2-column grid
-              Row 1: Brand | Contact and Enquiries
-              Row 2: Company | Products
-            - lg (≥1024px): single-row 4-column grid with
-              explicit proportions and border separators
-              applied to columns 2/3/4 (not as grid children).
-            Exactly four direct grid children at lg, no separator divs. */}
+        {/* ────────── Desktop / tablet layout ────────── */}
         <nav aria-label="Footer company navigation" className="hidden md:grid md:grid-cols-2 md:gap-x-10 md:gap-y-12 lg:grid-cols-[1.1fr_0.65fr_1.2fr_1.1fr] lg:gap-x-12 lg:gap-y-0">
           {/* Row 1, Col 1 — Brand (lg: col 1) */}
           <div className="lg:pr-8">
             <BrandColumn />
           </div>
 
-          {/* Row 1, Col 2 — Contact and Enquiries (lg: col 4)
-              On md, this occupies row 1 col 2; on lg, it moves to col 4.
-              Border-left applied directly to the column (not a separator div). */}
+          {/* Row 1, Col 2 — Contact and Enquiries (lg: col 4) */}
           <div className="md:pl-4 lg:pl-8 lg:order-4 lg:border-l lg:border-be-grey-250/60">
             <ContactEnquiriesColumn />
           </div>
@@ -338,13 +359,7 @@ export function Footer() {
           </div>
         </nav>
 
-        {/* ────────── Mobile layout (<768px) ──────────
-            1. Brand
-            2. Description (inside BrandColumn)
-            3. Email / phone / WhatsApp icons (inside BrandColumn)
-            4. Request a Quote button
-            5. Accordions: Company, Products, Contact
-            6. Legal bottom bar */}
+        {/* ────────── Mobile layout (<768px) ────────── */}
         <nav aria-label="Footer company navigation" className="md:hidden flex flex-col gap-5">
           <BrandColumn />
 
@@ -358,7 +373,6 @@ export function Footer() {
 
           <Accordion type="single" collapsible defaultValue="company">
             <AccordionItem value="company">
-              {/* Accordion heading — 16px, semibold, charcoal-950. */}
               <AccordionTrigger className="text-base font-semibold text-be-charcoal-950 py-3 min-h-[44px]">
                 Company
               </AccordionTrigger>
@@ -398,7 +412,6 @@ export function Footer() {
                     const items = productNavigationItems.filter((p) => p.category === catId);
                     return (
                       <div key={catId}>
-                        {/* Category label — 12.5px, semibold, charcoal-800. */}
                         <p className="text-[0.78125rem] font-semibold text-be-charcoal-800 uppercase tracking-[0.08em] py-1">
                           {catInfo.displayName}
                         </p>
@@ -442,18 +455,20 @@ export function Footer() {
                       <span className="break-words">{company.email}</span>
                     </a>
                   </li>
-                  <li>
-                    <a
-                      href={`tel:${company.phonePrimaryTel}`}
-                      className={cn(
-                        'flex items-center gap-2.5 text-base text-be-charcoal-800 py-2 min-h-[44px] border-t border-be-grey-250',
-                        footerLinkBase
-                      )}
-                    >
-                      <Phone className="size-[18px] shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
-                      <span>{company.phonePrimary}</span>
-                    </a>
-                  </li>
+                  {phones.map((phone) => (
+                    <li key={phone.tel}>
+                      <a
+                        href={`tel:${phone.tel}`}
+                        className={cn(
+                          'flex items-center gap-2.5 text-base text-be-charcoal-800 py-2 min-h-[44px] border-t border-be-grey-250',
+                          footerLinkBase
+                        )}
+                      >
+                        <Phone className="size-[18px] shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
+                        <span>{phone.display}</span>
+                      </a>
+                    </li>
+                  ))}
                   <li>
                     <a
                       href={company.whatsapp.href}
@@ -491,8 +506,31 @@ export function Footer() {
                 </ul>
               </AccordionContent>
             </AccordionItem>
+
+            <AccordionItem value="locations">
+              <AccordionTrigger className="text-base font-semibold text-be-charcoal-950 py-3 min-h-[44px]">
+                Locations
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 pb-2">
+                  {locations.map((loc) => (
+                    <span
+                      key={loc}
+                      className="text-[0.8125rem] text-be-charcoal-800 leading-snug py-1"
+                    >
+                      {loc}
+                    </span>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
           </Accordion>
         </nav>
+
+        {/* ── Locations strip (desktop/tablet only, below main grid) ── */}
+        <div className="hidden md:block mt-10 pt-6 border-t border-be-grey-250/60">
+          <LocationsBlock />
+        </div>
       </div>
 
       {/* ── Bottom bar — 13.5px text, charcoal-800, higher contrast ── */}

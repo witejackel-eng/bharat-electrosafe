@@ -338,3 +338,24 @@ export const manufacturingImage = {
   src: '/media/manufacturing/production-line.webp',
   alt: 'Insulating mat production line inside the Bharat Electrosafe manufacturing setup',
 };
+
+/* ────────────────────────────────────────────
+   Client-provided company statistics
+   ────────────────────────────────────────────
+   Display statistics for the homepage credibility strip.
+   These are CLIENT-PROVIDED display figures, not independently
+   verified. Do not inject these into structured data as verified
+   statistics. */
+
+export interface CompanyStatistic {
+  value: string;
+  label: string;
+  icon: string;
+}
+
+export const companyStatistics: CompanyStatistic[] = [
+  { value: '9+', label: 'Years of Business', icon: 'calendar' },
+  { value: '37+', label: 'Countries Exported', icon: 'globe' },
+  { value: '2,380+', label: 'Happy Customers', icon: 'users' },
+  { value: '6,832+', label: 'Successful Projects', icon: 'check' },
+] as const;

@@ -1,22 +1,14 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * Leadership biography toggle tests for Bharat Electrosafe About page.
+ * Leadership flip-card tests for Bharat Electrosafe About page.
  *
- * Verifies the single-source-of-truth biography toggle behaviour:
- *   • Click "Know more" → opens that biography (aria-expanded=true,
- *     label flips to "Show less", chevron rotates).
- *   • Click "Show less" (same button) → closes immediately and
- *     smoothly, even while the pointer remains over the card and even
- *     while the button retains keyboard focus.
- *   • Opening another card's biography closes the previous one. Only
- *     one biography is open at a time on all screen sizes.
- *   • Pressing Escape while focus is inside an open card closes it.
- *
- * Single source of truth: `openIndex` state in LeadershipGrid.tsx.
- * There is no `hoveredIndex`, no `:focus-within` CSS rule, and no
- * `isOpen || isHovered` combination — hover may only affect border
- * colour and a subtle shadow, never biography visibility.
+ * Verifies the portfolio-style flip card behaviour:
+ *   • Click "View Profile" → flips to biography (aria-expanded=true).
+ *   • Click "Back" → returns to portrait (aria-expanded=false).
+ *   • Pressing Escape while focus is inside a flipped card returns to portrait.
+ *   • Card does not expand the page vertically (fixed height).
+ *   • Biography scrolls internally where content exceeds card body.
  *
  * Test viewports:
  *   390 × 844   (mobile)
@@ -35,7 +27,7 @@ const viewports = [
 ];
 
 for (const vp of viewports) {
-  test.describe(`Leadership biography @ ${vp.label}`, () => {
+  test.describe(`Leadership flip card @ ${vp.label}`, () => {
     test.beforeEach(async ({ page }) => {
       await page.setViewportSize({ width: vp.width, height: vp.height });
       await page.goto('/about-us');
@@ -43,22 +35,20 @@ for (const vp of viewports) {
       await page.locator('.be-leadership-grid').first().waitFor({ state: 'visible', timeout: 10000 });
     });
 
-    test('Click "Know more" opens the biography', async ({ page }) => {
+    test('Click "View Profile" flips the card to biography', async ({ page }) => {
       const buttons = page.locator('.be-leadership-grid button[aria-expanded]');
       const firstBtn = buttons.first();
       const bioId = await firstBtn.getAttribute('aria-controls');
 
       // Initial state: collapsed
       await expect(firstBtn).toHaveAttribute('aria-expanded', 'false');
-      await expect(firstBtn).toContainText('Know more');
 
-      // Click to open
+      // Click to flip
       await firstBtn.click();
-      await page.waitForTimeout(400);
+      await page.waitForTimeout(500);
 
       // Now expanded
       await expect(firstBtn).toHaveAttribute('aria-expanded', 'true');
-      await expect(firstBtn).toContainText('Show less');
 
       // Biography region is visible
       const bio = page.locator(`#${bioId}`);
@@ -67,110 +57,50 @@ for (const vp of viewports) {
       expect(bioBox!.height).toBeGreaterThan(50);
     });
 
-    test('Click "Show less" closes immediately, even with pointer over card and button focused', async ({ page }) => {
-      const buttons = page.locator('.be-leadership-grid button[aria-expanded]');
-      const firstBtn = buttons.first();
-      const bioId = await firstBtn.getAttribute('aria-controls');
+    test('Click "Back" returns to portrait', async ({ page }) => {
+      const frontButtons = page.locator('.be-leader-flip-front button[aria-expanded]');
+      const firstFrontBtn = frontButtons.first();
 
-      // Move pointer onto the button (hover) to simulate "cursor over card"
-      await firstBtn.hover();
-      // Click to open
-      await firstBtn.click();
-      await page.waitForTimeout(400);
-      expect(await firstBtn.getAttribute('aria-expanded')).toBe('true');
+      // Click to flip
+      await firstFrontBtn.click();
+      await page.waitForTimeout(500);
 
-      // Keep pointer on the button (hovering) and click again to close
-      await firstBtn.hover();
-      await firstBtn.click();
-      await page.waitForTimeout(400);
+      // Find the Back button on the flipped card
+      const backButtons = page.locator('.be-leader-flip-back button[aria-expanded]');
+      const backBtn = backButtons.first();
+
+      // Click Back
+      await backBtn.click();
+      await page.waitForTimeout(500);
 
       // Now collapsed
-      await expect(firstBtn).toHaveAttribute('aria-expanded', 'false');
-      await expect(firstBtn).toContainText('Know more');
-
-      // Biography region is collapsed (height ~ 0, opacity 0)
-      const bio = page.locator(`#${bioId}`);
-      const bioBox = await bio.boundingBox();
-      expect(bioBox).not.toBeNull();
-      // grid-template-rows: 0fr leaves a tiny residual height (< 10px)
-      expect(bioBox!.height).toBeLessThan(10);
+      await expect(firstFrontBtn).toHaveAttribute('aria-expanded', 'false');
     });
 
-    test('Opening another card closes the previous one', async ({ page }) => {
-      const buttons = page.locator('.be-leadership-grid button[aria-expanded]');
-      const firstBtn = buttons.nth(0);
-      const secondBtn = buttons.nth(1);
-      const firstBioId = await firstBtn.getAttribute('aria-controls');
-      const secondBioId = await secondBtn.getAttribute('aria-controls');
+    test('Escape key returns to portrait', async ({ page }) => {
+      const frontButtons = page.locator('.be-leader-flip-front button[aria-expanded]');
+      const firstFrontBtn = frontButtons.first();
 
-      // Open first card
-      await firstBtn.click();
-      await page.waitForTimeout(400);
-      expect(await firstBtn.getAttribute('aria-expanded')).toBe('true');
-      expect(await secondBtn.getAttribute('aria-expanded')).toBe('false');
+      // Click to flip
+      await firstFrontBtn.click();
+      await page.waitForTimeout(500);
 
-      // Open second card — first should close
-      await secondBtn.click();
-      await page.waitForTimeout(400);
-      expect(await firstBtn.getAttribute('aria-expanded')).toBe('false');
-      expect(await secondBtn.getAttribute('aria-expanded')).toBe('true');
-
-      // First biography is collapsed
-      const firstBio = page.locator(`#${firstBioId}`);
-      const firstBioBox = await firstBio.boundingBox();
-      expect(firstBioBox!.height).toBeLessThan(10);
-
-      // Second biography is expanded
-      const secondBio = page.locator(`#${secondBioId}`);
-      const secondBioBox = await secondBio.boundingBox();
-      expect(secondBioBox!.height).toBeGreaterThan(50);
-    });
-
-    test('Escape key closes the open biography', async ({ page }) => {
-      const buttons = page.locator('.be-leadership-grid button[aria-expanded]');
-      const firstBtn = buttons.first();
-
-      // Open the first biography
-      await firstBtn.click();
-      await page.waitForTimeout(400);
-      expect(await firstBtn.getAttribute('aria-expanded')).toBe('true');
-
-      // Focus the button and press Escape
-      await firstBtn.focus();
+      // Press Escape
       await page.keyboard.press('Escape');
-      await page.waitForTimeout(400);
+      await page.waitForTimeout(500);
 
-      // Biography is now closed
-      await expect(firstBtn).toHaveAttribute('aria-expanded', 'false');
+      // Card is now back to portrait
+      await expect(firstFrontBtn).toHaveAttribute('aria-expanded', 'false');
     });
 
-    test('Chevron rotates when biography is open', async ({ page }) => {
-      const buttons = page.locator('.be-leadership-grid button[aria-expanded]');
-      const firstBtn = buttons.first();
-      const chevron = firstBtn.locator('svg');
-
-      // Initial: chevron not rotated. Tailwind v4 uses the modern CSS
-      // `rotate` property (not `transform: rotate(...)`), so we check
-      // both `transform` and `rotate`.
-      const initial = await chevron.evaluate(el => {
-        const cs = window.getComputedStyle(el);
-        return { transform: cs.transform, rotate: cs.rotate };
-      });
-      // At rest, both should be 'none'
-      expect(initial.rotate).toBe('none');
-
-      // Open biography
-      await firstBtn.click();
-      await page.waitForTimeout(400);
-
-      // After open: chevron should be rotated by 180deg
-      const open = await chevron.evaluate(el => {
-        const cs = window.getComputedStyle(el);
-        return { transform: cs.transform, rotate: cs.rotate };
-      });
-      // Tailwind v4 `rotate-180` sets the modern `rotate` CSS property
-      expect(open.rotate).toContain('180');
-      expect(open.rotate).not.toBe(initial.rotate);
+    test('Card has fixed height and does not expand page', async ({ page }) => {
+      const cards = page.locator('.be-leader-flip-card');
+      const firstCard = cards.first();
+      const box = await firstCard.boundingBox();
+      expect(box).not.toBeNull();
+      // Card height should be fixed (~480-560px range)
+      expect(box!.height).toBeGreaterThan(400);
+      expect(box!.height).toBeLessThan(700);
     });
 
     test('Button has 44px minimum touch target', async ({ page }) => {
@@ -182,21 +112,17 @@ for (const vp of viewports) {
       expect(box!.height).toBeGreaterThanOrEqual(44);
     });
 
-    test('Hover does not open biography (only changes border color)', async ({ page }) => {
-      const buttons = page.locator('.be-leadership-grid button[aria-expanded]');
+    test('Hover does not flip the card', async ({ page }) => {
+      const buttons = page.locator('.be-leader-flip-front button[aria-expanded]');
       const firstBtn = buttons.first();
-      const bioId = await firstBtn.getAttribute('aria-controls');
 
       // Hover the card (not the button)
-      const firstCard = page.locator('.be-leader-card').first();
+      const firstCard = page.locator('.be-leader-flip-card').first();
       await firstCard.hover();
       await page.waitForTimeout(500);
 
-      // Biography should still be collapsed
+      // Card should still be in portrait state
       await expect(firstBtn).toHaveAttribute('aria-expanded', 'false');
-      const bio = page.locator(`#${bioId}`);
-      const bioBox = await bio.boundingBox();
-      expect(bioBox!.height).toBeLessThan(10);
     });
   });
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { company } from '@/data/company';
+import { company, phones } from '@/data/company';
 import { MapPin, Mail, Phone, Navigation, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
@@ -74,13 +74,16 @@ export default function OfficeLocation() {
             <Mail className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />
             {company.email}
           </a>
-          <a
-            href={`tel:${company.phonePrimaryTel}`}
-            className="flex items-center gap-2 text-body text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
-          >
-            <Phone className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />
-            {company.phonePrimary}
-          </a>
+          {phones.map((phone) => (
+            <a
+              key={phone.tel}
+              href={`tel:${phone.tel}`}
+              className="flex items-center gap-2 text-body text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors py-2 min-h-[44px] border-t border-be-grey-150"
+            >
+              <Phone className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />
+              {phone.display}
+            </a>
+          ))}
         </div>
 
         {/* Office hours — inline, no longer a separate section */}

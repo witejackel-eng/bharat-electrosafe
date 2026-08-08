@@ -87,7 +87,7 @@ emit `noindex,nofollow`.
 - [ ] **E1.** Update the Google Business Profile website URL to the
       canonical HTTPS domain: `https://bharatelectrosafe.com`
 - [ ] **E2.** Confirm business name (`Bharat Electrosafe`), address
-      (`704, 7th Floor, I-thum, Tower A, Plot No. A-40, Sector 62,
+      (`814, 8th Floor, I-thum, Tower A, Plot No. A-40, Sector 62,
       Noida 201309, Uttar Pradesh, India`) and telephone
       (`+91 7617494968`, `+91 9667171444`) match the NAP record in
       `src/data/company.ts` exactly.

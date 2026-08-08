@@ -1,6 +1,6 @@
 'use client';
 
-import { company } from '@/data/company';
+import { company, phones } from '@/data/company';
 import { Mail, Phone, MessageCircle, MapPin } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
@@ -61,20 +61,16 @@ const contactRows: ContactRow[] = [
     phoneGroup: true,
     value: (
       <div className="flex flex-col gap-0.5">
-        <a
-          href={`tel:${company.phonePrimaryTel}`}
-          className="font-medium text-be-charcoal-950 hover:text-be-yellow-text-hover transition-colors"
-        >
-          <span className="text-metadata text-be-grey-650 mr-1.5">Primary:</span>
-          {company.phonePrimary}
-        </a>
-        <a
-          href={`tel:${company.phoneSecondaryTel}`}
-          className="font-medium text-be-charcoal-950 hover:text-be-yellow-text-hover transition-colors"
-        >
-          <span className="text-metadata text-be-grey-650 mr-1.5">Secondary:</span>
-          {company.phoneSecondary}
-        </a>
+        {phones.map((phone, idx) => (
+          <a
+            key={phone.tel}
+            href={`tel:${phone.tel}`}
+            className="font-medium text-be-charcoal-950 hover:text-be-yellow-text-hover transition-colors"
+          >
+            <span className="text-metadata text-be-grey-650 mr-1.5">{idx === 0 ? 'Primary:' : idx === 1 ? 'Secondary:' : 'Additional:'}</span>
+            {phone.display}
+          </a>
+        ))}
       </div>
     ),
   },
