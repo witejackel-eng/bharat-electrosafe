@@ -80,8 +80,15 @@ export const primaryTrustMarks: TrustMark[] = [
     alt: 'ISI standard mark',
   },
   {
-    label: 'ERDA testing',
-    note: 'Insulating mats tested through ERDA documentation',
+    label: 'ERDA testing — 2.0 mm',
+    note: 'Insulating mats tested through ERDA — 2.0 mm thickness',
+    logo: '/media/certifications/erda.webp',
+    alt: 'Electrical Research and Development Association mark',
+    document: '/documents/certifications/erda-test-report-2mm.pdf',
+  },
+  {
+    label: 'ERDA testing — 2.5 mm',
+    note: 'Insulating mats tested through ERDA — 2.5 mm thickness',
     logo: '/media/certifications/erda.webp',
     alt: 'Electrical Research and Development Association mark',
     document: '/documents/certifications/erda-test-report-2-5mm.pdf',
@@ -141,6 +148,13 @@ export const allTrustMarks: TrustMark[] = [
     logo: '/media/certifications/startupindia.webp',
     alt: 'Startup India recognition mark',
     document: '/documents/certifications/startup-india-recognition.pdf',
+  },
+  {
+    label: 'ZED Bronze',
+    note: 'Zero Defect Zero Effect (ZED) Bronze certification',
+    logo: '/media/certifications/zed.webp',
+    alt: 'ZED Bronze certification mark',
+    document: '/documents/certifications/zed-bronze-certificate.pdf',
   },
   {
     label: 'AIRIA membership',

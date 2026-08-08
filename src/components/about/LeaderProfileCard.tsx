@@ -3,29 +3,15 @@ import type { Leader } from '@/data/team';
 import { cn } from '@/lib/utils';
 
 /**
- * LeaderProfileCard — Server Component.
+ * LeaderProfileCard — Server Component (DEPRECATED — kept for reference).
  *
- * A premium editorial profile card for the About page Leadership section.
- * Renders a large portrait, name (H3), role, short bio, multi-paragraph
- * full profile, and optional factual expertise labels.
+ * This is the old non-flip editorial profile card, no longer used on the
+ * About page (replaced by LeadershipGrid flip cards). It is retained in
+ * case other pages need a static profile card in the future.
  *
- * Design principles:
- *   • Server-rendered — all biographical content is in the initial HTML
- *     for SEO, accessibility, and no-JS readability.
- *   • No internal scrollbars — the page scrolls naturally.
- *   • No fixed content height — biographies display at their natural length.
- *   • Portrait uses Next.js Image with `fill` + `object-cover` + responsive
- *     `sizes` for optimal loading. Lazy-loaded (no `priority`).
- *   • Entrance animation via @starting-style (CSS-only, no JS). Content
- *     is visible immediately when JS is disabled or reduced-motion is set.
- *   • Hover (pointer devices only): image scales to 1.02, border
- *     strengthens, accent extends. No layout shift.
- *
- * Accessibility:
- *   • Portrait alt text uses `leader.imageAlt` (descriptive, not just name).
- *   • H3 heading for the leader's name — maintains logical heading order
- *     (H1 page title → H2 section title → H3 leader name).
- *   • Expertise labels are in a semantic <ul> with small, restrained styling.
+ * The `expertise` and `leadershipFocus` fields have been removed from the
+ * Leader interface; this component now only renders portrait, name, role,
+ * short bio, and full-profile paragraphs.
  */
 
 interface LeaderProfileCardProps {
@@ -45,13 +31,7 @@ export function LeaderProfileCard({
         className
       )}
     >
-      {/* ── Portrait ──────────────────────────────────────────────
-          4:3 aspect ratio. At common card widths this yields:
-            • Desktop (3-col, ~380px card): ~285px portrait height
-            • Tablet  (2-col, ~360px card): ~270px portrait height
-            • Mobile  (1-col, ~328px card): ~246px portrait height
-          All within the 220–330px target range. Image is flush with
-          the upper card edge (no top padding). */}
+      {/* Portrait */}
       <div className="leader-portrait relative aspect-[4/3] w-full overflow-hidden bg-be-grey-150">
         <Image
           src={leader.image}
@@ -67,30 +47,30 @@ export function LeaderProfileCard({
         />
       </div>
 
-      {/* ── Content ────────────────────────────────────────────── */}
+      {/* Content */}
       <div className="flex flex-1 flex-col p-6 md:p-7">
-        {/* Yellow accent rule — sits between portrait and name */}
+        {/* Yellow accent rule */}
         <div
           className="leader-accent mb-4 h-[3px] w-12 rounded-full bg-be-yellow-500"
           aria-hidden="true"
         />
 
-        {/* Name — H3 for logical heading order (H1 → H2 → H3) */}
+        {/* Name — H3 */}
         <h3 className="text-xl font-bold tracking-tight text-be-charcoal-950 sm:text-2xl">
           {leader.name}
         </h3>
 
-        {/* Role — dark amber / charcoal-accent */}
+        {/* Role */}
         <p className="mt-1.5 text-sm font-semibold tracking-wide text-be-yellow-text sm:text-[0.95rem]">
           {leader.role}
         </p>
 
-        {/* Short summary — one concise sentence */}
+        {/* Short summary */}
         <p className="mt-3.5 text-[0.95rem] leading-relaxed text-be-grey-650">
           {leader.shortBio}
         </p>
 
-        {/* Full profile — 2-3 readable paragraphs */}
+        {/* Full profile paragraphs */}
         <div className="mt-4 space-y-3">
           {leader.fullProfile.map((paragraph, i) => (
             <p
@@ -101,20 +81,6 @@ export function LeaderProfileCard({
             </p>
           ))}
         </div>
-
-        {/* Optional expertise labels — small, restrained, factual */}
-        {leader.expertise && leader.expertise.length > 0 && (
-          <ul className="mt-5 flex flex-wrap gap-2" aria-label="Areas of expertise">
-            {leader.expertise.map((label) => (
-              <li
-                key={label}
-                className="rounded-sm border border-be-grey-250 bg-be-cream px-2.5 py-1 text-[0.7rem] font-semibold uppercase tracking-wider text-be-charcoal-800"
-              >
-                {label}
-              </li>
-            ))}
-          </ul>
-        )}
       </div>
     </article>
   );

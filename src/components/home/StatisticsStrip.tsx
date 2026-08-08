@@ -1,5 +1,6 @@
 import { Calendar, Globe, Users, CircleCheckBig } from 'lucide-react';
 import { companyStatistics } from '@/data/trust';
+import StatCounter from './StatCounter';
 
 /**
  * StatisticsStrip — Server Component.
@@ -17,10 +18,11 @@ import { companyStatistics } from '@/data/trust';
  *   - Tablet: 2×2
  *   - Mobile: 2×2
  *
- * Performance:
- *   - Purely static / server-rendered — no client JS, no animation library
- *   - Numbers are crawlable text in the initial HTML
- *   - Virtually zero JS weight added
+ * Animation:
+ *   - StatCounter (client component) adds count-up animation on viewport entry
+ *   - Final values are server-rendered in HTML for SEO/crawlers
+ *   - sr-only span preserves real value for screen readers
+ *   - No external animation library — pure requestAnimationFrame
  */
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -47,10 +49,11 @@ export default function StatisticsStrip() {
               <div className="flex items-center justify-center size-10 rounded-full bg-be-yellow-50 border border-be-yellow-100 mb-0.5">
                 {iconMap[stat.icon] ?? iconMap.calendar}
               </div>
-              {/* Number — large, bold, navy */}
-              <span className="text-2xl sm:text-3xl font-bold tracking-tight text-be-navy-800 leading-none">
-                {stat.value}
-              </span>
+              {/* Number — large, bold, navy — animated via StatCounter */}
+              <StatCounter
+                value={stat.value}
+                className="text-2xl sm:text-3xl font-bold tracking-tight text-be-navy-800 leading-none"
+              />
               {/* Label — small, muted */}
               <span className="text-xs sm:text-sm font-medium text-be-grey-650 leading-snug">
                 {stat.label}

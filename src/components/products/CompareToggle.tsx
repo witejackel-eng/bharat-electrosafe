@@ -55,18 +55,18 @@ export function CompareToggle({
         if (!disabled) toggle(slug);
       }}
       className={cn(
-        'group/compare inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-metadata font-medium transition-colors focus-ring',
+        'group/compare inline-flex items-center gap-1 rounded px-2 py-0.5 text-[0.68rem] font-medium transition-colors focus-ring',
         selected
           ? 'bg-be-yellow-500 text-be-charcoal-950 hover:bg-be-yellow-400'
-          : 'bg-be-white/80 text-be-grey-650 border border-be-grey-250 hover:border-be-yellow-400 hover:text-be-charcoal-950',
+          : 'bg-be-white/80 text-be-grey-550 border border-be-grey-200 hover:border-be-yellow-400 hover:text-be-charcoal-950',
         disabled && 'opacity-50 cursor-not-allowed',
         className,
       )}
     >
       {selected ? (
-        <Check className="size-3.5" aria-hidden="true" focusable="false" />
+        <Check className="size-3" aria-hidden="true" focusable="false" />
       ) : (
-        <Scale className="size-3.5" aria-hidden="true" focusable="false" />
+        <Scale className="size-3" aria-hidden="true" focusable="false" />
       )}
       <span>{selected ? 'Selected' : 'Compare'}</span>
       {!selected && count > 0 && (

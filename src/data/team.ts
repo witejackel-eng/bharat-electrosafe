@@ -1,9 +1,13 @@
 /**
  * Leadership and company values for the About section.
  *
- * Content rules: short biography is a standalone intro; expanded
- * biography adds new information without repetition. No exaggerated
- * adjectives, no unconfirmed figures, sentence case throughout.
+ * Leadership biographies are transcribed verbatim from the client's original
+ * public About page (bharatelectrosafe.com/about-us.php). Do NOT summarize,
+ * paraphrase or shorten them.
+ *
+ * The client's Tata instruction applies to IMAGES only — Tata-containing
+ * images must not be used. Textual references to Tata Precision Industries
+ * in the biography are retained as they appear in the original public content.
  */
 
 export interface Leader {
@@ -16,10 +20,6 @@ export interface Leader {
   fullProfile: string[];
   /** Per-portrait CSS object-position value (e.g. "center 25%"). */
   imagePosition?: string;
-  /** 2–4 concise factual expertise labels derived from the biography. */
-  expertise?: string[];
-  /** A short, approved statement of the leader’s current focus. */
-  leadershipFocus?: string;
 }
 
 export const leaders: Leader[] = [
@@ -29,44 +29,49 @@ export const leaders: Leader[] = [
     image: '/media/leadership/vishnu-gupta-treated.webp',
     imageAlt: 'Vishnu Gupta, Co-Founder and Director of Bharat Electrosafe',
     shortBio:
-      'Vishnu Gupta is a Chartered Accountant and co-founder and director of Bharat Electrosafe. His professional background spans finance, manufacturing and infrastructure businesses.',
+      'CA. Vishnu Gupta is a seasoned Chartered Accountant (ICAI, 2005) and accomplished entrepreneur with over 18 years of leadership experience in finance, manufacturing, and infrastructure.',
     fullProfile: [
-      'At Bharat Electrosafe, he guides financial governance, regulatory compliance, manufacturing strategy and long-term business development. His work brings commercial discipline to the company’s growth while supporting stronger processes, documentation and customer delivery.',
+      'CA. Vishnu Gupta is a seasoned Chartered Accountant (ICAI, 2005) and accomplished entrepreneur with over 18 years of leadership experience in finance, manufacturing, and infrastructure. As the Co-founder & Director of Bharat Electrosafe, he brings vision, operational expertise, and a deep commitment to advancing electrical safety across India.',
+      'Under his leadership, Bharat Electrosafe has become a nationally trusted manufacturer of IS 15652 and IEC 61111 compliant high-voltage electrical insulating mats, proudly marketed through Tata Precision Industries (India) Ltd. The company\'s products are ERDA-tested, BIS-certified, and widely used by major government and private institutions across power generation, distribution, and industrial sectors.',
+      'Prior to his entrepreneurial journey, CA. Gupta held key financial leadership roles at reputed corporates such as Universal Cables Ltd. (MP Birla Group), GHCL Ltd., and Cavendish Industries Ltd. (JK Tyre Group), overseeing business operations and finance for portfolios valued at ₹1,500–3,000 Cr. He is also the Co-founder of Samridhi Test House Pvt. Ltd., an ISO/IEC 17025-accredited and BIS-recognized electrical and mechanical testing laboratory, in addition to leading ventures like Insulaticaa Polyplast, VKI Business World Ahead, and Dwarikadheesh Engineering Infra.',
+      'CA. Vishnu Gupta has been recognized for his entrepreneurial excellence with the following prestigious awards:',
+      '• Young Entrepreneur with Emerging Start-Up by Times Power Icons',
+      '• Make in India Award by ABP News, presented by Shri Chirag Paswan, Hon\'ble Cabinet Minister of Food Processing Industries',
+      'Committed to the vision of "Vocal for Local" and Atmanirbhar Bharat, CA. Vishnu Gupta continues to drive innovation, compliance, and excellence across India\'s safety and infrastructure ecosystem.',
     ],
     imagePosition: 'center 25%',
-    expertise: ['Financial governance', 'Compliance', 'Manufacturing strategy', 'Business development'],
-    leadershipFocus:
-      'Financial governance, compliance and manufacturing strategy.',
   },
   {
-    name: 'Krishan Kumar Khandelwal',
+    name: 'Krishan Kumar',
     role: 'Co-Founder & Director',
     image: '/media/leadership/krishan-kumar-treated.webp',
-    imageAlt: 'Krishan Kumar Khandelwal, Co-Founder and Director of Bharat Electrosafe',
+    imageAlt: 'Krishan Kumar, Co-Founder and Director of Bharat Electrosafe',
     shortBio:
-      'Krishan Kumar Khandelwal is a co-founder and director of Bharat Electrosafe with experience in manufacturing and business operations.',
+      'Mr. Krishan Kumar Khandelwal is a seasoned entrepreneur and business strategist with over 25 years of experience spanning manufacturing, trading, real estate and infrastructure.',
     fullProfile: [
-      'He focuses on production coordination, vendor development, partner engagement, quality follow-up and after-sales support. His operational approach helps align product requirements, supplier coordination and customer commitments from enquiry through delivery.',
+      'Mr. Krishan Kumar Khandelwal is a seasoned entrepreneur and business strategist with a diverse background spanning over 25 years, marked by excellence in manufacturing, trading, real estate and infrastructure, and customer relations. As the Co-founder & Director of Bharat Electrosafe, he plays a key role in overseeing operations, quality assurance, and partner engagement, while driving the company\'s mission of delivering reliable, certified electrical safety solutions across India.',
+      'He hails from a reputed business family with a strong legacy of over 70 years in the Tobacco and Sweet supari industry, known for their ethical practices, deep market reach, and longstanding customer trust. This background has endowed him with a strong foundation in supply chain management, customer relationship building, and traditional enterprise values.',
+      'In addition to his contribution to Bharat Electrosafe, Mr. Khandelwal has also demonstrated excellence in real estate development and management, where he has successfully led multiple commercial and residential projects with a focus on transparency, long-term value, and client satisfaction.',
+      'At Bharat Electrosafe, he brings together his diverse expertise to manage production, vendor development, and after-sales coordination, ensuring customer-focused execution at every level. His collaborative approach has also supported the company\'s strategic tie-up with Tata Precision Industries (India) Ltd., strengthening market presence and brand credibility.',
+      'With a vision rooted in "Make in India", Mr. Krishan Kumar Khandelwal continues to contribute to Bharat Electrosafe\'s journey toward becoming a nationally respected leader in the field of electrical safety and infrastructure protection.',
     ],
     imagePosition: 'center 20%',
-    expertise: ['Operations', 'Vendor development', 'Quality coordination', 'Customer support'],
-    leadershipFocus:
-      'Production coordination, vendor development and after-sales execution.',
   },
   {
     name: 'Priyanka Garg',
-    role: 'Co-Founder & Director',
+    role: 'Entrepreneur | Co-founder & Director',
     image: '/media/leadership/priyanka-garg-treated.webp',
     imageAlt: 'Priyanka Garg, Co-Founder and Director of Bharat Electrosafe',
     shortBio:
-      'Priyanka Garg is a co-founder and director of Bharat Electrosafe with experience in rubber, polymer and industrial-product businesses.',
+      'A visionary entrepreneur with over 20 years of experience in the rubber and polymer industry, known for strategic direction, innovation, and operational excellence.',
     fullProfile: [
-      'She contributes to product development, market strategy, customer engagement and business growth. Her understanding of polymer products and market development supports the company’s product positioning and expansion into new industrial and civil-engineering applications.',
+      'A visionary entrepreneur with over 20 years of experience in the rubber and polymer industry, Mrs. Priyanka Garg stands out as a distinguished leader known for her strategic direction, innovation, and operational excellence. As Co-founder and Director of Bharat Electrosafe, she has been instrumental in shaping the company\'s journey into a leading global supplier and exporter of industrial and commercial products, especially electrical insulating mats.',
+      'Armed with an M.Com from Agra University and a Business Certification from UP Technical University, she combines academic expertise with hands-on industry insight. Her core proficiencies include electrical insulating mats, silicone rubber sheets, EPDM membranes, PVC and rubber compounds, and a wide array of advanced rubber products.',
+      'As a serial entrepreneur, her journey extends beyond manufacturing to include consulting, quality testing, and international trade facilitation. Her holistic approach to business — grounded in technical skill, financial insight, and deep market understanding — has propelled her ventures to thrive both in India and abroad.',
+      'Under her visionary leadership, Bharat Electrosafe has established its presence in 11+ countries, serving a global network of over 1,000 satisfied customers. Her entrepreneurial acumen is matched by her commitment to ethical business practices, customer satisfaction, and value-driven growth.',
+      'In addition to her core business strengths, Mrs. Garg is highly proficient in digital marketing and business automation, effectively utilizing platforms like YouTube, targeted email campaigns, and Zoho CRM to enhance brand visibility and drive scalable sales. Her passion for innovation, dedication to excellence, and customer-focused mindset make her not only a successful entrepreneur but also a respected role model and inspirational leader in the rubber and polymer industry.',
     ],
     imagePosition: 'center 30%',
-    expertise: ['Rubber and polymer products', 'Product development', 'Market strategy', 'Customer growth'],
-    leadershipFocus:
-      'Product development, market strategy and customer growth.',
   },
 ];
 
@@ -75,41 +80,22 @@ export interface Value {
   description: string;
 }
 
-/** Mission, vision and values. */
+/** Company values — from original public About page. */
 export const companyValues: Value[] = [
   {
-    title: 'Mission',
-    description:
-      'To support safer electrical and civil-engineering environments through clearly specified products, dependable documentation and responsive technical support.',
+    title: 'Respect',
+    description: 'Thoughtful of showing regard for another person.',
   },
   {
-    title: 'Vision',
-    description:
-      'To build long-term trust by supplying consistent electrical-insulation and civil-protection products for demanding industrial applications.',
+    title: 'Trust',
+    description: 'Our integrity speaks through consistent actions and reliable results.',
   },
   {
-    title: 'Quality',
-    description:
-      'Maintain consistency in product specification, documentation and delivery.',
+    title: 'Ownership',
+    description: 'We lead from within, taking charge of outcomes with pride and purpose.',
   },
   {
-    title: 'Responsibility',
-    description:
-      'Make careful claims, communicate limitations and support informed product selection.',
-  },
-  {
-    title: 'Customer Focus',
-    description:
-      'Understand the application before recommending a configuration.',
-  },
-  {
-    title: 'Continuous Improvement',
-    description:
-      'Improve products, processes and customer support through practical learning and feedback.',
-  },
-  {
-    title: 'Teamwork',
-    description:
-      'Coordinate manufacturing, quality, sales and support around the customer’s requirement.',
+    title: 'Integrated Team Work',
+    description: 'United in mission, seamless in execution — we move forward together.',
   },
 ];

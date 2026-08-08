@@ -18,9 +18,10 @@ import { cn } from '@/lib/utils';
  *
  * Interaction:
  *   • Desktop: hover enters → flips; hover leaves → un-flips.
- *             Click toggles "lock" — a locked card stays flipped even on
- *             hover-leave. Click again to unlock. Escape always unlocks.
- *   • Mobile/Tablet: tap toggles the flip (hover does not exist).
+ *             Click anywhere on card toggles "lock" — a locked card stays
+ *             flipped even on hover-leave. Click again to unlock. Escape
+ *             always unlocks.
+ *   • Mobile/Tablet: tap anywhere on card toggles the flip.
  *   • Keyboard: Enter/Space toggles; Escape returns to portrait.
  *
  * Accessibility:
@@ -31,7 +32,7 @@ import { cn } from '@/lib/utils';
  *   • prefers-reduced-motion: replaces 3D flip with immediate/fade change.
  *
  * Layout:
- *   • Desktop (≥1024px): three equal columns, fixed card height.
+ *   • Desktop (≥1024px): three equal columns, fixed card height ~500px.
  *   • Tablet (640–1023px): two columns.
  *   • Mobile (<640px): one column.
  *
@@ -80,7 +81,8 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
 
   /* ── Flip helpers ── */
 
-  /** Toggle flip — used by click/tap and keyboard */
+  /** Toggle flip — used by click/tap and keyboard.
+   *  On desktop, clicking the card toggles lock. */
   const handleToggle = useCallback(() => {
     setIsFlipped((prev) => {
       const next = !prev;
@@ -114,6 +116,20 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
     }
   }, []);
 
+  /** Click anywhere on the card → toggle flip / lock */
+  const handleCardClick = useCallback(
+    (event: React.MouseEvent) => {
+      // Avoid double-toggling if the click originated from the front
+      // face button (which already calls handleToggle). The button
+      // click will bubble up; we only handle card-level clicks that
+      // did NOT originate from that button.
+      const target = event.target as HTMLElement;
+      if (target.closest(`#${buttonId}`)) return;
+      handleToggle();
+    },
+    [handleToggle, buttonId],
+  );
+
   /** Keyboard handler for the card wrapper */
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
@@ -122,7 +138,7 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
         handleEscape();
       }
     },
-    [handleEscape]
+    [handleEscape],
   );
 
   return (
@@ -134,14 +150,15 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
       )}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={handleCardClick}
       onKeyDown={handleKeyDown}
       /* Allow focus to reach the card so Escape works when card is focused */
       tabIndex={-1}
     >
       {/* ── Front face — Portrait presentation ── */}
       <div className="be-leader-flip-front" aria-hidden={isFlipped || undefined}>
-        {/* Portrait */}
-        <div className="relative w-full aspect-[4/5] overflow-hidden bg-be-navy-800">
+        {/* Portrait — shorter aspect ratio for compact height */}
+        <div className="relative w-full aspect-[3/4] overflow-hidden bg-be-navy-800">
           <Image
             src={leader.image}
             alt={leader.imageAlt}
@@ -156,11 +173,11 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
             loading={index === 0 ? 'eager' : 'lazy'}
           />
           {/* Subtle gradient overlay at bottom for text readability */}
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-be-navy-800/60 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-be-navy-800/60 to-transparent pointer-events-none" />
         </div>
 
-        {/* Name + Role below portrait */}
-        <div className="p-4 sm:p-5">
+        {/* Name + Role below portrait — tighter padding */}
+        <div className="p-3 sm:p-4">
           <h3 className="text-lg sm:text-xl font-bold tracking-tight text-be-charcoal-950 leading-tight">
             {leader.name}
           </h3>
@@ -168,7 +185,7 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
             {leader.role}
           </p>
 
-          {/* Toggle button on front — 44px touch target */}
+          {/* Toggle — text-link style on desktop, 44px button on mobile */}
           <button
             id={buttonId}
             type="button"
@@ -176,14 +193,16 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
             aria-expanded={isFlipped}
             aria-controls={bioRegionId}
             aria-label={`View profile of ${leader.name}`}
-            className="mt-3 inline-flex items-center justify-center gap-1.5 self-start min-h-[44px] min-w-[44px] px-4 py-2 rounded-md bg-be-navy-800 text-[0.8125rem] font-semibold text-be-white hover:bg-be-navy-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-warm-white"
+            className="mt-2 sm:mt-3 inline-flex items-center gap-1 text-[0.8125rem] font-semibold text-be-navy-700 hover:text-be-navy-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-warm-white min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 px-2 py-1.5 sm:px-0 sm:py-0 rounded-md sm:rounded-none bg-be-navy-800/5 sm:bg-transparent"
           >
-            View Profile
+            <span className="sm:hidden">View Profile</span>
+            <span className="hidden sm:inline">View profile</span>
+            <span aria-hidden="true" className="hidden sm:inline">→</span>
           </button>
         </div>
       </div>
 
-      {/* ── Back face — Biography/details presentation ── */}
+      {/* ── Back face — Biography presentation ── */}
       <div
         id={bioRegionId}
         className="be-leader-flip-back"
@@ -192,8 +211,8 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
         aria-labelledby={buttonId}
       >
         <div className="be-leader-flip-back-inner">
-          {/* Name + Role */}
-          <div className="p-4 sm:p-5 border-b border-be-grey-250">
+          {/* Name + Designation */}
+          <div className="p-3 sm:p-4 border-b border-be-grey-250">
             <h3 className="text-lg sm:text-xl font-bold tracking-tight text-be-charcoal-950 leading-tight">
               {leader.name}
             </h3>
@@ -202,38 +221,11 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
             </p>
           </div>
 
-          {/* Divider accent */}
-          <div className="h-[3px] bg-gradient-to-r from-be-brand-yellow via-be-brand-blue to-be-brand-yellow mx-4 sm:mx-5" />
+          {/* Thin accent divider */}
+          <div className="h-[3px] bg-gradient-to-r from-be-brand-yellow via-be-brand-blue to-be-brand-yellow mx-3 sm:mx-4" />
 
-          {/* Scrollable biography area */}
-          <div className="flex-1 overflow-y-auto p-4 sm:p-5 be-flip-card-scroll">
-            {/* Leadership focus */}
-            {leader.leadershipFocus && (
-              <div className="mb-3 rounded-md border border-be-grey-250 bg-be-yellow-50/60 px-3 py-2.5">
-                <p className="text-[0.65rem] font-semibold uppercase tracking-wider text-be-yellow-text mb-0.5">
-                  Leadership focus
-                </p>
-                <p className="text-[0.85rem] leading-snug text-be-charcoal-950">
-                  {leader.leadershipFocus}
-                </p>
-              </div>
-            )}
-
-            {/* Expertise labels */}
-            {leader.expertise && leader.expertise.length > 0 && (
-              <ul className="mb-3 flex flex-wrap gap-1.5" aria-label="Areas of expertise">
-                {leader.expertise.map((label) => (
-                  <li
-                    key={label}
-                    className="rounded-sm border border-be-grey-250 bg-be-cream px-2 py-0.5 text-[0.7rem] font-semibold uppercase tracking-wider text-be-charcoal-800"
-                  >
-                    {label}
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            {/* Biography paragraphs */}
+          {/* Scrollable biography area — full bio only */}
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 be-flip-card-scroll">
             <div className="space-y-2.5">
               {leader.fullProfile.map((paragraph, i) => (
                 <p
@@ -246,8 +238,8 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
             </div>
           </div>
 
-          {/* Back button — always visible at bottom, 44px touch target */}
-          <div className="p-4 sm:p-5 border-t border-be-grey-250">
+          {/* Back button at bottom */}
+          <div className="p-3 sm:p-4 border-t border-be-grey-250">
             <button
               type="button"
               onClick={handleToggle}

@@ -429,7 +429,7 @@ const EIM = '/media/products/electrical-insulating-mats';
    repeating its path and alt text. */
 const eimGallery: ProductGalleryImage[] = [
   {
-    src: `${EIM}/gallery/01-blue-coin-mat.webp`,
+    src: `${EIM}/photo-domestic-primary-02.webp`,
     alt: 'Blue electrical insulating mat sheet with a raised coin-pattern anti-skid surface',
     caption: 'Coin-pattern anti-skid surface',
     type: 'product',
@@ -482,7 +482,7 @@ const electricalInsulatingMats: ProductData = {
   category: 'electrical-insulation',
   images: {
     thumbnail: {
-      src: `${EIM}/card.webp`,
+      src: `${EIM}/hero-domestic-hv.webp`,
       alt: 'Blue electrical insulating mat with a coin-pattern anti-skid surface',
       fit: 'contain',
     },
@@ -582,7 +582,7 @@ const CSIM = '/media/products/coloured-strip-insulating-mats';
    close-up with no strip in frame at all. */
 const csimGallery: ProductGalleryImage[] = [
   {
-    src: `${CSIM}/gallery/01-yellow-strip-hexa-mat.webp`,
+    src: `${CSIM}/product-03.webp`,
     alt: 'Black hexa-pattern insulating mat with a high-visibility yellow strip running across it',
     caption: 'Yellow strip on a hexa-pattern mat',
     type: 'product',
@@ -627,7 +627,7 @@ const colouredStripInsulatingMats: ProductData = {
   category: 'electrical-insulation',
   images: {
     thumbnail: {
-      src: `${CSIM}/card.webp`,
+      src: `${CSIM}/product-01.webp`,
       alt: 'Black insulating mat with a high-visibility yellow boundary strip',
       fit: 'contain',
     },
@@ -734,7 +734,7 @@ const BCIM = '/media/products/bi-color-insulating-mats';
    photography is requested in docs/PRODUCT-PHOTOGRAPHY-GAPS.md. */
 const bcimGallery: ProductGalleryImage[] = [
   {
-    src: `${BCIM}/gallery/01-dual-layer-roll.webp`,
+    src: `${BCIM}/product-03.webp`,
     alt: 'Bi-color insulating mat part-rolled, showing a blue coin-pattern top layer over a red base layer',
     caption: 'Two-layer construction (manufacturer illustration)',
     type: 'product',
@@ -770,7 +770,7 @@ const biColorInsulatingMats: ProductData = {
   category: 'electrical-insulation',
   images: {
     thumbnail: {
-      src: `${BCIM}/card.webp`,
+      src: `${BCIM}/product-02.webp`,
       alt: 'Bi-color insulating mat showing a blue top layer above a contrasting red base layer',
       fit: 'contain',
     },
@@ -875,7 +875,7 @@ const AGRIM = '/media/products/auto-glow-reflective-band-insulating-mats';
    produced in software. */
 const agrimGallery: ProductGalleryImage[] = [
   {
-    src: `${AGRIM}/gallery/01-reflective-bands-daylight.webp`,
+    src: `${AGRIM}/product-04.webp`,
     alt: 'Auto-glow insulating mat in daylight, with green and orange sections either side of a pale glow band',
     caption: 'Daylight appearance',
     type: 'product',
@@ -925,7 +925,7 @@ const autoGlowReflectiveBandMats: ProductData = {
   category: 'electrical-insulation',
   images: {
     thumbnail: {
-      src: `${AGRIM}/card.webp`,
+      src: `${AGRIM}/product-demo-glowing-dark.webp`,
       alt: 'Auto-glow insulating mat with green and orange sections either side of a glow band',
       fit: 'contain',
     },
@@ -1032,7 +1032,7 @@ const BM = '/media/products/bharat-membrane';
    itself sat in the gallery — neither shows the product, so both are dropped. */
 const bmGallery: ProductGalleryImage[] = [
   {
-    src: `${BM}/gallery/01-tunnel-membrane-lining.webp`,
+    src: `${BM}/product-02-real.webp`,
     alt: 'PVC geomembrane panels lining the arch of a tunnel during waterproofing',
     caption: 'Tunnel waterproofing lining',
     type: 'installation',
@@ -1082,7 +1082,7 @@ const bharatMembrane: ProductData = {
   category: 'waterproofing-civil-protection',
   images: {
     thumbnail: {
-      src: `${BM}/card.webp`,
+      src: `${BM}/product-01-real.webp`,
       alt: 'Yellow PVC geomembrane lining the inside of a tunnel',
       fit: 'cover',
     },
@@ -1244,7 +1244,7 @@ const BHS = '/media/products/bharat-hydro-seal';
    two are collateral, not product imagery, and are dropped. */
 const bhsGallery: ProductGalleryImage[] = [
   {
-    src: `${BHS}/gallery/01-ribbed-water-stop-profile.webp`,
+    src: `${BHS}/water-stop-seal-06.webp`,
     alt: 'Black ribbed PVC water stop profile with a hollow centre bulb, for concrete construction joints',
     caption: 'Ribbed profile with centre bulb',
     type: 'product',
@@ -1287,7 +1287,7 @@ const bharatHydroSeal: ProductData = {
   category: 'waterproofing-civil-protection',
   images: {
     thumbnail: {
-      src: `${BHS}/card.webp`,
+      src: `${BHS}/water-stop-seal-01.webp`,
       alt: 'Black ribbed PVC water stop profile with a centre bulb',
       fit: 'contain',
     },
@@ -1461,7 +1461,7 @@ export function getHeroImage(product: ProductData): ProductGalleryImage {
  * moulded marking or a cut edge is never clipped; photographs taken in a real
  * setting fill the frame.
  */
-export function imageFitClass(image: ProductImage, containPadding = 'p-3'): string {
+export function imageFitClass(image: ProductImage, containPadding = 'p-5'): string {
   return image.fit === 'contain' ? `object-contain ${containPadding}` : 'object-cover';
 }
 

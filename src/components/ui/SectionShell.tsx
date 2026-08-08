@@ -52,13 +52,13 @@ export interface SectionShellProps {
    ──────────────────────────────────────────── */
 
 const variantSpacing: Record<SectionVariant, string> = {
-  hero: 'pt-16 md:pt-20 pb-14 md:pb-20',
+  hero: 'pt-14 md:pt-18 pb-12 md:pb-16',
   productHero: 'pt-8 md:pt-10 lg:pt-12 pb-10 md:pb-12',
-  standard: 'pt-12 md:pt-16 pb-12 md:pb-16',
-  compact: 'pt-10 md:pt-14 pb-10 md:pb-14',
-  connected: 'pt-0 md:pt-0 pb-12 md:pb-16',
-  technical: 'pt-10 md:pt-14 pb-10 md:pb-14',
-  conversion: 'pt-14 md:pt-18 pb-14 md:pb-18',
+  standard: 'pt-10 lg:pt-16 pb-10 lg:pb-16',
+  compact: 'pt-8 lg:pt-10 pb-8 lg:pb-10',
+  connected: 'pt-0 md:pt-0 pb-10 lg:pb-16',
+  technical: 'pt-8 lg:pt-10 pb-8 lg:pb-10',
+  conversion: 'pt-12 lg:pt-16 pb-12 lg:pb-16',
 };
 
 const variantBg: Record<SectionVariant, string> = {

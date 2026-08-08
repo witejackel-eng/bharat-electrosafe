@@ -93,6 +93,14 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   allowedDevOrigins: ['http://127.0.0.1', 'http://localhost'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+      },
+    ],
+  },
   async headers() {
     return [
       // Security headers for all page routes

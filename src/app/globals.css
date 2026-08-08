@@ -879,18 +879,19 @@
     background: var(--be-warm-white);
     overflow: hidden;
     /* Fixed height so the card does not expand the page */
-    height: 480px;
+    height: 460px;
     perspective: 1000px;
     transition: box-shadow 0.3s ease-out, border-color 0.3s ease-out;
+    cursor: pointer;
   }
   @media (min-width: 640px) {
     .be-leader-flip-card {
-      height: 520px;
+      height: 490px;
     }
   }
   @media (min-width: 1024px) {
     .be-leader-flip-card {
-      height: 560px;
+      height: 510px;
     }
   }
 
@@ -1706,6 +1707,18 @@
   .be-scroll-x::-webkit-scrollbar-thumb:hover {
     background: var(--be-grey-400);
   }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   SCROLLBAR-HIDDEN — hides the scrollbar for carousel and other
+   scroll-snap containers while keeping native scroll functional.
+   ────────────────────────────────────────────────────────────── */
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
 }
 
 /* ──────────────────────────────────────────────────────────────

@@ -180,22 +180,17 @@ function ProductLeafCard({ leaf, group }: { leaf: ProductNavLeaf; group: Product
   const GroupIcon = groupIconMap[group.id] ?? Zap;
 
   return (
-    <div className="be-card-glow hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+    <div className="group relative flex flex-col rounded-lg border border-be-grey-200 bg-be-white overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.10)] transition-all duration-300">
       <Link
         href={leaf.href}
         className="flex flex-col flex-1"
         aria-label={`View ${leaf.name}`}
       >
-        {/* Yellow accent line */}
-        <div className="h-1 bg-be-yellow-500 group-hover:h-1.5 transition-all duration-300" />
+        {/* Subtle top accent line */}
+        <div className="h-0.5 bg-be-grey-200 group-hover:bg-be-yellow-500 transition-colors duration-300" />
 
-        {/* Group label badge */}
-        <div className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-md bg-be-yellow-500/90 text-be-charcoal-950 text-[0.65rem] font-bold tracking-wide shadow-sm">
-          {group.name}
-        </div>
-
-        {/* Image area */}
-        <div className="relative w-full overflow-hidden bg-be-cream aspect-[4/3]">
+        {/* Image area — 16:10 ratio, neutral off-white bg */}
+        <div className="relative w-full overflow-hidden bg-[#f8f8f6] aspect-[16/10]">
           {registryItem ? (
             <Image
               src={registryItem.thumbnail.src}
@@ -220,29 +215,29 @@ function ProductLeafCard({ leaf, group }: { leaf: ProductNavLeaf; group: Product
           ) : (
             /* Icon placeholder for groups without real images */
             <div className="absolute inset-0 flex items-center justify-center">
-              <GroupIcon className="size-16 text-be-grey-350" aria-hidden="true" />
+              <GroupIcon className="size-14 text-be-grey-300" aria-hidden="true" />
             </div>
           )}
-          <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/10 transition-colors duration-300" />
+          <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/5 transition-colors duration-300" />
         </div>
 
-        {/* Text content */}
-        <div className="flex flex-col gap-2 p-4 flex-1">
-          <h3 className="text-card-title text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
+        {/* Text content — flex-1 pushes CTA to bottom */}
+        <div className="flex flex-col gap-1.5 p-4 pt-3 flex-1">
+          <h3 className="text-[0.9rem] font-semibold leading-snug text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
             {leaf.name}
           </h3>
-          <p className="text-sm text-be-grey-650 leading-relaxed line-clamp-2">
+          <p className="text-[0.8rem] text-be-grey-600 leading-relaxed line-clamp-2">
             {leaf.description}
           </p>
-          <div className="mt-2 text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors">
-            <span className="be-underline-grow inline-block">View Product</span>
+          <div className="mt-auto pt-2 text-[0.75rem] font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors">
+            <span className="inline-flex items-center gap-1">View Product <span aria-hidden="true">→</span></span>
           </div>
         </div>
       </Link>
 
-      {/* Compare toggle — only for registry products (the 6 with full data) */}
+      {/* Compare toggle — compact, only for registry products */}
       {registryItem && (
-        <div className="px-4 pb-4 -mt-1">
+        <div className="px-3 pb-3 pt-0">
           <CompareToggle slug={registryItem.slug} productName={registryItem.name} />
         </div>
       )}

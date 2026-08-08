@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SectionShell } from '@/components/ui/SectionShell';
+import { HorizontalCarousel } from '@/components/ui/HorizontalCarousel';
 import { awards, allTrustMarks } from '@/data/trust';
 
 /**
@@ -12,8 +13,9 @@ import { awards, allTrustMarks } from '@/data/trust';
  * carries content the source site actually publishes. Nothing is added here to
  * balance a grid — the layout adapts to however many verified items exist.
  *
- * Industry participation videos have been moved to the dedicated
- * ActiveParticipation component.
+ * Awards remain in a responsive grid. Certifications, testing and memberships
+ * are now presented as a horizontal carousel for better visibility and
+ * progressive disclosure.
  */
 
 export default function AwardsCertifications() {
@@ -57,7 +59,7 @@ export default function AwardsCertifications() {
           ))}
         </div>
 
-        {/* ── Certifications, testing and memberships ── */}
+        {/* ── Certifications, testing and memberships — carousel ── */}
         <div className="reveal-up">
           <SectionHeader
             eyebrow="Certifications and memberships"
@@ -66,39 +68,42 @@ export default function AwardsCertifications() {
           />
         </div>
 
-        <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 reveal-up">
-          {allTrustMarks.map((mark) => (
-            <li
-              key={mark.label}
-              className="flex flex-col items-center gap-3 rounded-lg border border-be-grey-250 bg-be-warm-white p-4 text-center"
-            >
-              {/* Fixed box so marks of different intrinsic sizes read as one row. */}
-              <span className="relative flex h-14 w-full items-center justify-center">
-                <Image
-                  src={mark.logo}
-                  alt={mark.alt}
-                  fill
-                  className="object-contain"
-                  sizes="120px"
-                />
-              </span>
-              <span className="text-body font-semibold text-be-charcoal-950">
-                {mark.label}
-              </span>
-              <span className="text-metadata text-be-grey-650">{mark.note}</span>
-              {mark.document && (
-                <a
-                  href={mark.document}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-metadata font-semibold text-be-yellow-text underline underline-offset-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
-                >
-                  View certificate
-                </a>
-              )}
-            </li>
-          ))}
-        </ul>
+        <div className="reveal-up">
+          <HorizontalCarousel label="Certifications and memberships" autoAdvanceMs={4500}>
+            {allTrustMarks.map((mark) => (
+              <div
+                key={mark.label}
+                className="w-[240px] sm:w-[270px] md:w-[290px] lg:w-[310px] flex flex-col items-center gap-3 rounded-lg border border-be-grey-250 bg-be-warm-white p-5 text-center"
+              >
+                {/* Fixed-height area so marks of different intrinsic sizes read as one row */}
+                <span className="relative flex h-14 w-full items-center justify-center">
+                  <Image
+                    src={mark.logo}
+                    alt={mark.alt}
+                    fill
+                    className="object-contain"
+                    sizes="120px"
+                  />
+                </span>
+                <span className="text-body font-semibold text-be-charcoal-950">
+                  {mark.label}
+                </span>
+                <span className="text-metadata text-be-grey-650">{mark.note}</span>
+                {mark.document && (
+                  <a
+                    href={mark.document}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`View ${mark.label} certificate`}
+                    className="text-metadata font-semibold text-be-yellow-text underline underline-offset-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
+                  >
+                    View certificate
+                  </a>
+                )}
+              </div>
+            ))}
+          </HorizontalCarousel>
+        </div>
       </div>
     </SectionShell>
   );
