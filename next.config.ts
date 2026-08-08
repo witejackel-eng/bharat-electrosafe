@@ -90,7 +90,6 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
   reactStrictMode: true,
   poweredByHeader: false,
   allowedDevOrigins: ['http://127.0.0.1', 'http://localhost'],
