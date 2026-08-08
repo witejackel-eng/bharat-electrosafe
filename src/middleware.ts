@@ -2,14 +2,18 @@
  * Next.js Middleware — Canonical Domain Enforcement & Host Redirects.
  *
  * Guarantees that only https://bharatelectrosafe.com is the indexable
- * canonical origin. All other hosts that reach this middleware are
- * permanently redirected to the corresponding canonical URL.
+ * canonical origin. Non-canonical hosts are redirected.
  *
- * Redirect rules (in priority order):
+ * Redirect rules:
  *
  *   1. www.bharatelectrosafe.com → bharatelectrosafe.com  (308)
- *   2. bharat-electrosafe.vercel.app → bharatelectrosafe.com  (308)
- *   3. Any other *.vercel.app production alias → bharatelectrosafe.com  (308)
+ *
+ * The Vercel production alias (bharat-electrosafe.vercel.app) is NOT
+ * redirected so the site is accessible while DNS for
+ * bharatelectrosafe.com is not yet pointed at Vercel.
+ *
+ * Once DNS is configured, the Vercel alias redirect can be re-enabled
+ * for SEO deduplication.
  *
  * Safety guards:
  *   - Never redirect localhost / 127.0.0.1 (local development)
@@ -17,9 +21,6 @@
  *     so they remain usable for QA / PR previews
  *   - Preserve path and query string during redirect
  *   - Use 308 (permanent) to preserve method and preclude redirect loops
- *
- * Vercel guarantees HTTPS on production, so every request reaching this
- * middleware already uses HTTPS in production.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -30,16 +31,6 @@ const CANONICAL_HOST = 'bharatelectrosafe.com';
 
 /** Hosts that must redirect to the canonical domain */
 const WWW_HOST = 'www.bharatelectrosafe.com';
-const VERCEL_PRODUCTION_ALIAS = 'bharat-electrosafe.vercel.app';
-
-/**
- * Vercel preview deployments follow the pattern:
- *   {project}-git-{branch}-{hash}.vercel.app
- *   {project}-{hash}.vercel.app (unique deployment URL)
- *
- * We must NOT redirect these — they are used for PR previews and QA.
- * Only the stable production alias needs redirecting.
- */
 
 function shouldRedirectToCanonical(host: string): boolean {
   if (!host) return false;
@@ -53,11 +44,9 @@ function shouldRedirectToCanonical(host: string): boolean {
   // www subdomain — redirect to canonical
   if (host === WWW_HOST) return true;
 
-  // Vercel production alias — redirect to canonical
-  if (host === VERCEL_PRODUCTION_ALIAS) return true;
-
-  // All other hosts (preview deployments, custom domains, etc.) — do not redirect
-  // Preview deployments like bharat-electrosafe-git-*.vercel.app must remain usable
+  // All other hosts (bharat-electrosafe.vercel.app, preview deployments, etc.)
+  // — serve the site directly. Do NOT redirect the Vercel alias while
+  // bharatelectrosafe.com DNS is not yet pointed at Vercel.
   return false;
 }
 
