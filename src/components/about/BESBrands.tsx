@@ -19,7 +19,7 @@ const brands = [
     name: 'Bharat Electrosafe®',
     description:
       'India\'s trusted name in precision-engineered electrical safety, industrial safety, infrastructure protection, PVC flooring and waterproofing solutions.',
-    logo: '/brand/bharat-electrosafe-light.webp',
+    logo: '/brand/bharat-electrosafe-header-2026.png',
     alt: 'Bharat Electrosafe registered trademark logo',
   },
   {

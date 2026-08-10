@@ -11,10 +11,10 @@ interface ProofItem {
 }
 
 const proofItems: ProofItem[] = [
-  { label: 'IS 15652:2006', icon: ShieldCheck },
+  { label: 'IS 15652:2006 domestic range', icon: ShieldCheck },
   { label: 'BIS Licence CM/L:8800129617', icon: BadgeCheck },
-  { label: 'ERDA / NTH tested', icon: FlaskConical },
-  { label: 'IEC 61111 information available on request', icon: Globe2 },
+  { label: 'ERDA tested', icon: FlaskConical },
+  { label: 'IEC 61111:2009 international range', icon: Globe2 },
 ];
 
 const HERO_IMG_ALT =
@@ -79,7 +79,7 @@ export default function HomeHero() {
             and at top of desktop left column. */}
         <div className="be-split-hero__copy-pre">
           <div className="be-split-hero__eyebrow">
-            <Eyebrow>ELECTRICAL INSULATION FOR HIGH-RISK ENVIRONMENTS</Eyebrow>
+            <Eyebrow>ELECTRICAL INSULATING MATS · IS 15652:2006</Eyebrow>
             <div
               className="mt-2 h-0.5 bg-be-yellow-500 rounded animate-slide-in"
               style={{ width: '80px' }}
@@ -87,7 +87,7 @@ export default function HomeHero() {
           </div>
 
           <h1 className="be-split-hero__headline text-be-charcoal-950">
-            Electrical Insulating Mats — Protection Engineered Between People and Risk
+            Electrical Insulating Mats for Safer Work Around Switchgear and Electrical Installations
           </h1>
         </div>
 
@@ -134,8 +134,7 @@ export default function HomeHero() {
             headline in the desktop left column. */}
         <div className="be-split-hero__copy-post">
           <p className="be-split-hero__lede text-be-grey-650">
-            Electrical insulating mats designed for safer operation around
-            switchgear, substations and industrial electrical installations.
+            Bharat Electrosafe manufactures insulating mats for electrical work areas, with IS 15652:2006 domestic configurations and a separate IEC 61111:2009 range for international requirements.
           </p>
 
           <div className="be-split-hero__ctas">

@@ -63,9 +63,9 @@ const ESCAPE_KEY = 'Escape';
    navy header. PNG chosen over WebP for sharper lettering /
    thin circuit lines / ® mark. */
 
-const LOGO_SRC = '/brand/bharat-electrosafe-header-balanced.png';
+const LOGO_SRC = '/brand/bharat-electrosafe-header-2026.png';
 const LOGO_WIDTH = 760;
-const LOGO_HEIGHT = 280;
+const LOGO_HEIGHT = 364;
 
 /* ────────────────────────────────────────────
    Preview image mapping for mega-menu
@@ -223,15 +223,15 @@ export function Header() {
     <header className="contents z-50">
       {/* ── Main-Header Bar ── */}
       <div
-        className="sticky top-0 z-50 be-header-navy h-[60px] lg:h-[76px]"
+        className="sticky top-0 z-50 be-header-navy h-16 lg:h-20"
       >
         {/* 3-column grid: Logo | Nav | CTA */}
-        <div className="container-site page-horizontal-padding grid grid-cols-[minmax(0,1fr)_auto] items-center h-full gap-2 lg:grid-cols-[minmax(180px,1fr)_auto_minmax(180px,1fr)] lg:gap-4 pb-1.5">
+        <div className="container-site page-horizontal-padding grid grid-cols-[minmax(0,1fr)_auto] items-center h-full gap-2 lg:grid-cols-[minmax(180px,1fr)_auto_minmax(180px,1fr)] lg:gap-4">
           {/* ── Column 1: Logo ── */}
           <div className="flex items-center justify-start min-w-0">
             <Link
               href="/"
-              className="shrink-0 flex items-center py-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800"
+              className="shrink-0 flex items-center py-1.5 lg:py-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800"
               aria-label="Bharat Electrosafe — Home"
             >
               <Image
@@ -240,7 +240,7 @@ export function Header() {
                 width={LOGO_WIDTH}
                 height={LOGO_HEIGHT}
                 sizes="(max-width: 359px) 140px, (max-width: 1023px) 165px, 190px"
-                className="object-contain h-auto w-[140px] sm:w-[165px] lg:w-[190px]"
+                className="object-contain h-12 lg:h-[60px] w-auto"
                 priority
               />
             </Link>
