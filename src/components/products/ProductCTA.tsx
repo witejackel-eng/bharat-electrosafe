@@ -23,7 +23,7 @@ export function ProductCTA({ product, headingPrefix = 'Request a quote for' }: P
           Get pricing, custom dimensions, and delivery timelines for your project. Our sales team responds within 24 hours.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <PrimaryButton href={`/contact-us?type=quote&product=${product.slug}`} size="lg">
+          <PrimaryButton href="/contact-us?type=quote" size="lg">
             Request a Quote
           </PrimaryButton>
           <SecondaryButton href={`/contact-us?type=technical-guidance&product=${product.slug}`}>

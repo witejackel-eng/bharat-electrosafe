@@ -5,29 +5,29 @@ import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SectionShell } from '@/components/ui/SectionShell';
 import {
   hvVisuals,
-  iecVisuals,
   membraneVisuals,
-  hydroSealVisuals,
   pvcFlooringVisuals,
   otherProductsVisuals,
   type ProductVisualRole,
 } from '@/data/product-visuals';
 
 /* ────────────────────────────────────────────
-   5-Group Homepage Product Cards
+   4-Group Homepage Product Cards
    ────────────────────────────────────────────
-   Uses centralized product-visuals.ts as the single
-   source of truth for all imagery. No hardcoded
-   image paths. 5-group taxonomy (not 6-card). */
+   Four primary product groups with IEC as a
+   subsection of Electrical Insulating Mats.
+   Uses centralized product-visuals.ts as the
+   single source of truth for all imagery. */
 
 interface ProductGroupCardData {
   slug: string;
   name: string;
   description: string;
   visual: ProductVisualRole;
-  /** Optional secondary preview for sub-products (shown as small inset). */
-  subVisual?: ProductVisualRole;
-  subLabel?: string;
+  /** Optional standards/range metadata shown as compact secondary line */
+  standardsLine?: string;
+  /** Per-image object-position for deliberate cropping */
+  objectPosition?: string;
 }
 
 const productGroups: ProductGroupCardData[] = [
@@ -35,38 +35,34 @@ const productGroups: ProductGroupCardData[] = [
     slug: 'electrical-insulating-mats',
     name: 'Electrical Insulating Mats',
     description:
-      'Class A, B and C insulating mats to IS 15652:2006 for operator protection near live switchgear and control panels.',
+      'IS 15652 and IEC 61111 insulating mat solutions for electrical safety around switchgear and substations.',
     visual: hvVisuals.homePreview,
-  },
-  {
-    slug: 'international-iec-61111',
-    name: 'International / Global — IEC 61111:2009',
-    description:
-      'Insulating mats meeting IEC 61111:2009 for global markets — HV, Auto Glow and Bi-Colour variants across Classes 0–4.',
-    visual: iecVisuals.homePreview,
+    standardsLine: 'Domestic · IS 15652:2006  ·  International · IEC 61111',
+    objectPosition: 'center 30%',
   },
   {
     slug: 'bharat-membrane',
-    name: 'Water Proofing Solutions',
+    name: 'Waterproofing Solutions',
     description:
-      'BharatMembrane PVC geo-membranes for tunnel and containment lining, plus Bharat Hydro Seal PVC water stops for construction joints.',
+      'BharatMembrane and Bharat Hydro Seal systems for tunnels, containment and industrial waterproofing.',
     visual: membraneVisuals.homePreview,
-    subVisual: hydroSealVisuals.homePreview,
-    subLabel: 'Hydro Seal',
+    objectPosition: 'center 40%',
   },
   {
     slug: 'pvc-flooring-solutions',
     name: 'PVC Flooring Solutions',
     description:
-      'Bharat Smart Floor — industrial, electrical and commercial PVC flooring manufactured to IS 3462:1986.',
-    visual: pvcFlooringVisuals.menuPreview,
+      'Industrial PVC flooring for electrical, technical and commercial environments.',
+    visual: pvcFlooringVisuals.homePreview,
+    objectPosition: 'center 35%',
   },
   {
     slug: 'other-products',
     name: 'Other Products',
     description:
-      'Rubber Sheet, Rubber Hose Pipe, ESD Mats and Conveyor Belts for diverse industrial applications.',
-    visual: otherProductsVisuals.menuPreview,
+      'Rubber sheets, hose pipes, ESD mats and conveyor belts for industrial applications.',
+    visual: otherProductsVisuals.homePreview,
+    objectPosition: 'center center',
   },
 ];
 
@@ -82,38 +78,22 @@ function ProductGroupCard({ group, index }: { group: ProductGroupCardData; index
       {/* Yellow accent line */}
       <div className="h-1 bg-be-yellow-500 group-hover:h-1.5 transition-all duration-300" aria-hidden="true" />
 
-      {/* Image area — 16:10 on desktop, 4:3 on mobile */}
+      {/* Image area — tall dominant image region (≈55–62% card height) */}
       <div className="relative w-full overflow-hidden bg-be-cream aspect-[4/3] md:aspect-[16/10]">
         <Image
           src={visual.src}
           alt={visual.alt}
           fill
-          className={`${visual.fit === 'contain' ? 'object-contain p-3 md:p-2' : 'object-cover'} ${
-            visual.fit === 'cover'
-              ? 'group-hover:scale-105 transition-transform duration-300'
-              : ''
-          }`}
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          style={group.objectPosition ? { objectPosition: group.objectPosition } : undefined}
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 50vw"
         />
         <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/10 transition-colors duration-300" aria-hidden="true" />
-
-        {/* Sub-product inset badge (e.g. Hydro Seal within Waterproofing) */}
-        {group.subVisual && (
-          <div className="absolute bottom-2 right-2 w-14 h-14 rounded-lg overflow-hidden border-2 border-white shadow-md bg-be-cream">
-            <Image
-              src={group.subVisual.src}
-              alt={group.subLabel ?? 'Sub-product'}
-              fill
-              className={group.subVisual.fit === 'contain' ? 'object-contain p-1' : 'object-cover'}
-              sizes="56px"
-            />
-          </div>
-        )}
       </div>
 
       {/* Text content */}
-      <div className="flex flex-col gap-1.5 p-4 flex-1">
-        {/* Index */}
+      <div className="flex flex-col gap-1.5 p-5 flex-1">
+        {/* Index + label row */}
         <div className="flex items-center justify-between gap-2">
           <span className="text-metadata text-be-grey-650 font-medium">Product Group</span>
           <span className="text-[0.65rem] text-be-grey-400 font-mono" aria-hidden="true">
@@ -123,6 +103,14 @@ function ProductGroupCard({ group, index }: { group: ProductGroupCardData; index
         <h3 className="text-card-title text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
           {group.name}
         </h3>
+
+        {/* Standards/range metadata line — compact, non-interactive secondary text */}
+        {group.standardsLine && (
+          <p className="text-[0.7rem] leading-tight text-be-grey-500">
+            {group.standardsLine}
+          </p>
+        )}
+
         <p className="text-body text-be-grey-650 text-sm leading-relaxed line-clamp-2">
           {group.description}
         </p>
@@ -143,12 +131,12 @@ export default function ProductRange() {
         <SectionHeader
           eyebrow="PRODUCT RANGE"
           title="Products for electrical safety and civil protection"
-          supportingText="Five product groups covering electrical insulation, visible hazard demarcation, tunnel and containment lining, construction-joint sealing, and industrial flooring."
+          supportingText="Four product groups covering electrical insulation, tunnel and containment lining, construction-joint sealing, and industrial flooring."
         />
       </div>
 
-      {/* Responsive grid — 3-col desktop, 2-col tablet, 1-col mobile */}
-      <div className="stagger-reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" data-stagger="true">
+      {/* Responsive grid — 2×2 desktop, 2-col tablet, 1-col mobile */}
+      <div className="stagger-reveal grid grid-cols-1 md:grid-cols-2 gap-5" data-stagger="true">
         {productGroups.map((group, i) => (
           <ProductGroupCard key={group.slug} group={group} index={i} />
         ))}

@@ -166,21 +166,12 @@ describe('Public content leakage', () => {
 
 describe('Contact form security', () => {
   test('contact route uses strict Zod schema', async () => {
-    // The strict schema is defined in the shared contact-schema module
-    const schemaFile = Bun.file(
-      import.meta.dir.replace('/tests/security', '') +
-        '/src/lib/contact-schema.ts',
-    );
-    const schemaContent = await schemaFile.text();
-    expect(schemaContent).toContain('z.strictObject');
-
-    // The route must import and use the shared schema
-    const routeFile = Bun.file(
+    const file = Bun.file(
       import.meta.dir.replace('/tests/security', '') +
         '/src/app/api/contact/route.ts',
     );
-    const routeContent = await routeFile.text();
-    expect(routeContent).toContain('contactServerSchema');
+    const content = await file.text();
+    expect(content).toContain('z.strictObject');
   });
 
   test('contact route validates content type', async () => {
@@ -281,7 +272,7 @@ describe('Frontend security', () => {
     const lines = output.split('\n').filter((l) => l.trim().length > 0);
     for (const line of lines) {
       expect(line).toMatch(
-        /structured-data\.tsx|Breadcrumb\.tsx|page\.tsx|chart\.tsx/,
+        /structured-data\.tsx|Breadcrumb\.tsx|page\.tsx/,
       );
     }
     // Verify that the JSON-LD serialization escapes < to prevent XSS

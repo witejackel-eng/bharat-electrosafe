@@ -72,4 +72,3 @@ Caddyfile
 prisma/
 db/
 package-lock.json
-.env.d

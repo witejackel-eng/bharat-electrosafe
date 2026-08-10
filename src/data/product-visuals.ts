@@ -88,9 +88,9 @@ export const hvVisuals: ProductVisuals = {
     fit: 'contain',
   },
   homePreview: {
-    src: `${ORIG}/hv/card.webp`,
-    alt: 'Electrical insulating mats',
-    fit: 'contain',
+    src: '/media/home/product-groups/electrical-insulating-mats.webp',
+    alt: 'Blue electrical insulating mat installed beside switchgear — IS 15652 and IEC 61111 compliant',
+    fit: 'cover',
   },
 };
 
@@ -274,9 +274,9 @@ export const iecVisuals: ProductVisuals = {
     fit: 'contain',
   },
   homePreview: {
-    src: `${PROD}/international-iec/iec-61111.webp`,
+    src: '/media/home/product-groups/electrical-insulating-mats.webp',
     alt: 'International IEC 61111 insulating mats',
-    fit: 'contain',
+    fit: 'cover',
   },
 };
 
@@ -323,8 +323,8 @@ export const membraneVisuals: ProductVisuals = {
     fit: 'cover',
   },
   homePreview: {
-    src: `${PROD}/bharat-membrane/gallery/01-tunnel-membrane-lining.webp`,
-    alt: 'Geo Membrane tunnel lining',
+    src: '/media/home/product-groups/waterproofing-solutions.webp',
+    alt: 'BharatMembrane geo-membrane tunnel lining — waterproofing containment structure',
     fit: 'cover',
   },
 };
@@ -395,9 +395,9 @@ export const pvcFlooringVisuals: ProductVisuals = {
     fit: 'contain',
   },
   homePreview: {
-    src: `${BRAND}/bharat-smart-floor-graphic.webp`,
-    alt: 'PVC Flooring Solutions',
-    fit: 'contain',
+    src: '/media/home/product-groups/pvc-flooring-solutions.webp',
+    alt: 'PVC flooring roll and installed flooring in industrial control room',
+    fit: 'cover',
   },
 };
 
@@ -423,9 +423,9 @@ export const otherProductsVisuals: ProductVisuals = {
     fit: 'contain',
   },
   homePreview: {
-    src: `${BRAND}/other-products-graphic.webp`,
-    alt: 'Other industrial products',
-    fit: 'contain',
+    src: '/media/home/product-groups/other-products.webp',
+    alt: 'Rubber sheet, hose pipe, ESD mat and conveyor belt — industrial products',
+    fit: 'cover',
   },
 };
 

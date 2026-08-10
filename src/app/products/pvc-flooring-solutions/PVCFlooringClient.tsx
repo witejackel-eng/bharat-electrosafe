@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import Image from 'next/image';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
@@ -14,7 +13,7 @@ import { TechnicalBadge } from '@/components/ui/TechnicalBadge';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { FeatureList } from '@/components/ui/FeatureList';
-import { ImageFrame } from '@/components/ui/ImageFrame';
+import { EmptyMediaFallback } from '@/components/ui/EmptyMediaFallback';
 import {
   Layers,
   Factory,
@@ -131,7 +130,7 @@ export default function PVCFlooringClient() {
 
               {/* CTA buttons */}
               <div className="flex flex-wrap gap-3">
-                <PrimaryButton href="/contact-us?type=quote&product=pvc-flooring-solutions" size="lg">
+                <PrimaryButton href="/contact-us?type=quote" size="lg">
                   Request a Quote
                 </PrimaryButton>
                 <SecondaryButton href="/contact-us?type=technical-guidance&product=pvc-flooring-solutions">
@@ -140,15 +139,23 @@ export default function PVCFlooringClient() {
               </div>
             </div>
 
-            {/* Media side — branded category graphic */}
+            {/* Media side — graphic placeholder (no photographic image available) */}
             <div className="min-w-0 lg:col-span-6 xl:col-span-7">
-              <ImageFrame
-                src="/brand/pvc-flooring-hero.webp"
-                alt="Bharat Smart Floor PVC flooring solutions for industrial, electrical and commercial applications"
-                aspectRatio="landscape"
-                fit="cover"
-                priority
-              />
+              <div className="relative overflow-hidden rounded-lg border border-be-grey-250 aspect-[16/10]">
+                <EmptyMediaFallback
+                  slotId="pvc-flooring-hero"
+                  className="absolute inset-0"
+                />
+                {/* Decorative overlay — subtle brand accent */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="flex flex-col items-center gap-3 opacity-30">
+                    <Layers className="size-16 text-be-yellow-500" strokeWidth={1} />
+                    <span className="text-[0.75rem] uppercase tracking-widest text-be-grey-650 font-semibold">
+                      PVC Flooring
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </SectionShell>
@@ -187,14 +194,22 @@ export default function PVCFlooringClient() {
         {/* ── 2. Overview ── */}
         <SectionShell variant="standard" bg="bg-be-white" topRule>
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
-            {/* Left: overview image */}
+            {/* Left: graphic placeholder for overview image */}
             <div className="lg:w-[45%] order-first lg:order-last">
-              <ImageFrame
-                src="/brand/pvc-flooring-overview.webp"
-                alt="Bharat Smart Floor PVC flooring product range overview — industrial, electrical and commercial applications"
-                aspectRatio="landscape"
-                fit="cover"
-              />
+              <div className="relative overflow-hidden rounded-lg border border-be-grey-250 aspect-[16/10]">
+                <EmptyMediaFallback
+                  slotId="pvc-flooring-overview"
+                  className="absolute inset-0"
+                />
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="flex flex-col items-center gap-2 opacity-25">
+                    <Layers className="size-12 text-be-yellow-500" strokeWidth={1} />
+                    <span className="text-xs uppercase tracking-widest text-be-grey-650 font-semibold">
+                      Overview
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Right: overview text + key benefits */}
@@ -215,14 +230,22 @@ export default function PVCFlooringClient() {
         {/* ── 3. Applications ── */}
         <SectionShell variant="standard" bg="bg-be-warm-white" topRule>
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
-            {/* Left: application image */}
+            {/* Left: graphic placeholder for application image */}
             <div className="lg:w-[45%]">
-              <ImageFrame
-                src="/brand/pvc-flooring-application.webp"
-                alt="PVC flooring applications in industrial, electrical and commercial environments"
-                aspectRatio="landscape"
-                fit="cover"
-              />
+              <div className="relative overflow-hidden rounded-lg border border-be-grey-250 aspect-[16/10]">
+                <EmptyMediaFallback
+                  slotId="pvc-flooring-application"
+                  className="absolute inset-0"
+                />
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="flex flex-col items-center gap-2 opacity-25">
+                    <Factory className="size-12 text-be-yellow-500" strokeWidth={1} />
+                    <span className="text-xs uppercase tracking-widest text-be-grey-650 font-semibold">
+                      Applications
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Right: applications list */}
@@ -300,14 +323,14 @@ export default function PVCFlooringClient() {
               project. Our sales team responds within 24 hours.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <PrimaryButton href="/contact-us?type=quote&product=pvc-flooring-solutions" size="lg">
+              <PrimaryButton href="/contact-us?type=quote" size="lg">
                 Request a Quote
               </PrimaryButton>
               <SecondaryButton href="/contact-us?type=technical-guidance&product=pvc-flooring-solutions">
                 <Download className="size-4 mr-1.5" />
                 Request Specifications
               </SecondaryButton>
-              <SecondaryButton href={`tel:${'+919870394721'}`}>
+              <SecondaryButton href="tel:+919870394721">
                 <Phone className="size-4 mr-1.5" />
                 Call Sales
               </SecondaryButton>
