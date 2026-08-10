@@ -1,5 +1,5 @@
 /**
- * Next.js Middleware — Canonical Domain Enforcement & Host Redirects.
+ * Next.js Proxy — Canonical Domain Enforcement & Host Redirects.
  *
  * Guarantees that only https://bharatelectrosafe.com is the indexable
  * canonical origin. Non-canonical hosts are redirected.
@@ -50,7 +50,7 @@ function shouldRedirectToCanonical(host: string): boolean {
   return false;
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { nextUrl } = request;
   const host = nextUrl.hostname;
 
@@ -63,12 +63,12 @@ export function middleware(request: NextRequest) {
 }
 
 /**
- * Matcher — run middleware on all routes except:
+ * Matcher — run proxy on all routes except:
  *   - _next/static (static assets)
  *   - _next/image (image optimization)
  *   - favicon.ico and other static files in public/
  *
- * This avoids unnecessary middleware execution on static assets while
+ * This avoids unnecessary proxy execution on static assets while
  * ensuring all page routes and API routes are covered.
  */
 export const config = {
