@@ -3,7 +3,7 @@ import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
 import { RevealObserver } from '@/components/ui/RevealObserver';
 import HomeHero from '@/components/home/HomeHero';
-import StatisticsStrip from '@/components/home/StatisticsStrip';
+import TechnicalProductStrip from '@/components/home/StatisticsStrip';
 import ProductRange from '@/components/home/ProductRange';
 import TrustDocuments from '@/components/home/TrustDocuments';
 import CapabilityIndustries from '@/components/home/CapabilityIndustries';
@@ -28,8 +28,8 @@ export default function HomeShell() {
       <main className="flex-1">
         {/* 1. Hero + trust proof */}
         <HomeHero />
-        {/* 2. Statistics strip — credibility bridge directly after hero */}
-        <StatisticsStrip />
+        {/* 2. Technical product strip — insulating mat configurations */}
+        <TechnicalProductStrip />
         {/* 3. Product range */}
         <ProductRange />
         {/* 4. Trust and credibility */}

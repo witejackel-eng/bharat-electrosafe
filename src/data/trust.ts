@@ -43,8 +43,8 @@ export const standards = {
 export const trustLines: string[] = [
   `BIS Licence ${standards.bisLicence}`,
   `Manufactured for ${standards.isMat} requirements`,
-  'ERDA / NTH tested',
-  `${standards.iec} referenced product range`,
+  'ERDA tested',
+  `${standards.iec}:2009 international range`,
 ];
 
 /* ────────────────────────────────────────────
@@ -352,22 +352,9 @@ export const manufacturingImage = {
 };
 
 /* ────────────────────────────────────────────
-   Client-provided company statistics
+   Client-provided company statistics — REMOVED
    ────────────────────────────────────────────
-   Display statistics for the homepage credibility strip.
-   These are CLIENT-PROVIDED display figures, not independently
-   verified. Do not inject these into structured data as verified
-   statistics. */
-
-export interface CompanyStatistic {
-  value: string;
-  label: string;
-  icon: string;
-}
-
-export const companyStatistics: CompanyStatistic[] = [
-  { value: '9+', label: 'Years of Business', icon: 'calendar' },
-  { value: '37+', label: 'Countries Exported', icon: 'globe' },
-  { value: '2,380+', label: 'Happy Customers', icon: 'users' },
-  { value: '6,832+', label: 'Successful Projects', icon: 'check' },
-] as const;
+   The homepage strip now shows IS 15652:2006 insulating mat
+   configurations (class / voltage / thickness) instead of
+   company-stated statistics. The CompanyStatistic type and
+   companyStatistics array have been removed. */

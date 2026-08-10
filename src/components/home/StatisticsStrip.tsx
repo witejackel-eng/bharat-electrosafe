@@ -1,65 +1,82 @@
-import { Calendar, Globe, Users, CircleCheckBig } from 'lucide-react';
-import { companyStatistics } from '@/data/trust';
-import StatCounter from './StatCounter';
+import { Zap, Bolt, Shield, Ruler } from 'lucide-react';
 
 /**
- * StatisticsStrip — Server Component.
+ * TechnicalProductStrip — Server Component.
  *
- * Client-provided company statistics displayed as a compact horizontal
- * strip immediately below the homepage hero. Serves as a credibility
- * bridge between the hero and product content.
+ * Compact horizontal strip showing IS 15652:2006 insulating mat
+ * configurations: three voltage classes and standard thickness
+ * options. Serves as a technical bridge between the hero and
+ * product content.
  *
  * Design:
  *   - Warm white / light background
  *   - Navy/dark blue primary text
  *   - Bharat yellow/gold accent
- *   - Compact horizontal strip with icon + number + label
+ *   - Compact horizontal strip with circular icon + heading + sublabel
  *   - Desktop: 4 items in one row
  *   - Tablet: 2×2
  *   - Mobile: 2×2
  *
- * Animation:
- *   - StatCounter (client component) adds count-up animation on viewport entry
- *   - Final values are server-rendered in HTML for SEO/crawlers
- *   - sr-only span preserves real value for screen readers
- *   - No external animation library — pure requestAnimationFrame
+ * No animation — purely static, factual content.
  */
 
-const iconMap: Record<string, React.ReactNode> = {
-  calendar: <Calendar className="size-5 text-be-yellow-text" aria-hidden="true" focusable="false" />,
-  globe: <Globe className="size-5 text-be-yellow-text" aria-hidden="true" focusable="false" />,
-  users: <Users className="size-5 text-be-yellow-text" aria-hidden="true" focusable="false" />,
-  check: <CircleCheckBig className="size-5 text-be-yellow-text" aria-hidden="true" focusable="false" />,
-};
+const items = [
+  {
+    heading: 'Class A',
+    sublabel: '3.3 kV working voltage',
+    icon: Zap,
+  },
+  {
+    heading: 'Class B',
+    sublabel: '11 kV working voltage',
+    icon: Bolt,
+  },
+  {
+    heading: 'Class C',
+    sublabel: '33 kV working voltage',
+    icon: Shield,
+  },
+  {
+    heading: '2.0 · 2.5 · 3.0 mm',
+    sublabel: 'Standard thickness options',
+    icon: Ruler,
+  },
+] as const;
 
-export default function StatisticsStrip() {
+export default function TechnicalProductStrip() {
   return (
     <section
       className="bg-be-warm-white border-y border-be-grey-250"
-      aria-label="Company statistics"
+      aria-label="IS 15652:2006 insulating mat configurations"
     >
-      <div className="container-site page-horizontal-padding py-6 sm:py-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 sm:gap-6 md:gap-8">
-          {companyStatistics.map((stat) => (
-            <div
-              key={stat.label}
-              className="flex flex-col items-center text-center gap-1.5"
-            >
-              {/* Icon */}
-              <div className="flex items-center justify-center size-10 rounded-full bg-be-yellow-50 border border-be-yellow-100 mb-0.5">
-                {iconMap[stat.icon] ?? iconMap.calendar}
+      <div className="container-site page-horizontal-padding py-5 sm:py-6">
+        {/* Section label */}
+        <p className="text-center text-xs sm:text-sm font-semibold text-be-grey-650 uppercase tracking-[0.08em] mb-4 sm:mb-5">
+          IS 15652:2006 insulating mat configurations
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
+          {items.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={item.heading}
+                className="flex flex-col items-center text-center gap-1.5"
+              >
+                {/* Icon */}
+                <div className="flex items-center justify-center size-9 rounded-full bg-be-yellow-50 border border-be-yellow-100">
+                  <Icon className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />
+                </div>
+                {/* Heading — bold, navy */}
+                <span className="text-sm sm:text-base font-bold tracking-tight text-be-navy-800 leading-none">
+                  {item.heading}
+                </span>
+                {/* Sublabel — small, muted */}
+                <span className="text-[0.6875rem] sm:text-xs font-medium text-be-grey-650 leading-snug">
+                  {item.sublabel}
+                </span>
               </div>
-              {/* Number — large, bold, navy — animated via StatCounter */}
-              <StatCounter
-                value={stat.value}
-                className="text-2xl sm:text-3xl font-bold tracking-tight text-be-navy-800 leading-none"
-              />
-              {/* Label — small, muted */}
-              <span className="text-xs sm:text-sm font-medium text-be-grey-650 leading-snug">
-                {stat.label}
-              </span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
