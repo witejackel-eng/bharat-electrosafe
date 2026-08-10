@@ -73,11 +73,11 @@ export function Footer() {
                 alt="Bharat Electrosafe® logo"
                 width={1520}
                 height={1024}
-                className="object-contain w-[175px] lg:w-[200px] h-auto"
+                className="object-contain w-[190px] lg:w-[235px] h-auto"
                 priority
               />
             </Link>
-            <p className="text-sm text-be-grey-700 leading-relaxed max-w-[320px]">
+            <p className="text-sm text-be-grey-700 leading-relaxed max-w-[320px] mt-2">
               India&apos;s trusted name in precision-engineered electrical safety, industrial safety, infrastructure protection, PVC flooring and waterproofing solutions.
             </p>
             {/* Contact rows — compact */}
@@ -236,7 +236,7 @@ export function Footer() {
               alt="Bharat Electrosafe® logo"
               width={1520}
               height={1024}
-              className="object-contain w-[165px] h-auto"
+              className="object-contain w-[190px] h-auto"
               priority
             />
           </Link>
