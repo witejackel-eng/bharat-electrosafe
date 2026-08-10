@@ -33,7 +33,7 @@ import { TechnicalBadge } from '@/components/ui/TechnicalBadge';
 import { ImageFrame } from '@/components/ui/ImageFrame';
 import { FeatureList } from '@/components/ui/FeatureList';
 import { company } from '@/data/company';
-import { hvVisuals, autoGlowVisuals, biColourVisuals } from '@/data/product-visuals';
+import { iecVisuals } from '@/data/product-visuals';
 
 /* ────────────────────────────────────────────
    IEC 61111:2009 Class specification data
@@ -132,10 +132,10 @@ export default function IECClient() {
               <div className="grid grid-cols-3 gap-3">
                 <div className="relative">
                   <ImageFrame
-                    src={hvVisuals.card.src}
-                    alt={hvVisuals.card.alt}
+                    src={iecVisuals.hero.src}
+                    alt={iecVisuals.hero.alt}
                     aspectRatio="landscape"
-                    fit="contain"
+                    fit={iecVisuals.hero.fit}
                     priority
                   />
                   <span className="absolute bottom-1.5 left-1.5 bg-be-charcoal-950/80 text-be-white text-[10px] font-semibold px-1.5 py-0.5 rounded">
@@ -144,10 +144,10 @@ export default function IECClient() {
                 </div>
                 <div className="relative">
                   <ImageFrame
-                    src={autoGlowVisuals.card.src}
-                    alt={autoGlowVisuals.card.alt}
+                    src={iecVisuals.gallery[0].src}
+                    alt={iecVisuals.gallery[0].alt}
                     aspectRatio="landscape"
-                    fit="contain"
+                    fit={iecVisuals.gallery[0].fit}
                     priority
                   />
                   <span className="absolute bottom-1.5 left-1.5 bg-be-charcoal-950/80 text-be-white text-[10px] font-semibold px-1.5 py-0.5 rounded">
@@ -156,10 +156,10 @@ export default function IECClient() {
                 </div>
                 <div className="relative">
                   <ImageFrame
-                    src={biColourVisuals.card.src}
-                    alt={biColourVisuals.card.alt}
+                    src={iecVisuals.gallery[1].src}
+                    alt={iecVisuals.gallery[1].alt}
                     aspectRatio="landscape"
-                    fit="contain"
+                    fit={iecVisuals.gallery[1].fit}
                     priority
                   />
                   <span className="absolute bottom-1.5 left-1.5 bg-be-charcoal-950/80 text-be-white text-[10px] font-semibold px-1.5 py-0.5 rounded">
@@ -228,10 +228,10 @@ export default function IECClient() {
             <div className="group flex flex-col rounded-xl border border-be-grey-250 bg-be-white overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative aspect-[4/3] overflow-hidden bg-be-cream">
                 <Image
-                  src={hvVisuals.card.src}
-                  alt={hvVisuals.card.alt}
+                  src={iecVisuals.hero.src}
+                  alt={iecVisuals.hero.alt}
                   fill
-                  className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                  className={`${iecVisuals.hero.fit === 'contain' ? 'object-contain p-4' : 'object-cover'} group-hover:scale-105 transition-transform duration-300`}
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
@@ -256,10 +256,10 @@ export default function IECClient() {
             <div className="group flex flex-col rounded-xl border border-be-grey-250 bg-be-white overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative aspect-[4/3] overflow-hidden bg-be-cream">
                 <Image
-                  src={autoGlowVisuals.card.src}
-                  alt={autoGlowVisuals.card.alt}
+                  src={iecVisuals.gallery[0].src}
+                  alt={iecVisuals.gallery[0].alt}
                   fill
-                  className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                  className={`${iecVisuals.gallery[0].fit === 'contain' ? 'object-contain p-4' : 'object-cover'} group-hover:scale-105 transition-transform duration-300`}
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
@@ -284,10 +284,10 @@ export default function IECClient() {
             <div className="group flex flex-col rounded-xl border border-be-grey-250 bg-be-white overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative aspect-[4/3] overflow-hidden bg-be-cream">
                 <Image
-                  src={biColourVisuals.card.src}
-                  alt={biColourVisuals.card.alt}
+                  src={iecVisuals.gallery[1].src}
+                  alt={iecVisuals.gallery[1].alt}
                   fill
-                  className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                  className={`${iecVisuals.gallery[1].fit === 'contain' ? 'object-contain p-4' : 'object-cover'} group-hover:scale-105 transition-transform duration-300`}
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>

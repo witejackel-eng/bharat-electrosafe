@@ -13,7 +13,7 @@ import { TechnicalBadge } from '@/components/ui/TechnicalBadge';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { FeatureList } from '@/components/ui/FeatureList';
-import { EmptyMediaFallback } from '@/components/ui/EmptyMediaFallback';
+import { ImageFrame } from '@/components/ui/ImageFrame';
 import {
   Layers,
   Factory,
@@ -27,6 +27,7 @@ import {
   FileText,
   Download,
 } from 'lucide-react';
+import { pvcFlooringVisuals } from '@/data/product-visuals';
 
 /* ── Breadcrumb items ── */
 
@@ -141,21 +142,13 @@ export default function PVCFlooringClient() {
 
             {/* Media side — graphic placeholder (no photographic image available) */}
             <div className="min-w-0 lg:col-span-6 xl:col-span-7">
-              <div className="relative overflow-hidden rounded-lg border border-be-grey-250 aspect-[16/10]">
-                <EmptyMediaFallback
-                  slotId="pvc-flooring-hero"
-                  className="absolute inset-0"
-                />
-                {/* Decorative overlay — subtle brand accent */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="flex flex-col items-center gap-3 opacity-30">
-                    <Layers className="size-16 text-be-yellow-500" strokeWidth={1} />
-                    <span className="text-[0.75rem] uppercase tracking-widest text-be-grey-650 font-semibold">
-                      PVC Flooring
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <ImageFrame
+                src={pvcFlooringVisuals.hero.src}
+                alt={pvcFlooringVisuals.hero.alt}
+                aspectRatio="landscape"
+                fit={pvcFlooringVisuals.hero.fit}
+                priority
+              />
             </div>
           </div>
         </SectionShell>
@@ -196,20 +189,12 @@ export default function PVCFlooringClient() {
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
             {/* Left: graphic placeholder for overview image */}
             <div className="lg:w-[45%] order-first lg:order-last">
-              <div className="relative overflow-hidden rounded-lg border border-be-grey-250 aspect-[16/10]">
-                <EmptyMediaFallback
-                  slotId="pvc-flooring-overview"
-                  className="absolute inset-0"
-                />
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="flex flex-col items-center gap-2 opacity-25">
-                    <Layers className="size-12 text-be-yellow-500" strokeWidth={1} />
-                    <span className="text-xs uppercase tracking-widest text-be-grey-650 font-semibold">
-                      Overview
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <ImageFrame
+                src={pvcFlooringVisuals.gallery[0].src}
+                alt={pvcFlooringVisuals.gallery[0].alt}
+                aspectRatio="landscape"
+                fit={pvcFlooringVisuals.gallery[0].fit}
+              />
             </div>
 
             {/* Right: overview text + key benefits */}
@@ -232,20 +217,12 @@ export default function PVCFlooringClient() {
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
             {/* Left: graphic placeholder for application image */}
             <div className="lg:w-[45%]">
-              <div className="relative overflow-hidden rounded-lg border border-be-grey-250 aspect-[16/10]">
-                <EmptyMediaFallback
-                  slotId="pvc-flooring-application"
-                  className="absolute inset-0"
-                />
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="flex flex-col items-center gap-2 opacity-25">
-                    <Factory className="size-12 text-be-yellow-500" strokeWidth={1} />
-                    <span className="text-xs uppercase tracking-widest text-be-grey-650 font-semibold">
-                      Applications
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <ImageFrame
+                src={pvcFlooringVisuals.gallery[1].src}
+                alt={pvcFlooringVisuals.gallery[1].alt}
+                aspectRatio="landscape"
+                fit={pvcFlooringVisuals.gallery[1].fit}
+              />
             </div>
 
             {/* Right: applications list */}

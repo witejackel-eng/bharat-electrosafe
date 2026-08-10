@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import Image from 'next/image';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { ProductVisualRole } from '@/data/product-visuals';
 
 interface ProductImageCarouselProps {
@@ -15,15 +16,14 @@ interface ProductImageCarouselProps {
 }
 
 /**
- * Product image gallery — 1 large image + max 5 thumbnails.
+ * Product image carousel — 1 large image + thumbnail strip + arrow navigation.
  *
- * Clicking/tapping a thumbnail swaps the large image.
- * Keyboard accessible: arrow keys cycle thumbnails when focus is on the strip.
- * No carousel library — pure React client island.
- *
- * The large image frame uses bg-[#FAFAF7] with rounded-2xl (16px) and a
- * subtle border. Isolated product shots use object-contain with p-6/p-9
- * padding; application photography uses object-cover.
+ * - Previous/Next arrows on left/right of the main image
+ * - Thumbnail strip underneath
+ * - Keyboard: ArrowLeft/ArrowRight cycle images; Home/End jump
+ * - Wrap-around: Last→Next→First, First→Prev→Last
+ * - No autoplay, no parallax, no zoom
+ * - Desktop arrows: 44×44, mobile: 40×40
  */
 export function ProductImageCarousel({
   hero,
@@ -40,13 +40,16 @@ export function ProductImageCarousel({
     (next: number) => {
       setActive(((next % count) + count) % count);
     },
-    [count]
+    [count],
   );
+
+  const goPrev = useCallback(() => show(active - 1), [active, show]);
+  const goNext = useCallback(() => show(active + 1), [active, show]);
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
     const actions: Record<string, () => void> = {
-      ArrowLeft: () => show(active - 1),
-      ArrowRight: () => show(active + 1),
+      ArrowLeft: goPrev,
+      ArrowRight: goNext,
       Home: () => show(0),
       End: () => show(count - 1),
     };
@@ -64,11 +67,11 @@ export function ProductImageCarousel({
       role="group"
       aria-label={`${productName} image gallery`}
       className={`min-w-0 ${className}`}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
     >
-      {/* ── Large image viewport ── */}
-      <div
-        className="relative aspect-[4/3] min-h-[240px] overflow-hidden rounded-2xl border border-be-grey-200 bg-[#FAFAF7]"
-      >
+      {/* ── Large image viewport with arrows ── */}
+      <div className="relative aspect-[4/3] min-h-[240px] overflow-hidden rounded-2xl border border-be-grey-200 bg-[#FAFAF7] group/carousel">
         <Image
           src={current.src}
           alt={current.alt}
@@ -81,13 +84,50 @@ export function ProductImageCarousel({
           sizes="(min-width: 1024px) 52vw, 100vw"
           priority={active === 0}
         />
+
+        {/* ── Prev/Next arrows (only when >1 image) ── */}
+        {count > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={goPrev}
+              aria-label="Previous image"
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center
+                         h-10 w-10 sm:h-11 sm:w-11
+                         rounded-full bg-white/90 border border-be-grey-200
+                         shadow-sm hover:shadow-md
+                         text-be-charcoal-800 hover:text-be-yellow-500
+                         transition-all duration-150
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-1
+                         opacity-0 group-hover/carousel:opacity-100 focus-within:opacity-100
+                         md:opacity-60 md:group-hover/carousel:opacity-100"
+            >
+              <ChevronLeft className="h-5 w-5" strokeWidth={2.5} />
+            </button>
+            <button
+              type="button"
+              onClick={goNext}
+              aria-label="Next image"
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center
+                         h-10 w-10 sm:h-11 sm:w-11
+                         rounded-full bg-white/90 border border-be-grey-200
+                         shadow-sm hover:shadow-md
+                         text-be-charcoal-800 hover:text-be-yellow-500
+                         transition-all duration-150
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-1
+                         opacity-0 group-hover/carousel:opacity-100 focus-within:opacity-100
+                         md:opacity-60 md:group-hover/carousel:opacity-100"
+            >
+              <ChevronRight className="h-5 w-5" strokeWidth={2.5} />
+            </button>
+          </>
+        )}
       </div>
 
       {/* ── Thumbnails ── */}
       {count > 1 && (
         <div
-          className="mt-3 flex gap-2"
-          onKeyDown={handleKeyDown}
+          className="mt-3 flex gap-2 overflow-x-auto pb-1"
           role="tablist"
           aria-label="Select product image"
         >
