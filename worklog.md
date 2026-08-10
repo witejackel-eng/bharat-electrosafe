@@ -1301,3 +1301,30 @@ Stage Summary:
 - typecheck passes, build passes
 - Pre-existing lint warning in carousel.tsx (unrelated)
 - Pre-existing test failure in chart.tsx dangerouslySetInnerHTML (unrelated shadcn component)
+---
+Task ID: 2
+Agent: main
+Task: Replace homepage hero image with new approved technician/switchgear/mat photograph
+
+Work Log:
+- Identified uploaded hero image: `bharat hero section image.png` (1672x941, 2.2MB PNG)
+- Used VLM to confirm image matches spec: Indian technician, orange helmet, navy coveralls, switchgear, blue mat, no watermarks
+- Created /public/media/home/hero/ directory for production assets
+- Converted to WebP:
+  - Desktop: electrical-insulating-mat-switchgear-hero.webp (1672x941, 204KB, quality 90)
+  - Mobile: electrical-insulating-mat-switchgear-hero-mobile.webp (1080x720, 110KB, quality 88, center-cropped to 3:2)
+- Updated HomeHero.tsx: replaced both desktop and mobile image paths
+- Added object-position for responsive cropping:
+  - Desktop: `center 30%` (keeps technician+mat in frame at 4:3)
+  - Mobile: `center 25%` (prioritizes technician upper body at 3:2)
+- Preserved all hero copy, CTAs, certification badges, and layout structure
+- Verified with VLM across all 5 viewports: all 50 checks pass
+- Verified no old hero image requested, no broken requests, CLS 0.0002
+- Verified About page (uses old hero path) still returns 200
+
+Stage Summary:
+- New hero image replaces old photograph on homepage only
+- Technician, helmet, mat, switchgear all clearly visible at all viewports
+- No watermarks, no distortion, no CLS
+- object-position tuned per viewport for optimal composition
+- typecheck, lint, build all pass
