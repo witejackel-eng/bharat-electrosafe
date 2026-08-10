@@ -1,83 +1,77 @@
-import { Zap, Bolt, Shield, Ruler } from 'lucide-react';
+import { Globe, Users, LayoutGrid, ShieldCheck } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import { companyStatistics, type StatIconKey } from '@/data/trust';
 
 /**
- * TechnicalProductStrip — Server Component.
+ * StatisticsStrip — Server Component.
  *
- * Compact horizontal strip showing IS 15652:2006 insulating mat
- * configurations: three voltage classes and standard thickness
- * options. Serves as a technical bridge between the hero and
- * product content.
+ * Compact horizontal strip showing four company credibility statistics
+ * below the homepage hero. Restored from the earlier statistics-style
+ * presentation (replacing the IS 15652:2006 technical configuration strip).
  *
  * Design:
  *   - Warm white / light background
- *   - Navy/dark blue primary text
- *   - Bharat yellow/gold accent
- *   - Compact horizontal strip with circular icon + heading + sublabel
- *   - Desktop: 4 items in one row
+ *   - Navy/dark blue primary numbers
+ *   - Muted labels
+ *   - Small circular yellow-accent icons
+ *   - Thin top/bottom separators (border-y)
+ *   - Centered content
+ *   - Desktop: 4 columns in one row
  *   - Tablet: 2×2
  *   - Mobile: 2×2
+ *   - Compact height (no giant cards, no extra heading above)
  *
- * No animation — purely static, factual content.
+ * Data sourced from `companyStatistics` in `src/data/trust.ts`.
+ * Product Families is dynamically derived from the product registry.
+ *
+ * No animation — purely static values. The StatCounter component
+ * still exists but is not used; static values are acceptable and
+ * avoid layout-shift risk.
  */
 
-const items = [
-  {
-    heading: 'Class A',
-    sublabel: '3.3 kV working voltage',
-    icon: Zap,
-  },
-  {
-    heading: 'Class B',
-    sublabel: '11 kV working voltage',
-    icon: Bolt,
-  },
-  {
-    heading: 'Class C',
-    sublabel: '33 kV working voltage',
-    icon: Shield,
-  },
-  {
-    heading: '2.0 · 2.5 · 3.0 mm',
-    sublabel: 'Standard thickness options',
-    icon: Ruler,
-  },
-] as const;
+/** Map icon key to Lucide component. */
+const iconMap: Record<StatIconKey, LucideIcon> = {
+  globe: Globe,
+  users: Users,
+  grid: LayoutGrid,
+  shield: ShieldCheck,
+};
 
-export default function TechnicalProductStrip() {
+export default function StatisticsStrip() {
   return (
     <section
       className="bg-be-warm-white border-y border-be-grey-250"
-      aria-label="IS 15652:2006 insulating mat configurations"
+      aria-label="Company statistics"
     >
       <div className="container-site page-horizontal-padding py-5 sm:py-6">
-        {/* Section label */}
-        <p className="text-center text-xs sm:text-sm font-semibold text-be-grey-650 uppercase tracking-[0.08em] mb-4 sm:mb-5">
-          IS 15652:2006 insulating mat configurations
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
-          {items.map((item) => {
-            const Icon = item.icon;
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+          {companyStatistics.map((stat) => {
+            const Icon = iconMap[stat.icon];
             return (
               <div
-                key={item.heading}
+                key={stat.label}
                 className="flex flex-col items-center text-center gap-1.5"
               >
-                {/* Icon */}
+                {/* Icon — small circular yellow-accent */}
                 <div className="flex items-center justify-center size-9 rounded-full bg-be-yellow-50 border border-be-yellow-100">
                   <Icon className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />
                 </div>
-                {/* Heading — bold, navy */}
-                <span className="text-sm sm:text-base font-bold tracking-tight text-be-navy-800 leading-none">
-                  {item.heading}
+                {/* Value — bold, navy, large */}
+                <span className="text-2xl sm:text-3xl font-bold tracking-tight text-be-navy-800 leading-none">
+                  {stat.value}
                 </span>
-                {/* Sublabel — small, muted */}
+                {/* Label — small, muted */}
                 <span className="text-[0.6875rem] sm:text-xs font-medium text-be-grey-650 leading-snug">
-                  {item.sublabel}
+                  {stat.label}
                 </span>
               </div>
             );
           })}
         </div>
+        {/* Subtle footnote for company-stated figures */}
+        <p className="mt-3 text-center text-[0.625rem] sm:text-[0.6875rem] text-be-grey-500 leading-none">
+          Countries served and customer figures are company-stated.
+        </p>
       </div>
     </section>
   );

@@ -290,6 +290,71 @@ export const scaleFacts = [
 ] as const;
 
 /* ────────────────────────────────────────────
+   Homepage statistics strip
+   ──────────────────────────────────────────── */
+
+/**
+ * Icon key maps to a Lucide icon in the StatisticsStrip component.
+ * - globe  → Globe
+ * - users  → Users
+ * - grid   → LayoutGrid
+ * - shield → ShieldCheck
+ */
+export type StatIconKey = 'globe' | 'users' | 'grid' | 'shield';
+
+export interface CompanyStatistic {
+  /** Large display value (e.g. "11+", "1,000+"). */
+  value: string;
+  /** Compact label for the homepage strip card. */
+  label: string;
+  /** Icon key resolved to a Lucide icon in the component. */
+  icon: StatIconKey;
+  /** True if the figure is company-stated rather than independently audited. */
+  companyStated: boolean;
+}
+
+/**
+ * Homepage credibility strip — four statistics.
+ *
+ * "11+" and "1,000+" are company-stated figures from Bharat Electrosafe's
+ * own source material. They are NOT independently audited. The
+ * `companyStated` flag is preserved in data but not rendered on the
+ * compact homepage cards; a subtle footnote may appear below the strip.
+ *
+ * Product Families is derived from `productFamilyCount` in the product
+ * registry and updates automatically if the registry changes.
+ *
+ * Insulation Classes (3) refers to the domestic Class A, B and C range
+ * per IS 15652:2006.
+ */
+export const companyStatistics: CompanyStatistic[] = [
+  {
+    value: '11+',
+    label: 'Countries Served',
+    icon: 'globe',
+    companyStated: true,
+  },
+  {
+    value: '1,000+',
+    label: 'Customers',
+    icon: 'users',
+    companyStated: true,
+  },
+  {
+    value: String(productFamilyCount),
+    label: 'Product Families',
+    icon: 'grid',
+    companyStated: false,
+  },
+  {
+    value: '3',
+    label: 'Insulation Classes',
+    icon: 'shield',
+    companyStated: false,
+  },
+];
+
+/* ────────────────────────────────────────────
    Manufacturing and capability
    ──────────────────────────────────────────── */
 
@@ -352,9 +417,8 @@ export const manufacturingImage = {
 };
 
 /* ────────────────────────────────────────────
-   Client-provided company statistics — REMOVED
+   Company statistics — restored
    ────────────────────────────────────────────
-   The homepage strip now shows IS 15652:2006 insulating mat
-   configurations (class / voltage / thickness) instead of
-   company-stated statistics. The CompanyStatistic type and
-   companyStatistics array have been removed. */
+   The CompanyStatistic type and companyStatistics array are
+   defined above (line ~330). They power the homepage credibility
+   strip with defensible, company-stated figures. */
