@@ -104,12 +104,13 @@ export default function HomeHero() {
               wrapper. */}
           <div className="be-split-hero__visual-desktop">
             <Image
-              src="/media/hero/bharat-electrosafe-insulating-mat-hero.webp"
+              src="/media/home/hero/electrical-insulating-mat-switchgear-hero.webp"
               alt={HERO_IMG_ALT}
               fill
               priority
               sizes="(min-width: 1024px) 58vw, 100vw"
               className="be-split-hero__image object-cover"
+              style={{ objectPosition: 'center 30%' }}
             />
           </div>
           {/* Mobile visual — hidden on desktop via `display:none`.
@@ -117,12 +118,13 @@ export default function HomeHero() {
               is fully described to assistive tech. */}
           <div className="be-split-hero__visual-mobile">
             <Image
-              src="/media/hero/bharat-electrosafe-insulating-mat-hero-mobile.webp"
+              src="/media/home/hero/electrical-insulating-mat-switchgear-hero-mobile.webp"
               alt={HERO_IMG_ALT}
               fill
               priority
               sizes="100vw"
               className="object-cover"
+              style={{ objectPosition: 'center 25%' }}
             />
           </div>
         </div>
