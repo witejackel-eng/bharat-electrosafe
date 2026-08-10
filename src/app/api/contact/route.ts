@@ -1,14 +1,10 @@
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
 import { Resend } from 'resend';
 import { company } from '@/data/company';
 import { isAllowedOrigin, parseOrigin } from '@/lib/origin';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { verifyTurnstile } from '@/lib/turnstile';
-import {
-  contactServerSchema,
-  type ContactServerInput,
-  ENQUIRY_TYPE_LABELS,
-} from '@/lib/contact-schema';
 
 /**
  * Contact form API route.
@@ -20,9 +16,6 @@ import {
  * protection (graceful degradation when unconfigured), server-side
  * Resend delivery, redacted logging, honest delivery messages with
  * direct-contact fallback, Cache-Control: no-store, X-Robots-Tag: noindex.
- *
- * Schema is imported from the shared contact-schema module — the single
- * authoritative contract for both client and server.
  */
 
 export const runtime = 'nodejs';
@@ -49,23 +42,65 @@ function escapeHtml(value: string): string {
 }
 
 // ---------------------------------------------------------------------------
+// Zod schema — strict, trimmed, validated
+// ---------------------------------------------------------------------------
+
+const ENQUIRY_TYPES = [
+  'general',
+  'product',
+  'quote',
+  'technical',
+  'partnership',
+] as const;
+
+const contactSchema = z.strictObject({
+  name: z.string().trim().min(2, 'Name is required').max(200),
+  companyName: z.string().trim().max(200).optional().default(''),
+  email: z.string().trim().email('A valid email is required').max(200)
+    .transform(v => v.toLowerCase()),
+  phone: z
+    .string()
+    .trim()
+    .min(1, 'Phone is required')
+    .max(60)
+    .regex(/^[+\d\s\-().]{1,60}$/, 'Please enter a valid phone number'),
+  enquiryType: z.enum(ENQUIRY_TYPES),
+  product: z.string().trim().max(200).optional().default(''),
+  message: z
+    .string()
+    .trim()
+    .min(10, 'Please provide a message of at least 10 characters')
+    .max(5000),
+  voltage: z.string().trim().max(100).optional().default(''),
+  dimensions: z.string().trim().max(300).optional().default(''),
+  quantity: z.string().trim().max(100).optional().default(''),
+  deliveryLocation: z.string().trim().max(300).optional().default(''),
+  // Anti-spam: honeypot field — must be empty
+  website: z.string().max(0).optional().default(''),
+  // Anti-spam: timing — form open timestamp (ms epoch)
+  _formOpenAt: z.string().optional(),
+  // Turnstile: client-side verification token
+  turnstileToken: z.string().trim().max(2048).optional(),
+});
+
+type ContactInput = z.infer<typeof contactSchema>;
+
+// ---------------------------------------------------------------------------
 // Email body builders
 // ---------------------------------------------------------------------------
 
 function buildPlainTextEmail(
-  input: ContactServerInput,
+  input: ContactInput,
   meta: { sourcePage: string },
 ): string {
-  const enquiryLabel = ENQUIRY_TYPE_LABELS[input.enquiryType] ?? input.enquiryType;
-
   const lines: Array<string | null> = [
     `New enquiry for ${company.name}`,
     '',
     `Name: ${input.name}`,
     input.companyName ? `Company: ${input.companyName}` : null,
     `Email: ${input.email}`,
-    input.phone ? `Phone: ${input.phone}` : null,
-    `Enquiry type: ${enquiryLabel}`,
+    `Phone: ${input.phone}`,
+    `Enquiry type: ${input.enquiryType}`,
     input.product ? `Product: ${input.product}` : null,
     input.voltage ? `Voltage / class: ${input.voltage}` : null,
     input.dimensions ? `Dimensions: ${input.dimensions}` : null,
@@ -81,21 +116,17 @@ function buildPlainTextEmail(
 }
 
 function buildHtmlEmail(
-  input: ContactServerInput,
+  input: ContactInput,
   meta: { sourcePage: string },
 ): string {
-  const enquiryLabel = ENQUIRY_TYPE_LABELS[input.enquiryType] ?? input.enquiryType;
-
   const rows: Array<[string, string]> = [
     ['Name', escapeHtml(input.name)],
     ...(input.companyName
       ? ([['Company', escapeHtml(input.companyName)]] as Array<[string, string]>)
       : []),
     ['Email', escapeHtml(input.email)],
-    ...(input.phone
-      ? ([['Phone', escapeHtml(input.phone)]] as Array<[string, string]>)
-      : []),
-    ['Enquiry type', escapeHtml(enquiryLabel)],
+    ['Phone', escapeHtml(input.phone)],
+    ['Enquiry type', escapeHtml(input.enquiryType)],
     ...(input.product
       ? ([['Product', escapeHtml(input.product)]] as Array<[string, string]>)
       : []),
@@ -253,7 +284,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const parsed = contactServerSchema.safeParse(payload);
+  const parsed = contactSchema.safeParse(payload);
   if (!parsed.success) {
     const firstError = parsed.error.issues[0];
     const message = firstError
