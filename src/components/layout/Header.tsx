@@ -227,10 +227,10 @@ export function Header() {
         {/* 3-column grid: Logo | Nav | CTA */}
         <div className="container-site page-horizontal-padding grid grid-cols-[minmax(0,1fr)_auto] items-center h-full gap-2 lg:grid-cols-[minmax(180px,1fr)_auto_minmax(180px,1fr)] lg:gap-4">
           {/* ── Column 1: Logo ── */}
-          <div className="flex items-center justify-start min-w-0">
+          <div className="flex items-center justify-start min-w-0 h-full overflow-hidden">
             <Link
               href="/"
-              className="shrink-0 flex items-center py-1.5 lg:py-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800"
+              className="shrink-0 flex items-center pt-2 pb-1 lg:pt-3 lg:pb-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800"
               aria-label="Bharat Electrosafe — Home"
             >
               <Image
@@ -238,8 +238,8 @@ export function Header() {
                 alt="Bharat Electrosafe® logo"
                 width={LOGO_WIDTH}
                 height={LOGO_HEIGHT}
-                sizes="(max-width: 359px) 140px, (max-width: 1023px) 165px, 190px"
-                className="object-contain h-12 lg:h-[60px] w-auto"
+                sizes="(max-width: 1023px) 155px, 200px"
+                className="object-contain w-[155px] lg:w-[200px] h-auto"
                 priority
               />
             </Link>
@@ -361,8 +361,8 @@ export function Header() {
                         alt="Bharat Electrosafe® logo"
                         width={LOGO_WIDTH}
                         height={LOGO_HEIGHT}
-                        sizes="150px"
-                        className="object-contain w-[150px] h-auto"
+                        sizes="155px"
+                        className="object-contain w-[155px] h-auto"
                       />
                     </Link>
                   </SheetTitle>
