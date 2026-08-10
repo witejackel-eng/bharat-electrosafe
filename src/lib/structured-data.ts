@@ -63,7 +63,7 @@ export function organisationSchema() {
     email: company.email,
     telephone: phones.length === 1 ? phones[0].display : phones.map((p) => p.display),
     description: company.description,
-    logo: `${siteUrl}/images/brand/bharat-electrosafe-logo.png`,
+    logo: `${siteUrl}/brand/bharat-electrosafe-logo-2026.png`,
     address: {
       '@type': 'PostalAddress',
       streetAddress: `${company.address.line1}, ${company.address.line2}`,
