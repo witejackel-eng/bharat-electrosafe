@@ -69,10 +69,10 @@ export function Footer() {
           <div className="flex flex-col gap-2.5">
             <Link href="/" aria-label="Bharat Electrosafe — home">
               <Image
-                src="/brand/bharat-electrosafe-footer@2x.png"
+                src="/brand/bharat-electrosafe-footer-2026.png"
                 alt="Bharat Electrosafe® logo"
-                width={720}
-                height={262}
+                width={760}
+                height={364}
                 className="object-contain w-[175px] lg:w-[200px] h-auto"
                 priority
               />
@@ -91,15 +91,17 @@ export function Footer() {
                   {company.email}
                 </a>
               </li>
-              <li>
-                <a
-                  href={`tel:${phones[0].tel}`}
-                  className={cn('flex items-center gap-2 text-sm text-be-charcoal-800', footerLinkBase)}
-                >
-                  <Phone className="size-3.5 shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
-                  {phones[0].display}
-                </a>
-              </li>
+              {phones.map((phone) => (
+                <li key={phone.tel}>
+                  <a
+                    href={`tel:${phone.tel}`}
+                    className={cn('flex items-center gap-2 text-sm text-be-charcoal-800', footerLinkBase)}
+                  >
+                    <Phone className="size-3.5 shrink-0 text-be-yellow-text" aria-hidden="true" focusable="false" />
+                    {phone.display}
+                  </a>
+                </li>
+              ))}
               <li>
                 <a
                   href={company.whatsapp.href}
@@ -230,10 +232,10 @@ export function Footer() {
         <div className="md:hidden flex flex-col gap-4">
           <Link href="/" aria-label="Bharat Electrosafe — home">
             <Image
-              src="/brand/bharat-electrosafe-footer@2x.png"
+              src="/brand/bharat-electrosafe-footer-2026.png"
               alt="Bharat Electrosafe® logo"
-              width={720}
-              height={262}
+              width={760}
+              height={364}
               className="object-contain w-[165px] h-auto"
               priority
             />

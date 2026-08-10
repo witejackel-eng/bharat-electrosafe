@@ -5,16 +5,15 @@
  *   • `src/app/opengraph-image.png` and `src/app/twitter-image.png` —
  *     served at the site root by Next.js App Router file conventions
  *     (auto-emitted as <meta property="og:image"> / <meta name="twitter:image">).
- *   • `public/og/bharat-electrosafe-og-v2.png` and
- *     `public/og/bharat-electrosafe-twitter-v2.png` — explicit versioned
- *     copies served from /og/ with a `-v2` suffix so social-platform
- *     caches (which key on URL) are forced to re-fetch after a brand
- *     refresh. These are the URLs declared in `openGraph.images` /
+ *   • `public/og/bharat-electrosafe-og-v3.png` and
+ *     `public/og/bharat-electrosafe-twitter-v3.png` — explicit versioned
+ *     copies served from /og/ with a `-v3` suffix so social-platform
+ *     caches (which key on URL) are forced to re-fetch after the 2026
+ *     brand logo refresh. These are the URLs declared in `openGraph.images` /
  *     `twitter.images` so crawlers hit the versioned file directly.
  *
- * Both copies are byte-identical 1200×630 PNGs composed from the official
- * Bharat Electrosafe logo (left panel, navy background) and the approved
- * hero photograph of a technician at switchgear (right panel).
+ * Both copies are byte-identical 1200×630 PNGs composed from the 2026
+ * approved Bharat Electrosafe logo centred on a navy (#0A1B3D) background.
  *
  * Social image URLs always use the canonical domain (bharatelectrosafe.com)
  * so that preview/staging deployments never leak their *.vercel.app host
@@ -36,19 +35,19 @@ import { canonicalOrigin } from '@/lib/site-url';
 /**
  * OG image URL — absolute canonical URL so social platforms always
  * reference the production domain, never a staging/preview host.
- * The `-v2` suffix forces social-platform caches to re-fetch after
- * a brand refresh; a future `...-v3.png` rotation is cache-bustable.
+ * The `-v3` suffix forces social-platform caches to re-fetch after
+ * the 2026 brand logo refresh; a future `...-v4.png` rotation is cache-bustable.
  */
-export const SITE_OG_IMAGE_URL = `${canonicalOrigin}/og/bharat-electrosafe-og-v2.png`;
+export const SITE_OG_IMAGE_URL = `${canonicalOrigin}/og/bharat-electrosafe-og-v3.png`;
 /** Twitter image URL — absolute canonical URL, same versioning rationale. */
-export const SITE_TWITTER_IMAGE_URL = `${canonicalOrigin}/og/bharat-electrosafe-twitter-v2.png`;
+export const SITE_TWITTER_IMAGE_URL = `${canonicalOrigin}/og/bharat-electrosafe-twitter-v3.png`;
 
 /**
  * Accurate alt text describing the OG/Twitter image contents.
  * Reads naturally to screen readers and social-platform crawlers.
  */
 export const SITE_SOCIAL_IMAGE_ALT =
-  'Bharat Electrosafe electrical insulating mat protecting a technician working near industrial switchgear.';
+  'Bharat Electrosafe® logo — India\'s trusted name in electrical safety, industrial safety, infrastructure protection, PVC flooring and waterproofing solutions.';
 
 /** OG image dimensions — both files are 1200×630 PNGs. */
 export const SITE_SOCIAL_IMAGE_WIDTH = 1200;
