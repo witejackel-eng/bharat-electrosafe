@@ -55,17 +55,16 @@ const ESCAPE_KEY = 'Escape';
 /* ────────────────────────────────────────────
    Logo asset constants
    ────────────────────────────────────────────
-   Transparent PNG — 760×280, balanced @4x derivative.
-   Created from the approved 3412×1257 full-resolution source
-   with LANCZOS resampling for maximum sharpness.
+   Transparent PNG — 1520×1024, final approved logo.
+   High-resolution source for Retina/HiDPI sharpness.
    Even visual padding (top/bottom/left/right) so the logo
    artwork centres naturally when flexbox-centred in the
    navy header. PNG chosen over WebP for sharper lettering /
    thin circuit lines / ® mark. */
 
-const LOGO_SRC = '/brand/bharat-electrosafe-header-2026.png';
-const LOGO_WIDTH = 760;
-const LOGO_HEIGHT = 364;
+const LOGO_SRC = '/brand/bharat-electrosafe-logo-final.png';
+const LOGO_WIDTH = 1520;
+const LOGO_HEIGHT = 1024;
 
 /* ────────────────────────────────────────────
    Preview image mapping for mega-menu
