@@ -11,7 +11,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
-import { ImageFrame } from '@/components/ui/ImageFrame';
+import { EmptyMediaFallback } from '@/components/ui/EmptyMediaFallback';
 import {
   Package,
   Square,
@@ -44,8 +44,7 @@ interface OtherProductSection {
   name: string;
   icon: LucideIcon;
   description: string;
-  imageSrc: string;
-  imageAlt: string;
+  slotId: string;
 }
 
 const productSections: OtherProductSection[] = [
@@ -55,8 +54,7 @@ const productSections: OtherProductSection[] = [
     icon: Square,
     description:
       'Bharat Electrosafe supplies industrial rubber sheets for a range of applications. Specifications and material grades are provided on request.',
-    imageSrc: '/brand/rubber-sheet-graphic.webp',
-    imageAlt: 'Industrial rubber sheet category — Bharat Electrosafe product range',
+    slotId: 'other-products-rubber-sheet',
   },
   {
     id: 'rubber-hose-pipe',
@@ -64,8 +62,7 @@ const productSections: OtherProductSection[] = [
     icon: Pipette,
     description:
       'Bharat Electrosafe supplies rubber hose pipes for industrial fluid and air transfer applications. Specifications are provided on request.',
-    imageSrc: '/brand/rubber-hose-pipe-graphic.webp',
-    imageAlt: 'Industrial rubber hose pipe category — Bharat Electrosafe product range',
+    slotId: 'other-products-rubber-hose-pipe',
   },
   {
     id: 'esd-mat',
@@ -73,8 +70,7 @@ const productSections: OtherProductSection[] = [
     icon: Zap,
     description:
       'Bharat Electrosafe supplies electrostatic discharge (ESD) protective mats for electronics manufacturing and sensitive equipment areas. Specifications are provided on request.',
-    imageSrc: '/brand/esd-mat-graphic.webp',
-    imageAlt: 'ESD protective mat category — Bharat Electrosafe product range',
+    slotId: 'other-products-esd-mat',
   },
   {
     id: 'conveyor-belt',
@@ -82,8 +78,7 @@ const productSections: OtherProductSection[] = [
     icon: ArrowRight,
     description:
       'Bharat Electrosafe supplies conveyor belts for industrial material handling applications. Specifications are provided on request.',
-    imageSrc: '/brand/conveyor-belt-graphic.webp',
-    imageAlt: 'Industrial conveyor belt category — Bharat Electrosafe product range',
+    slotId: 'other-products-conveyor-belt',
   },
 ];
 
@@ -169,15 +164,22 @@ export default function OtherProductsClient() {
               </div>
             </div>
 
-            {/* Media side — branded category graphic */}
+            {/* Media side — graphic placeholder */}
             <div className="min-w-0 lg:col-span-6 xl:col-span-7">
-              <ImageFrame
-                src="/brand/other-products-hero.webp"
-                alt="Other industrial products from Bharat Electrosafe — rubber sheets, hose pipes, ESD mats and conveyor belts"
-                aspectRatio="landscape"
-                fit="cover"
-                priority
-              />
+              <div className="relative overflow-hidden rounded-lg border border-be-grey-250 aspect-[16/10]">
+                <EmptyMediaFallback
+                  slotId="other-products-hero"
+                  className="absolute inset-0"
+                />
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="flex flex-col items-center gap-3 opacity-30">
+                    <Package className="size-16 text-be-yellow-500" strokeWidth={1} />
+                    <span className="text-[0.75rem] uppercase tracking-widest text-be-grey-650 font-semibold">
+                      Industrial Products
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </SectionShell>
@@ -228,14 +230,22 @@ export default function OtherProductsClient() {
               ariaLabel={sec.name}
             >
               <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
-                {/* Category graphic — proper branded visual */}
+                {/* Graphic placeholder — clean media slot for future approved photography */}
                 <div className="lg:w-[40%] order-first lg:order-last">
-                  <ImageFrame
-                    src={sec.imageSrc}
-                    alt={sec.imageAlt}
-                    aspectRatio="landscape"
-                    fit="cover"
-                  />
+                  <div className="relative overflow-hidden rounded-lg border border-be-grey-250 aspect-[4/3]">
+                    <EmptyMediaFallback
+                      slotId={sec.slotId}
+                      className="absolute inset-0"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="flex flex-col items-center gap-2 opacity-25">
+                        <sec.icon className="size-12 text-be-yellow-500" strokeWidth={1} />
+                        <span className="text-xs uppercase tracking-widest text-be-grey-650 font-semibold">
+                          {sec.name}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Text + CTA */}
@@ -278,7 +288,7 @@ export default function OtherProductsClient() {
               <SecondaryButton href="/contact-us?type=technical-guidance">
                 Contact Technical Team
               </SecondaryButton>
-              <SecondaryButton href={`tel:${'+919870394721'}`}>
+              <SecondaryButton href="tel:+919870394721">
                 <Phone className="size-4 mr-1.5" />
                 Call Sales
               </SecondaryButton>
