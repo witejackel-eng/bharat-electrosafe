@@ -11,9 +11,7 @@ import { ProductSpecifications } from '@/components/products/ProductSpecificatio
 import { ProductMaterialDimensions } from '@/components/products/ProductMaterialDimensions';
 import { ProductDocuments } from '@/components/products/ProductDocuments';
 import { ProductFAQ } from '@/components/products/ProductFAQ';
-import { RelatedProducts } from '@/components/products/RelatedProducts';
 import { ProductCTA } from '@/components/products/ProductCTA';
-import { ProductGallery } from '@/components/products/ProductGallery';
 import type { ProductData } from '@/data/products';
 import type { ProductVisuals } from '@/data/product-visuals';
 
@@ -29,11 +27,9 @@ import type { ProductVisuals } from '@/data/product-visuals';
  * 5. Applications
  * 6. Technical Specifications
  * 7. Material & Dimensions (standards / compliance detail)
- * 8. Product Gallery (1 large + thumbnails)
- * 9. Documents & Certifications
- * 10. FAQ
- * 11. Related Products
- * 12. Technical Guidance CTA
+ * 8. Documents & Certifications
+ * 9. FAQ
+ * 10. Technical Guidance CTA
  */
 
 interface ProductDetailTemplateProps {
@@ -74,23 +70,13 @@ export function ProductDetailTemplate({
             Bi-Colour cross-section, membrane variant comparison, etc. */}
         {extraContent}
 
-        {/* 8. Product gallery */}
-        <ProductGallery
-          hero={visuals.hero}
-          gallery={visuals.gallery}
-          productName={product.shortName}
-        />
-
-        {/* 9. Documents & certifications */}
+        {/* 8. Documents & certifications */}
         <ProductDocuments product={product} />
 
-        {/* 10. FAQ */}
+        {/* 9. FAQ */}
         <ProductFAQ product={product} />
 
-        {/* 11. Related products */}
-        <RelatedProducts product={product} />
-
-        {/* 12. Technical guidance CTA */}
+        {/* 10. Technical guidance CTA */}
         <ProductCTA
           product={product}
           headingPrefix={ctaHeadingPrefix ?? 'Request a quote for'}

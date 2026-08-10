@@ -11,7 +11,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
-import { EmptyMediaFallback } from '@/components/ui/EmptyMediaFallback';
+import { ImageFrame } from '@/components/ui/ImageFrame';
 import {
   Package,
   Square,
@@ -23,6 +23,7 @@ import {
   Shield,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { otherProductsVisuals } from '@/data/product-visuals';
 
 /* ── Breadcrumb items ── */
 
@@ -164,22 +165,15 @@ export default function OtherProductsClient() {
               </div>
             </div>
 
-            {/* Media side — graphic placeholder */}
+            {/* Media side — hero image */}
             <div className="min-w-0 lg:col-span-6 xl:col-span-7">
-              <div className="relative overflow-hidden rounded-lg border border-be-grey-250 aspect-[16/10]">
-                <EmptyMediaFallback
-                  slotId="other-products-hero"
-                  className="absolute inset-0"
-                />
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="flex flex-col items-center gap-3 opacity-30">
-                    <Package className="size-16 text-be-yellow-500" strokeWidth={1} />
-                    <span className="text-[0.75rem] uppercase tracking-widest text-be-grey-650 font-semibold">
-                      Industrial Products
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <ImageFrame
+                src={otherProductsVisuals.hero.src}
+                alt={otherProductsVisuals.hero.alt}
+                aspectRatio="landscape"
+                fit={otherProductsVisuals.hero.fit}
+                priority
+              />
             </div>
           </div>
         </SectionShell>
@@ -219,6 +213,10 @@ export default function OtherProductsClient() {
         {productSections.map((sec, index) => {
           const isEven = index % 2 === 0;
           const bg = isEven ? 'bg-be-white' : 'bg-be-warm-white';
+          /* Map each product section to its gallery image index:
+             rubber-sheet → 0, rubber-hose-pipe → 2, esd-mat → 3, conveyor-belt → 4 */
+          const galleryIndexMap = [0, 2, 3, 4];
+          const galleryItem = otherProductsVisuals.gallery[galleryIndexMap[index]];
 
           return (
             <SectionShell
@@ -230,22 +228,14 @@ export default function OtherProductsClient() {
               ariaLabel={sec.name}
             >
               <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
-                {/* Graphic placeholder — clean media slot for future approved photography */}
+                {/* Product image */}
                 <div className="lg:w-[40%] order-first lg:order-last">
-                  <div className="relative overflow-hidden rounded-lg border border-be-grey-250 aspect-[4/3]">
-                    <EmptyMediaFallback
-                      slotId={sec.slotId}
-                      className="absolute inset-0"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="flex flex-col items-center gap-2 opacity-25">
-                        <sec.icon className="size-12 text-be-yellow-500" strokeWidth={1} />
-                        <span className="text-xs uppercase tracking-widest text-be-grey-650 font-semibold">
-                          {sec.name}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  <ImageFrame
+                    src={galleryItem.src}
+                    alt={galleryItem.alt}
+                    aspectRatio="landscape"
+                    fit={galleryItem.fit}
+                  />
                 </div>
 
                 {/* Text + CTA */}
