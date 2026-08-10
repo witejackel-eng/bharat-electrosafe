@@ -1328,3 +1328,39 @@ Stage Summary:
 - No watermarks, no distortion, no CLS
 - object-position tuned per viewport for optimal composition
 - typecheck, lint, build all pass
+
+---
+Task ID: 1
+Agent: main
+Task: Restore homepage stats strip + fix logo transparency
+
+Work Log:
+- Explored codebase: found TechnicalProductStrip (Class A/B/C) in StatisticsStrip.tsx
+- Found old StatCounter.tsx still exists as orphan, scaleFacts in trust.ts
+- Identified productFamilyCount = 6 from products.ts
+- Confirmed all 3 logo files (header, footer, logo-2026) have checkerboard baked in
+- Used VLM to verify checkerboard pattern in all 2026 logo PNGs
+- Created transparent logo master from source blue-logo-raw.png using Pillow
+- Navy background removal with soft alpha thresholding (BG_THRESHOLD=38, FG_THRESHOLD=55)
+- Created derivatives: header-2026.png (760x364), footer-2026.png, logo-2026.png, symbol-2026.png
+- Regenerated favicon.ico, icon.png, apple-icon.png from clean symbol on navy background
+- Regenerated OG image and Twitter image with clean transparent logo on navy
+- Regenerated PWA icons (192, 512, maskable variants)
+- Added CompanyStatistic type, StatIconKey type, companyStatistics array to trust.ts
+- Rewrote StatisticsStrip.tsx: stats style with Globe/Users/LayoutGrid/ShieldCheck icons
+- Updated HomeClient.tsx: import StatisticsStrip (was TechnicalProductStrip)
+- Grid layout: grid-cols-2 lg:grid-cols-4 (2x2 mobile/tablet, 4-col desktop)
+- Subtle footnote added: "Countries served and customer figures are company-stated."
+- Verified at all breakpoints: 1440x900, 1280x800, 768x1024, 390x844, 360x800
+- Header: no checkerboard, logo clean on navy
+- Footer: no checkerboard, logo clean on warm-white
+- Stats strip: 11+, 1,000+, 6, 3 — correct values, compact layout
+- Lint: clean pass
+- Committed as f4bae3c
+
+Stage Summary:
+- Transparent logo master: public/brand/bharat-electrosafe-logo-transparent-2026.png
+- All logo derivatives regenerated with true alpha=0 transparency
+- Homepage strip restored with defensible stats (11+, 1,000+, dynamic 6, 3)
+- Technical Class A/B/C strip removed from homepage only
+- Push requires GitHub token (not available in this environment)
