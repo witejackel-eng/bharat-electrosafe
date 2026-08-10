@@ -1364,3 +1364,29 @@ Stage Summary:
 - Homepage strip restored with defensible stats (11+, 1,000+, dynamic 6, 3)
 - Technical Class A/B/C strip removed from homepage only
 - Push requires GitHub token (not available in this environment)
+
+---
+Task ID: 2
+Agent: main
+Task: Final logo placement in header + footer
+
+Work Log:
+- Created rollback tag `previous_logo_layout` at HEAD before changes
+- Inspected new approved logo: ChatGPT Image Aug 10, 2026, 09_32_32 PM.png
+- Logo already had proper alpha transparency (88.8% transparent pixels)
+- Cleaned RGB of transparent pixels, cropped to bounding box with padding
+- Created master: /public/brand/bharat-electrosafe-logo-final.png (1520x1024, 460KB)
+- Created derivatives: logo-header.png, logo-footer.png (same master, Retina-ready)
+- Updated Header.tsx: LOGO_SRC → logo-final.png, LOGO_WIDTH=1520, LOGO_HEIGHT=1024
+- Updated Footer.tsx: desktop + mobile logo src → logo-final.png, width=1520, height=1024
+- Updated BESBrands.tsx: logo path → logo-final.png
+- Updated structured-data.ts: JSON-LD logo → logo-final.png
+- Verified no stale -2026 references remain in src/
+- Build passes: 26 pages, no errors
+- Committed as 02749ca, pushed to main
+
+Stage Summary:
+- Final approved logo placed in header, footer, mobile drawer, BESBrands, JSON-LD
+- Transparent PNG, no checkerboard/box artifacts
+- 1520x1024 source for 3x Retina sharpness at 190px rendered width
+- All code references point to single master: bharat-electrosafe-logo-final.png
