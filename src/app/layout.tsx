@@ -5,6 +5,8 @@ import { company } from "@/data/company";
 import { siteUrl, deploymentOrigin, allowIndexing } from "@/lib/site-url";
 import { siteOgImage, siteTwitterImage } from "@/lib/social-image";
 import { HomepageStructuredData } from "@/components/structured-data";
+import { CompareProvider } from "@/components/products/CompareContext";
+import { CompareBar } from "@/components/products/CompareBar";
 
 // Variable-font configuration — a single Manrope variable font file replaces
 // the previous five static weights (400/500/600/700/800). This reduces font
@@ -148,7 +150,14 @@ export default function RootLayout({
         <noscript>
           <style dangerouslySetInnerHTML={{ __html: '.reveal-up,.stagger-reveal{opacity:1!important;transform:none!important}.stagger-reveal>*{opacity:1!important;transform:none!important}' }} />
         </noscript>
-        {children}
+        <CompareProvider>
+          {children}
+          {/* Sticky bottom compare tray — renders only when at least one
+              product is selected for comparison. Self-contained: manages
+              its own modal open state. Sits above the MobileStickyCTA on
+              mobile (bottom-14) and flush to the bottom on desktop. */}
+          <CompareBar />
+        </CompareProvider>
         {/* Toaster removed from root layout — useToast() is never called
             anywhere in the application. The contact form uses inline
             success/error messages, not toasts. Mounting <Toaster /> globally

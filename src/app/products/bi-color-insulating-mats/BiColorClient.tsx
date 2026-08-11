@@ -6,6 +6,7 @@ import { biColourVisuals } from '@/data/product-visuals';
 import { SectionShell } from '@/components/ui/SectionShell';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import Image from 'next/image';
+import { useRecentlyViewed } from '@/hooks/use-recently-viewed';
 import type { ProductData } from '@/data/products';
 
 /**
@@ -16,6 +17,12 @@ import type { ProductData } from '@/data/products';
  * the cross-section goes in this subsection — NOT as the hero or card image.
  */
 export default function BiColorClient({ product }: { product: ProductData }) {
+  const { addToRecentlyViewed } = useRecentlyViewed();
+
+  useEffect(() => {
+    addToRecentlyViewed('bi-color-insulating-mats');
+  }, [addToRecentlyViewed]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {

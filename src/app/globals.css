@@ -1063,6 +1063,49 @@
     position: relative;
     background: var(--be-warm-white);
   }
+  /* Subtle decorative gradient accents in the hero — adds depth without
+     competing with the photograph. Purely decorative, hidden from
+     screen readers, and disabled in reduced-motion. */
+  .be-split-hero::before {
+    content: "";
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 50%;
+    height: 80%;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(244, 195, 19, 0.06) 0%,
+      transparent 60%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+  .be-split-hero::after {
+    content: "";
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 40%;
+    height: 70%;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(2, 31, 73, 0.03) 0%,
+      transparent 60%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+  .be-split-hero > * {
+    position: relative;
+    z-index: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .be-split-hero::before,
+    .be-split-hero::after {
+      display: none;
+    }
+  }
 
   /* ── Desktop / tablet-landscape (≥1024px): two-column split ── */
   .be-split-hero__inner {
@@ -1386,23 +1429,31 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0;
-    border-radius: 0;
-    background: none;
-    border: none;
-    box-shadow: none;
-    transition: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(var(--be-grey-200-rgb, 229, 231, 235), 0.5);
+    box-shadow: 0 1px 2px rgba(2, 31, 73, 0.03);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(4px);
   }
   .be-proof-badge:hover {
-    transform: none;
-    border-color: transparent;
-    box-shadow: none;
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--be-yellow-300);
+    box-shadow:
+      0 2px 4px rgba(2, 31, 73, 0.05),
+      0 0 0 3px rgba(244, 195, 19, 0.1);
   }
   .be-proof-badge__icon {
     color: var(--be-yellow-text);
     flex-shrink: 0;
     width: 1.25rem;
     height: 1.25rem;
+    transition: transform 0.25s ease;
+  }
+  .be-proof-badge:hover .be-proof-badge__icon {
+    transform: scale(1.1);
   }
   .be-proof-badge__label {
     font-size: 0.875rem;

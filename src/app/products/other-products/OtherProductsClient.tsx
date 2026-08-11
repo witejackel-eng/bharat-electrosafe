@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { otherProductsVisuals } from '@/data/product-visuals';
+import { useRecentlyViewed } from '@/hooks/use-recently-viewed';
 
 /* ── Breadcrumb items ── */
 
@@ -92,6 +93,12 @@ const assuranceItems = [
 ];
 
 export default function OtherProductsClient() {
+  const { addToRecentlyViewed } = useRecentlyViewed();
+
+  useEffect(() => {
+    addToRecentlyViewed('other-products');
+  }, [addToRecentlyViewed]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {

@@ -1,0 +1,928 @@
+     1→'use client';
+     2→
+     3→import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+     4→import Link from 'next/link';
+     5→import Image from 'next/image';
+     6→import { Zap, Droplets, Layers, Package, ChevronRight, Sheet, Cable, ShieldCheck, ArrowRight } from 'lucide-react';
+     7→import { Header } from '@/components/layout/Header';
+     8→import { Footer } from '@/components/layout/Footer';
+     9→import { BackToTop } from '@/components/ui/BackToTop';
+    10→import { MobileStickyCTA } from '@/components/ui/MobileStickyCTA';
+    11→import { Breadcrumb } from '@/components/ui/Breadcrumb';
+    12→import { Eyebrow } from '@/components/ui/Eyebrow';
+    13→import { PrimaryButton } from '@/components/ui/PrimaryButton';
+    14→import { SecondaryButton } from '@/components/ui/SecondaryButton';
+    15→import {
+    16→  productComparisonData,
+    17→  ProductComparisonRow,
+    18→} from '@/data/products';
+    19→import {
+    20→  hvVisuals,
+    21→  autoGlowVisuals,
+    22→  biColourVisuals,
+    23→  coloredStripVisuals,
+    24→  membraneVisuals,
+    25→  hydroSealVisuals,
+    26→  productVisuals,
+    27→} from '@/data/product-visuals';
+    28→
+    29→/* ────────────────────────────────────────────
+    30→   Extended comparison data — includes IEC, PVC, Other
+    31→   ──────────────────────────────────────────── */
+    32→
+    33→const extendedComparisonData: ProductComparisonRow[] = [
+    34→  ...productComparisonData,
+    35→  {
+    36→    name: 'International Insulating Mats',
+    37→    slug: 'international-iec-61111',
+    38→    primaryPurpose: 'Operator insulation for IEC markets',
+    39→    distinguishingFeature: 'IEC 61111:2009 Class 0–4 classification',
+    40→    typicalApplication: 'Export markets requiring IEC compliance',
+    41→    applicableStandard: 'IEC 61111:2009',
+    42→  },
+    43→  {
+    44→    name: 'PVC Flooring Solutions',
+    45→    slug: 'pvc-flooring-solutions',
+    46→    primaryPurpose: 'Industrial and commercial flooring',
+    47→    distinguishingFeature: 'Bharat Smart Floor — PVC flooring system',
+    48→    typicalApplication: 'Factories, electrical rooms and commercial spaces',
+    49→    applicableStandard: 'IS 3462:1986',
+    50→  },
+    51→  {
+    52→    name: 'Other Products',
+    53→    slug: 'other-products',
+    54→    primaryPurpose: 'Industrial rubber and ESD products',
+    55→    distinguishingFeature: 'Rubber Sheet, Hose Pipe, ESD Mat, Conveyor Belt',
+    56→    typicalApplication: 'General industrial and electrostatic-safe environments',
+    57→    applicableStandard: 'On request',
+    58→  },
+    59→];
+    60→
+    61→/* ────────────────────────────────────────────
+    62→   Category nav items for sticky navigator
+    63→   ──────────────────────────────────────────── */
+    64→
+    65→const CATEGORY_NAV_ITEMS = [
+    66→  { id: 'electrical-insulating-mats', label: 'Electrical Insulating Mats' },
+    67→  { id: 'waterproofing', label: 'Waterproofing' },
+    68→  { id: 'pvc-other', label: 'PVC Flooring' },
+    69→  { id: 'other-products-section', label: 'Other Products' },
+    70→  { id: 'compare-products', label: 'Compare' },
+    71→] as const;
+    72→
+    73→/* ────────────────────────────────────────────
+    74→   Domestic product card data
+    75→   ──────────────────────────────────────────── */
+    76→
+    77→interface DomesticProduct {
+    78→  name: string;
+    79→  href: string;
+    80→  description: string;
+    81→  imageSrc: string;
+    82→  imageAlt: string;
+    83→  objectFit: 'contain' | 'cover';
+    84→}
+    85→
+    86→const DOMESTIC_PRODUCTS: DomesticProduct[] = [
+    87→  {
+    88→    name: 'HV Insulating Mats',
+    89→    href: '/products/electrical-insulating-mats',
+    90→    description: 'Standard high-voltage insulating mats for operator protection near live equipment.',
+    91→    imageSrc: hvVisuals.card.src,
+    92→    imageAlt: hvVisuals.card.alt,
+    93→    objectFit: hvVisuals.card.fit,
+    94→  },
+    95→  {
+    96→    name: 'Auto Glow',
+    97→    href: '/products/auto-glow-reflective-band-insulating-mats',
+    98→    description: 'Insulating mats with reflective/glow visibility band for low-light and emergency conditions.',
+    99→    imageSrc: autoGlowVisuals.card.src,
+   100→    imageAlt: autoGlowVisuals.card.alt,
+   101→    objectFit: autoGlowVisuals.card.fit,
+   102→  },
+   103→  {
+   104→    name: 'Bi-Colour',
+   105→    href: '/products/bi-color-insulating-mats',
+   106→    description: 'Dual-colour insulating mats with visible layer differentiation for safety compliance.',
+   107→    imageSrc: biColourVisuals.card.src,
+   108→    imageAlt: biColourVisuals.card.alt,
+   109→    objectFit: biColourVisuals.card.fit,
+   110→  },
+   111→  {
+   112→    name: 'Colored Strip',
+   113→    href: '/products/coloured-strip-insulating-mats',
+   114→    description: 'Insulating mats with high-visibility coloured boundary strip for safe pathways.',
+   115→    imageSrc: coloredStripVisuals.card.src,
+   116→    imageAlt: coloredStripVisuals.card.alt,
+   117→    objectFit: coloredStripVisuals.card.fit,
+   118→  },
+   119→];
+   120→
+   121→/* ────────────────────────────────────────────
+   122→   Other products items
+   123→   ──────────────────────────────────────────── */
+   124→
+   125→const OTHER_PRODUCTS_ITEMS = [
+   126→  { name: 'Rubber Sheet', href: '/products/other-products#rubber-sheet', Icon: Sheet },
+   127→  { name: 'Rubber Hose Pipe', href: '/products/other-products#rubber-hose-pipe', Icon: Cable },
+   128→  { name: 'ESD Mat', href: '/products/other-products#esd-mat', Icon: ShieldCheck },
+   129→  { name: 'Conveyor Belt', href: '/products/other-products#conveyor-belt', Icon: Package },
+   130→] as const;
+   131→
+   132→/* ────────────────────────────────────────────
+   133→   Hero visual collage images
+   134→   ──────────────────────────────────────────── */
+   135→
+   136→const HERO_COLLAGE = [
+   137→  {
+   138→    src: hvVisuals.homePreview.src,
+   139→    alt: hvVisuals.homePreview.alt,
+   140→  },
+   141→  {
+   142→    src: membraneVisuals.homePreview.src,
+   143→    alt: membraneVisuals.homePreview.alt,
+   144→  },
+   145→  {
+   146→    src: hydroSealVisuals.homePreview.src,
+   147→    alt: hydroSealVisuals.homePreview.alt,
+   148→  },
+   149→  {
+   150→    src: '/brand/bharat-smart-floor-graphic.webp',
+   151→    alt: 'Bharat Smart Floor PVC flooring',
+   152→  },
+   153→] as const;
+   154→
+   155→/* ────────────────────────────────────────────
+   156→   Section 1: Product Range Hero (Split Layout)
+   157→   ──────────────────────────────────────────── */
+   158→
+   159→function ProductsHero() {
+   160→  return (
+   161→    <section className="bg-be-page-top-tint">
+   162→      <div className="container-site page-horizontal-padding py-10 md:py-12 lg:py-14">
+   163→        <div className="flex flex-col lg:flex-row lg:gap-12 gap-8 items-center">
+   164→          {/* Left — text (~55%) */}
+   165→          <div className="w-full lg:w-[55%]">
+   166→            <div className="mb-4">
+   167→              <Eyebrow>PRODUCT RANGE</Eyebrow>
+   168→              <div className="mt-2 h-0.5 bg-be-yellow-500 rounded animate-slide-in" style={{ width: '80px' }} />
+   169→            </div>
+   170→            <h1 className="text-products-hero-h1 text-be-charcoal-950 mb-4">
+   171→              Electrical safety, waterproofing, PVC flooring and industrial products
+   172→            </h1>
+   173→            <p className="text-body-large text-be-grey-650 mb-6 max-w-xl">
+   174→              Four product groups — from domestic insulating mats to waterproofing
+   175→              membranes, PVC flooring and industrial rubber products — each built
+   176→              around a specific protection or performance requirement.
+   177→            </p>
+   178→            <div className="flex flex-wrap gap-3">
+   179→              <PrimaryButton href="#electrical-insulating-mats" size="lg">
+   180→                Explore Products
+   181→              </PrimaryButton>
+   182→              <SecondaryButton href="/contact-us?type=technical-guidance">
+   183→                Ask for Technical Guidance
+   184→              </SecondaryButton>
+   185→            </div>
+   186→          </div>
+   187→
+   188→          {/* Right — visual collage (~45%) */}
+   189→          <div className="w-full lg:w-[45%]">
+   190→            <div className="grid grid-cols-2 gap-2.5 rounded-xl overflow-hidden">
+   191→              {HERO_COLLAGE.map((img, i) => (
+   192→                <div key={i} className="relative aspect-[4/3] bg-[#f8f8f6] overflow-hidden rounded-lg">
+   193→                  <Image
+   194→                    src={img.src}
+   195→                    alt={img.alt}
+   196→                    fill
+   197→                    className="object-cover"
+   198→                    sizes="(max-width: 1024px) 50vw, 22vw"
+   199→                  />
+   200→                </div>
+   201→              ))}
+   202→            </div>
+   203→          </div>
+   204→        </div>
+   205→      </div>
+   206→    </section>
+   207→  );
+   208→}
+   209→
+   210→/* ────────────────────────────────────────────
+   211→   Section 2: Sticky Product Category Navigator
+   212→   ──────────────────────────────────────────── */
+   213→
+   214→function CategoryNavigator({ activeId }: { activeId: string }) {
+   215→  const handleClick = useCallback((id: string) => {
+   216→    const el = document.getElementById(id);
+   217→    if (el) {
+   218→      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+   219→    }
+   220→  }, []);
+   221→
+   222→  return (
+   223→    <nav
+   224→      aria-label="Product categories"
+   225→      className="bg-be-white border-b border-be-grey-150"
+   226→    >
+   227→      <div className="container-site page-horizontal-padding">
+   228→        <div className="flex items-center gap-1 h-[52px] overflow-x-auto scrollbar-none -mx-1 px-1">
+   229→          {CATEGORY_NAV_ITEMS.map((item) => {
+   230→            const isActive = activeId === item.id;
+   231→            return (
+   232→              <button
+   233→                key={item.id}
+   234→                onClick={() => handleClick(item.id)}
+   235→                className={`
+   236→                  shrink-0 px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200
+   237→                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500
+   238→                  ${isActive
+   239→                    ? 'bg-be-yellow-500 text-be-charcoal-950'
+   240→                    : 'text-be-navy-800 hover:text-be-charcoal-950 hover:bg-be-grey-150'
+   241→                  }
+   242→                `}
+   243→                aria-current={isActive ? 'true' : undefined}
+   244→              >
+   245→                {item.label}
+   246→              </button>
+   247→            );
+   248→          })}
+   249→        </div>
+   250→      </div>
+   251→    </nav>
+   252→  );
+   253→}
+   254→
+   255→/* ────────────────────────────────────────────
+   256→   Section 3: Domestic Mats Feature Card
+   257→   ──────────────────────────────────────────── */
+   258→
+   259→function DomesticFeatureCard({ product }: { product: DomesticProduct }) {
+   260→  return (
+   261→    <Link
+   262→      href={product.href}
+   263→      className="group relative flex flex-col rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.09)] hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
+   264→    >
+   265→      {/* Image area — 16:10 */}
+   266→      <div className="relative w-full overflow-hidden bg-[#f8f8f6] aspect-[16/10]">
+   267→        <Image
+   268→          src={product.imageSrc}
+   269→          alt={product.imageAlt}
+   270→          fill
+   271→          className={`${product.objectFit === 'contain' ? 'object-contain p-5' : 'object-cover'}`}
+   272→          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+   273→        />
+   274→        <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/5 transition-colors duration-300" />
+   275→      </div>
+   276→      {/* Text content */}
+   277→      <div className="flex flex-col gap-1.5 p-5 flex-1">
+   278→        <h3 className="text-xl font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
+   279→          {product.name}
+   280→        </h3>
+   281→        <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed line-clamp-2">
+   282→          {product.description}
+   283→        </p>
+   284→        <div className="mt-auto pt-3 text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors inline-flex items-center gap-1">
+   285→          View Product <ChevronRight className="size-3.5" aria-hidden="true" />
+   286→        </div>
+   287→      </div>
+   288→    </Link>
+   289→  );
+   290→}
+   291→
+   292→/* ────────────────────────────────────────────
+   293→   Section 3: Electrical Insulating Mats
+   294→   ──────────────────────────────────────────── */
+   295→
+   296→function ElectricalInsulatingMatsSection() {
+   297→  return (
+   298→    <section id="electrical-insulating-mats" className="bg-be-white scroll-mt-24">
+   299→      <div className="container-site page-horizontal-padding py-16 lg:py-20">
+   300→        {/* Section heading */}
+   301→        <div className="mb-10 lg:mb-12">
+   302→          <div className="flex items-baseline gap-4 mb-2">
+   303→            <span className="text-4xl font-bold text-be-yellow-500/60 tabular-nums">01</span>
+   304→            <Eyebrow>ELECTRICAL INSULATING MATS</Eyebrow>
+   305→          </div>
+   306→          <p className="text-be-grey-650 text-base max-w-2xl mt-3">
+   307→            Operator protection near live electrical equipment — domestic IS 15652:2006 and international IEC 61111:2009 compliant insulating mats.
+   308→          </p>
+   309→        </div>
+   310→
+   311→        {/* Domestic Mats */}
+   312→        <div className="mb-12">
+   313→          <div className="flex items-center gap-3 mb-5">
+   314→            <div className="h-0.5 w-6 bg-be-yellow-500 rounded" aria-hidden="true" />
+   315→            <h3 className="text-sm font-semibold text-be-charcoal-950 uppercase tracking-wider">
+   316→              Domestic Mats
+   317→            </h3>
+   318→            <span className="text-xs font-medium text-be-grey-650 bg-be-grey-150 px-2.5 py-0.5 rounded-full">
+   319→              IS 15652:2006
+   320→            </span>
+   321→          </div>
+   322→          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
+   323→            {DOMESTIC_PRODUCTS.map((product) => (
+   324→              <DomesticFeatureCard key={product.href} product={product} />
+   325→            ))}
+   326→          </div>
+   327→        </div>
+   328→
+   329→        {/* International / Global — ONE premium feature panel */}
+   330→        <div className="rounded-2xl border border-be-brand-blue/10 bg-[#f0f6fc] overflow-hidden">
+   331→          <div className="flex flex-col lg:flex-row">
+   332→            {/* Left — text */}
+   333→            <div className="flex-1 p-6 lg:p-8">
+   334→              <div className="flex items-center gap-3 mb-3">
+   335→                <div className="h-0.5 w-6 bg-be-brand-blue rounded" aria-hidden="true" />
+   336→                <h3 className="text-sm font-semibold text-be-navy-800 uppercase tracking-wider">
+   337→                  International / Global
+   338→                </h3>
+   339→                <span className="text-xs font-medium text-be-navy-700 bg-be-brand-blue/10 px-2.5 py-0.5 rounded-full">
+   340→                  IEC 61111:2009
+   341→                </span>
+   342→              </div>
+   343→              <p className="text-be-grey-650 text-base mb-5 max-w-md">
+   344→                IEC 61111:2009 compliant insulating mats for export and international projects — Class 0 through Class 4.
+   345→              </p>
+   346→              <div className="flex flex-col gap-2 mb-6">
+   347→                <span className="text-sm font-medium text-be-charcoal-950">Products available:</span>
+   348→                <ul className="flex flex-col gap-1.5 text-sm text-be-grey-650">
+   349→                  <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-be-brand-blue" aria-hidden="true" /> HV Insulating Mats</li>
+   350→                  <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-be-brand-blue" aria-hidden="true" /> Auto Glow</li>
+   351→                  <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-be-brand-blue" aria-hidden="true" /> Bi-Colour</li>
+   352→                </ul>
+   353→              </div>
+   354→              <Link
+   355→                href="/products/international-iec-61111"
+   356→                className="inline-flex items-center gap-2 text-sm font-semibold text-be-navy-800 hover:text-be-brand-blue transition-colors group/link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded"
+   357→              >
+   358→                Explore IEC Range
+   359→                <ChevronRight className="size-4 group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true" />
+   360→              </Link>
+   361→            </div>
+   362→            {/* Right — IEC visual */}
+   363→            <div className="lg:w-[45%] relative min-h-[200px] lg:min-h-0">
+   364→              <div className="relative w-full h-full min-h-[200px] lg:min-h-[280px] bg-[#e8f0fa]">
+   365→                <Image
+   366→                  src="/media/products/international-iec/iec-61111.webp"
+   367→                  alt="IEC 61111:2009 compliant insulating mat with international markings"
+   368→                  fill
+   369→                  className="object-contain p-6"
+   370→                  sizes="(max-width: 1024px) 100vw, 40vw"
+   371→                />
+   372→              </div>
+   373→            </div>
+   374→          </div>
+   375→        </div>
+   376→      </div>
+   377→    </section>
+   378→  );
+   379→}
+   380→
+   381→/* ────────────────────────────────────────────
+   382→   Section 4: Waterproofing Solutions
+   383→   ──────────────────────────────────────────── */
+   384→
+   385→function WaterproofingSection() {
+   386→  return (
+   387→    <section id="waterproofing" className="bg-[#faf8f2] scroll-mt-24">
+   388→      <div className="container-site page-horizontal-padding py-16 lg:py-20">
+   389→        {/* Section heading */}
+   390→        <div className="mb-10 lg:mb-12">
+   391→          <div className="flex items-baseline gap-4 mb-2">
+   392→            <span className="text-4xl font-bold text-be-yellow-500/60 tabular-nums">02</span>
+   393→            <Eyebrow>WATER PROOFING SOLUTIONS</Eyebrow>
+   394→          </div>
+   395→          <p className="text-be-grey-650 text-base max-w-2xl mt-3">
+   396→            Waterproofing, containment and construction-joint sealing for civil infrastructure and environmental projects.
+   397→          </p>
+   398→        </div>
+   399→
+   400→        {/* Two large feature cards */}
+   401→        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
+   402→          {/* Geo Membrane */}
+   403→          <Link
+   404→            href="/products/bharat-membrane"
+   405→            className="group relative flex flex-col rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.09)] hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
+   406→          >
+   407→            <div className="relative w-full overflow-hidden bg-[#f8f8f6] aspect-[16/10]">
+   408→              <Image
+   409→                src={membraneVisuals.card.src}
+   410→                alt={membraneVisuals.card.alt}
+   411→                fill
+   412→                className="object-cover"
+   413→                sizes="(max-width: 768px) 100vw, 50vw"
+   414→              />
+   415→              <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/5 transition-colors duration-300" />
+   416→            </div>
+   417→            <div className="flex flex-col gap-1.5 p-5 flex-1">
+   418→              <span className="text-xs font-medium text-be-grey-650">BharatMembrane</span>
+   419→              <h3 className="text-xl font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
+   420→                Geo Membrane Lining
+   421→              </h3>
+   422→              <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed line-clamp-2">
+   423→                Engineered PVC geo-membrane for waterproofing, lining and containment in tunnels, civil works and environmental projects.
+   424→              </p>
+   425→              <div className="mt-auto pt-3 text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors inline-flex items-center gap-1">
+   426→                View Product <ChevronRight className="size-3.5" aria-hidden="true" />
+   427→              </div>
+   428→            </div>
+   429→          </Link>
+   430→
+   431→          {/* Water Stop Seal */}
+   432→          <Link
+   433→            href="/products/bharat-hydro-seal"
+   434→            className="group relative flex flex-col rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.09)] hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
+   435→          >
+   436→            <div className="relative w-full overflow-hidden bg-[#f8f8f6] aspect-[16/10]">
+   437→              <Image
+   438→                src={hydroSealVisuals.card.src}
+   439→                alt={hydroSealVisuals.card.alt}
+   440→                fill
+   441→                className="object-contain p-6"
+   442→                sizes="(max-width: 768px) 100vw, 50vw"
+   443→              />
+   444→              <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/5 transition-colors duration-300" />
+   445→            </div>
+   446→            <div className="flex flex-col gap-1.5 p-5 flex-1">
+   447→              <span className="text-xs font-medium text-be-grey-650">Bharat Hydro Seal</span>
+   448→              <h3 className="text-xl font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
+   449→                Water Stop Seal
+   450→              </h3>
+   451→              <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed line-clamp-2">
+   452→                PVC water-stop profile for construction joints in concrete water-retaining structures.
+   453→              </p>
+   454→              <div className="mt-auto pt-3 text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors inline-flex items-center gap-1">
+   455→                View Product <ChevronRight className="size-3.5" aria-hidden="true" />
+   456→              </div>
+   457→            </div>
+   458→          </Link>
+   459→        </div>
+   460→      </div>
+   461→    </section>
+   462→  );
+   463→}
+   464→
+   465→/* ────────────────────────────────────────────
+   466→   Section 5: PVC Flooring + Other Products (Combined)
+   467→   ──────────────────────────────────────────── */
+   468→
+   469→function PvcAndOtherSection() {
+   470→  return (
+   471→    <section id="pvc-other" className="bg-be-white scroll-mt-24">
+   472→      <div className="container-site page-horizontal-padding py-16 lg:py-20">
+   473→        {/* Section heading */}
+   474→        <div className="mb-10 lg:mb-12">
+   475→          <div className="flex items-baseline gap-4 mb-2">
+   476→            <span className="text-4xl font-bold text-be-yellow-500/60 tabular-nums">03</span>
+   477→            <Eyebrow>INDUSTRIAL &amp; FLOORING SOLUTIONS</Eyebrow>
+   478→          </div>
+   479→        </div>
+   480→
+   481→        {/* Two panels */}
+   482→        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
+   483→          {/* PVC Flooring Panel */}
+   484→          <div className="rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+   485→            {/* Visual area */}
+   486→            <div className="relative w-full aspect-[16/9] bg-[#f8f8f6] overflow-hidden">
+   487→              <Image
+   488→                src="/brand/bharat-smart-floor-graphic.webp"
+   489→                alt="Bharat Smart Floor PVC flooring solutions"
+   490→                fill
+   491→                className="object-contain p-8"
+   492→                sizes="(max-width: 768px) 100vw, 50vw"
+   493→              />
+   494→            </div>
+   495→            <div className="p-5">
+   496→              <h3 className="text-xl font-semibold text-be-charcoal-950 mb-1.5">
+   497→                PVC Flooring Solutions
+   498→              </h3>
+   499→              <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed mb-1">
+   500→                Bharat Smart Floor — industrial, electrical-room and commercial PVC flooring.
+   501→              </p>
+   502→              <span className="text-xs font-medium text-be-grey-650 bg-be-grey-150 px-2.5 py-0.5 rounded-full inline-block mb-4">
+   503→                IS 3462:1986
+   504→              </span>
+   505→              <div>
+   506→                <Link
+   507→                  href="/products/pvc-flooring-solutions"
+   508→                  className="inline-flex items-center gap-2 text-sm font-semibold text-be-yellow-text hover:text-be-yellow-text-hover transition-colors group/link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded"
+   509→                >
+   510→                  Explore Flooring
+   511→                  <ChevronRight className="size-4 group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true" />
+   512→                </Link>
+   513→              </div>
+   514→            </div>
+   515→          </div>
+   516→
+   517→          {/* Other Products Panel */}
+   518→          <div className="rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)] flex flex-col">
+   519→            <div className="p-5 flex-1 flex flex-col">
+   520→              {/* Top accent */}
+   521→              <div className="h-1 w-full bg-gradient-to-r from-be-yellow-500 via-be-yellow-400 to-be-yellow-500 rounded-t mb-5 -mt-5 -mx-5 w-[calc(100%+40px)]" aria-hidden="true" />
+   522→              <h3 className="text-xl font-semibold text-be-charcoal-950 mb-1.5">
+   523→                Other Products
+   524→              </h3>
+   525→              <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed mb-5">
+   526→                Industrial rubber and electrostatic-discharge products for general and specialist environments.
+   527→              </p>
+   528→              {/* Icon list */}
+   529→              <div className="flex flex-col gap-3 mb-6 flex-1">
+   530→                {OTHER_PRODUCTS_ITEMS.map((item) => (
+   531→                  <Link
+   532→                    key={item.name}
+   533→                    href={item.href}
+   534→                    className="flex items-center gap-3 text-sm font-medium text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors group/item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded"
+   535→                  >
+   536→                    <span className="flex items-center justify-center size-8 rounded-lg bg-be-grey-150 text-be-grey-650 group-hover/item:bg-be-yellow-50 group-hover/item:text-be-yellow-text transition-colors">
+   537→                      <item.Icon className="size-4" aria-hidden="true" />
+   538→                    </span>
+   539→                    {item.name}
+   540→                  </Link>
+   541→                ))}
+   542→              </div>
+   543→              <div>
+   544→                <Link
+   545→                  href="/products/other-products"
+   546→                  className="inline-flex items-center gap-2 text-sm font-semibold text-be-yellow-text hover:text-be-yellow-text-hover transition-colors group/link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded"
+   547→                >
+   548→                  Explore Products
+   549→                  <ChevronRight className="size-4 group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true" />
+   550→                </Link>
+   551→              </div>
+   552→            </div>
+   553→          </div>
+   554→        </div>
+   555→      </div>
+   556→    </section>
+   557→  );
+   558→}
+   559→
+   560→/* ────────────────────────────────────────────
+   561→   Section 6: Product Comparison (Redesigned)
+   562→   ──────────────────────────────────────────── */
+   563→
+   564→function ComparisonSection() {
+   565→  const [filter, setFilter] = useState<string>('all');
+   566→
+   567→  const filteredData = useMemo(() => {
+   568→    if (filter === 'all') return extendedComparisonData;
+   569→    if (filter === 'electrical') return extendedComparisonData.filter((r) =>
+   570→      r.slug.includes('insulating') || r.slug === 'international-iec-61111'
+   571→    );
+   572→    if (filter === 'waterproofing') return extendedComparisonData.filter((r) =>
+   573→      r.slug === 'bharat-membrane' || r.slug === 'bharat-hydro-seal'
+   574→    );
+   575→    if (filter === 'pvc') return extendedComparisonData.filter((r) =>
+   576→      r.slug === 'pvc-flooring-solutions'
+   577→    );
+   578→    if (filter === 'other') return extendedComparisonData.filter((r) =>
+   579→      r.slug === 'other-products'
+   580→    );
+   581→    return extendedComparisonData;
+   582→  }, [filter]);
+   583→
+   584→  const filterItems = [
+   585→    { key: 'all', label: 'All' },
+   586→    { key: 'electrical', label: 'Electrical Mats' },
+   587→    { key: 'waterproofing', label: 'Waterproofing' },
+   588→    { key: 'pvc', label: 'PVC' },
+   589→    { key: 'other', label: 'Other' },
+   590→  ] as const;
+   591→
+   592→  return (
+   593→    <section id="compare-products" className="bg-[#f5f6f8] scroll-mt-24">
+   594→      <div className="container-site page-horizontal-padding py-16 lg:py-20">
+   595→        {/* Section heading */}
+   596→        <div className="mb-8">
+   597→          <Eyebrow>COMPARE PRODUCTS</Eyebrow>
+   598→          <h2 className="text-section-h2 text-be-charcoal-950 mt-2 mb-2">
+   599→            Find the right product for your application.
+   600→          </h2>
+   601→          <p className="text-be-grey-650 text-base max-w-2xl">
+   602→            Compare features and applications across all product groups.
+   603→          </p>
+   604→        </div>
+   605→
+   606→        {/* Category filter controls */}
+   607→        <div className="flex flex-wrap gap-2 mb-6" role="group" aria-label="Filter comparison by category">
+   608→          {filterItems.map((item) => (
+   609→            <button
+   610→              key={item.key}
+   611→              onClick={() => setFilter(item.key)}
+   612→              className={`
+   613→                px-3.5 py-1.5 text-sm font-medium rounded-lg transition-colors duration-200
+   614→                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500
+   615→                ${filter === item.key
+   616→                  ? 'bg-be-navy-800 text-be-white'
+   617→                  : 'bg-be-white text-be-charcoal-800 hover:bg-be-grey-150 border border-be-grey-250'
+   618→                }
+   619→              `}
+   620→            >
+   621→              {item.label}
+   622→            </button>
+   623→          ))}
+   624→        </div>
+   625→
+   626→        {/* Desktop: accessible semantic table */}
+   627→        <div className="hidden md:block overflow-x-auto rounded-xl border border-be-grey-250">
+   628→          <table className="w-full border-collapse text-[0.9375rem]">
+   629→            <caption className="sr-only">
+   630→              Comparison of product families across primary purpose,
+   631→              distinguishing feature, typical application and applicable
+   632→              standard.
+   633→            </caption>
+   634→            <thead>
+   635→              <tr className="bg-be-navy-800">
+   636→                <th scope="col" className="text-left px-5 py-3.5 font-semibold text-be-white">
+   637→                  Product
+   638→                </th>
+   639→                <th scope="col" className="text-left px-5 py-3.5 font-semibold text-be-white">
+   640→                  Primary Purpose
+   641→                </th>
+   642→                <th scope="col" className="text-left px-5 py-3.5 font-semibold text-be-white">
+   643→                  Distinguishing Feature
+   644→                </th>
+   645→                <th scope="col" className="text-left px-5 py-3.5 font-semibold text-be-white">
+   646→                  Typical Application
+   647→                </th>
+   648→                <th scope="col" className="text-left px-5 py-3.5 font-semibold text-be-white">
+   649→                  Standard
+   650→                </th>
+   651→              </tr>
+   652→            </thead>
+   653→            <tbody>
+   654→              {filteredData.map((row, i) => (
+   655→                <tr
+   656→                  key={row.slug}
+   657→                  className={`${i % 2 === 0 ? 'bg-be-white' : 'bg-[#f9fafb]'} hover:bg-be-yellow-50/50 transition-colors`}
+   658→                >
+   659→                  <th scope="row" className="text-left px-5 py-3.5 font-semibold text-be-charcoal-950 border-r border-be-grey-150">
+   660→                    <Link
+   661→                      href={`/products/${row.slug}`}
+   662→                      className="hover:text-be-yellow-text-hover transition-colors underline-offset-2 hover:underline"
+   663→                    >
+   664→                      {row.name}
+   665→                    </Link>
+   666→                  </th>
+   667→                  <td className="px-5 py-3.5 text-be-charcoal-800">
+   668→                    {row.primaryPurpose}
+   669→                  </td>
+   670→                  <td className="px-5 py-3.5 text-be-charcoal-800">
+   671→                    {row.distinguishingFeature}
+   672→                  </td>
+   673→                  <td className="px-5 py-3.5 text-be-charcoal-800">
+   674→                    {row.typicalApplication}
+   675→                  </td>
+   676→                  <td className="px-5 py-3.5">
+   677→                    <span className="inline-block text-xs font-medium bg-be-grey-150 text-be-charcoal-800 px-2.5 py-1 rounded-md">
+   678→                      {row.applicableStandard}
+   679→                    </span>
+   680→                  </td>
+   681→                </tr>
+   682→              ))}
+   683→            </tbody>
+   684→          </table>
+   685→        </div>
+   686→
+   687→        {/* Mobile: stacked comparison cards */}
+   688→        <div className="md:hidden flex flex-col gap-4">
+   689→          {filteredData.map((row) => (
+   690→            <Link
+   691→              key={row.slug}
+   692→              href={`/products/${row.slug}`}
+   693→              className="block rounded-xl border border-be-grey-250 bg-be-white p-5 hover:bg-be-yellow-50 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
+   694→            >
+   695→              <h3 className="text-lg font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors mb-3">
+   696→                {row.name}
+   697→              </h3>
+   698→              <div className="flex flex-col gap-2.5 text-[0.9375rem]">
+   699→                <div className="flex gap-2">
+   700→                  <span className="text-be-grey-650 font-medium min-w-[100px]">Purpose:</span>
+   701→                  <span className="text-be-charcoal-800">{row.primaryPurpose}</span>
+   702→                </div>
+   703→                <div className="flex gap-2">
+   704→                  <span className="text-be-grey-650 font-medium min-w-[100px]">Feature:</span>
+   705→                  <span className="text-be-charcoal-800">{row.distinguishingFeature}</span>
+   706→                </div>
+   707→                <div className="flex gap-2">
+   708→                  <span className="text-be-grey-650 font-medium min-w-[100px]">Application:</span>
+   709→                  <span className="text-be-charcoal-800">{row.typicalApplication}</span>
+   710→                </div>
+   711→                <div className="flex gap-2 items-center">
+   712→                  <span className="text-be-grey-650 font-medium min-w-[100px]">Standard:</span>
+   713→                  <span className="inline-block text-xs font-medium bg-be-grey-150 text-be-charcoal-800 px-2.5 py-1 rounded-md">
+   714→                    {row.applicableStandard}
+   715→                  </span>
+   716→                </div>
+   717→              </div>
+   718→            </Link>
+   719→          ))}
+   720→        </div>
+   721→      </div>
+   722→    </section>
+   723→  );
+   724→}
+   725→
+   726→/* ────────────────────────────────────────────
+   727→   Section 7: Selection Guide (2×2 Decision Grid)
+   728→   ──────────────────────────────────────────── */
+   729→
+   730→function SelectionGuideSection() {
+   731→  const cards = [
+   732→    {
+   733→      number: '01',
+   734→      eyebrow: 'ELECTRICAL SAFETY',
+   735→      heading: 'Electrical Insulating Mats',
+   736→      lines: [
+   737→        <>Domestic requirements: <strong className="text-be-charcoal-950">IS 15652:2006</strong></>,
+   738→        <>International/export: <strong className="text-be-charcoal-950">IEC 61111:2009</strong></>,
+   739→      ],
+   740→      Icon: Zap,
+   741→    },
+   742→    {
+   743→      number: '02',
+   744→      eyebrow: 'WATERPROOFING',
+   745→      heading: 'Water Proofing Solutions',
+   746→      lines: [
+   747→        <>Geo Membrane: lining / containment applications</>,
+   748→        <>Water Stop: construction-joint water stopping</>,
+   749→      ],
+   750→      Icon: Droplets,
+   751→    },
+   752→    {
+   753→      number: '03',
+   754→      eyebrow: 'PVC FLOORING',
+   755→      heading: 'PVC Flooring Solutions',
+   756→      lines: [
+   757→        <>Industrial / electrical / commercial flooring use</>,
+   758→      ],
+   759→      Icon: Layers,
+   760→    },
+   761→    {
+   762→      number: '04',
+   763→      eyebrow: 'OTHER PRODUCTS',
+   764→      heading: 'Other Products',
+   765→      lines: [
+   766→        <>Rubber Sheet, Rubber Hose Pipe, ESD Mat, Conveyor Belt</>,
+   767→      ],
+   768→      Icon: Package,
+   769→    },
+   770→  ] as const;
+   771→
+   772→  return (
+   773→    <section className="bg-be-warm-white">
+   774→      <div className="container-site page-horizontal-padding py-16 lg:py-20">
+   775→        {/* Section heading */}
+   776→        <div className="mb-8">
+   777→          <Eyebrow>HOW TO CHOOSE</Eyebrow>
+   778→          <h2 className="text-section-h2 text-be-charcoal-950 mt-2 mb-2">
+   779→            Which product do I need?
+   780→          </h2>
+   781→        </div>
+   782→
+   783→        {/* 2×2 Decision grid */}
+   784→        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
+   785→          {cards.map((card) => (
+   786→            <div
+   787→              key={card.number}
+   788→              className="rounded-2xl border border-be-grey-250 bg-be-white p-5 lg:p-6"
+   789→            >
+   790→              <div className="flex items-center gap-3 mb-3">
+   791→                <span className="text-xl font-bold text-be-yellow-500/60 tabular-nums">{card.number}</span>
+   792→                <span className="text-[0.75rem] uppercase tracking-wider text-be-grey-650 font-semibold">
+   793→                  {card.eyebrow}
+   794→                </span>
+   795→              </div>
+   796→              <div className="flex items-center gap-2.5 mb-3">
+   797→                <span className="flex items-center justify-center size-7 rounded-lg bg-be-grey-150 text-be-grey-650">
+   798→                  <card.Icon className="size-4" aria-hidden="true" />
+   799→                </span>
+   800→                <h3 className="text-lg font-semibold text-be-charcoal-950">{card.heading}</h3>
+   801→              </div>
+   802→              <ul className="flex flex-col gap-1.5 text-[0.9375rem] text-be-grey-650">
+   803→                {card.lines.map((line, i) => (
+   804→                  <li key={i} className="flex items-start gap-2">
+   805→                    <span className="text-be-yellow-text mt-1.5" aria-hidden="true">•</span>
+   806→                    <span className="leading-relaxed">{line}</span>
+   807→                  </li>
+   808→                ))}
+   809→              </ul>
+   810→            </div>
+   811→          ))}
+   812→        </div>
+   813→
+   814→        {/* CTA */}
+   815→        <div className="mt-8 text-center">
+   816→          <p className="text-be-grey-650 text-base mb-3">Still unsure?</p>
+   817→          <Link
+   818→            href="/contact-us?type=technical-guidance"
+   819→            className="inline-flex items-center gap-2 text-sm font-semibold text-be-yellow-text hover:text-be-yellow-text-hover transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded"
+   820→          >
+   821→            Ask our technical team
+   822→            <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
+   823→          </Link>
+   824→        </div>
+   825→      </div>
+   826→    </section>
+   827→  );
+   828→}
+   829→
+   830→/* ────────────────────────────────────────────
+   831→   Section 8: Technical Guidance CTA (Compact)
+   832→   ──────────────────────────────────────────── */
+   833→
+   834→function TechnicalGuidanceCTA() {
+   835→  return (
+   836→    <section className="bg-be-navy-800">
+   837→      <div className="container-site page-horizontal-padding py-10 lg:py-12">
+   838→        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+   839→          <div className="max-w-xl">
+   840→            <h2 className="text-xl lg:text-2xl font-semibold text-be-white mb-2">
+   841→              Not sure which product or standard applies?
+   842→            </h2>
+   843→            <p className="text-[0.9375rem] text-be-white/80 leading-relaxed">
+   844→              Our technical team can help identify the appropriate product, standard and configuration for your application.
+   845→            </p>
+   846→          </div>
+   847→          <div className="flex flex-wrap gap-3 shrink-0">
+   848→            <PrimaryButton href="/contact-us?type=technical-guidance" size="lg">
+   849→              Request Technical Guidance
+   850→            </PrimaryButton>
+   851→            <SecondaryButton href="/contact-us">
+   852→              Request a Quote
+   853→            </SecondaryButton>
+   854→          </div>
+   855→        </div>
+   856→      </div>
+   857→    </section>
+   858→  );
+   859→}
+   860→
+   861→/* ────────────────────────────────────────────
+   862→   Main ProductsClient component
+   863→   ──────────────────────────────────────────── */
+   864→
+   865→export default function ProductsClient() {
+   866→  const [activeSection, setActiveSection] = useState('electrical-insulating-mats');
+   867→
+   868→  useEffect(() => {
+   869→    // IntersectionObserver for active section tracking in sticky nav
+   870→    const sectionIds = CATEGORY_NAV_ITEMS.map((item) => item.id);
+   871→    const observer = new IntersectionObserver(
+   872→      (entries) => {
+   873→        // Find the topmost visible section
+   874→        for (const entry of entries) {
+   875→          if (entry.isIntersecting) {
+   876→            setActiveSection(entry.target.id);
+   877→          }
+   878→        }
+   879→      },
+   880→      { threshold: 0.2, rootMargin: '-140px 0px -60% 0px' },
+   881→    );
+   882→
+   883→    sectionIds.forEach((id) => {
+   884→      const el = document.getElementById(id);
+   885→      if (el) observer.observe(el);
+   886→    });
+   887→
+   888→    return () => observer.disconnect();
+   889→  }, []);
+   890→
+   891→  return (
+   892→    <div className="min-h-screen flex flex-col bg-be-warm-white">
+   893→      <Header />
+   894→      <main className="flex-1">
+   895→        {/* Breadcrumb */}
+   896→        <div className="container-site page-horizontal-padding pt-5">
+   897→          <Breadcrumb
+   898→            items={[
+   899→              { label: 'Home', href: '/' },
+   900→              { label: 'Products' },
+   901→            ]}
+   902→          />
+   903→        </div>
+   904→
+   905→        {/* 1. Hero (split layout) */}
+   906→        <ProductsHero />
+   907→        {/* 2. Sticky category navigator */}
+   908→        <CategoryNavigator activeId={activeSection} />
+   909→        {/* 3. Electrical Insulating Mats */}
+   910→        <ElectricalInsulatingMatsSection />
+   911→        {/* 4. Waterproofing */}
+   912→        <WaterproofingSection />
+   913→        {/* 5. PVC + Other Products */}
+   914→        <PvcAndOtherSection />
+   915→        {/* 6. Product Comparison */}
+   916→        <ComparisonSection />
+   917→        {/* 7. Selection Guide */}
+   918→        <SelectionGuideSection />
+   919→        {/* 8. Technical Guidance CTA */}
+   920→        <TechnicalGuidanceCTA />
+   921→      </main>
+   922→      <Footer />
+   923→      <BackToTop />
+   924→      <MobileStickyCTA />
+   925→    </div>
+   926→  );
+   927→}
+   928→

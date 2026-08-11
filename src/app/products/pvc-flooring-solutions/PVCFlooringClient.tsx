@@ -28,6 +28,7 @@ import {
   Download,
 } from 'lucide-react';
 import { pvcFlooringVisuals } from '@/data/product-visuals';
+import { useRecentlyViewed } from '@/hooks/use-recently-viewed';
 
 /* ── Breadcrumb items ── */
 
@@ -76,6 +77,12 @@ const assuranceItems = [
 ];
 
 export default function PVCFlooringClient() {
+  const { addToRecentlyViewed } = useRecentlyViewed();
+
+  useEffect(() => {
+    addToRecentlyViewed('pvc-flooring-solutions');
+  }, [addToRecentlyViewed]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
