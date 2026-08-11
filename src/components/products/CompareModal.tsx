@@ -1,128 +1,87 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { X, Check, Minus, ArrowRight } from 'lucide-react';
+import { Check, Minus, ArrowRight, Trash2, GitCompare } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { useCompare } from './CompareContext';
-import { getProductBySlug, imageFitClass } from '@/data/products';
+import { getProductBySlug, imageFitClass, type ProductData } from '@/data/products';
 
 /**
- * CompareModal — full-screen dialog showing a side-by-side detailed
- * comparison of the selected products (2–3).
+ * CompareModal — a wide dialog (built on the shared shadcn/ui Dialog, which
+ * wraps Radix UI) showing a side-by-side detailed comparison of the selected
+ * products (2–3).
  *
- * Rows compared:
- *   • Image (thumbnail)
- *   • Category
- *   • Class type
- *   • Primary use (description)
- *   • Quick facts (label/value pairs — merged across products)
- *   • Key benefits (first 3, with check/dash for presence)
- *   • Working voltage & proof voltage (from specifications row[0])
- *   • Applications (first 3)
- *   • Link to each product's detail page
+ * Rows compared (task spec):
+ *   • Product image (thumbnail) + Name (with a "View product" link)
+ *   • Description
+ *   • Standards (product.badges)
+ *   • Material (first "Material Composition" material property, else first)
+ *   • Thickness (quickFacts "Thickness" or spec table "Thickness" column)
+ *   • Applications (first 3 application names)
+ *   • Key features (first 3 key benefit texts, with check marks)
+ *   • Working voltage + AC proof voltage (from the spec table)
+ *   • A per-column footer with a "View product" link and a "Remove" button.
+ *
+ * Differences between products are highlighted: in any row where not all
+ * rendered values are equal, the differing cells get a subtle yellow tint so
+ * the buyer can scan for what sets each product apart.
  *
  * Accessibility:
- *   • role="dialog" aria-modal="true"
- *   • Focus trap: focus moves into the dialog on open, restored on close
- *   • Escape closes
- *   • Body scroll lock while open
- *   • Close button has aria-label
+ *   • Built on Radix Dialog — focus trap, Escape to close, body scroll lock,
+ *     and aria-modal are handled by the primitive.
+ *   • DialogTitle + DialogDescription (visually hidden) for screen readers.
+ *   • Each remove button has an aria-label naming the product.
  *
  * Responsive:
- *   • Desktop: 2–3 column table with sticky first column
- *   • Mobile: horizontal scroll with min-width columns
+ *   • Desktop: 2–3 column grid with a sticky first column.
+ *   • Mobile: horizontal scroll with min-width columns.
  */
 export function CompareModal({
   open,
-  onClose,
-  selectedNames,
+  onOpenChange,
 }: {
   open: boolean;
-  onClose: () => void;
-  selectedNames: Record<string, string>;
+  onOpenChange: (open: boolean) => void;
 }) {
-  const { selected } = useCompare();
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
-  const previouslyFocused = useRef<HTMLElement | null>(null);
+  const { selected, removeFromCompare } = useCompare();
 
-  // Focus trap + body scroll lock + escape
-  useEffect(() => {
-    if (!open) return;
-    previouslyFocused.current = document.activeElement as HTMLElement | null;
-    // Focus the close button after a tick so the dialog is painted
-    const t = window.setTimeout(() => closeBtnRef.current?.focus(), 30);
-
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        e.stopPropagation();
-        onClose();
-      } else if (e.key === 'Tab' && dialogRef.current) {
-        // Simple focus trap: keep tab within dialog
-        const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        );
-        if (focusables.length === 0) return;
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    };
-    document.addEventListener('keydown', onKey, true);
-
-    return () => {
-      window.clearTimeout(t);
-      document.body.style.overflow = prevOverflow;
-      document.removeEventListener('keydown', onKey, true);
-      previouslyFocused.current?.focus?.();
-    };
-  }, [open, onClose]);
-
-  if (!open) return null;
-
-  const selectedProducts = selected
+  const selectedProducts: ProductData[] = selected
     .map((s) => getProductBySlug(s))
-    .filter((p): p is NonNullable<typeof p> => Boolean(p));
+    .filter((p): p is ProductData => Boolean(p));
 
-  if (selectedProducts.length === 0) return null;
+  const cols = Math.max(selectedProducts.length, 1);
+  const gridStyle = {
+    gridTemplateColumns: `168px repeat(${cols}, minmax(200px, 1fr))`,
+  } as React.CSSProperties;
 
-  // Build the union of all quick-fact labels so we can render a consistent
-  // row set even if products have different facts.
-  const allFactLabels = Array.from(
-    new Set(selectedProducts.flatMap((p) => p.quickFacts.map((f) => f.label))),
-  );
-  // Union of benefit texts (for presence check)
-  const allBenefitTexts = Array.from(
-    new Set(
-      selectedProducts.flatMap((p) => p.keyBenefits.map((b) => b.text)),
-    ),
-  ).slice(0, 6); // cap at 6 to keep the modal scannable
+  // Fewer than 2 products: render an "add more" prompt instead of the table.
+  const showAddMorePrompt = selectedProducts.length < 2;
 
   return (
-    <div
-      className="fixed inset-0 z-[100] flex items-stretch justify-center bg-be-charcoal-950/60 backdrop-blur-sm animate-[fade-in_0.15s_ease-out] motion-reduce:animate-none"
-      onClick={onClose}
-    >
-      <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label={`Comparing ${selectedProducts.length} products`}
-        className="relative w-full max-w-6xl m-2 sm:m-4 md:m-6 bg-be-warm-white rounded-xl shadow-2xl flex flex-col overflow-hidden animate-[slide-in-right_0.2s_ease-out] motion-reduce:animate-none"
-        onClick={(e) => e.stopPropagation()}
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
+        showCloseButton
+        className="sm:max-w-6xl max-h-[92vh] p-0 gap-0 overflow-hidden flex flex-col"
+        aria-describedby="compare-modal-desc"
       >
+        {/* Visually-hidden accessible title/description for Radix. */}
+        <DialogTitle className="sr-only">Product comparison</DialogTitle>
+        <DialogDescription id="compare-modal-desc" className="sr-only">
+          Side-by-side comparison of {selectedProducts.length} of 3 selected
+          products. Close with the Escape key or the close button.
+        </DialogDescription>
+
         {/* Header */}
-        <div className="flex items-center justify-between gap-4 px-4 sm:px-6 py-4 border-b border-be-grey-250 bg-be-white">
+        <div className="flex items-center gap-2.5 px-4 sm:px-6 py-4 border-b border-be-grey-250 bg-be-white">
+          <span className="grid size-8 place-items-center rounded-md bg-be-navy-900 text-be-brand-yellow">
+            <GitCompare className="size-4" aria-hidden="true" focusable="false" />
+          </span>
           <div>
             <h2 className="text-lg sm:text-xl font-bold text-be-charcoal-950">
               Product comparison
@@ -131,185 +90,260 @@ export function CompareModal({
               {selectedProducts.length} of 3 products · side-by-side detail
             </p>
           </div>
-          <button
-            ref={closeBtnRef}
-            type="button"
-            onClick={onClose}
-            aria-label="Close comparison"
-            className="grid size-10 place-items-center rounded-full text-be-grey-650 hover:bg-be-grey-100 hover:text-be-charcoal-950 transition-colors focus-ring"
-          >
-            <X className="size-5" aria-hidden="true" focusable="false" />
-          </button>
         </div>
 
-        {/* Body — scrollable comparison table */}
+        {/* Body — scrollable comparison table OR "add more" prompt */}
         <div className="flex-1 overflow-auto">
-          <div
-            className="min-w-[640px]"
-            style={{ ['--cols' as string]: String(selectedProducts.length) }}
-          >
-            {/* Row: product image + name */}
-            <CompareRow label="Product">
-              {selectedProducts.map((p) => (
-                <CompareCell key={`img-${p.slug}`}>
-                  <div className="flex flex-col gap-2">
-                    <div className="relative w-full aspect-[4/3] overflow-hidden rounded-lg bg-be-cream">
-                      <Image
-                        src={p.images.gallery[0]?.src ?? p.images.thumbnail.src}
-                        alt={p.images.gallery[0]?.alt ?? p.images.thumbnail.alt}
-                        fill
-                        className={imageFitClass(p.images.gallery[0] ?? p.images.thumbnail)}
-                        sizes="300px"
-                      />
+          {showAddMorePrompt ? (
+            <AddMorePrompt count={selectedProducts.length} />
+          ) : (
+            <div className="min-w-[640px]">
+              {/* Row: product image + name */}
+              <CompareRow label="Product" gridStyle={gridStyle}>
+                {selectedProducts.map((p) => (
+                  <CompareCell key={`img-${p.slug}`}>
+                    <div className="flex flex-col gap-2">
+                      <div className="relative w-full aspect-[4/3] overflow-hidden rounded-lg bg-be-cream">
+                        <Image
+                          src={p.images.gallery[0]?.src ?? p.images.thumbnail.src}
+                          alt={p.images.gallery[0]?.alt ?? p.images.thumbnail.alt}
+                          fill
+                          className={imageFitClass(p.images.gallery[0] ?? p.images.thumbnail)}
+                          sizes="300px"
+                        />
+                      </div>
+                      <Link
+                        href={`/products/${p.slug}`}
+                        onClick={() => onOpenChange(false)}
+                        className="text-sm font-bold text-be-charcoal-950 hover:text-be-yellow-text-hover transition-colors underline-offset-2 hover:underline focus-ring rounded-sm"
+                      >
+                        {p.name}
+                      </Link>
                     </div>
-                    <Link
-                      href={`/products/${p.slug}`}
-                      onClick={onClose}
-                      className="text-sm font-bold text-be-charcoal-950 hover:text-be-yellow-text-hover transition-colors underline-offset-2 hover:underline focus-ring rounded-sm"
-                    >
-                      {p.name}
-                    </Link>
-                  </div>
-                </CompareCell>
-              ))}
-            </CompareRow>
+                  </CompareCell>
+                ))}
+              </CompareRow>
 
-            {/* Row: category */}
-            <CompareRow label="Category">
-              {selectedProducts.map((p) => (
-                <CompareCell key={`cat-${p.slug}`}>
-                  <span className="inline-block px-2 py-0.5 rounded-md bg-be-yellow-50 text-be-charcoal-950 text-xs font-semibold">
-                    {p.category === 'electrical-insulation'
-                      ? 'Electrical Insulating Mats'
-                      : 'Waterproofing Solutions'}
-                  </span>
-                </CompareCell>
-              ))}
-            </CompareRow>
+              {/* Row: category */}
+              <CompareRow label="Category" gridStyle={gridStyle}>
+                {selectedProducts.map((p) => (
+                  <CompareCell key={`cat-${p.slug}`}>
+                    <span className="inline-block px-2 py-0.5 rounded-md bg-be-yellow-50 text-be-charcoal-950 text-xs font-semibold">
+                      {p.category === 'electrical-insulation'
+                        ? 'Electrical Insulating Mats'
+                        : 'Waterproofing Solutions'}
+                    </span>
+                  </CompareCell>
+                ))}
+              </CompareRow>
 
-            {/* Row: class type */}
-            <CompareRow label="Class">
-              {selectedProducts.map((p) => (
-                <CompareCell key={`cls-${p.slug}`}>
-                  <span className="text-sm font-semibold text-be-charcoal-950">
-                    {p.classType ? p.classType.toUpperCase() : '—'}
-                  </span>
-                </CompareCell>
-              ))}
-            </CompareRow>
+              {/* Row: class type */}
+              <CompareRow label="Class" gridStyle={gridStyle}>
+                {selectedProducts.map((p) => (
+                  <CompareCell key={`cls-${p.slug}`}>
+                    <span className="text-sm font-semibold text-be-charcoal-950">
+                      {p.classType ? p.classType.toUpperCase() : '—'}
+                    </span>
+                  </CompareCell>
+                ))}
+              </CompareRow>
 
-            {/* Row: description */}
-            <CompareRow label="Primary use">
-              {selectedProducts.map((p) => (
-                <CompareCell key={`desc-${p.slug}`}>
-                  <p className="text-sm text-be-charcoal-800 leading-relaxed">
-                    {p.description}
-                  </p>
-                </CompareCell>
-              ))}
-            </CompareRow>
+              {/* Row: description */}
+              <CompareRow
+                label="Description"
+                gridStyle={gridStyle}
+                differ={valuesDiffer(selectedProducts, (p) => p.description)}
+              >
+                {selectedProducts.map((p) => (
+                  <CompareCell key={`desc-${p.slug}`}>
+                    <p className="text-sm text-be-charcoal-800 leading-relaxed">
+                      {p.description}
+                    </p>
+                  </CompareCell>
+                ))}
+              </CompareRow>
 
-            {/* Section divider */}
-            <CompareSectionLabel label="Quick facts" />
+              {/* Section divider */}
+              <CompareSectionLabel label="Specifications" gridStyle={gridStyle} cols={cols} />
 
-            {/* Rows: quick facts (union of labels) */}
-            {allFactLabels.map((label) => (
-              <CompareRow key={`fact-${label}`} label={label}>
+              {/* Row: standards (badges) */}
+              <CompareRow
+                label="Standards"
+                gridStyle={gridStyle}
+                differ={valuesDiffer(selectedProducts, (p) => p.badges.join('|'))}
+              >
+                {selectedProducts.map((p) => (
+                  <CompareCell key={`std-${p.slug}`}>
+                    <ul className="flex flex-wrap gap-1">
+                      {p.badges.map((b) => (
+                        <li
+                          key={b}
+                          className="inline-block px-2 py-0.5 rounded bg-be-grey-100 text-be-charcoal-800 text-[0.7rem] font-medium"
+                        >
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
+                  </CompareCell>
+                ))}
+              </CompareRow>
+
+              {/* Row: material */}
+              <CompareRow
+                label="Material"
+                gridStyle={gridStyle}
+                differ={valuesDiffer(selectedProducts, (p) => materialOf(p) ?? '')}
+              >
                 {selectedProducts.map((p) => {
-                  const fact = p.quickFacts.find((f) => f.label === label);
+                  const material = materialOf(p);
                   return (
-                    <CompareCell key={`fact-${p.slug}-${label}`}>
-                      {fact ? (
-                        <span className="text-sm text-be-charcoal-800">{fact.value}</span>
-                      ) : (
-                        <Dash />
-                      )}
+                    <CompareCell key={`mat-${p.slug}`}>
+                      <span className="text-sm text-be-charcoal-800">
+                        {material ?? '—'}
+                      </span>
                     </CompareCell>
                   );
                 })}
               </CompareRow>
-            ))}
 
-            {/* Section divider */}
-            <CompareSectionLabel label="Key benefits" />
-
-            {/* Rows: benefits presence */}
-            {allBenefitTexts.map((text) => (
-              <CompareRow key={`ben-${text}`} label={text}>
+              {/* Row: thickness */}
+              <CompareRow
+                label="Thickness"
+                gridStyle={gridStyle}
+                differ={valuesDiffer(selectedProducts, (p) => thicknessOf(p) ?? '')}
+              >
                 {selectedProducts.map((p) => {
-                  const has = p.keyBenefits.some((b) => b.text === text);
+                  const thickness = thicknessOf(p);
                   return (
-                    <CompareCell key={`ben-${p.slug}-${text}`}>
-                      {has ? (
-                        <span className="inline-flex items-center gap-1 text-sm text-be-charcoal-800">
-                          <Check className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />
-                          <span className="sr-only">Yes</span>
-                        </span>
-                      ) : (
-                        <Dash />
-                      )}
+                    <CompareCell key={`thk-${p.slug}`}>
+                      <span className="text-sm font-semibold text-be-charcoal-950 tabular-nums">
+                        {thickness ?? '—'}
+                      </span>
                     </CompareCell>
                   );
                 })}
               </CompareRow>
-            ))}
 
-            {/* Section divider */}
-            <CompareSectionLabel label="Electrical rating" />
+              {/* Section divider */}
+              <CompareSectionLabel label="Performance" gridStyle={gridStyle} cols={cols} />
 
-            {/* Row: working voltage + proof voltage (from spec row[0]) */}
-            <CompareRow label="Working voltage">
-              {selectedProducts.map((p) => {
-                const headers = p.specifications.headers;
-                const rows = p.specifications.rows;
-                const idx = headers.findIndex((h) =>
-                  h.toLowerCase().includes('working voltage'),
-                );
-                const val = idx >= 0 ? rows[0]?.[idx] : undefined;
-                return (
-                  <CompareCell key={`wv-${p.slug}`}>
-                    <span className="text-sm font-semibold text-be-charcoal-950 tabular-nums">
-                      {val ?? '—'}
-                    </span>
+              {/* Row: working voltage */}
+              <CompareRow
+                label="Working voltage"
+                gridStyle={gridStyle}
+                differ={valuesDiffer(selectedProducts, (p) => specValue(p, 'working voltage') ?? '')}
+              >
+                {selectedProducts.map((p) => {
+                  const val = specValue(p, 'working voltage');
+                  return (
+                    <CompareCell key={`wv-${p.slug}`}>
+                      <span className="text-sm font-semibold text-be-charcoal-950 tabular-nums">
+                        {val ?? '—'}
+                      </span>
+                    </CompareCell>
+                  );
+                })}
+              </CompareRow>
+
+              {/* Row: AC proof voltage */}
+              <CompareRow
+                label="AC proof voltage"
+                gridStyle={gridStyle}
+                differ={valuesDiffer(selectedProducts, (p) => specValue(p, 'proof voltage') ?? '')}
+              >
+                {selectedProducts.map((p) => {
+                  const val = specValue(p, 'proof voltage');
+                  return (
+                    <CompareCell key={`pv-${p.slug}`}>
+                      <span className="text-sm font-semibold text-be-charcoal-950 tabular-nums">
+                        {val ?? '—'}
+                      </span>
+                    </CompareCell>
+                  );
+                })}
+              </CompareRow>
+
+              {/* Section divider */}
+              <CompareSectionLabel label="Applications & features" gridStyle={gridStyle} cols={cols} />
+
+              {/* Row: applications (first 3) */}
+              <CompareRow
+                label="Applications"
+                gridStyle={gridStyle}
+                differ={valuesDiffer(selectedProducts, (p) => p.applications.slice(0, 3).map((a) => a.name).join('|'))}
+              >
+                {selectedProducts.map((p) => (
+                  <CompareCell key={`app-${p.slug}`}>
+                    <ul className="flex flex-col gap-1">
+                      {p.applications.slice(0, 3).map((a) => (
+                        <li
+                          key={a.name}
+                          className="text-sm text-be-charcoal-800 leading-snug"
+                        >
+                          {a.name}
+                        </li>
+                      ))}
+                      {p.applications.length === 0 && <Dash />}
+                    </ul>
                   </CompareCell>
-                );
-              })}
-            </CompareRow>
+                ))}
+              </CompareRow>
 
-            <CompareRow label="AC proof voltage">
-              {selectedProducts.map((p) => {
-                const headers = p.specifications.headers;
-                const rows = p.specifications.rows;
-                const idx = headers.findIndex((h) =>
-                  h.toLowerCase().includes('proof voltage'),
-                );
-                const val = idx >= 0 ? rows[0]?.[idx] : undefined;
-                return (
-                  <CompareCell key={`pv-${p.slug}`}>
-                    <span className="text-sm font-semibold text-be-charcoal-950 tabular-nums">
-                      {val ?? '—'}
-                    </span>
+              {/* Row: key features (first 3) */}
+              <CompareRow
+                label="Key features"
+                gridStyle={gridStyle}
+                differ={valuesDiffer(selectedProducts, (p) => p.keyBenefits.slice(0, 3).map((b) => b.text).join('|'))}
+              >
+                {selectedProducts.map((p) => (
+                  <CompareCell key={`kf-${p.slug}`}>
+                    <ul className="flex flex-col gap-1.5">
+                      {p.keyBenefits.slice(0, 3).map((b, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-1.5 text-sm text-be-charcoal-800 leading-snug"
+                        >
+                          <Check
+                            className="size-3.5 mt-0.5 shrink-0 text-be-yellow-text"
+                            aria-hidden="true"
+                            focusable="false"
+                          />
+                          <span>{b.text}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </CompareCell>
-                );
-              })}
-            </CompareRow>
+                ))}
+              </CompareRow>
 
-            {/* Row: CTA */}
-            <CompareRow label="">
-              {selectedProducts.map((p) => (
-                <CompareCell key={`cta-${p.slug}`}>
-                  <Link
-                    href={`/products/${p.slug}`}
-                    onClick={onClose}
-                    className="inline-flex items-center gap-1.5 rounded-md bg-be-charcoal-950 px-4 py-2 text-sm font-semibold text-be-white hover:bg-be-charcoal-800 transition-colors focus-ring"
-                  >
-                    View product
-                    <ArrowRight className="size-4" aria-hidden="true" focusable="false" />
-                  </Link>
-                </CompareCell>
-              ))}
-            </CompareRow>
-          </div>
+              {/* Row: per-column actions — View product + Remove */}
+              <CompareRow label="" gridStyle={gridStyle}>
+                {selectedProducts.map((p) => (
+                  <CompareCell key={`act-${p.slug}`}>
+                    <div className="flex flex-col gap-2">
+                      <Link
+                        href={`/products/${p.slug}`}
+                        onClick={() => onOpenChange(false)}
+                        className="inline-flex items-center justify-center gap-1.5 rounded-md bg-be-charcoal-950 px-3 py-2 text-sm font-semibold text-be-white hover:bg-be-charcoal-800 transition-colors focus-ring"
+                      >
+                        View product
+                        <ArrowRight className="size-4" aria-hidden="true" focusable="false" />
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => removeFromCompare(p.slug)}
+                        aria-label={`Remove ${p.name} from comparison`}
+                        className="inline-flex items-center justify-center gap-1.5 rounded-md border border-be-grey-250 px-3 py-2 text-sm font-medium text-be-grey-650 hover:text-be-charcoal-950 hover:border-be-grey-350 transition-colors focus-ring"
+                      >
+                        <Trash2 className="size-4" aria-hidden="true" focusable="false" />
+                        Remove
+                      </button>
+                    </div>
+                  </CompareCell>
+                ))}
+              </CompareRow>
+            </div>
+          )}
         </div>
 
         {/* Footer */}
@@ -319,15 +353,56 @@ export function CompareModal({
           </p>
           <Link
             href="/contact-us?type=technical-guidance"
-            onClick={onClose}
+            onClick={() => onOpenChange(false)}
             className="text-sm font-semibold text-be-charcoal-950 hover:text-be-yellow-text-hover transition-colors focus-ring rounded-sm"
           >
             Ask our team →
           </Link>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
+}
+
+/* ── Data helpers ── */
+
+/** Pull a value out of a product's specification table by header substring. */
+function specValue(product: ProductData, headerMatch: string): string | undefined {
+  const { headers, rows } = product.specifications;
+  const idx = headers.findIndex((h) => h.toLowerCase().includes(headerMatch));
+  if (idx < 0) return undefined;
+  // Collect all non-empty values across rows (most specs have 3 class rows).
+  const values = rows.map((r) => r[idx]).filter(Boolean);
+  if (values.length === 0) return undefined;
+  return values.length === 1 ? values[0] : values.join(' / ');
+}
+
+/** First "Material Composition" property, else the first material property. */
+function materialOf(product: ProductData): string | undefined {
+  const m =
+    product.materialProperties.find((mp) =>
+      mp.label.toLowerCase().includes('material'),
+    ) ?? product.materialProperties[0];
+  return m?.value;
+}
+
+/** Thickness from quickFacts, falling back to the spec table. */
+function thicknessOf(product: ProductData): string | undefined {
+  const fact = product.quickFacts.find((f) =>
+    f.label.toLowerCase().includes('thickness'),
+  );
+  if (fact) return fact.value;
+  return specValue(product, 'thickness');
+}
+
+/**
+ * Returns true if the projected values for each product are NOT all equal.
+ * Used to decide whether to highlight a row's cells as "differing".
+ */
+function valuesDiffer(products: ProductData[], project: (p: ProductData) => string): boolean {
+  if (products.length < 2) return false;
+  const first = project(products[0]);
+  return products.some((p) => project(p) !== first);
 }
 
 /* ── Sub-components ── */
@@ -335,14 +410,31 @@ export function CompareModal({
 function CompareRow({
   label,
   children,
+  gridStyle,
+  differ = false,
 }: {
   label: string;
   children: React.ReactNode;
+  gridStyle: React.CSSProperties;
+  differ?: boolean;
 }) {
+  // When `differ` is true we tint the row's label cell so a buyer scanning
+  // the table can immediately spot the rows where products diverge.
   return (
-    <div className="grid border-b border-be-grey-150" style={{ gridTemplateColumns: '180px repeat(var(--cols), minmax(200px, 1fr))' }}>
-      <div className="px-3 sm:px-4 py-3 bg-be-cream/60 text-metadata font-semibold text-be-grey-650 uppercase tracking-wide sticky left-0 z-10">
+    <div className="grid border-b border-be-grey-150" style={gridStyle}>
+      <div
+        className={[
+          'px-3 sm:px-4 py-3 text-metadata font-semibold text-be-grey-650 uppercase tracking-wide sticky left-0 z-10',
+          differ ? 'bg-be-yellow-50/70 text-be-charcoal-950' : 'bg-be-cream/60',
+        ].join(' ')}
+      >
         {label}
+        {differ && (
+          <span
+            className="ml-1.5 inline-block size-1.5 rounded-full bg-be-yellow-500 align-middle"
+            aria-hidden="true"
+          />
+        )}
       </div>
       {children}
     </div>
@@ -357,16 +449,26 @@ function CompareCell({ children }: { children: React.ReactNode }) {
   );
 }
 
-function CompareSectionLabel({ label }: { label: string }) {
+function CompareSectionLabel({
+  label,
+  gridStyle,
+  cols,
+}: {
+  label: string;
+  gridStyle: React.CSSProperties;
+  cols: number;
+}) {
   return (
     <div
       className="grid bg-be-yellow-50/60 border-b border-be-yellow-500/30"
-      style={{ gridTemplateColumns: '180px repeat(var(--cols), minmax(200px, 1fr))' }}
+      style={gridStyle}
     >
       <div className="px-3 sm:px-4 py-2 text-xs font-bold text-be-charcoal-950 uppercase tracking-widest sticky left-0 z-10">
         {label}
       </div>
-      <div className="border-l border-be-yellow-500/30" />
+      {Array.from({ length: cols }).map((_, i) => (
+        <div key={i} className="border-l border-be-yellow-500/30" />
+      ))}
     </div>
   );
 }
@@ -377,5 +479,32 @@ function Dash() {
       <Minus className="size-4" aria-hidden="true" focusable="false" />
       <span className="sr-only">Not applicable</span>
     </span>
+  );
+}
+
+function AddMorePrompt({ count }: { count: number }) {
+  return (
+    <div className="flex flex-col items-center justify-center text-center px-6 py-12 sm:py-16 gap-4 min-h-[280px]">
+      <span className="grid size-14 place-items-center rounded-full bg-be-yellow-50 text-be-yellow-text">
+        <GitCompare className="size-7" aria-hidden="true" focusable="false" />
+      </span>
+      <div className="max-w-md">
+        <h3 className="text-lg font-bold text-be-charcoal-950 mb-1">
+          Add {count === 0 ? 'products' : 'one more product'} to compare
+        </h3>
+        <p className="text-sm text-be-grey-650 leading-relaxed">
+          {count === 0
+            ? 'Select products from the range using the “Compare” button on any product card to see a side-by-side comparison here.'
+            : 'You need at least two products to make a comparison. Add another product from the range to continue.'}
+        </p>
+      </div>
+      <Link
+        href="/products"
+        className="inline-flex items-center gap-1.5 rounded-md bg-be-charcoal-950 px-4 py-2 text-sm font-semibold text-be-white hover:bg-be-charcoal-800 transition-colors focus-ring"
+      >
+        Browse products
+        <ArrowRight className="size-4" aria-hidden="true" focusable="false" />
+      </Link>
+    </div>
   );
 }

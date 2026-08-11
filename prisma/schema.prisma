@@ -30,3 +30,14 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+/// Newsletter subscriptions captured from the homepage signup section.
+/// Emails are unique — duplicates return 200 with alreadySubscribed: true
+/// so legitimate repeat submissions remain a no-op rather than an error.
+model NewsletterSubscription {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  createdAt  DateTime @default(now())
+  ip         String?
+  userAgent  String?
+}

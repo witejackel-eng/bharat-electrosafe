@@ -10,6 +10,8 @@ import ProductRange from '@/components/home/ProductRange';
 import TrustDocuments from '@/components/home/TrustDocuments';
 import CapabilityIndustries from '@/components/home/CapabilityIndustries';
 import HomeFAQCTA from '@/components/home/HomeFAQCTA';
+import NewsletterCTA from '@/components/home/NewsletterCTA';
+import RecentlyViewed from '@/components/home/RecentlyViewed';
 
 /**
  * HomeShell — Server Component.
@@ -42,6 +44,10 @@ export default function HomeShell() {
         <CapabilityIndustries />
         {/* 7. FAQ + CTA */}
         <HomeFAQCTA />
+        {/* 8. Recently viewed — client-only, renders null if empty */}
+        <RecentlyViewed />
+        {/* 9. Newsletter signup */}
+        <NewsletterCTA />
       </main>
       <Footer />
       <BackToTop />
