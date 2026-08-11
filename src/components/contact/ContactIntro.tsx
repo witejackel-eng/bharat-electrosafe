@@ -60,14 +60,13 @@ const contactRows: ContactRow[] = [
     label: 'Phone',
     phoneGroup: true,
     value: (
-      <div className="flex flex-col gap-0.5">
-        {phones.map((phone, idx) => (
+      <div className="flex flex-col gap-1.5">
+        {phones.map((phone) => (
           <a
             key={phone.tel}
             href={`tel:${phone.tel}`}
             className="font-medium text-be-charcoal-950 hover:text-be-yellow-text-hover transition-colors"
           >
-            <span className="text-metadata text-be-grey-650 mr-1.5">{idx === 0 ? 'Primary:' : idx === 1 ? 'Secondary:' : 'Additional:'}</span>
             {phone.display}
           </a>
         ))}

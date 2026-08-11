@@ -120,7 +120,7 @@ export const productNavGroups: ProductNavGroup[] = [
   },
   {
     id: 'water-proofing-solutions',
-    name: 'Water Proofing Solutions',
+    name: 'Waterproofing Solutions',
     description: 'Waterproofing, containment and construction-joint sealing',
     hasSubGroups: true,
     children: [
@@ -262,7 +262,7 @@ export const categoryVisuals: CategoryVisual[] = [
   },
   {
     groupId: 'other-products',
-    src: '/media/brand/other-products-graphic.webp',
+    src: '/brand/other-products-graphic.webp',
     alt: 'Other industrial products from Bharat Electrosafe',
     isPlaceholder: true,
   },
