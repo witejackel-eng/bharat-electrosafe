@@ -1,2 +1,7 @@
 skills/
 node_modules/
+.next/
+tool-results/
+tsconfig.tsbuildinfo
+dev.log
+next-env.d.ts
