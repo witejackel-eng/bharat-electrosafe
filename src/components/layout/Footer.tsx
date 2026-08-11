@@ -71,8 +71,8 @@ export function Footer() {
               <Image
                 src="/brand/bharat-electrosafe-logo-clean.png"
                 alt="Bharat Electrosafe® logo"
-                width={823}
-                height={447}
+                width={1276}
+                height={685}
                 className="object-contain w-[175px] lg:w-[210px] h-auto"
                 priority
               />
@@ -234,8 +234,8 @@ export function Footer() {
             <Image
               src="/brand/bharat-electrosafe-logo-clean.png"
               alt="Bharat Electrosafe® logo"
-              width={823}
-              height={447}
+              width={1276}
+              height={685}
               className="object-contain w-[175px] h-auto"
               priority
             />
