@@ -6,6 +6,7 @@ import { hydroSealVisuals } from '@/data/product-visuals';
 import { SectionShell } from '@/components/ui/SectionShell';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { DataTable } from '@/components/ui/DataTable';
+import { useRecentlyViewed } from '@/hooks/use-recently-viewed';
 import type { ProductData } from '@/data/products';
 
 /**
@@ -18,6 +19,12 @@ import type { ProductData } from '@/data/products';
  * hydroSealVisuals from product-visuals.ts is already curated for white-only.
  */
 export default function BHSClient({ product }: { product: ProductData }) {
+  const { addToRecentlyViewed } = useRecentlyViewed();
+
+  useEffect(() => {
+    addToRecentlyViewed('bharat-hydro-seal');
+  }, [addToRecentlyViewed]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
