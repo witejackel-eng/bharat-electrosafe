@@ -436,6 +436,24 @@
     animation: mega-menu-in 0.18s ease-out forwards;
   }
 
+  /* Mega-menu staggered group entrance — fade + slide up, 200ms */
+  @keyframes mega-fade-in {
+    0% { opacity: 0; transform: translateY(6px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .animate-mega-fade-in {
+    animation: mega-fade-in 0.2s ease-out both;
+  }
+
+  /* Mega-menu hover item — 2px brand-yellow left border indicator */
+  .mega-menu-item {
+    border-left: 2px solid transparent;
+    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  }
+  .mega-menu-item:hover {
+    border-left-color: var(--be-brand-yellow);
+  }
+
   /* Mega-menu preview crossfade — 0.98→1 scale + opacity, 180ms */
   @keyframes preview-crossfade {
     0% { opacity: 0.3; transform: scale(0.98); }

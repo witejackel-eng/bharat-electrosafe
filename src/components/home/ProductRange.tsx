@@ -73,10 +73,10 @@ function ProductGroupCard({ group, index }: { group: ProductGroupCardData; index
     <Link
       href={`/products/${group.slug}`}
       aria-label={`View ${group.name} product page`}
-      className="hover-card-lift group relative flex flex-col rounded-lg border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+      className="hover-card-lift group relative flex flex-col rounded-xl border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-xl hover:border-be-yellow-300 hover:-translate-y-1 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
     >
-      {/* Yellow accent line */}
-      <div className="h-1 bg-be-yellow-500 group-hover:h-1.5 transition-all duration-300" aria-hidden="true" />
+      {/* Yellow accent line — grows on hover */}
+      <div className="h-[3px] bg-gradient-to-r from-be-yellow-500 via-be-brand-yellow to-be-yellow-500 group-hover:h-[5px] transition-all duration-300" aria-hidden="true" />
 
       {/* Image area — tall dominant image region (≈55–62% card height) */}
       <div className="relative w-full overflow-hidden bg-be-cream aspect-[4/3] md:aspect-[16/10]">
@@ -88,15 +88,19 @@ function ProductGroupCard({ group, index }: { group: ProductGroupCardData; index
           style={group.objectPosition ? { objectPosition: group.objectPosition } : undefined}
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 50vw"
         />
-        <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/10 transition-colors duration-300" aria-hidden="true" />
+        <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/5 transition-colors duration-300" aria-hidden="true" />
+        {/* Category number badge on image */}
+        <div className="absolute top-3 left-3 size-7 rounded-full bg-be-navy-900/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
+          <span className="text-[0.6rem] font-bold text-be-brand-yellow">{String(index + 1).padStart(2, '0')}</span>
+        </div>
       </div>
 
       {/* Text content */}
       <div className="flex flex-col gap-1.5 p-5 flex-1">
-        {/* Index + label row */}
-        <div className="flex items-center justify-between gap-2">
+        {/* Label row */}
+        <div className="flex items-center gap-2">
           <span className="text-metadata text-be-grey-650 font-medium">Product Group</span>
-          <span className="text-[0.65rem] text-be-grey-400 font-mono" aria-hidden="true">
+          <span className="text-[0.55rem] text-be-grey-400 font-mono" aria-hidden="true">
             {String(index + 1).padStart(2, '0')}
           </span>
         </div>
@@ -114,9 +118,12 @@ function ProductGroupCard({ group, index }: { group: ProductGroupCardData; index
         <p className="text-body text-be-grey-650 text-sm leading-relaxed line-clamp-2">
           {group.description}
         </p>
-        <div className="mt-auto pt-2">
-          <span className="text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors">
-            View Products →
+        <div className="mt-auto pt-2 flex items-center gap-1.5">
+          <span className="text-sm font-semibold text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors duration-200">
+            View Products
+          </span>
+          <span className="inline-flex items-center justify-center size-5 rounded-full bg-be-yellow-50 group-hover:bg-be-yellow-100 transition-colors duration-200" aria-hidden="true">
+            <svg className="size-3 text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
           </span>
         </div>
       </div>
