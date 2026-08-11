@@ -1,0 +1,1664 @@
+@GitHub
+
+REPOSITORY
+https://github.com/witejackel-eng/bharat-electrosafe
+
+CURRENT QA DEPLOYMENT
+https://bharat-electrosafe.vercel.app/
+
+CLIENT / REFERENCE WEBSITE
+https://bharatelectrosafe.com/
+https://bharatelectrosafe.com/about-us.php
+
+ATTACHED CLIENT ASSET PACKAGE
+bharat-electrosafe-zai-safe-assets.zip
+
+IMPORTANT:
+The attached ZIP has already been sanitized specifically for this task.
+
+Read:
+bharat-electrosafe-zai-safe-assets/README_ASSET_MAP.md
+
+before importing ANY client asset.
+
+This is an IMPLEMENTATION task.
+
+Work directly on the CURRENT main branch of the existing Bharat Electrosafe
+Next.js application.
+
+Do not return a redesign proposal.
+Do not create a second application.
+Do not rebuild the repository from scratch.
+Inspect the current implementation, perform the work, test it comprehensively,
+commit it, push it, and leave the current Vercel deployment production-ready.
+
+============================================================
+0. CURRENT BASELINE — DO NOT REVERT COMPLETED WORK
+============================================================
+
+The current main branch already contains a completed previous phase.
+
+Preserve and VERIFY rather than redo:
+
+- official Bharat Electrosafe ® logos;
+- new homepage statistics strip:
+  9+ Years of Business
+  37+ Countries Exported
+  2,380+ Happy Customers
+  6,832+ Successful Projects
+- address:
+  814, 8th Floor, I-thum, Tower A,
+  Plot No. A-40, Sector-62,
+  Noida-201309, Uttar Pradesh, India
+- additional phone:
+  +91 98703 94721
+- existing phones:
+  +91 76174 94968
+  +91 96671 71444
+- existing WhatsApp target;
+- client-confirmed Locations list;
+- existing security hardening;
+- existing SEO architecture;
+- existing contact-form protections;
+- existing Vercel compatibility changes.
+
+Latest known implementation commit at the beginning of this phase:
+817c8e63f128be6e142cd8193b40ffcaeecc7a7a
+
+Do not assume documentation comments accurately describe behaviour.
+Inspect actual runtime behaviour.
+
+============================================================
+1. STRICT CLIENT-DATA / SECURITY RULES
+============================================================
+
+The attached safe ZIP is the ONLY client archive you should use for this phase.
+
+DO NOT obtain or import the original ~300 MB source archive.
+
+DO NOT copy:
+
+- .env
+- .private_env
+- credentials
+- mail passwords
+- secret keys
+- API keys
+- server configuration
+- PHP server tree
+- vendor dependencies
+- raw client archives
+- temporary extraction directories
+
+into the Git repository.
+
+DO NOT commit:
+
+bharat-electrosafe-zai-safe-assets.zip
+
+or its full extracted folder.
+
+Use it as SOURCE MATERIAL only.
+
+Import only the individually selected assets that are genuinely needed.
+
+Before committing, explicitly inspect:
+
+git status
+git diff --cached
+
+and verify that no private or unrelated client material has entered Git.
+
+============================================================
+2. IMAGE IMPORT SECURITY WORKFLOW
+============================================================
+
+For every client image selected from the attached package:
+
+1. Verify it actually depicts the intended product.
+2. Reject it if the product mapping is uncertain.
+3. Copy only that individual source into a temporary working location.
+4. Generate an optimized website derivative.
+5. Prefer WebP/AVIF where appropriate.
+6. Resize oversized 4K originals to realistic web dimensions.
+7. Preserve a sufficiently high-resolution source for retina displays.
+8. Strip unnecessary EXIF/GPS/device metadata.
+9. Give it a descriptive safe filename.
+10. Use Next/Image.
+11. Add truthful alt text describing what is actually visible.
+12. Configure object-fit/object-position deliberately.
+13. Delete temporary raw extraction files after processing.
+14. Do not place raw source archives in public/.
+
+For isolated product profiles:
+use object-contain so edges/profile details are not cropped.
+
+For real installation/application photography:
+use object-cover only where the crop remains technically truthful.
+
+Do not make a studio product photo appear to be an installation image.
+
+============================================================
+3. ABSOLUTE TATA VISUAL RULE
+============================================================
+
+The client explicitly requires:
+
+NO IMAGE CONTAINING TATA / TATA BRANDING MAY REMAIN ON THE WEBSITE.
+
+This includes:
+
+- Tata logos;
+- TATA wordmarks;
+- "Marketed by Tata" graphics;
+- brochures where Tata branding is visibly embedded;
+- customer-logo graphics containing Tata;
+- composite images containing a Tata mark.
+
+The known legacy files such as:
+
+marketed-by-tata.png
+marketed-by-tata.webp
+
+must never be used.
+
+IMPORTANT:
+Do not perform only a filename search.
+
+Visually inspect the images used on:
+
+- Home
+- About
+- Products
+- product pages
+- certifications / clients areas
+
+and replace every rendered image containing visible Tata branding.
+
+The existing About hero/overview visual is particularly important to inspect.
+
+Replace Tata imagery with the strongest appropriate Bharat Electrosafe-owned
+product/manufacturing/application image from:
+
+- current repository assets; or
+- attached sanitized asset package.
+
+Do not replace Tata with another unrelated corporate logo.
+
+A client-provided customer name such as "Tata Steel Limited" in plain TEXT
+is not the same as publishing Tata visual artwork.
+
+Do not add a Tata logo.
+
+============================================================
+4. FINAL PRODUCT INFORMATION ARCHITECTURE
+============================================================
+
+This exact hierarchy supersedes the old two-category/six-family navigation.
+
+PRODUCTS
+
+Electrical Insulating Mats
+    Domestic Mats (IS 15652:2006)
+        HV Insulating Mats
+        Auto Glow
+        Bi-Colour
+        Colored Strip
+
+    International / Global (IEC 61111:2009)
+        HV Insulating Mats
+        Auto Glow
+        Bi-Colour
+
+Water Proofing Solutions
+    Geo Membrane Lining
+    Water Stop Seal
+
+PVC Flooring Solutions
+
+Other Products
+    Rubber Sheet
+    Rubber Hose Pipe
+    ESD Mat
+    Conveyor Belt
+
+Use these visible names.
+
+Do not show the old navigation taxonomy:
+
+"Electrical Insulation"
+"Waterproofing and Civil Protection"
+
+as the primary client-facing taxonomy anymore.
+
+============================================================
+5. PRESERVE GOOD EXISTING URLS — DO NOT DESTROY SEO
+============================================================
+
+Do not create needless URL churn.
+
+Prefer preserving the existing rich product routes and changing their visible
+hierarchy/labels.
+
+Recommended mapping:
+
+DOMESTIC
+
+HV Insulating Mats
+→ existing:
+  /products/electrical-insulating-mats
+
+Auto Glow
+→ existing:
+  /products/auto-glow-reflective-band-insulating-mats
+
+Bi-Colour
+→ existing:
+  /products/bi-color-insulating-mats
+
+Colored Strip
+→ existing:
+  /products/coloured-strip-insulating-mats
+
+WATERPROOFING
+
+Geo Membrane Lining
+→ existing:
+  /products/bharat-membrane
+
+Preserve BharatMembrane as product/brand terminology within the page where
+appropriate.
+
+Water Stop Seal
+→ existing:
+  /products/bharat-hydro-seal
+
+Preserve Bharat Hydro Seal as product/brand terminology within the page where
+appropriate.
+
+NEW ROUTE:
+
+/products/international-iec-61111
+
+This page represents:
+
+International / Global (IEC 61111:2009)
+
+and contains anchored product sections:
+
+#hv-insulating-mats
+#auto-glow
+#bi-colour
+
+NEW ROUTE:
+
+/products/pvc-flooring-solutions
+
+NEW ROUTE:
+
+/products/other-products
+
+with anchored sections:
+
+#rubber-sheet
+#rubber-hose-pipe
+#esd-mat
+#conveyor-belt
+
+If a better clean route structure is required internally, it is acceptable,
+but preserve existing indexed URLs with correct permanent redirects.
+
+Do not create large numbers of thin near-duplicate SEO pages.
+
+============================================================
+6. TECHNICAL CONTENT SEPARATION — CRITICAL
+============================================================
+
+DO NOT MIX DOMESTIC AND IEC SPECIFICATIONS.
+
+Domestic Mats:
+IS 15652:2006
+
+International / Global:
+IEC 61111:2009
+
+The current data architecture mixes some IEC marking imagery into the general
+mat family.
+
+Correct this.
+
+DOMESTIC pages may use:
+- IS 15652:2006 technical information;
+- existing verified BIS licence information;
+- domestic product source material.
+
+INTERNATIONAL page must use:
+bharat-electrosafe-zai-safe-assets/
+product-docs/
+Catalogue IEC-61111 (Bharat Electrosafe).pdf
+
+as the primary client source.
+
+Also use:
+
+images/international-iec/
+
+for actual IEC marking images.
+
+Do not copy an IS 15652 table into an IEC section.
+Do not call an IEC marking an IS marking.
+Do not infer voltage/class figures beyond the supplied IEC catalogue.
+
+============================================================
+7. NEW PRODUCT DATA MODEL
+============================================================
+
+The existing ProductCategory union only supports two categories.
+
+Refactor the product/navigation architecture cleanly.
+
+Create a reusable hierarchical taxonomy instead of hardcoding the mega-menu
+in Header.tsx.
+
+The same hierarchy should be usable by:
+
+- desktop mega-menu;
+- mobile navigation;
+- /products page;
+- footer product links;
+- related navigation;
+- breadcrumbs where relevant.
+
+Separate:
+
+NAVIGATION GROUPING
+
+from:
+
+PRODUCT TECHNICAL DATA
+
+so that a product can live beneath Domestic/International in navigation
+without duplicating technical records unnecessarily.
+
+Do not create parallel arrays that can drift apart.
+
+============================================================
+8. DESKTOP PRODUCTS MEGA-MENU
+============================================================
+
+Rebuild the current two-column Products mega-menu for the new hierarchy.
+
+It must remain premium, compact and readable.
+
+Suggested information layout:
+
+LEFT / LARGE AREA
+
+Electrical Insulating Mats
+
+Domestic Mats (IS 15652:2006)
+- HV Insulating Mats
+- Auto Glow
+- Bi-Colour
+- Colored Strip
+
+International / Global (IEC 61111:2009)
+- HV Insulating Mats
+- Auto Glow
+- Bi-Colour
+
+RIGHT / SECONDARY AREA
+
+Water Proofing Solutions
+- Geo Membrane Lining
+- Water Stop Seal
+
+PVC Flooring Solutions
+
+Other Products
+- Rubber Sheet
+- Rubber Hose Pipe
+- ESD Mat
+- Conveyor Belt
+
+Do not make it an enormous full-screen menu.
+
+Maintain:
+
+- hover intent;
+- click support;
+- Escape closing;
+- outside-click closing;
+- correct aria-expanded;
+- correct aria-controls;
+- visible focus styles;
+- keyboard navigation;
+- no clipping at 1024px;
+- no horizontal overflow.
+
+Products text in the main nav should continue linking to:
+
+/products
+
+============================================================
+9. MOBILE PRODUCTS NAVIGATION
+============================================================
+
+Replace the current two-category mobile Products accordion with the new
+hierarchy.
+
+Use nested disclosure carefully.
+
+The user must be able to understand:
+
+Electrical Insulating Mats
+  Domestic
+  International
+
+without scrolling through an unreadable flat 15-link wall.
+
+44px minimum interactive target.
+
+Test specifically:
+
+360×800
+390×844
+430×932
+768×1024
+820×1180
+
+No horizontal overflow.
+
+============================================================
+10. /PRODUCTS OVERVIEW PAGE
+============================================================
+
+Reorganize the Products page around the client's final categories:
+
+1. Electrical Insulating Mats
+   - Domestic
+   - International / Global
+
+2. Water Proofing Solutions
+
+3. PVC Flooring Solutions
+
+4. Other Products
+
+The page should clearly explain the hierarchy rather than presenting the old
+six items as if they are all equal categories.
+
+Do not turn it into a long corporate essay.
+
+Primary goal:
+
+customer chooses category → chooses product → requests quote.
+
+============================================================
+11. PRODUCT IMAGE CURATION
+============================================================
+
+Read:
+
+README_ASSET_MAP.md
+
+inside the supplied safe asset pack.
+
+Follow its product mapping.
+
+Do NOT bulk-import every photograph.
+
+DOMESTIC HV INSULATING MATS
+Preferred:
+- IMG_6049.JPG
+- IMG_6023.JPG
+- IMG_6047.JPG
+
+Detail:
+- IMG_6018.JPG
+- IMG_6048.JPG
+
+Range:
+- Normal Mat.jpeg
+- IMG_6050.JPG
+
+AUTO GLOW
+
+The actual visual story must show the glow/reflective function.
+
+Preferred:
+- product-demo-glowing-dark.png
+- product-04.png
+- product-05.png
+
+Clean product views:
+- product-01.png
+- product-02.png
+- product-03.png
+
+Supplementary client-labeled:
+- AutoGlow3.jpeg
+- AutoGlow12.jpeg
+- AutoGlow19.png
+
+Do not use an ordinary yellow-strip product as the Auto Glow hero merely
+because it looks attractive.
+
+BI-COLOUR
+
+Preferred:
+- product-02.png
+- product-03.png
+- product-01.png
+
+Use:
+3 BES Brochure Bi-color_layer.pdf
+
+as supporting source material.
+
+COLORED STRIP
+
+Preferred context images:
+- product-01.png
+- product-03.png
+- product-05.png
+
+High-resolution details:
+- IMG_6026.JPG
+- IMG_6029.JPG
+- IMG_6034.JPG
+- IMG_6035.JPG
+
+The coloured/yellow strip must be clearly visible.
+
+GEO MEMBRANE LINING
+
+Preferred:
+- product-02.png
+- product-03.png
+- product-05.png
+- product-01.png
+
+These show actual lining/welding/application context.
+
+WATER STOP SEAL
+
+Preferred:
+- Water Stop Seal1.png
+- Water Stop Seal6.png
+- Water Stop Seal7.png
+
+Alternate profiles:
+- Water Stop Seal3.png
+- Water Stop Seal8.jpeg
+- Water Stop Seal9.jpeg
+
+Use contain for isolated profile shots.
+
+IEC 61111
+
+Use:
+- IEC 61111 Class 2.jpeg
+- IEC 61111.jpeg
+- IEC 61111 Class 0-2 (2MM).jpeg
+
+and the actual catalogue.
+
+============================================================
+12. PVC FLOORING SOLUTIONS
+============================================================
+
+Create the new PVC Flooring Solutions page.
+
+Source material:
+
+product-docs/bharat smart floor.pdf
+
+and:
+
+content/About Bharat Electrosafe.docx
+
+The About source states PVC Flooring Solutions and references:
+
+IS 3462:1986
+
+for industrial, electrical and commercial flooring applications.
+
+Use only claims that are explicitly supported by client source material.
+
+Do not invent:
+
+- thicknesses;
+- colours;
+- conductivity figures;
+- fire ratings;
+- warranties;
+- installation methods;
+- certifications;
+- performance tables.
+
+if they are not supplied.
+
+Dedicated photographic PVC-flooring imagery is NOT included in the client
+archive.
+
+DO NOT steal or download a random flooring image.
+
+DO NOT generate an AI image in this task.
+
+Create a strong page using:
+
+- client-provided Bharat Smart Floor artwork;
+- typography;
+- restrained graphic treatment;
+- source-supported content;
+- Request a Quote CTA.
+
+Leave the page structurally ready for the future approved ImageZai visual.
+
+============================================================
+13. OTHER PRODUCTS
+============================================================
+
+Create:
+
+/products/other-products
+
+with sections for:
+
+Rubber Sheet
+Rubber Hose Pipe
+ESD Mat
+Conveyor Belt
+
+Source:
+
+content/About Bharat Electrosafe.docx
+
+The supplied archive does NOT contain reliably mapped dedicated product
+photography for these four products.
+
+Therefore:
+
+DO NOT use electrical insulating-mat images and label them Rubber Sheet.
+DO NOT use a random hose photo from the internet.
+DO NOT fabricate an ESD Mat photo.
+DO NOT use a random conveyor image.
+
+Keep this page factual and concise.
+
+If the source only establishes that Bharat Electrosafe supplies these items,
+state only that.
+
+Use enquiry-led CTAs such as:
+
+Request Specifications
+Request a Quote
+Contact Technical Team
+
+Do not invent technical tables.
+
+Prepare clean media slots in the data architecture for future approved
+photography.
+
+============================================================
+14. HOMEPAGE — COMPANY POSITIONING COPY
+============================================================
+
+Replace the old company-description copy wherever it appears in a prominent
+brand/about/footer context with the client-approved wording:
+
+"Bharat Electrosafe - India’s trusted name in precision-engineered electrical safety, industrial safety, infrastructure protection, PVC flooring and waterproofing solutions."
+
+Use correct punctuation/typography.
+
+Do not duplicate this exact sentence repeatedly across every section.
+
+Use it as the main concise company positioning statement.
+
+============================================================
+15. FOOTER BRAND BLOCK — REBALANCE THE LAYOUT
+============================================================
+
+The current footer brand column is too narrow and vertically stretched.
+
+The logo, description and contact buttons leave unnecessary dead space.
+
+Redesign ONLY the footer composition, not the entire site's visual identity.
+
+Goals:
+
+- official ® logo;
+- more useful width for the brand column;
+- better description line length;
+- tighter spacing;
+- contact icons positioned naturally below the copy;
+- cleaner visual balance against Company / Products / Contact columns.
+
+New company positioning copy:
+
+"Bharat Electrosafe - India’s trusted name in precision-engineered electrical safety, industrial safety, infrastructure protection, PVC flooring and waterproofing solutions."
+
+At desktop, aim for approximately 2–4 comfortable text lines rather than a
+tall narrow paragraph.
+
+Preserve:
+
+- Website by Aditya ↗
+- copyright/legal information
+- email
+- phones
+- WhatsApp
+- address
+- locations
+- Request a Quote
+
+============================================================
+16. HOMEPAGE HERO TYPOGRAPHY / BALANCE
+============================================================
+
+KEEP THIS CONTENT EXACTLY:
+
+Electrical Insulating Mats — Protection Engineered Between People and Risk
+
+DO NOT rewrite it.
+
+Current problem:
+the left text column is too constrained for the H1, causing awkward wrapping
+and a large empty vertical gap before the supporting copy.
+
+Fix the composition.
+
+You may adjust:
+
+- desktop grid proportions;
+- H1 max-width;
+- font family using the site's existing/local font options;
+- responsive font size;
+- line-height;
+- tracking;
+- column gap;
+- vertical spacing;
+- alignment between text and image.
+
+Do NOT insert arbitrary hardcoded <br> breaks unless genuinely necessary.
+
+Target desktop wrapping should generally feel like roughly 3 balanced lines,
+not 4–5 short fragments.
+
+The copy block and image should have similar visual weight.
+
+Do not make the hero substantially taller.
+
+Preserve current:
+- hero image;
+- CTA text;
+- proof badges;
+- accessibility;
+- responsive mobile order.
+
+============================================================
+17. HOMEPAGE STATISTICS
+============================================================
+
+The statistics strip was already implemented.
+
+Verify it remains DIRECTLY BELOW THE HERO:
+
+9+
+Years of Business
+
+37+
+Countries Exported
+
+2,380+
+Happy Customers
+
+6,832+
+Successful Projects
+
+Do not move it deep into the page.
+
+Do not redesign it into a giant section.
+
+============================================================
+18. FUTURE IMAGEZAI CATEGORY VISUALS — DO NOT GENERATE THEM
+============================================================
+
+A separate later phase will provide five generated homepage category visuals:
+
+Electrical Insulating Mats
+International / Global (IEC 61111:2009)
+Waterproofing Solutions
+PVC Flooring Solutions
+Other Products
+
+DO NOT generate these images now.
+DO NOT call external AI image services.
+DO NOT create fake generated placeholders.
+
+However, prepare the code architecture now.
+
+Create a single central category-visual configuration where those five future
+files can later be swapped in with minimal code changes.
+
+For the temporary implementation:
+
+- use a real supplied product image only if it accurately represents the
+  category;
+- if no honest category image exists, use a tasteful CSS/graphic fallback,
+  not a fake photograph;
+- no broken <img>;
+- no empty grey placeholder boxes.
+
+The future ImageZai swap should require changing an asset path/file, not
+redesigning the component.
+
+============================================================
+19. HOMEPAGE ABOUT CONTENT
+============================================================
+
+Client direction:
+
+NO full About Us content on the homepage.
+
+Keep Home product/credibility focused.
+
+Detailed corporate story belongs on:
+
+/about-us
+
+Do not duplicate the entire Who We Are / Vision / Mission content on Home.
+
+============================================================
+20. ABOUT US — OVERALL CLIENT-APPROVED DIRECTION
+============================================================
+
+The client likes the FULL LOOK and rhythm of the original About page:
+
+https://bharatelectrosafe.com/about-us.php
+
+The attached:
+
+references/original-about-page.png
+
+shows the client-liked page.
+
+The attached:
+
+references/current-about-page.png
+
+shows the current rebuild.
+
+Do NOT make a pixel-for-pixel outdated clone.
+
+Instead bring the CURRENT high-quality design system closer to the original
+page's successful information structure, pacing and content variety.
+
+The result should still feel like the modern redesigned site.
+
+============================================================
+21. ABOUT PAGE — RECOMMENDED SECTION FLOW
+============================================================
+
+Use approximately this content flow:
+
+1. About / Who We Are
+2. Leadership
+3. BES Brands
+4. Vision & Mission
+5. Values
+6. Why Choose Us
+7. Manufacturing / capability
+8. Awards / Certifications / Memberships
+9. Clients & Projects
+10. Active Participation
+11. CTA
+
+Keep the page visually varied.
+
+Avoid 10 identical card grids.
+
+Use strong section rhythm, alternating compositions, restrained backgrounds
+and good typography.
+
+============================================================
+22. ABOUT — WHO WE ARE CONTENT
+============================================================
+
+Use the client-provided:
+
+content/About Bharat Electrosafe.docx
+
+as the primary replacement source.
+
+It states that Bharat Electrosafe is India's trusted name in:
+
+- electrical safety;
+- industrial safety;
+- infrastructure protection;
+- PVC flooring;
+- waterproofing solutions.
+
+It also includes source-supported product categories/standards.
+
+Do not preserve outdated copy when the new client document supersedes it.
+
+Do not strengthen its claims beyond the supplied document.
+
+Create a balanced 2-column opening section similar in rhythm to the original
+About page.
+
+IMPORTANT:
+Do not use the old Tata-branded visual.
+
+Use a strong Bharat Electrosafe-owned product/manufacturing/application image
+from the repo or safe asset pack instead.
+
+============================================================
+23. LEADERSHIP CARDS — MATCH THE ORIGINAL FEATURE PROPERLY
+============================================================
+
+The current implementation uses fixed flip cards, but its own source comments
+claim hover behaviour that is not actually wired.
+
+Do not trust those comments.
+
+FIRST inspect:
+
+https://bharatelectrosafe.com/about-us.php
+
+with the browser.
+
+Determine exactly how the leadership cards behave.
+
+Reproduce the successful original interaction within the current design
+system.
+
+Requirements:
+
+- three consistent cards on desktop;
+- portrait front;
+- name;
+- designation;
+- biography/details state;
+- fixed card footprint;
+- internal biography scrolling;
+- card must not cause the full page to expand;
+- desktop pointer interaction should match the original;
+- click/tap must work;
+- mobile must not depend on hover;
+- keyboard support;
+- Escape support where appropriate;
+- aria state;
+- focus-visible;
+- reduced-motion alternative.
+
+If the original flips/swivels on hover:
+implement that real pointer interaction.
+
+If click should lock/unlock the reverse state, implement it intentionally.
+
+Do not leave a "hover OR click" comment when the code only supports one.
+
+Use the CURRENT approved leadership biographies and photographs unless a new
+client source explicitly replaces them.
+
+Do not reintroduce internal editorial notes.
+
+============================================================
+24. BES BRANDS
+============================================================
+
+Reintroduce / create the BES Brands presentation inspired by the original
+About page.
+
+At minimum:
+
+Bharat Electrosafe
+INSULATICAA
+
+Use the CURRENT authoritative Bharat Electrosafe ® logo already installed in
+the repository.
+
+DO NOT import the old TM company logo from archive material.
+
+Use the existing verified INSULATICAA asset already available in the project
+or approved client source.
+
+Keep descriptions concise.
+
+Do not invent trademark/registration claims.
+
+============================================================
+25. VISION & MISSION
+============================================================
+
+Replace current Vision/Mission copy with the client-provided source:
+
+content/Our Vision Our Mission.docx
+
+Use the copy faithfully.
+
+Create a visually strong paired Vision/Mission presentation inspired by the
+original page.
+
+It may use a dark/navy band if appropriate to the current design system.
+
+Maintain good mobile contrast and reading width.
+
+============================================================
+26. VALUES
+============================================================
+
+The original About page's values presentation is liked by the client.
+
+Preserve/reintroduce the clear Values structure.
+
+Use existing verified value names/copy from the current/original public
+content.
+
+Do not invent new corporate values.
+
+The safe asset:
+
+images/about/Core values.jpeg
+
+may be used if it improves the section.
+
+The values heading/accents should use the Bharat blue/yellow palette cleanly.
+
+============================================================
+27. WHY CHOOSE US
+============================================================
+
+Create a balanced Why Choose Us section inspired by the original About page.
+
+Do not use a generic cartoon merely because the old page did.
+
+Prefer a strong REAL:
+
+- manufacturing;
+- insulating-mat;
+- installation;
+- testing;
+- product-detail
+
+visual from the current repository or safe client pack.
+
+Use only source-supported capability bullets.
+
+Do not invent:
+- facility size;
+- production capacity;
+- employee numbers;
+- equipment counts;
+- in-house installation claims
+unless directly sourced.
+
+============================================================
+28. MANUFACTURING / CAPABILITY
+============================================================
+
+Retain the strongest parts of the current modern Manufacturing section.
+
+Integrate it naturally into the revised About page rather than deleting good
+content solely to imitate the old site.
+
+Prefer real manufacturing imagery already present in the current project.
+
+No Tata visuals.
+
+============================================================
+29. AWARDS
+============================================================
+
+Use the best client-supplied award photographs.
+
+Priority:
+
+Awards 4.jpeg
+Awards 5.jpeg
+
+Good collection option:
+
+Awards 1.jpeg
+
+Do not show every award merely because a file exists.
+
+Use a curated, visually coherent set.
+
+Add accurate captions only when the award is identifiable from source.
+
+No invented award descriptions.
+
+============================================================
+30. CERTIFICATES / MEMBERSHIPS
+============================================================
+
+The attached safe package contains selected public-facing documents:
+
+- ZED Bronze Certificate
+- CE
+- ERDA 2 mm
+- ERDA 2.5 mm
+- ISO 14001
+- ISO 45001
+- ISO 9001
+- Startup India
+
+Do NOT add a certification/membership unless the source actually supports it.
+
+Do NOT call a certificate a "membership" when it is not one.
+
+Do NOT import client endorsement documents as certificates.
+
+Keep the certification display concise and visually strong.
+
+Prefer preview card + "View certificate" behaviour where the project already
+supports safe public PDF downloads.
+
+Do not expose documents unnecessarily.
+
+If the client instruction about "2 certificates in memberships" cannot be
+unambiguously mapped to a source, do not guess.
+
+Instead:
+preserve valid existing memberships and include only clearly supported
+certificates, then report the ambiguity.
+
+============================================================
+31. CLIENTS & PROJECTS
+============================================================
+
+Read:
+
+content/Our valuable customer addition.rtf
+
+This is client-supplied source data.
+
+Integrate the additional names into the existing Clients & Projects / client
+credibility presentation.
+
+IMPORTANT:
+
+A customer name does NOT imply permission to invent a project.
+
+Do not create:
+
+"we delivered X system for Company Y"
+
+unless project-specific source data exists.
+
+Do not invent:
+- project values;
+- project locations;
+- testimonials;
+- dates;
+- quantities;
+- logos.
+
+If an approved logo does not already exist in the repository, use the
+customer name as typography/text rather than downloading or fabricating a
+logo.
+
+NO Tata image/logo.
+
+If "Tata Steel Limited" is present in the supplied customer text, it may
+remain as plain client-provided text only unless explicitly told otherwise.
+
+============================================================
+32. ACTIVE PARTICIPATION
+============================================================
+
+Add/restructure an "Active Participation" or equivalent industry-participation
+section as requested by the client.
+
+Use only verified/current public event/participation material already present
+in the repository or clearly approved public material.
+
+Do NOT automatically publish the raw Recognition*.mp4 broadcast/news files
+from the original client archive.
+
+Do not create copyright or licensing risk merely to fill a section.
+
+Prefer:
+- existing public event images;
+- existing safe YouTube facade content;
+- approved award/event photography.
+
+Keep it concise.
+
+============================================================
+33. COMPANY CONTACT / LOCATIONS
+============================================================
+
+Verify the current data layer still contains:
+
+ADDRESS:
+814, 8th Floor, I-thum, Tower A,
+Plot No. A-40, Sector-62,
+Noida-201309,
+Uttar Pradesh, India
+
+PHONES:
++91 76174 94968
++91 96671 71444
++91 98703 94721
+
+WHATSAPP:
+preserve current verified target.
+
+LOCATIONS:
+
+Guwahati
+Jammu
+Udaipur
+Coimbatore
+Pune
+Indore
+Raipur
+Surat
+Jabalpur
+Kanpur
+Prayagraj
+Cochin
+Visakhapatnam (Vizag)
+Hyderabad
+Dehradun
+Ambala
+Chandigarh
+Ludhiana
+Jalandhar
+Delhi NCR
+
+Continue using the neutral heading:
+
+Locations
+
+Do not call each city an Office / Branch / Dealer / Factory.
+
+============================================================
+34. STRUCTURED DATA
+============================================================
+
+Keep company data centralized.
+
+When navigation/products are restructured:
+
+- Organization schema remains truthful;
+- PostalAddress matches visible address;
+- phone data matches;
+- Product schema only appears where appropriate;
+- BreadcrumbList matches real hierarchy;
+- no fake AggregateRating;
+- no fake Offer prices;
+- no fake reviews.
+
+International IEC page metadata/schema must not claim IS 15652 specifications.
+
+PVC Flooring/Other Products schema must not contain invented technical data.
+
+============================================================
+35. SEO
+============================================================
+
+Preserve:
+
+canonical domain:
+https://bharatelectrosafe.com
+
+Preserve:
+- indexing gates;
+- canonical builder;
+- robots;
+- sitemap;
+- Open Graph;
+- Twitter cards;
+- security-safe JSON-LD serialization;
+- legacy redirects.
+
+Update:
+
+- sitemap for genuinely new routes;
+- product overview metadata;
+- International / Global page metadata;
+- PVC Flooring page metadata;
+- Other Products metadata;
+- breadcrumbs;
+- internal links;
+- footer navigation.
+
+Do not keyword-stuff.
+
+Do not create thin duplicate pages solely for SEO.
+
+============================================================
+36. CURRENT VERCEL / DOMAIN BEHAVIOUR
+============================================================
+
+The Vercel URL is currently intentionally usable for QA while DNS for the
+canonical domain is being handled separately.
+
+Do NOT reintroduce a redirect that makes:
+
+https://bharat-electrosafe.vercel.app/
+
+unusable.
+
+Canonical SEO URLs should still resolve to:
+
+https://bharatelectrosafe.com
+
+============================================================
+37. SECURITY HARDENING — PRESERVE
+============================================================
+
+Do not regress:
+
+- Zod contact validation;
+- origin validation;
+- rate limiting;
+- honeypot;
+- timing anti-spam;
+- Turnstile integration/degradation;
+- CSP;
+- security headers;
+- safe structured-data serialization;
+- external-link rel protections;
+- server-only environment variables;
+- no-store API responses.
+
+No unsafe HTML shortcuts.
+
+============================================================
+38. PERFORMANCE
+============================================================
+
+Do not turn this content expansion into a slow site.
+
+Requirements:
+
+- Server Components by default;
+- Client Components only where interaction needs them;
+- Next/Image;
+- correct `sizes`;
+- optimized product imagery;
+- strip oversized 4K payloads;
+- lazy-load below the fold;
+- no new animation library;
+- no huge video autoplay;
+- no unnecessary carousels;
+- avoid CLS.
+
+Do not import the 73 MB asset package into public/.
+
+============================================================
+39. RESPONSIVE QA
+============================================================
+
+Test:
+
+360 × 800
+390 × 844
+430 × 932
+768 × 1024
+820 × 1180
+1024 × 768
+1280 × 800
+1366 × 768
+1440 × 900
+1920 × 1080
+
+Check:
+
+- header
+- mega-menu
+- mobile menu
+- hero wrapping
+- statistics strip
+- Products page
+- About page
+- leadership interaction
+- footer
+- locations
+- new routes
+- tables
+- product galleries
+
+No horizontal scroll.
+
+============================================================
+40. ACCESSIBILITY
+============================================================
+
+Maintain WCAG-conscious implementation.
+
+Check:
+
+- one logical H1 per page;
+- heading hierarchy;
+- keyboard navigation;
+- focus-visible;
+- aria-expanded;
+- aria-controls;
+- mobile disclosure semantics;
+- flip-card state;
+- reduced motion;
+- sufficient contrast;
+- alt text;
+- touch target size.
+
+Run Axe/Playwright on:
+
+/
+ /products
+ /about-us
+ /contact-us
+ /products/international-iec-61111
+ /products/pvc-flooring-solutions
+ /products/other-products
+
+============================================================
+41. SEARCH / REGRESSION AUDIT
+============================================================
+
+Before finalizing, search the repo for stale concepts:
+
+"Waterproofing and Civil Protection"
+"Electrical Insulation"
+"704, 7th Floor"
+"7th Floor"
+"TM"
+"marketed-by-tata"
+"Marketed by Tata"
+"TATA"
+
+Interpret matches carefully.
+
+Do not delete third-party references or historical documentation blindly.
+
+The goal is zero stale PUBLIC UI where the client has superseded it.
+
+Also search for duplicated hardcoded:
+
+phone numbers
+address
+locations
+product navigation arrays
+
+============================================================
+42. TESTING — DO NOT RELY ON GITHUB ACTIONS
+============================================================
+
+GitHub Actions included minutes may currently be exhausted.
+
+That does NOT excuse skipping validation.
+
+Run validation LOCALLY.
+
+At minimum:
+
+bun install
+bun run typecheck
+bun run typecheck:tests
+bun run lint
+bun run test
+bun run test:security
+bun run test:e2e
+
+Run applicable accessibility tests.
+
+Then:
+
+bun run build
+
+If the existing project uses a slightly different current script name,
+inspect package.json and use the actual script.
+
+Do not mark a test "pre-existing" without proving it.
+
+============================================================
+43. ADD REGRESSION TESTS
+============================================================
+
+Add/update tests for:
+
+PRODUCT NAVIGATION
+- final categories render;
+- domestic hierarchy;
+- international hierarchy;
+- waterproofing hierarchy;
+- PVC Flooring;
+- Other Products;
+- mobile disclosure;
+- no overflow.
+
+STANDARD SEPARATION
+- Domestic page contains IS 15652 context;
+- IEC page contains IEC 61111 context;
+- IEC page does not accidentally render the domestic technical table where
+  inappropriate.
+
+TATA
+- public HTML contains no "Marketed by Tata";
+- public component references contain no known marketed-by-tata asset;
+- key About imagery no longer uses the old Tata visual.
+
+ABOUT
+- updated Who We Are copy;
+- Vision;
+- Mission;
+- leadership interaction;
+- BES Brands;
+- client/award/certificate sections.
+
+CONTACT
+- updated address;
+- all three phone numbers.
+
+HERO
+- exact H1 content preserved.
+
+============================================================
+44. CLEANUP
+============================================================
+
+After migration:
+
+- remove obsolete navigation constants;
+- remove dead product-category definitions;
+- remove unused imports;
+- remove stale CSS;
+- remove replaced Tata-containing public assets if no other legitimate use;
+- do not retain unused old logo variants;
+- do not leave TODO comments for completed work.
+
+Do not delete historical/client documentation from Git merely because it
+mentions an old fact unless that document is itself part of public runtime.
+
+============================================================
+45. GIT AUTHOR IDENTITY
+============================================================
+
+Before the final commit configure repository-local identity ONLY:
+
+git config user.name "witejackel-eng"
+git config user.email "witejackel@gmail.com"
+
+Verify:
+
+git config user.name
+git config user.email
+
+Expected:
+
+witejackel-eng
+witejackel@gmail.com
+
+Do not modify global Git identity.
+
+No:
+- Z.ai author;
+- bot author;
+- Claude author;
+- OpenAI author;
+- Co-authored-by AI line;
+- generated-by metadata.
+
+============================================================
+46. FINAL REVIEW
+============================================================
+
+Before committing:
+
+1. Run all validation.
+2. Inspect all changed files.
+3. Inspect staged diff.
+4. Confirm no raw safe ZIP.
+5. Confirm no client secrets.
+6. Confirm no Tata visual.
+7. Confirm no obsolete TM Bharat Electrosafe logo.
+8. Confirm all new routes build.
+9. Confirm existing URLs still work or redirect.
+10. Confirm Vercel QA URL remains usable.
+
+Then commit and push to main.
+
+============================================================
+47. FINAL REPORT
+============================================================
+
+Return a concise but complete implementation report containing:
+
+1. Current commit baseline.
+2. Files changed.
+3. Final product taxonomy.
+4. Menu implementation.
+5. New routes.
+6. Redirects preserved/added.
+7. Product imagery selected by product.
+8. Images rejected and why.
+9. Tata imagery removed/replaced.
+10. About-page restructuring.
+11. Leadership interaction verification.
+12. Vision/Mission source used.
+13. Client additions.
+14. Certificates/memberships.
+15. Active Participation implementation.
+16. Hero typography changes.
+17. Footer/company-description changes.
+18. Security/privacy verification.
+19. SEO/schema verification.
+20. Accessibility verification.
+21. Exact test results.
+22. Production build result.
+23. Vercel deployment result if available.
+24. Final commit SHA.
+25. Any item genuinely blocked by missing client source.
+
+DO THE IMPLEMENTATION.
+
+Do not stop at analysis.
+Do not return only recommendations.
+Do not generate the five ImageZai category images in this phase.
