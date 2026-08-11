@@ -9,6 +9,7 @@ import {
   ChevronDown,
   ChevronRight,
   ArrowRight,
+  Search,
 } from 'lucide-react';
 import {
   Sheet,
@@ -25,9 +26,18 @@ import {
 } from '@/components/ui/accordion';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
+import {
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandGroup,
+  CommandItem,
+  CommandEmpty,
+} from '@/components/ui/command';
 import { cn } from '@/lib/utils';
 import {
   productNavGroups,
+  getAllProductLinks,
   type ProductNavSubGroup,
   type ProductNavLeaf,
 } from '@/data/product-navigation';
@@ -61,6 +71,7 @@ export function Header() {
   const pathname = usePathname();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const openTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const megaMenuRef = useRef<HTMLDivElement>(null);
@@ -154,6 +165,13 @@ export function Header() {
 
   const domesticSub = (electricalGroup.children as ProductNavSubGroup[])[0];
   const internationalSub = (electricalGroup.children as ProductNavSubGroup[])[1];
+
+  // Water Proofing sub-groups
+  const geoMembraneSub = (waterGroup.children as ProductNavSubGroup[])[0];
+  const waterStopSealSub = (waterGroup.children as ProductNavSubGroup[])[1];
+
+  // All product links for search dialog
+  const allProductLinks = getAllProductLinks();
 
   // Helper: flatten items for a group without sub-groups rendering
   const getGroupItems = (group: typeof productNavGroups[number]): ProductNavLeaf[] => {
@@ -272,6 +290,16 @@ export function Header() {
             >
               Contact Us
             </Link>
+
+            {/* Search / Quick-find button */}
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="inline-flex items-center justify-center size-8 rounded-md text-white/80 hover:text-white hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800"
+              aria-label="Search products"
+            >
+              <Search className="size-4" aria-hidden="true" />
+            </button>
           </nav>
 
           {/* ── Column 3: CTA + Mobile menu ── */}
@@ -523,7 +551,7 @@ export function Header() {
               <div className="grid grid-cols-[1.2fr_0.8fr] gap-x-8 gap-y-6">
 
                 {/* ── Top-Left: 01 Electrical Insulating Mats ── */}
-                <div role="group" aria-label="Electrical Insulating Mats">
+                <div role="group" aria-label="Electrical Insulating Mats" className="animate-mega-fade-in" style={{ animationDelay: '0ms' }}>
                   <p className="text-[0.8125rem] font-bold text-be-charcoal-950 uppercase tracking-[0.04em] mb-2">
                     <span className="text-be-yellow-600 text-[0.6875rem] font-bold mr-1.5">01</span>
                     Electrical Insulating Mats
@@ -543,7 +571,7 @@ export function Header() {
                           key={item.href}
                           href={item.href}
                           role="menuitem"
-                          className="text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 transition-colors px-2 py-[5px] rounded"
+                          className="mega-menu-item text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 px-2 py-[5px] rounded"
                           onClick={() => setDropdownOpen(false)}
                         >
                           {item.name}
@@ -566,7 +594,7 @@ export function Header() {
                           key={item.href}
                           href={item.href}
                           role="menuitem"
-                          className="text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 transition-colors px-2 py-[5px] rounded"
+                          className="mega-menu-item text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 px-2 py-[5px] rounded"
                           onClick={() => setDropdownOpen(false)}
                         >
                           {item.name}
@@ -577,28 +605,55 @@ export function Header() {
                 </div>
 
                 {/* ── Top-Right: 02 Water Proofing Solutions ── */}
-                <div role="group" aria-label="Water Proofing Solutions">
+                <div role="group" aria-label="Water Proofing Solutions" className="animate-mega-fade-in" style={{ animationDelay: '40ms' }}>
                   <p className="text-[0.8125rem] font-bold text-be-charcoal-950 uppercase tracking-[0.04em] mb-2">
                     <span className="text-be-yellow-600 text-[0.6875rem] font-bold mr-1.5">02</span>
                     Water Proofing Solutions
                   </p>
-                  <div className="flex flex-col pl-3">
-                    {getGroupItems(waterGroup).map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        role="menuitem"
-                        className="text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 transition-colors px-2 py-[5px] rounded"
-                        onClick={() => setDropdownOpen(false)}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
+
+                  {/* Geo Membrane Lining sub-group */}
+                  <div className="mb-2">
+                    <div className="flex items-baseline gap-1.5 mb-1 pl-3">
+                      <p className="text-[0.75rem] font-semibold text-be-charcoal-900">Geo Membrane Lining</p>
+                    </div>
+                    <div className="flex flex-col pl-3">
+                      {geoMembraneSub.items.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          role="menuitem"
+                          className="mega-menu-item text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 px-2 py-[5px] rounded"
+                          onClick={() => setDropdownOpen(false)}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Water Stop Seal sub-group */}
+                  <div>
+                    <div className="flex items-baseline gap-1.5 mb-1 pl-3">
+                      <p className="text-[0.75rem] font-semibold text-be-charcoal-900">Water Stop Seal</p>
+                    </div>
+                    <div className="flex flex-col pl-3">
+                      {waterStopSealSub.items.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          role="menuitem"
+                          className="mega-menu-item text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 px-2 py-[5px] rounded"
+                          onClick={() => setDropdownOpen(false)}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
                 {/* ── Bottom-Left: 03 PVC Flooring Solutions ── */}
-                <div role="group" aria-label="PVC Flooring Solutions">
+                <div role="group" aria-label="PVC Flooring Solutions" className="animate-mega-fade-in" style={{ animationDelay: '80ms' }}>
                   <p className="text-[0.8125rem] font-bold text-be-charcoal-950 uppercase tracking-[0.04em] mb-2">
                     <span className="text-be-yellow-600 text-[0.6875rem] font-bold mr-1.5">03</span>
                     PVC Flooring Solutions
@@ -609,7 +664,7 @@ export function Header() {
                         key={item.href}
                         href={item.href}
                         role="menuitem"
-                        className="text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 transition-colors px-2 py-[5px] rounded"
+                        className="mega-menu-item text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 px-2 py-[5px] rounded"
                         onClick={() => setDropdownOpen(false)}
                       >
                         {item.name}
@@ -619,7 +674,7 @@ export function Header() {
                 </div>
 
                 {/* ── Bottom-Right: 04 Other Products ── */}
-                <div role="group" aria-label="Other Products">
+                <div role="group" aria-label="Other Products" className="animate-mega-fade-in" style={{ animationDelay: '120ms' }}>
                   <p className="text-[0.8125rem] font-bold text-be-charcoal-950 uppercase tracking-[0.04em] mb-2">
                     <span className="text-be-yellow-600 text-[0.6875rem] font-bold mr-1.5">04</span>
                     Other Products
@@ -630,7 +685,7 @@ export function Header() {
                         key={item.href}
                         href={item.href}
                         role="menuitem"
-                        className="text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 transition-colors px-2 py-[5px] rounded"
+                        className="mega-menu-item text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 px-2 py-[5px] rounded"
                         onClick={() => setDropdownOpen(false)}
                       >
                         {item.name}
@@ -667,6 +722,54 @@ export function Header() {
         )}
         <ScrollProgress />
       </div>
+
+      {/* ── Product Search Command Dialog ── */}
+      <CommandDialog
+        open={searchOpen}
+        onOpenChange={setSearchOpen}
+        title="Search Products"
+        description="Find a product by name"
+      >
+        <CommandInput placeholder="Search products..." />
+        <CommandList>
+          <CommandEmpty>No products found.</CommandEmpty>
+          {productNavGroups.map((group) => (
+            <CommandGroup key={group.id} heading={group.name}>
+              {group.hasSubGroups
+                ? (group.children as ProductNavSubGroup[]).flatMap((sub) =>
+                    sub.items.map((item) => (
+                      <CommandItem
+                        key={item.href}
+                        value={`${item.name} ${group.name} ${sub.name}`}
+                        onSelect={() => {
+                          setSearchOpen(false);
+                          window.location.href = item.href;
+                        }}
+                      >
+                        <span className="truncate">{item.name}</span>
+                        <span className="ml-auto text-xs text-muted-foreground truncate">
+                          {sub.name}
+                        </span>
+                      </CommandItem>
+                    ))
+                  )
+                : (group.children as ProductNavLeaf[]).map((item) => (
+                    <CommandItem
+                      key={item.href}
+                      value={`${item.name} ${group.name}`}
+                      onSelect={() => {
+                        setSearchOpen(false);
+                        window.location.href = item.href;
+                      }}
+                    >
+                      <span className="truncate">{item.name}</span>
+                    </CommandItem>
+                  ))
+              }
+            </CommandGroup>
+          ))}
+        </CommandList>
+      </CommandDialog>
     </header>
   );
 }

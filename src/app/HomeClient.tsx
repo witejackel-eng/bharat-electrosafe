@@ -2,6 +2,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
 import { RevealObserver } from '@/components/ui/RevealObserver';
+import { MobileStickyCTA } from '@/components/ui/MobileStickyCTA';
 import HomeHero from '@/components/home/HomeHero';
 import StatisticsStrip from '@/components/home/StatisticsStrip';
 import HomeAbout from '@/components/home/HomeAbout';
@@ -30,20 +31,29 @@ export default function HomeShell() {
         {/* 1. Hero + trust proof */}
         <HomeHero />
         {/* 2. Statistics strip — company credibility */}
-        <StatisticsStrip />
+        <div className="reveal-up">
+          <StatisticsStrip />
+        </div>
         {/* 3. About Bharat Electrosafe */}
-        <HomeAbout />
+        <div className="reveal-up">
+          <HomeAbout />
+        </div>
         {/* 4. Product range */}
         <ProductRange />
         {/* 5. Trust and credibility */}
-        <TrustDocuments />
+        <div className="reveal-up">
+          <TrustDocuments />
+        </div>
         {/* 6. Capability + industries */}
-        <CapabilityIndustries />
+        <div className="reveal-up">
+          <CapabilityIndustries />
+        </div>
         {/* 7. FAQ + CTA */}
         <HomeFAQCTA />
       </main>
       <Footer />
       <BackToTop />
+      <MobileStickyCTA />
       <RevealObserver />
     </div>
   );

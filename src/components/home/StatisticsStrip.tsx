@@ -40,28 +40,28 @@ const iconMap: Record<StatIconKey, LucideIcon> = {
 export default function StatisticsStrip() {
   return (
     <section
-      className="bg-be-warm-white border-y border-be-grey-250"
+      className="bg-be-cream/50 border-y border-be-grey-200/80"
       aria-label="Company statistics"
     >
-      <div className="container-site page-horizontal-padding py-5 sm:py-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+      <div className="container-site page-horizontal-padding py-6 sm:py-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8">
           {companyStatistics.map((stat) => {
             const Icon = iconMap[stat.icon];
             return (
               <div
                 key={stat.label}
-                className="flex flex-col items-center text-center gap-1.5"
+                className="flex flex-col items-center text-center gap-2 p-3 sm:p-4 rounded-xl bg-be-white/70 border border-be-grey-150/60 shadow-sm"
               >
-                {/* Icon — small circular yellow-accent */}
-                <div className="flex items-center justify-center size-9 rounded-full bg-be-yellow-50 border border-be-yellow-100">
-                  <Icon className="size-4 text-be-yellow-text" aria-hidden="true" focusable="false" />
+                {/* Icon — circular yellow-accent with soft glow */}
+                <div className="flex items-center justify-center size-10 rounded-full bg-be-yellow-50 border border-be-yellow-200/60 shadow-[0_0_8px_rgba(244,195,19,0.12)]">
+                  <Icon className="size-[18px] text-be-yellow-text" aria-hidden="true" focusable="false" />
                 </div>
-                {/* Value — bold, navy, large */}
-                <span className="text-2xl sm:text-3xl font-bold tracking-tight text-be-navy-800 leading-none">
+                {/* Value — bold, navy, large with tabular-nums */}
+                <span className="text-2xl sm:text-3xl font-bold tracking-tight text-be-navy-800 leading-none tabular-nums">
                   {stat.value}
                 </span>
-                {/* Label — small, muted */}
-                <span className="text-[0.6875rem] sm:text-xs font-medium text-be-grey-650 leading-snug">
+                {/* Label — small, muted, uppercase tracking */}
+                <span className="text-[0.625rem] sm:text-[0.6875rem] font-semibold text-be-grey-500 leading-snug uppercase tracking-wider">
                   {stat.label}
                 </span>
               </div>
@@ -69,7 +69,7 @@ export default function StatisticsStrip() {
           })}
         </div>
         {/* Subtle footnote for company-stated figures */}
-        <p className="mt-3 text-center text-[0.625rem] sm:text-[0.6875rem] text-be-grey-500 leading-none">
+        <p className="mt-4 text-center text-[0.625rem] sm:text-[0.6875rem] text-be-grey-400 leading-none">
           Countries served and customer figures are company-stated.
         </p>
       </div>
