@@ -18,7 +18,7 @@ const proofItems: ProofItem[] = [
 ];
 
 const HERO_IMG_ALT =
-  'Electrical technician operating switchgear while standing on an electrical insulating mat covering the control-room floor.';
+  'Electrical technician standing on a blue insulating mat while operating switchgear';
 
 /**
  * HomeHero — Server Component.
