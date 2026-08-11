@@ -33,10 +33,12 @@ export interface ProductNavLeaf {
   description: string;
 }
 
-/** A sub-group within a top-level group (e.g. "Domestic Mats (IS 15652:2006)"). */
+/** A sub-group within a top-level group (e.g. "Domestic Mats" with standard "IS 15652:2006"). */
 export interface ProductNavSubGroup {
   /** Visible sub-group heading. */
   name: string;
+  /** Optional standard/certification reference (e.g. "IS 15652:2006", "IEC 61111:2009"). */
+  standard?: string;
   /** Optional href if sub-group has its own page. */
   href?: string;
   /** Products within this sub-group. */
@@ -47,6 +49,8 @@ export interface ProductNavSubGroup {
 export interface ProductNavGroup {
   /** Unique identifier for the group. */
   id: string;
+  /** Display number for the group (e.g. "01", "02", "03", "04"). */
+  number: string;
   /** Visible group heading. */
   name: string;
   /** Optional href if the group itself is a page (e.g. PVC Flooring). */
@@ -66,12 +70,14 @@ export interface ProductNavGroup {
 export const productNavGroups: ProductNavGroup[] = [
   {
     id: 'electrical-insulating-mats',
+    number: '01',
     name: 'Electrical Insulating Mats',
     description: 'Operator protection near live electrical equipment',
     hasSubGroups: true,
     children: [
       {
-        name: 'Domestic Mats (IS 15652:2006)',
+        name: 'Domestic Mats',
+        standard: 'IS 15652:2006',
         items: [
           {
             name: 'HV Insulating Mats',
@@ -96,7 +102,8 @@ export const productNavGroups: ProductNavGroup[] = [
         ],
       },
       {
-        name: 'International / Global (IEC 61111:2009)',
+        name: 'International / Global',
+        standard: 'IEC 61111:2009',
         href: '/products/international-iec-61111',
         items: [
           {
@@ -120,7 +127,8 @@ export const productNavGroups: ProductNavGroup[] = [
   },
   {
     id: 'water-proofing-solutions',
-    name: 'Waterproofing Solutions',
+    number: '02',
+    name: 'Water Proofing Solutions',
     description: 'Waterproofing, containment and construction-joint sealing',
     hasSubGroups: true,
     children: [
@@ -148,6 +156,7 @@ export const productNavGroups: ProductNavGroup[] = [
   },
   {
     id: 'pvc-flooring-solutions',
+    number: '03',
     name: 'PVC Flooring Solutions',
     href: '/products/pvc-flooring-solutions',
     description: 'Industrial, electrical and commercial PVC flooring (IS 3462:1986)',
@@ -162,6 +171,7 @@ export const productNavGroups: ProductNavGroup[] = [
   },
   {
     id: 'other-products',
+    number: '04',
     name: 'Other Products',
     href: '/products/other-products',
     description: 'Rubber Sheet, Rubber Hose Pipe, ESD Mat, Conveyor Belt',
