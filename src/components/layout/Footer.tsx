@@ -69,11 +69,11 @@ export function Footer() {
           <div className="flex flex-col gap-2.5">
             <Link href="/" aria-label="Bharat Electrosafe — home">
               <Image
-                src="/brand/bharat-electrosafe-logo-final.png"
+                src="/brand/bharat-electrosafe-logo-footer.png"
                 alt="Bharat Electrosafe® logo"
-                width={1520}
-                height={1024}
-                className="object-contain w-[190px] lg:w-[235px] h-auto"
+                width={823}
+                height={447}
+                className="object-contain w-[175px] lg:w-[210px] h-auto"
                 priority
               />
             </Link>
@@ -232,11 +232,11 @@ export function Footer() {
         <div className="md:hidden flex flex-col gap-4">
           <Link href="/" aria-label="Bharat Electrosafe — home">
             <Image
-              src="/brand/bharat-electrosafe-logo-final.png"
+              src="/brand/bharat-electrosafe-logo-footer.png"
               alt="Bharat Electrosafe® logo"
-              width={1520}
-              height={1024}
-              className="object-contain w-[190px] h-auto"
+              width={823}
+              height={447}
+              className="object-contain w-[175px] h-auto"
               priority
             />
           </Link>
