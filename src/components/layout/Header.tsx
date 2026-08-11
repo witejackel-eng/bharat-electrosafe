@@ -95,6 +95,14 @@ const previewMap: Record<string, ProductVisualRole> = {
 /** Default preview (HV mat) shown when menu opens with no item hovered. */
 const DEFAULT_PREVIEW = hvVisuals.menuPreview;
 
+/** Group-level preview images — changes when hovering/focusing a primary group. */
+const GROUP_PREVIEWS: Record<string, ProductVisualRole> = {
+  'electrical-insulating-mats': hvVisuals.menuPreview,
+  'water-proofing-solutions': membraneVisuals.menuPreview,
+  'pvc-flooring-solutions': pvcFlooringVisuals.menuPreview,
+  'other-products': otherProductsVisuals.menuPreview,
+};
+
 /* ────────────────────────────────────────────
    Header component
    ──────────────────────────────────────────── */
@@ -205,6 +213,15 @@ export function Header() {
   // Preview update on hover/focus
   const updatePreview = useCallback((href: string) => {
     const visual = previewMap[href];
+    if (visual && visual.src !== previewVisual.src) {
+      setPreviewVisual(visual);
+      setPreviewKey((k) => k + 1);
+    }
+  }, [previewVisual.src]);
+
+  // Group-level preview update (for hovering a category heading)
+  const updateGroupPreview = useCallback((groupId: string) => {
+    const visual = GROUP_PREVIEWS[groupId];
     if (visual && visual.src !== previewVisual.src) {
       setPreviewVisual(visual);
       setPreviewKey((k) => k + 1);
@@ -419,8 +436,8 @@ export function Header() {
                               ? (group.children as ProductNavSubGroup[]).flatMap((s) => s.items)
                               : (group.children as ProductNavLeaf[]);
                             return (
-                              <div key={group.id} className="pl-4 mt-1">
-                                <div className="px-3 py-2 text-[0.75rem] font-semibold text-white/60 uppercase tracking-wider">
+                              <div key={group.id} className="pl-4 mt-2">
+                                <div className="px-3 py-2 text-[0.75rem] font-semibold text-be-brand-yellow uppercase tracking-wider">
                                   {group.name}
                                 </div>
                                 <div className="pl-3">
@@ -482,14 +499,14 @@ export function Header() {
         </div>
 
         {/* ── Products Mega-Menu ──
-            70/30 layout: navigation links left, product preview right.
-            Preview image updates on hover/keyboard focus. */}
+            Compact 70/30 layout: navigation links left, product preview right.
+            Four equal primary groups. Preview updates per group. */}
         {dropdownOpen && (
           <div
             ref={megaMenuRef}
             id="products-mega-menu"
             role="menu"
-            className="absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-[960px] max-w-[calc(100vw-32px)] bg-be-white border border-be-grey-250/80 rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.10),0_2px_8px_rgba(0,0,0,0.06)] overflow-hidden animate-mega-menu-in"
+            className="absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-[900px] max-w-[calc(100vw-32px)] bg-be-white border border-be-grey-250/80 rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.10),0_2px_8px_rgba(0,0,0,0.06)] overflow-hidden animate-mega-menu-in"
             onMouseEnter={handleDropdownEnter}
             onMouseLeave={handleDropdownLeave}
             onKeyDown={handleMegaMenuKeyDown}
@@ -498,70 +515,72 @@ export function Header() {
             {/* ── 70/30 Grid: Navigation | Preview ── */}
             <div className="flex">
               {/* LEFT — ~70% Navigation */}
-              <div className="flex-1 min-w-0 border-r border-be-grey-200/60">
-                {/* Top: Primary group — Electrical Insulating Mats */}
-                <div className="px-5 pt-4 pb-0">
-                  {/* Section eyebrow */}
-                  <p className="text-[0.65rem] font-bold text-be-yellow-600 uppercase tracking-[0.12em] mb-2">
-                    PRODUCTS
-                  </p>
+              <div className="flex-1 min-w-0 border-r border-be-grey-200/60 py-4 pl-5 pr-4">
+                {/* Section eyebrow */}
+                <p className="text-[0.625rem] font-bold text-be-yellow-600 uppercase tracking-[0.14em] mb-3">
+                  PRODUCTS
+                </p>
 
-                  <p className="text-[0.9375rem] font-bold text-be-charcoal-950 mb-2.5">
+                {/* 01 — Electrical Insulating Mats (expanded with Domestic + International) */}
+                <div
+                  role="group"
+                  aria-label="Electrical Insulating Mats"
+                  onMouseEnter={() => updateGroupPreview('electrical-insulating-mats')}
+                  onFocus={() => updateGroupPreview('electrical-insulating-mats')}
+                >
+                  <p className="text-[0.8125rem] font-bold text-be-charcoal-950 mb-1.5">
+                    <span className="text-be-yellow-600 mr-1.5">01</span>
                     Electrical Insulating Mats
                   </p>
-
-                  <div className="grid grid-cols-2 gap-6 mb-3">
+                  <div className="grid grid-cols-2 gap-x-5 gap-y-0 mb-3 pl-5">
                     {/* Domestic Mats */}
-                    <div role="group" aria-label="Domestic Mats">
-                      <div className="flex items-baseline gap-2 mb-1.5">
-                        <p className="text-xs font-bold text-be-charcoal-900">
-                          Domestic Mats
+                    <div>
+                      <div className="flex items-baseline gap-1.5 mb-1">
+                        <p className="text-[0.6875rem] font-semibold text-be-charcoal-900">
+                          Domestic
                         </p>
-                        <span className="text-[0.65rem] font-semibold text-be-yellow-700 bg-be-yellow-50 px-1.5 py-0.5 rounded">
+                        <span className="text-[0.5625rem] font-semibold text-be-yellow-700 bg-be-yellow-50 px-1 py-[1px] rounded">
                           IS 15652:2006
                         </span>
                       </div>
-                      <div className="flex flex-col gap-px">
+                      <div className="flex flex-col gap-0">
                         {domesticSub.items.map((item) => (
                           <Link
                             key={item.href}
                             href={item.href}
                             role="menuitem"
-                            className="flex items-center justify-between px-2.5 py-[6px] rounded-md text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 transition-all group/item"
+                            className="flex items-center px-2 py-[5px] rounded text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 transition-colors"
                             onClick={() => setDropdownOpen(false)}
                             onMouseEnter={() => updatePreview(item.href)}
                             onFocus={() => updatePreview(item.href)}
                           >
                             {item.name}
-                            <ChevronRight className="size-3 text-be-grey-300 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-0.5 group-focus-visible/item:opacity-100 transition-all" aria-hidden="true" />
                           </Link>
                         ))}
                       </div>
                     </div>
-
                     {/* International / Global */}
-                    <div role="group" aria-label="International Mats">
-                      <div className="flex items-baseline gap-2 mb-1.5">
-                        <p className="text-xs font-bold text-be-charcoal-900">
+                    <div>
+                      <div className="flex items-baseline gap-1.5 mb-1">
+                        <p className="text-[0.6875rem] font-semibold text-be-charcoal-900">
                           International / Global
                         </p>
-                        <span className="text-[0.65rem] font-semibold text-be-yellow-700 bg-be-yellow-50 px-1.5 py-0.5 rounded">
+                        <span className="text-[0.5625rem] font-semibold text-be-yellow-700 bg-be-yellow-50 px-1 py-[1px] rounded">
                           IEC 61111:2009
                         </span>
                       </div>
-                      <div className="flex flex-col gap-px">
+                      <div className="flex flex-col gap-0">
                         {internationalSub.items.map((item) => (
                           <Link
                             key={item.href}
                             href={item.href}
                             role="menuitem"
-                            className="flex items-center justify-between px-2.5 py-[6px] rounded-md text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 transition-all group/item"
+                            className="flex items-center px-2 py-[5px] rounded text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 transition-colors"
                             onClick={() => setDropdownOpen(false)}
                             onMouseEnter={() => updatePreview(item.href)}
                             onFocus={() => updatePreview(item.href)}
                           >
                             {item.name}
-                            <ChevronRight className="size-3 text-be-grey-300 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-0.5 group-focus-visible/item:opacity-100 transition-all" aria-hidden="true" />
                           </Link>
                         ))}
                       </div>
@@ -570,71 +589,75 @@ export function Header() {
                 </div>
 
                 {/* Divider */}
-                <div className="mx-5 h-px bg-be-grey-200/80" />
+                <div className="h-px bg-be-grey-200/80 mb-3" />
 
-                {/* Middle: Secondary groups — 3 columns */}
-                <div className="px-5 py-3">
-                  <div className="grid grid-cols-3 gap-6">
-                    {secondaryGroups.map((group) => {
-                      const items = group.hasSubGroups
-                        ? (group.children as ProductNavSubGroup[]).flatMap((s) => s.items)
-                        : (group.children as ProductNavLeaf[]);
-                      return (
-                        <div key={group.id} role="group" aria-label={group.name}>
-                          <p className="text-[0.6875rem] font-bold text-be-charcoal-900 uppercase tracking-[0.06em] mb-1.5">
-                            {group.name}
-                          </p>
-                          <div className="flex flex-col gap-px">
-                            {items.map((item) => (
-                              <Link
-                                key={item.href}
-                                href={item.href}
-                                role="menuitem"
-                                className="flex items-center justify-between px-2.5 py-[6px] rounded-md text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 transition-all group/item"
-                                onClick={() => setDropdownOpen(false)}
-                                onMouseEnter={() => updatePreview(item.href)}
-                                onFocus={() => updatePreview(item.href)}
-                              >
-                                {item.name}
-                                <ChevronRight className="size-3 text-be-grey-300 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-0.5 group-focus-visible/item:opacity-100 transition-all" aria-hidden="true" />
-                              </Link>
-                            ))}
-                          </div>
+                {/* 02–04: Waterproofing, PVC Flooring, Other Products — compact 3-col */}
+                <div className="grid grid-cols-3 gap-x-5 gap-y-0 mb-3 pl-0">
+                  {secondaryGroups.map((group, groupIdx) => {
+                    const items = group.hasSubGroups
+                      ? (group.children as ProductNavSubGroup[]).flatMap((s) => s.items)
+                      : (group.children as ProductNavLeaf[]);
+                    return (
+                      <div
+                        key={group.id}
+                        role="group"
+                        aria-label={group.name}
+                        onMouseEnter={() => updateGroupPreview(group.id)}
+                        onFocus={() => updateGroupPreview(group.id)}
+                      >
+                        <p className="text-[0.6875rem] font-bold text-be-charcoal-900 uppercase tracking-[0.04em] mb-1">
+                          <span className="text-be-yellow-600 mr-1 text-[0.625rem]">{String(groupIdx + 2).padStart(2, '0')}</span>
+                          {group.name}
+                        </p>
+                        <div className="flex flex-col gap-0">
+                          {items.map((item) => (
+                            <Link
+                              key={item.href}
+                              href={item.href}
+                              role="menuitem"
+                              className="flex items-center px-2 py-[5px] rounded text-[0.8125rem] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 transition-colors"
+                              onClick={() => setDropdownOpen(false)}
+                              onMouseEnter={() => updatePreview(item.href)}
+                              onFocus={() => updatePreview(item.href)}
+                            >
+                              {item.name}
+                            </Link>
+                          ))}
                         </div>
-                      );
-                    })}
-                  </div>
+                      </div>
+                    );
+                  })}
                 </div>
 
                 {/* Divider */}
-                <div className="mx-5 h-px bg-be-grey-200/80" />
+                <div className="h-px bg-be-grey-200/80 mb-0" />
 
-                {/* Bottom CTA row */}
-                <div className="px-5 py-2.5 flex items-center justify-between bg-be-cream/40">
+                {/* Bottom CTA row — compact */}
+                <div className="flex items-center justify-between pt-2">
                   <Link
                     href="/contact-us?type=technical-guidance"
                     role="menuitem"
-                    className="inline-flex items-center gap-1.5 text-[0.8125rem] font-semibold text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors"
+                    className="inline-flex items-center gap-1 text-[0.75rem] font-semibold text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors"
                     onClick={() => setDropdownOpen(false)}
                   >
                     Technical Guidance
-                    <ArrowRight className="size-3.5" aria-hidden="true" />
+                    <ArrowRight className="size-3" aria-hidden="true" />
                   </Link>
                   <Link
                     href="/products"
                     role="menuitem"
-                    className="inline-flex items-center gap-1.5 text-[0.8125rem] font-semibold text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors"
+                    className="inline-flex items-center gap-1 text-[0.75rem] font-semibold text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors"
                     onClick={() => setDropdownOpen(false)}
                   >
                     View All Products
-                    <ArrowRight className="size-3.5" aria-hidden="true" />
+                    <ArrowRight className="size-3" aria-hidden="true" />
                   </Link>
                 </div>
               </div>
 
               {/* RIGHT — ~30% Preview Panel */}
               <div
-                className="w-[28%] min-w-[180px] flex flex-col items-center justify-center p-4 bg-be-cream/30"
+                className="w-[28%] min-w-[180px] flex flex-col items-center justify-center p-3 bg-be-cream/30"
                 aria-hidden="true"
                 onMouseEnter={resetPreview}
               >
@@ -648,10 +671,10 @@ export function Header() {
                     fill
                     className={cn(
                       previewVisual.fit === 'contain'
-                        ? 'object-contain p-4'
+                        ? 'object-contain p-3'
                         : 'object-cover'
                     )}
-                    sizes="280px"
+                    sizes="220px"
                   />
                 </div>
               </div>
