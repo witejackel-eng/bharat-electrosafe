@@ -147,7 +147,7 @@ const HERO_COLLAGE = [
     alt: hydroSealVisuals.homePreview.alt,
   },
   {
-    src: '/media/brand/bharat-smart-floor-graphic.webp',
+    src: '/brand/bharat-smart-floor-graphic.webp',
     alt: 'Bharat Smart Floor PVC flooring',
   },
 ] as const;
@@ -485,7 +485,7 @@ function PvcAndOtherSection() {
             {/* Visual area */}
             <div className="relative w-full aspect-[16/9] bg-[#f8f8f6] overflow-hidden">
               <Image
-                src="/media/brand/bharat-smart-floor-graphic.webp"
+                src="/brand/bharat-smart-floor-graphic.webp"
                 alt="Bharat Smart Floor PVC flooring solutions"
                 fill
                 className="object-contain p-8"
