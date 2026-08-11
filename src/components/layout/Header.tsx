@@ -230,7 +230,7 @@ export function Header() {
           <div className="flex items-center justify-start min-w-0">
             <Link
               href="/"
-              className="shrink-0 flex items-center py-1 lg:py-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800"
+              className="shrink-0 flex items-center py-1 lg:py-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800"
               aria-label="Bharat Electrosafe — Home"
             >
               <Image
@@ -238,8 +238,8 @@ export function Header() {
                 alt="Bharat Electrosafe® logo"
                 width={LOGO_WIDTH}
                 height={LOGO_HEIGHT}
-                sizes="(max-width: 1023px) 90px, 115px"
-                className="object-contain h-[48px] lg:h-[62px] w-auto"
+                sizes="(max-width: 1023px) 97px, 125px"
+                className="object-contain h-[53px] lg:h-[68px] w-auto"
                 priority
               />
             </Link>
@@ -361,8 +361,8 @@ export function Header() {
                         alt="Bharat Electrosafe® logo"
                         width={LOGO_WIDTH}
                         height={LOGO_HEIGHT}
-                        sizes="145px"
-                        className="object-contain w-[145px] h-auto"
+                        sizes="160px"
+                        className="object-contain w-[160px] h-auto"
                       />
                     </Link>
                   </SheetTitle>
