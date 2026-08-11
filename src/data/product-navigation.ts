@@ -256,7 +256,7 @@ export const categoryVisuals: CategoryVisual[] = [
   },
   {
     groupId: 'pvc-flooring-solutions',
-    src: '/media/brand/bharat-smart-floor-graphic.webp',
+    src: '/brand/bharat-smart-floor-graphic.webp',
     alt: 'Bharat Smart Floor PVC flooring solutions',
     isPlaceholder: true,
   },
