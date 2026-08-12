@@ -105,7 +105,7 @@ export function ProductHero({ product, visuals }: ProductHeroProps) {
             </p>
 
             {/* Quick facts */}
-            <div className="product-hero-facts flex flex-col sm:flex-row gap-3 sm:gap-5 mb-5 lg:mb-6">
+            <div className="product-hero-facts flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-5 mb-5 lg:mb-6">
               {product.quickFacts.map((fact) => {
                 const Icon = iconMap[fact.icon] ?? Shield;
                 return (
