@@ -1432,9 +1432,25 @@ export const products: ProductData[] = [
   bharatHydroSeal,
 ];
 
-/** Number of active product families — the single source for any "N families"
- *  claim in company data, copy or metadata. */
+/** Number of active product records in the detailed registry. */
 export const productFamilyCount = products.length;
+
+/**
+ * Number of top-level product GROUPS shown in navigation, homepage cards and
+ * statistics — the single source for any "N product groups" claim in company
+ * data, copy or metadata.
+ *
+ * The four groups are:
+ *   1. Electrical Insulating Mats  (IS 15652 domestic + IEC 61111 international)
+ *   2. Waterproofing Solutions      (BharatMembrane + Bharat Hydro Seal)
+ *   3. PVC Flooring Solutions
+ *   4. Other Products               (rubber sheet, hose pipe, ESD mat, conveyor belt)
+ *
+ * The detailed `products` registry may contain more records (6+) because the
+ * first group is split into domestic variants — that is expected and does NOT
+ * change the public group count.
+ */
+export const productGroupCount = 4;
 
 export function getProductBySlug(slug: string): ProductData | undefined {
   return products.find((p) => p.slug === slug);

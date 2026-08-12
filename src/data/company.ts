@@ -5,7 +5,7 @@
  * addresses or WhatsApp links in component files — import from this module.
  */
 
-import { productFamilyCount } from './products';
+import { productGroupCount } from './products';
 
 /* ────────────────────────────────────────────
    Phone numbers — typed list
@@ -63,7 +63,7 @@ export const company = {
   legalName: 'Bharat Electrosafe',
   tagline: 'Electrical Safety. Engineered Right.',
   description:
-    "Bharat Electrosafe — India's trusted name in precision-engineered electrical safety, industrial safety, infrastructure protection, PVC flooring and waterproofing solutions.",
+    'Bharat Electrosafe manufactures electrical insulating mats for switchgear, substations and industrial electrical work areas, alongside waterproofing, PVC flooring and related industrial products.',
 
   // Contact details — single source of truth
   // Legacy named accessors for backward compatibility
@@ -112,13 +112,13 @@ export const company = {
     membraneStandard: 'IS 15909:2020',
   },
 
-  /* Only qualified, source-supported claims. The family count is derived from
-     the active product registry so it cannot fall out of step with it.
-     The "Countries Served (company-stated)" qualifier mirrors the wording in
-     trust.ts — it is a company self-statement, not an independently verified
-     figure. */
+  /* Only qualified, source-supported claims. The group count reflects the
+     four top-level product groups and is sourced from productGroupCount in
+     the product registry. The "Countries Served (company-stated)" qualifier
+     mirrors the wording in trust.ts — it is a company self-statement, not an
+     independently verified figure. */
   stats: [
-    { value: String(productFamilyCount), label: 'Product Families' },
+    { value: String(productGroupCount), label: 'Product Groups' },
     { value: 'A · B · C', label: 'Insulation Classes' },
     { value: 'IS 15652:2006', label: 'Manufacturing Standard' },
     { value: 'CM/L:8800129617', label: 'BIS Licence Number' },

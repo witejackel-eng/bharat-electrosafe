@@ -28,7 +28,7 @@ const iconMap: Record<string, LucideIcon> = {
   Respect: ShieldCheck,
   Trust: BadgeCheck,
   Ownership: HeadsetIcon,
-  'Integrated Team Work': Users,
+  Teamwork: Users,
 };
 
 /** Only the core values (not Mission/Vision — those are in BrandsVisionMission) */

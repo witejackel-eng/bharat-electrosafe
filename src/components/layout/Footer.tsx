@@ -89,7 +89,7 @@ export function Footer() {
               />
             </Link>
             <p className="text-sm text-be-grey-700 leading-relaxed max-w-[320px] mt-2">
-              India&apos;s trusted name in precision-engineered electrical safety, industrial safety, infrastructure protection, PVC flooring and waterproofing solutions.
+              Manufacturer of electrical insulating mats, waterproofing, PVC flooring and related industrial products.
             </p>
             {/* Contact rows */}
             <ul className="flex flex-col gap-1.5 mt-0.5">

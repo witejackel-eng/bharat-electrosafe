@@ -22,7 +22,7 @@ import { AnimatedStatValue } from '@/components/home/AnimatedStatValue';
  *   - Mobile: 2×2
  *
  * Data sourced from `companyStatistics` in `src/data/trust.ts`.
- * Product Families is dynamically derived from the product registry.
+ * Product Groups is sourced from `productGroupCount` (4 top-level groups).
  *
  * Animation: numbers count up from 0 when scrolled into view
  * (progressive enhancement — values render immediately as text,

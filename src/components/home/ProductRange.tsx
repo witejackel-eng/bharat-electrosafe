@@ -148,7 +148,7 @@ export default function ProductRange() {
         <SectionHeader
           eyebrow="PRODUCT RANGE"
           title="Products for electrical safety and civil protection"
-          supportingText="Four product groups covering electrical insulation, tunnel and containment lining, construction-joint sealing, and industrial flooring."
+          supportingText="Electrical insulating mats, waterproofing systems, PVC flooring and related industrial rubber products."
         />
       </div>
 

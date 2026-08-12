@@ -41,10 +41,11 @@ export default function AboutIntro() {
             About Bharat Electrosafe
           </h1>
           <p className="text-body-large text-be-grey-650 max-w-xl mb-5">
-            India&apos;s trusted name in precision-engineered electrical safety,
-            industrial safety, infrastructure protection, PVC flooring, and
-            waterproofing solutions — proudly contributing to the nation&apos;s
-            safety and development under the Make in India initiative.
+            Bharat Electrosafe manufactures electrical insulating mats for
+            switchgear, substations and industrial electrical work areas. Its
+            product range also includes waterproofing systems, PVC flooring and
+            related industrial products for infrastructure and industrial
+            applications.
           </p>
 
           {/* Product range — compact 2×2 grid */}
@@ -75,7 +76,7 @@ export default function AboutIntro() {
           <div className="rounded-lg overflow-hidden max-h-[400px]">
             <Image
               src="/media/hero/bharat-electrosafe-insulating-mat-hero.webp"
-              alt="Bharat Electrosafe — precision-engineered electrical safety products"
+              alt="Bharat Electrosafe electrical insulating mat in use"
               width={800}
               height={600}
               className="w-full h-auto object-cover"
