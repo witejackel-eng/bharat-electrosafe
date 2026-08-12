@@ -33,7 +33,7 @@ const companyLinks = [
  */
 const footerProductFamilies = [
   { name: 'Electrical Insulating Mats', href: '/products/electrical-insulating-mats' },
-  { name: 'Waterproofing Solutions', href: '/products/bharat-membrane' },
+  { name: 'Waterproofing Solutions', href: '/products/waterproofing-solutions' },
   { name: 'PVC Flooring Solutions', href: '/products/pvc-flooring-solutions' },
   { name: 'Other Products', href: '/products/other-products' },
 ];
