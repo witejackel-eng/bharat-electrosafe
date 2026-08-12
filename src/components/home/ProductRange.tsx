@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SectionShell } from '@/components/ui/SectionShell';
-import { CompareToggle } from '@/components/products/CompareToggle';
 import { getProductBySlug } from '@/data/products';
 import {
   hvVisuals,
@@ -99,16 +98,6 @@ function ProductGroupCard({ group, index }: { group: ProductGroupCardData; index
         <div className="absolute top-3 left-3 size-7 rounded-full bg-be-navy-900/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
           <span className="text-[0.6rem] font-bold text-be-brand-yellow">{String(index + 1).padStart(2, '0')}</span>
         </div>
-        {/* Compare toggle — top-right of image, only for real products */}
-        {product && (
-          <div className="absolute top-2.5 right-2.5 z-10">
-            <CompareToggle
-              slug={group.slug}
-              productName={product.name}
-              variant="overlay"
-            />
-          </div>
-        )}
       </div>
 
       {/* Text content */}

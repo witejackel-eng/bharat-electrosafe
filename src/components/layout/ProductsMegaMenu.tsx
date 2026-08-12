@@ -222,11 +222,11 @@ export function ProductsMegaMenu({ onClose }: ProductsMegaMenuProps) {
                 aria-controls={`products-panel-${cat.id}`}
                 tabIndex={isActive ? 0 : -1}
                 className={cn(
-                  'group relative flex items-center gap-1.5 px-3 py-1.5 text-[12.5px] tracking-[0.02em] transition-all duration-150',
+                  'group relative flex items-center gap-1.5 px-3 py-1.5 text-[12.5px] tracking-[0.02em] rounded-lg transition-all duration-150',
                   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-1 focus-visible:ring-offset-be-white',
                   isActive
-                    ? 'font-semibold text-be-charcoal-950'
-                    : 'font-medium text-be-grey-500 hover:text-be-charcoal-800',
+                    ? 'font-bold text-be-charcoal-950 bg-be-yellow-50/60'
+                    : 'font-medium text-be-grey-500 hover:text-be-charcoal-800 hover:bg-be-grey-100/30',
                 )}
                 onClick={() => handleCategoryClick(cat.id)}
                 onMouseEnter={() => handleCategoryHover(cat.id)}
@@ -244,7 +244,10 @@ export function ProductsMegaMenu({ onClose }: ProductsMegaMenuProps) {
                   )}
                   aria-hidden="true"
                 />
-                <span className="text-[10px] font-bold text-be-yellow-600/70 mr-0.5">
+                <span className={cn(
+                  'text-[10px] font-bold mr-0.5',
+                  isActive ? 'text-be-brand-yellow' : 'text-be-yellow-600/70',
+                )}>
                   {cat.number}
                 </span>
                 <span>{cat.label}</span>
@@ -300,7 +303,8 @@ export function ProductsMegaMenu({ onClose }: ProductsMegaMenuProps) {
               className="flex gap-7"
             >
               <div className="flex-1 min-w-0">
-                <p className="text-[15px] font-semibold text-be-charcoal-950 mb-2.5">
+                <p className="text-[15px] font-semibold text-be-charcoal-950 mb-2.5 flex items-center gap-2">
+                  <span className="w-[2px] h-4 bg-be-brand-yellow rounded-full shrink-0" aria-hidden="true" />
                   Electrical Insulating Mats
                 </p>
                 <div className="grid grid-cols-2 gap-x-7">
@@ -354,7 +358,8 @@ export function ProductsMegaMenu({ onClose }: ProductsMegaMenuProps) {
               className="flex gap-7"
             >
               <div className="flex-1 min-w-0">
-                <p className="text-[15px] font-semibold text-be-charcoal-950 mb-2.5">
+                <p className="text-[15px] font-semibold text-be-charcoal-950 mb-2.5 flex items-center gap-2">
+                  <span className="w-[2px] h-4 bg-be-brand-yellow rounded-full shrink-0" aria-hidden="true" />
                   Water Proofing Solutions
                 </p>
                 <div className="flex flex-col gap-[3px]">
@@ -384,7 +389,8 @@ export function ProductsMegaMenu({ onClose }: ProductsMegaMenuProps) {
               className="flex gap-7"
             >
               <div className="flex-1 min-w-0">
-                <p className="text-[15px] font-semibold text-be-charcoal-950 mb-2.5">
+                <p className="text-[15px] font-semibold text-be-charcoal-950 mb-2.5 flex items-center gap-2">
+                  <span className="w-[2px] h-4 bg-be-brand-yellow rounded-full shrink-0" aria-hidden="true" />
                   PVC Flooring Solutions
                 </p>
                 <div className="flex flex-col gap-[3px]">
@@ -412,7 +418,8 @@ export function ProductsMegaMenu({ onClose }: ProductsMegaMenuProps) {
               className="flex gap-7"
             >
               <div className="flex-1 min-w-0">
-                <p className="text-[15px] font-semibold text-be-charcoal-950 mb-2.5">
+                <p className="text-[15px] font-semibold text-be-charcoal-950 mb-2.5 flex items-center gap-2">
+                  <span className="w-[2px] h-4 bg-be-brand-yellow rounded-full shrink-0" aria-hidden="true" />
                   Other Products
                 </p>
                 <div className="flex flex-col gap-[3px]">
