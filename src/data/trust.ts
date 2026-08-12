@@ -162,6 +162,18 @@ export const allTrustMarks: TrustMark[] = [
     logo: '/media/certifications/airia.webp',
     alt: 'All India Rubber Industries Association mark',
   },
+  {
+    label: 'NABL',
+    note: 'National Accreditation Board for Testing and Calibration Laboratories',
+    logo: '/media/certifications/nabl.webp',
+    alt: 'NABL accreditation mark',
+  },
+  {
+    label: 'ACL Certification',
+    note: 'Certification mark referenced by the company',
+    logo: '/media/certifications/acl.webp',
+    alt: 'ACL certification mark',
+  },
 ];
 
 /* ────────────────────────────────────────────

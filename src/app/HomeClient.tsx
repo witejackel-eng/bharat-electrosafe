@@ -5,21 +5,33 @@ import { MobileStickyCTA } from '@/components/ui/MobileStickyCTA';
 import HomeHero from '@/components/home/HomeHero';
 import StatisticsStrip from '@/components/home/StatisticsStrip';
 import ProductRange from '@/components/home/ProductRange';
-import TrustDocuments from '@/components/home/TrustDocuments';
+import CertificationsSection from '@/components/home/CertificationsSection';
+import IndustryReferences from '@/components/home/IndustryReferences';
 import CapabilityIndustries from '@/components/home/CapabilityIndustries';
 import HomeFAQCTA from '@/components/home/HomeFAQCTA';
 
 /**
  * HomeShell — Server Component.
  *
- * The homepage layout is server-rendered so all section content (hero, product
- * range, trust marks, capabilities, FAQ, CTA) appears in the initial HTML
- * without waiting for hydration. Interactive islands ship client JavaScript
- * only where needed. RevealObserver is mounted globally from the root layout
- * so the same visibility behavior applies to every route.
+ * Final homepage information architecture (per final homepage production
+ * pass):
  *
- * Section order: Hero → Statistics → Capability/Industries → Product Range →
- * Trust → FAQ/CTA → Footer
+ *   Header → Hero → Statistics Strip → Product Range →
+ *   Certifications / Testing → Industry References →
+ *   Capability / Industries → FAQ → Footer
+ *
+ * Removed from this version:
+ *   - The bundled TrustDocuments section (split into CertificationsSection
+ *     and IndustryReferences).
+ *   - The duplicate company-reach statistics that used to live inside
+ *     TrustDocuments (the StatisticsStrip is the single source for those).
+ *   - Any About Us link inside the industry references block (the About Us
+ *     link is preserved inside Capability/Industries, so no navigation is
+ *     lost).
+ *
+ * Interactive islands ship client JavaScript only where needed.
+ * RevealObserver is mounted globally from the root layout so the same
+ * visibility behavior applies to every route.
  */
 export default function HomeShell() {
   return (
@@ -30,13 +42,15 @@ export default function HomeShell() {
         <HomeHero />
         {/* 2. Statistics strip — company credibility */}
         <StatisticsStrip />
-        {/* 3. Capability + industries (replaces About) */}
-        <CapabilityIndustries />
-        {/* 4. Product range */}
+        {/* 3. Product range — four families */}
         <ProductRange />
-        {/* 5. Trust and credibility */}
-        <TrustDocuments />
-        {/* 6. FAQ + CTA */}
+        {/* 4. Certifications, testing and registrations */}
+        <CertificationsSection />
+        {/* 5. Industry references */}
+        <IndustryReferences />
+        {/* 6. Capability + industries (rendered once) */}
+        <CapabilityIndustries />
+        {/* 7. FAQ (final content section) + CTA */}
         <HomeFAQCTA />
       </main>
       <Footer />
