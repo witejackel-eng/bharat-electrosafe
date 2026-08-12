@@ -391,6 +391,22 @@
     100% { transform: translateX(-50%); }
   }
 
+  /* InfiniteLogoRail — seamless continuously-moving logo strip.
+     The animation duration and play-state are set inline by the
+     component so each rail (Certifications, Industry References)
+     can have its own speed and pause-on-hover/focus behaviour.
+     The keyframe is shared: translating the strip by exactly -50%
+     is seamless because the track holds two identical item groups. */
+  .infinite-logo-rail-track {
+    display: flex;
+    animation-name: logo-rail-scroll;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: none;
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
   /* Product card stagger animation */
   .stagger-reveal > * {
     opacity: 0;
@@ -514,6 +530,13 @@
       transition: none;
     }
     .logo-rail-track {
+      animation: none;
+    }
+    /* Defence-in-depth: the InfiniteLogoRail React component also
+       swaps to a static scrollable rail under reduced motion, but
+       this CSS rule guarantees the animation is halted even if JS
+       is disabled or the matchMedia check fails. */
+    .infinite-logo-rail-track {
       animation: none;
     }
     .hover-image-scale:hover {
