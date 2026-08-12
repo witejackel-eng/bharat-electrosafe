@@ -220,6 +220,17 @@ export function Header() {
               Home
             </Link>
 
+            <Link
+              href="/about-us"
+              className={cn(
+                'px-3 py-2 text-sm font-medium transition-colors',
+                pathname === '/about-us' ? 'text-be-brand-yellow' : 'text-white/80 hover:text-white'
+              )}
+              aria-current={pathname === '/about-us' ? 'page' : undefined}
+            >
+              About Us
+            </Link>
+
             {/* Products: hover opens mega-menu */}
             <div
               ref={triggerRef}
@@ -265,17 +276,6 @@ export function Header() {
                 <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-6 bg-be-brand-yellow rounded-full" aria-hidden="true" />
               )}
             </div>
-
-            <Link
-              href="/about-us"
-              className={cn(
-                'px-3 py-2 text-sm font-medium transition-colors',
-                pathname === '/about-us' ? 'text-be-brand-yellow' : 'text-white/80 hover:text-white'
-              )}
-              aria-current={pathname === '/about-us' ? 'page' : undefined}
-            >
-              About Us
-            </Link>
 
             <Link
               href="/contact-us"
@@ -343,6 +343,11 @@ export function Header() {
                     className={cn('px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center', pathname === '/' ? 'text-be-brand-yellow bg-white/8 border-l-[3px] border-be-brand-yellow' : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow')}
                     onClick={() => setMobileOpen(false)} aria-current={pathname === '/' ? 'page' : undefined}
                   >Home</Link>
+
+                  <Link href="/about-us"
+                    className={cn('px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center', pathname === '/about-us' ? 'text-be-brand-yellow bg-white/8 border-l-[3px] border-be-brand-yellow' : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow')}
+                    onClick={() => setMobileOpen(false)} aria-current={pathname === '/about-us' ? 'page' : undefined}
+                  >About Us</Link>
 
                   {/* Products accordion */}
                   <Accordion type="single" collapsible className="px-0">
@@ -457,11 +462,6 @@ export function Header() {
                   </Accordion>
 
                   <div className="mx-5 my-1 h-px bg-white/10" />
-
-                  <Link href="/about-us"
-                    className={cn('px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center', pathname === '/about-us' ? 'text-be-brand-yellow bg-white/8 border-l-[3px] border-be-brand-yellow' : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow')}
-                    onClick={() => setMobileOpen(false)} aria-current={pathname === '/about-us' ? 'page' : undefined}
-                  >About Us</Link>
 
                   <Link href="/contact-us"
                     className={cn('px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center', pathname === '/contact-us' ? 'text-be-brand-yellow bg-white/8 border-l-[3px] border-be-brand-yellow' : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow')}
