@@ -258,12 +258,11 @@ export const organisationReferences: OrganisationLogo[] = [
 export const organisationReferenceHeading = 'Industry references';
 /** Eyebrow shown above the section heading. */
 export const organisationReferenceEyebrow = 'INDUSTRY REFERENCES';
-/** Section heading — describes coverage without claiming every organisation
- *  is a current client (a claim the source site does not substantiate). */
+/** Section heading — client-approved marketing wording. */
 export const organisationReferenceTitle =
-  'Organisations represented across critical industries';
+  'Chosen by Industry Leaders and Top Professionals';
 export const organisationReferenceNote =
-  'Organisations presented on Bharat Electrosafe\u2019s original company website.';
+  'Trusted by renowned brands worldwide for consistent quality, reliability, and performance.';
 /** Compact CTA label for the About Us link. */
 export const organisationReferenceCtaLabel = 'View awards and leadership';
 
