@@ -242,6 +242,9 @@
     line-height: 1.08;
     letter-spacing: -0.02em;
     font-weight: 700;
+    /* Allow long words (e.g. product/category names) to break rather than
+       overflow the heading box and create document-level horizontal scroll. */
+    overflow-wrap: break-word;
   }
   /* Homepage-specific H1 — sized to feel important and premium on desktop
      (~68-74px at 1366-1440px) while fitting in 1366x768 viewport. Used only
@@ -251,12 +254,14 @@
     line-height: 1.04;
     letter-spacing: -0.025em;
     font-weight: 700;
+    overflow-wrap: break-word;
   }
   .text-page-h1 {
     font-size: clamp(2.6rem, 5vw, 4.75rem);
     line-height: 1.1;
     letter-spacing: -0.01em;
     font-weight: 700;
+    overflow-wrap: break-word;
   }
   /* Contact-page-only title. Slightly smaller than text-page-h1 with
      tighter line-height so "Contact Bharat Electrosafe" wraps to a
@@ -282,11 +287,15 @@
     line-height: 1.04;
     letter-spacing: -0.02em;
     font-weight: 700;
+    /* At 320px the clamp floor (2.75rem/44px) means long words like
+       "waterproofing," cannot wrap and overflow the box. break-word fixes it. */
+    overflow-wrap: break-word;
   }
   .text-product-h1 {
     font-size: clamp(2.25rem, 3.8vw, 3.65rem);
     line-height: 1.05;
     letter-spacing: -0.015em;
+    overflow-wrap: break-word;
     font-weight: 700;
   }
   .text-card-title {
@@ -1068,6 +1077,11 @@
   .be-split-hero {
     position: relative;
     background: var(--be-warm-white);
+    /* Decorative ::before/::after gradients extend outside the hero bounds
+       (right: -10%, left: -10%). Clip them at the hero boundary so they
+       can never contribute to document-level horizontal overflow. This is
+       the correct local fix — NOT a global body-level overflow-x: hidden. */
+    overflow: clip;
   }
   /* Subtle decorative gradient accents in the hero — adds depth without
      competing with the photograph. Purely decorative, hidden from

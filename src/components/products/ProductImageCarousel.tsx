@@ -71,7 +71,10 @@ export function ProductImageCarousel({
       tabIndex={0}
     >
       {/* ── Large image viewport with arrows ── */}
-      <div className="relative aspect-[4/3] min-h-[240px] overflow-hidden rounded-2xl border border-be-grey-200 bg-[#FAFAF7] group/carousel">
+      {/* max-w-full prevents the aspect-[4/3] + min-h-[240px] combo from
+          forcing the box wider than its parent column on narrow viewports
+          (when min-h kicks in, aspect-ratio would otherwise grow the width). */}
+      <div className="relative aspect-[4/3] min-h-[240px] max-w-full overflow-hidden rounded-2xl border border-be-grey-200 bg-[#FAFAF7] group/carousel">
         <Image
           src={current.src}
           alt={current.alt}
