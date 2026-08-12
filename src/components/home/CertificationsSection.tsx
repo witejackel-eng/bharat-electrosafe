@@ -56,14 +56,22 @@ export default function CertificationsSection() {
               key={mark.label}
               className="w-[105px] sm:w-[120px] md:w-[130px] lg:w-[135px] xl:w-[140px] flex flex-col items-center gap-2.5 py-1"
             >
-              {/* Logo — large, clean, no box. object-contain never crops. */}
+              {/* Logo — large, clean, no box. object-contain never crops.
+                  Eager + unoptimized: these are tiny local WebP identity
+                  assets drifting through a continuously moving rail, so
+                  they must be fetched/decoded immediately and served
+                  directly (no Next image-optimization hop). No priority
+                  is set so these never compete with hero/above-the-fold
+                  resources. */}
               <span className="relative flex h-[88px] sm:h-[106px] md:h-[120px] lg:h-[132px] w-full items-center justify-center">
                 <Image
                   src={mark.logo}
                   alt={mark.alt}
                   fill
                   className="object-contain"
-                  sizes="210px"
+                  sizes="(max-width: 639px) 105px, (max-width: 767px) 120px, (max-width: 1023px) 130px, 140px"
+                  loading="eager"
+                  unoptimized
                 />
               </span>
               <span className="text-metadata text-center font-semibold text-be-charcoal-950 leading-tight">
