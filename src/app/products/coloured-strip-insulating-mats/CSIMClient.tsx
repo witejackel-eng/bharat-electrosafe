@@ -1,17 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
 import { ProductDetailTemplate } from '@/components/products/ProductDetailTemplate';
 import { coloredStripVisuals } from '@/data/product-visuals';
-import { useRecentlyViewed } from '@/hooks/use-recently-viewed';
 import type { ProductData } from '@/data/products';
 
 export default function CSIMClient({ product }: { product: ProductData }) {
-  const { addToRecentlyViewed } = useRecentlyViewed();
-
-  useEffect(() => {
-    addToRecentlyViewed('coloured-strip-insulating-mats');
-  }, [addToRecentlyViewed]);
 
   return <ProductDetailTemplate product={product} visuals={coloredStripVisuals} />;
 }

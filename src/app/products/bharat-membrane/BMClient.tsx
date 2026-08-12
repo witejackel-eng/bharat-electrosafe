@@ -1,12 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
 import { ProductDetailTemplate } from '@/components/products/ProductDetailTemplate';
 import { membraneVisuals } from '@/data/product-visuals';
 import { SectionShell } from '@/components/ui/SectionShell';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { DataTable } from '@/components/ui/DataTable';
-import { useRecentlyViewed } from '@/hooks/use-recently-viewed';
 import type { ProductData } from '@/data/products';
 
 /**
@@ -16,11 +14,6 @@ import type { ProductData } from '@/data/products';
  * section specific to the membrane product (three thickness variants).
  */
 export default function BMClient({ product }: { product: ProductData }) {
-  const { addToRecentlyViewed } = useRecentlyViewed();
-
-  useEffect(() => {
-    addToRecentlyViewed('bharat-membrane');
-  }, [addToRecentlyViewed]);
 
   const variantComparison = (
     <SectionShell variant="technical" bg="bg-be-cream" topRule>

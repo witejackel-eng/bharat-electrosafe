@@ -254,27 +254,27 @@ export interface CategoryVisual {
 export const categoryVisuals: CategoryVisual[] = [
   {
     groupId: 'electrical-insulating-mats',
-    src: '/media/products/electrical-insulating-mats/card.webp',
-    alt: 'Electrical insulating mat — blue coin-pattern surface for operator protection',
+    src: '/media/categories/electrical-insulating-mats-category.png',
+    alt: 'Blue electrical insulating mat with raised circular surface pattern',
     isPlaceholder: false,
   },
   {
     groupId: 'water-proofing-solutions',
-    src: '/media/products/bharat-membrane/card.webp',
-    alt: 'BharatMembrane PVC geo-membrane for tunnel and containment lining',
+    src: '/media/categories/waterproofing-solutions-category.png',
+    alt: 'Waterproofing membrane being installed inside an infrastructure tunnel',
     isPlaceholder: false,
   },
   {
     groupId: 'pvc-flooring-solutions',
-    src: '/brand/bharat-smart-floor-graphic.webp',
-    alt: 'Bharat Smart Floor PVC flooring solutions',
-    isPlaceholder: true,
+    src: '/media/categories/pvc-flooring-solutions-category.png',
+    alt: 'Industrial PVC flooring being installed in an electrical equipment room',
+    isPlaceholder: false,
   },
   {
     groupId: 'other-products',
-    src: '/brand/other-products-graphic.webp',
-    alt: 'Other industrial products from Bharat Electrosafe',
-    isPlaceholder: true,
+    src: '/media/categories/other-products-category.png',
+    alt: 'Industrial rubber sheet, hose, ESD mat and conveyor belt products',
+    isPlaceholder: false,
   },
 ];
 

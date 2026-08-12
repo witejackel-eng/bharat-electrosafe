@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import Image from 'next/image';
 import {
   Shield,
@@ -34,7 +33,6 @@ import { ImageFrame } from '@/components/ui/ImageFrame';
 import { FeatureList } from '@/components/ui/FeatureList';
 import { company } from '@/data/company';
 import { iecVisuals } from '@/data/product-visuals';
-import { useRecentlyViewed } from '@/hooks/use-recently-viewed';
 
 /* ────────────────────────────────────────────
    IEC 61111:2009 Class specification data
@@ -63,12 +61,6 @@ const breadcrumbItems = [
    ──────────────────────────────────────────── */
 
 export default function IECClient() {
-  const { addToRecentlyViewed } = useRecentlyViewed();
-
-  /* ── Track view in recently-viewed list ── */
-  useEffect(() => {
-    addToRecentlyViewed('international-iec-61111');
-  }, [addToRecentlyViewed]);
 
   return (
     <div className="min-h-screen flex flex-col bg-be-warm-white">
