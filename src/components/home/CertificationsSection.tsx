@@ -23,14 +23,14 @@ import { allTrustMarks } from '@/data/trust';
  * explanatory description is intentionally omitted here so the logos
  * read as a compact identity strip.
  *
- * Logo heights (kept at the approved +30 % sizing):
- *   - Desktop  : ~100px visual height
- *   - Tablet   : ~94px
- *   - Mobile   : ~72px
+ * Logo heights (enlarged for prominence):
+ *   - Desktop  : ~132px visual height
+ *   - Tablet   : ~106-120px
+ *   - Mobile   : ~88px
  *
  * Item cell widths are fixed responsively so the rail reserves its
- * layout before images load (no CLS). Inter-logo spacing is small and
- * dense per the design direction.
+ * layout before images load (no CLS). Inter-logo spacing is tight
+ * and dense per the design direction — logos dominate, gaps recede.
  */
 export default function CertificationsSection() {
   return (
@@ -49,21 +49,21 @@ export default function CertificationsSection() {
           duration={42}
           pauseOnHover
           pauseOnFocus
-          itemSpacingClassName="pr-6 sm:pr-9 md:pr-11"
+          itemSpacingClassName="pr-2 sm:pr-3 md:pr-4"
         >
           {allTrustMarks.map((mark) => (
             <div
               key={mark.label}
-              className="w-[155px] sm:w-[175px] md:w-[185px] lg:w-[195px] xl:w-[205px] flex flex-col items-center gap-2.5 py-1"
+              className="w-[105px] sm:w-[120px] md:w-[130px] lg:w-[135px] xl:w-[140px] flex flex-col items-center gap-2.5 py-1"
             >
               {/* Logo — large, clean, no box. object-contain never crops. */}
-              <span className="relative flex h-[72px] sm:h-[84px] md:h-[94px] lg:h-[100px] w-full items-center justify-center">
+              <span className="relative flex h-[88px] sm:h-[106px] md:h-[120px] lg:h-[132px] w-full items-center justify-center">
                 <Image
                   src={mark.logo}
                   alt={mark.alt}
                   fill
                   className="object-contain"
-                  sizes="190px"
+                  sizes="210px"
                 />
               </span>
               <span className="text-metadata text-center font-semibold text-be-charcoal-950 leading-tight">

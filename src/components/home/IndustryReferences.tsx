@@ -28,6 +28,8 @@ import {
  * Visual model: a clean editorial logo rail — no boxed cards, no
  * borders, no shadows. Logos sit on the same white background used
  * for Certifications, with the organisation name beneath each.
+ * Logos are enlarged for prominence; inter-logo spacing is tight
+ * so the row reads as a dense, premium brand strip.
  *
  * Organisations are presented as references. The client-approved
  * heading and supporting copy are used verbatim; no stronger claim
@@ -51,21 +53,21 @@ export default function IndustryReferences() {
           duration={32}
           pauseOnHover
           pauseOnFocus
-          itemSpacingClassName="pr-6 sm:pr-8 md:pr-10"
+          itemSpacingClassName="pr-3 sm:pr-4 md:pr-5"
         >
           {organisationReferences.map((org) => (
             <div
               key={org.name}
-              className="w-[140px] sm:w-[150px] md:w-[160px] lg:w-[170px] xl:w-[180px] flex flex-col items-center gap-3 py-1"
+              className="w-[125px] sm:w-[140px] md:w-[150px] lg:w-[160px] xl:w-[165px] flex flex-col items-center gap-3 py-1"
             >
               {/* Logo — large, clean, no box. object-contain never crops. */}
-              <div className="relative h-[58px] sm:h-[68px] md:h-[76px] lg:h-[78px] w-full flex items-center justify-center">
+              <div className="relative h-[74px] sm:h-[88px] md:h-[98px] lg:h-[104px] w-full flex items-center justify-center">
                 <Image
                   src={org.logo}
                   alt={`${org.name} logo`}
                   fill
                   className="object-contain"
-                  sizes="170px"
+                  sizes="190px"
                 />
               </div>
               <span className="text-metadata font-semibold text-be-charcoal-950 text-center leading-tight">
