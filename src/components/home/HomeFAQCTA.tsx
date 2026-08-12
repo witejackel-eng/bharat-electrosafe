@@ -11,7 +11,7 @@ const faqItems: FAQItem[] = homeFaqs;
  * HomeFAQCTA — final content section before the footer.
  *
  * Minimal editorial layout (per IA + FAQ UX pass):
- *   - Desktop: ~68% LEFT (accordion), ~32% RIGHT (small intro)
+ *   - Desktop: ~32% LEFT (small intro), ~68% RIGHT (accordion)
  *   - Mobile/tablet: intro first, then questions (single column)
  *
  * The accordion uses the existing FAQ component's behavior with a
@@ -29,14 +29,9 @@ export default function HomeFAQCTA() {
       topRule
       ariaLabel="Frequently asked questions"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-[2.1fr_1fr] gap-8 lg:gap-12">
-        {/* ── LEFT (desktop) / SECOND (mobile) — Questions accordion ── */}
-        <div className="order-2 lg:order-1 min-w-0">
-          <FAQ items={faqItems} />
-        </div>
-
-        {/* ── RIGHT (desktop) / FIRST (mobile) — Small intro ── */}
-        <div className="order-1 lg:order-2 lg:pt-1">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_2.1fr] gap-8 lg:gap-12">
+        {/* ── LEFT (desktop) / FIRST (mobile) — Small intro ── */}
+        <div className="order-1 lg:order-1 lg:pt-1">
           <Eyebrow>COMMON QUESTIONS</Eyebrow>
           <h2 className="text-section-h2 text-be-charcoal-950 mt-3 mb-3">
             Frequently Asked Questions
@@ -48,6 +43,11 @@ export default function HomeFAQCTA() {
           <TextLink href="/contact-us?type=technical-guidance">
             Technical Guidance
           </TextLink>
+        </div>
+
+        {/* ── RIGHT (desktop) / SECOND (mobile) — Questions accordion ── */}
+        <div className="order-2 lg:order-2 min-w-0">
+          <FAQ items={faqItems} />
         </div>
       </div>
     </SectionShell>
