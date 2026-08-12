@@ -47,8 +47,8 @@ const BRAND = '/brand';
 
 export const hvVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/electrical-insulating-mats/eim-hero-electrical-insulating-mat.webp`,
-    alt: 'Blue electrical insulating mat partially rolled in a switchgear room',
+    src: `${PROD}/electrical-insulating-mats/eim-product-card-black-yellow-mat.webp`,
+    alt: 'Black insulating mat with a central yellow safety strip and raised circular surface texture',
     fit: 'cover',
   },
   hero: {
@@ -327,8 +327,8 @@ export const membraneVisuals: ProductVisuals = {
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/bharat-membrane/bharatmembrane-hero-white-tunnel-lining.webp`,
-    alt: 'PVC waterproof membrane lining inside an underground tunnel',
+    src: `${PROD}/bharat-membrane/bharatmembrane-hero-tunnel-installation.webp`,
+    alt: 'White waterproof membrane lining installed inside an underground tunnel',
     fit: 'cover',
   },
   gallery: [

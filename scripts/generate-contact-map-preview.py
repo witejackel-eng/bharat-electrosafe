@@ -25,11 +25,22 @@ Output:
 """
 
 from pathlib import Path
+import re
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
+# Repository root (this script lives in <root>/scripts/).
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+# Single source of truth for the office address — the same file the React
+# app imports at runtime (src/data/company.ts). Parsing it here, instead of
+# duplicating the literals, guarantees the map-preview label can never drift
+# away from the address shown in the contact-page left column or the Google
+# Maps destination URL (both of which already read from company.address).
+COMPANY_TS = REPO_ROOT / "src" / "data" / "company.ts"
+
 # Output path
-OUT = Path("/home/z/my-project/bharat-electrosafe/public/media/contact/office-map-preview.svg")
+OUT = REPO_ROOT / "public" / "media" / "contact" / "office-map-preview.svg"
 
 # SVG viewBox
 W = 800
@@ -53,6 +64,30 @@ GREY_150 = "#ECEBE5"
 # Marker position (centre-right, near where I-thum sits in the grid)
 MARKER_X = 470
 MARKER_Y = 215
+
+
+def read_company_address() -> dict:
+    """Parse the office address fields from src/data/company.ts.
+
+    Returns a dict with keys: name, line1, line2, city, state, pincode.
+    Returning an empty string for any missing field makes a mismatch loud
+    (visible blank line on the map) rather than silently stale.
+    """
+    text = COMPANY_TS.read_text(encoding="utf-8")
+
+    def field(key: str) -> str:
+        m = re.search(rf"\b{re.escape(key)}\s*:\s*'([^']*)'", text)
+        return m.group(1) if m else ""
+
+    name_m = re.search(r"\bname\s*:\s*'([^']*)'", text)
+    return {
+        "name": name_m.group(1) if name_m else "Bharat Electrosafe",
+        "line1": field("line1"),
+        "line2": field("line2"),
+        "city": field("city"),
+        "state": field("state"),
+        "pincode": field("pincode"),
+    }
 
 
 def prettify(elem: ET.Element) -> str:
@@ -217,7 +252,17 @@ def build_svg() -> ET.Element:
     })
 
     # ── 6. Bottom-left address chip ──
-    chip_x, chip_y, chip_w, chip_h = 20, 388, 290, 56
+    # Address text is sourced from src/data/company.ts (single source of
+    # truth) via read_company_address(), so the map label can never drift
+    # away from the address shown elsewhere on the contact page.
+    addr = read_company_address()
+    chip_lines = [
+        addr["line1"],                          # 814, 8th Floor, I-thum, Tower A
+        addr["line2"],                          # Plot No. A-40, Sector-62
+        f'{addr["city"]} — {addr["pincode"]}',  # Noida — 201309
+    ]
+    # Taller chip to fit brand line + 3 address lines (was 2 address lines).
+    chip_x, chip_y, chip_w, chip_h = 20, 372, 300, 72
     ET.SubElement(svg, "rect", {
         "x": str(chip_x), "y": str(chip_y),
         "width": str(chip_w), "height": str(chip_h),
@@ -237,21 +282,17 @@ def build_svg() -> ET.Element:
         "font-family": "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
     })
     ET.SubElement(chip_text, "text", {
-        "x": str(chip_x + 16), "y": str(chip_y + 20),
+        "x": str(chip_x + 16), "y": str(chip_y + 18),
         "font-size": "11", "font-weight": "700",
         "fill": CHARCOAL_950,
         "letter-spacing": "0.8",
-    }).text = "BHARAT ELECTROSAFE"
-    ET.SubElement(chip_text, "text", {
-        "x": str(chip_x + 16), "y": str(chip_y + 36),
-        "font-size": "10.5", "font-weight": "400",
-        "fill": GREY_650,
-    }).text = "704, 7th Floor, I-thum, Tower A"
-    ET.SubElement(chip_text, "text", {
-        "x": str(chip_x + 16), "y": str(chip_y + 50),
-        "font-size": "10.5", "font-weight": "400",
-        "fill": GREY_650,
-    }).text = "Sector 62, Noida — 201309"
+    }).text = addr["name"].upper()
+    for i, line in enumerate(chip_lines):
+        ET.SubElement(chip_text, "text", {
+            "x": str(chip_x + 16), "y": str(chip_y + 34 + i * 14),
+            "font-size": "10.5", "font-weight": "400",
+            "fill": GREY_650,
+        }).text = line
 
     return svg
 
