@@ -322,12 +322,12 @@ export const iecVisuals: ProductVisuals = {
 
 export const membraneVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/bharat-membrane/bharatmembrane-hero-white-tunnel-lining.webp`,
+    src: `${PROD}/bharat-membrane/bharatmembrane-tunnel-lining-clean.webp`,
     alt: 'PVC waterproof membrane lining inside an underground tunnel',
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/bharat-membrane/bharatmembrane-hero-tunnel-installation.webp`,
+    src: `${PROD}/bharat-membrane/bharatmembrane-tunnel-lining-clean.webp`,
     alt: 'White waterproof membrane lining installed inside an underground tunnel',
     fit: 'cover',
   },
@@ -364,7 +364,7 @@ export const membraneVisuals: ProductVisuals = {
     fit: 'cover',
   },
   menuPreview: {
-    src: `${PROD}/bharat-membrane/bharatmembrane-hero-white-tunnel-lining.webp`,
+    src: `${PROD}/bharat-membrane/bharatmembrane-tunnel-lining-clean.webp`,
     alt: 'Geo Membrane tunnel preview',
     fit: 'cover',
   },
