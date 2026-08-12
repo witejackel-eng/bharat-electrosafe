@@ -94,9 +94,9 @@ export const hvVisuals: ProductVisuals = {
     fit: 'cover',
   },
   homePreview: {
-    src: '/media/categories/electrical-insulating-mats-category.png',
-    alt: 'Blue electrical insulating mat with raised circular surface pattern',
-    fit: 'contain',
+    src: `${PROD}/electrical-insulating-mats/electrical-insulating-mats-black-yellow-card.webp`,
+    alt: 'Black electrical insulating mat with a yellow guided center strip and raised circular dot surface texture',
+    fit: 'cover',
   },
 };
 
