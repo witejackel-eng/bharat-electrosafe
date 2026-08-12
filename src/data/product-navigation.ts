@@ -72,6 +72,7 @@ export const productNavGroups: ProductNavGroup[] = [
     id: 'electrical-insulating-mats',
     number: '01',
     name: 'Electrical Insulating Mats',
+    href: '/products/electrical-insulating-mats',
     description: 'Operator protection near live electrical equipment',
     hasSubGroups: true,
     children: [
@@ -81,7 +82,7 @@ export const productNavGroups: ProductNavGroup[] = [
         items: [
           {
             name: 'HV Insulating Mats',
-            href: '/products/electrical-insulating-mats',
+            href: '/products/electrical-insulating-mats/domestic',
             description: 'Standard high-voltage insulating mats for operator protection',
           },
           {
@@ -128,7 +129,8 @@ export const productNavGroups: ProductNavGroup[] = [
   {
     id: 'water-proofing-solutions',
     number: '02',
-    name: 'Water Proofing Solutions',
+    name: 'Waterproofing Solutions',
+    href: '/products/waterproofing-solutions',
     description: 'Waterproofing, containment and construction-joint sealing',
     hasSubGroups: true,
     children: [
