@@ -49,16 +49,19 @@ const iconMap: Record<string, LucideIcon> = {
 interface ProductHeroProps {
   product: ProductData;
   visuals: ProductVisuals;
+  /** Override the breadcrumb trail (default: Home → Products → product.name). */
+  breadcrumbItems?: { label: string; href?: string }[];
 }
 
-export function ProductHero({ product, visuals }: ProductHeroProps) {
+export function ProductHero({ product, visuals, breadcrumbItems: overrideBreadcrumb }: ProductHeroProps) {
   const breadcrumbItems = useMemo(
-    () => [
-      { label: 'Home', href: '/' },
-      { label: 'Products', href: '/products' },
-      { label: product.name },
-    ],
-    [product.name]
+    () =>
+      overrideBreadcrumb ?? [
+        { label: 'Home', href: '/' },
+        { label: 'Products', href: '/products' },
+        { label: product.name },
+      ],
+    [overrideBreadcrumb, product.name]
   );
 
   return (
