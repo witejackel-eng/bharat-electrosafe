@@ -24,6 +24,8 @@ import {
   coloredStripVisuals,
   membraneVisuals,
   hydroSealVisuals,
+  pvcFlooringVisuals,
+  otherProductsVisuals,
   productVisuals,
 } from '@/data/product-visuals';
 
@@ -138,18 +140,22 @@ const HERO_COLLAGE = [
   {
     src: hvVisuals.homePreview.src,
     alt: hvVisuals.homePreview.alt,
+    fit: hvVisuals.homePreview.fit,
   },
   {
     src: membraneVisuals.homePreview.src,
     alt: membraneVisuals.homePreview.alt,
+    fit: membraneVisuals.homePreview.fit,
   },
   {
-    src: hydroSealVisuals.homePreview.src,
-    alt: hydroSealVisuals.homePreview.alt,
+    src: pvcFlooringVisuals.homePreview.src,
+    alt: pvcFlooringVisuals.homePreview.alt,
+    fit: pvcFlooringVisuals.homePreview.fit,
   },
   {
-    src: '/brand/bharat-smart-floor-graphic.webp',
-    alt: 'Bharat Smart Floor PVC flooring',
+    src: otherProductsVisuals.homePreview.src,
+    alt: otherProductsVisuals.homePreview.alt,
+    fit: otherProductsVisuals.homePreview.fit,
   },
 ] as const;
 
@@ -195,7 +201,7 @@ function ProductsHero() {
                     src={img.src}
                     alt={img.alt}
                     fill
-                    className="object-cover"
+                    className={img.fit === 'contain' ? 'object-contain' : 'object-cover'}
                     sizes="(max-width: 1024px) 50vw, 22vw"
                   />
                 </div>
@@ -491,10 +497,10 @@ function PvcAndOtherSection() {
             {/* Visual area */}
             <div className="relative w-full aspect-[16/9] bg-[#f8f8f6] overflow-hidden">
               <Image
-                src="/brand/bharat-smart-floor-graphic.webp"
-                alt="Bharat Smart Floor PVC flooring solutions"
+                src={pvcFlooringVisuals.homePreview.src}
+                alt={pvcFlooringVisuals.homePreview.alt}
                 fill
-                className="object-contain p-8"
+                className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>

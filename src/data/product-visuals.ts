@@ -94,9 +94,9 @@ export const hvVisuals: ProductVisuals = {
     fit: 'cover',
   },
   homePreview: {
-    src: '/media/home/product-groups/electrical-insulating-mats.webp',
-    alt: 'Blue electrical insulating mat installed beside switchgear — IS 15652 and IEC 61111 compliant',
-    fit: 'cover',
+    src: '/media/categories/electrical-insulating-mats-category.png',
+    alt: 'Blue electrical insulating mat with raised circular surface pattern',
+    fit: 'contain',
   },
 };
 
@@ -309,9 +309,9 @@ export const iecVisuals: ProductVisuals = {
     fit: 'cover',
   },
   homePreview: {
-    src: '/media/home/product-groups/electrical-insulating-mats.webp',
+    src: '/media/categories/electrical-insulating-mats-category.png',
     alt: 'International IEC 61111 insulating mats',
-    fit: 'cover',
+    fit: 'contain',
   },
 };
 
@@ -369,8 +369,8 @@ export const membraneVisuals: ProductVisuals = {
     fit: 'cover',
   },
   homePreview: {
-    src: '/media/home/product-groups/waterproofing-solutions.webp',
-    alt: 'BharatMembrane geo-membrane tunnel lining — waterproofing containment structure',
+    src: '/media/categories/waterproofing-solutions-category.png',
+    alt: 'Waterproofing membrane being installed inside an infrastructure tunnel',
     fit: 'cover',
   },
 };
@@ -464,8 +464,8 @@ export const pvcFlooringVisuals: ProductVisuals = {
     fit: 'cover',
   },
   homePreview: {
-    src: '/media/home/product-groups/pvc-flooring-solutions.webp',
-    alt: 'PVC flooring roll and installed flooring in industrial control room',
+    src: '/media/categories/pvc-flooring-solutions-category.png',
+    alt: 'Industrial PVC flooring being installed in an electrical equipment room',
     fit: 'cover',
   },
 };
@@ -519,9 +519,9 @@ export const otherProductsVisuals: ProductVisuals = {
     fit: 'cover',
   },
   homePreview: {
-    src: '/media/home/product-groups/other-products.webp',
-    alt: 'Rubber sheet, hose pipe, ESD mat and conveyor belt — industrial products',
-    fit: 'cover',
+    src: '/media/categories/other-products-category.png',
+    alt: 'Industrial rubber sheet, hose, ESD mat and conveyor belt products',
+    fit: 'contain',
   },
 };
 

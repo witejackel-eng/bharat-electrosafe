@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
@@ -28,7 +27,6 @@ import {
   Download,
 } from 'lucide-react';
 import { pvcFlooringVisuals } from '@/data/product-visuals';
-import { useRecentlyViewed } from '@/hooks/use-recently-viewed';
 
 /* ── Breadcrumb items ── */
 
@@ -77,11 +75,6 @@ const assuranceItems = [
 ];
 
 export default function PVCFlooringClient() {
-  const { addToRecentlyViewed } = useRecentlyViewed();
-
-  useEffect(() => {
-    addToRecentlyViewed('pvc-flooring-solutions');
-  }, [addToRecentlyViewed]);
 
   return (
     <div className="min-h-screen flex flex-col bg-be-warm-white">
