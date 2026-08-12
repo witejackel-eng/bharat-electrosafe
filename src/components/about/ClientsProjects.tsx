@@ -56,9 +56,9 @@ export default function ClientsProjects() {
     <SectionShell variant="standard" bg="bg-be-yellow-50/40" topRule>
       <div className="reveal-up mb-10">
         <SectionHeader
-          eyebrow="Clients & Projects"
-          title="Trusted across critical industries"
-          supportingText="A selection of organisations and projects served by Bharat Electrosafe across power, steel, infrastructure, metro rail, defence and more."
+          eyebrow="INDUSTRY REFERENCES"
+          title="Organisations represented across critical industries"
+          supportingText="Organisations shown in Bharat Electrosafe's company materials across power, steel, infrastructure, transport and industrial sectors."
         />
       </div>
 
@@ -95,7 +95,7 @@ export default function ClientsProjects() {
       {/* Additional client names — compact list below the carousel */}
       <div className="reveal-up">
         <p className="text-metadata font-semibold uppercase tracking-wider text-be-grey-650 mb-4">
-          Clients served
+          Selected Clients
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-3">
           {visibleClients.map((name) => (

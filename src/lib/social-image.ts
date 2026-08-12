@@ -47,7 +47,7 @@ export const SITE_TWITTER_IMAGE_URL = `${canonicalOrigin}/og/bharat-electrosafe-
  * Reads naturally to screen readers and social-platform crawlers.
  */
 export const SITE_SOCIAL_IMAGE_ALT =
-  'Bharat Electrosafe® logo — India\'s trusted name in electrical safety, industrial safety, infrastructure protection, PVC flooring and waterproofing solutions.';
+  'Bharat Electrosafe logo — manufacturer of electrical insulating mats, waterproofing, PVC flooring and related industrial products.';
 
 /** OG image dimensions — both files are 1200×630 PNGs. */
 export const SITE_SOCIAL_IMAGE_WIDTH = 1200;

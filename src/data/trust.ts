@@ -19,7 +19,7 @@
  *    source.
  */
 
-import { productFamilyCount } from './products';
+import { productGroupCount } from './products';
 
 /* ────────────────────────────────────────────
    Standards and licences
@@ -293,9 +293,9 @@ export const scaleFacts = [
     companyStated: true,
   },
   {
-    value: String(productFamilyCount),
-    label: 'Product families',
-    shortLabel: 'Product families',
+    value: String(productGroupCount),
+    label: 'Product groups',
+    shortLabel: 'Product groups',
     companyStated: false,
   },
 ] as const;
@@ -332,8 +332,10 @@ export interface CompanyStatistic {
  * `companyStated` flag is preserved in data but not rendered on the
  * compact homepage cards; a subtle footnote may appear below the strip.
  *
- * Product Families is derived from `productFamilyCount` in the product
- * registry and updates automatically if the registry changes.
+ * Product Groups is derived from `productGroupCount` in the product
+ * registry (4 top-level groups). The detailed product registry may contain
+ * more records because the first group is split into domestic variants —
+ * that does not change the public group count.
  *
  * Insulation Classes (3) refers to the domestic Class A, B and C range
  * per IS 15652:2006.
@@ -352,8 +354,8 @@ export const companyStatistics: CompanyStatistic[] = [
     companyStated: true,
   },
   {
-    value: String(productFamilyCount),
-    label: 'Product Families',
+    value: String(productGroupCount),
+    label: 'Product Groups',
     icon: 'grid',
     companyStated: false,
   },

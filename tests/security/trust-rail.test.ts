@@ -212,12 +212,15 @@ describe('About Us ClientsProjects — organisation references', () => {
     expect(orgBlock).not.toMatch(/shadow/);
   });
 
-  test('preserves the "Clients served" text list and View-all disclosure', async () => {
+  test('preserves the "Selected Clients" text list and View-all disclosure', async () => {
     const file = Bun.file(
       REPO_ROOT + '/src/components/about/ClientsProjects.tsx',
     );
     const content = await file.text();
-    expect(content).toContain('Clients served');
+    // The client text list was renamed from "Clients served" to "Selected
+    // Clients" so organisation-reference logos are not implied to be confirmed
+    // customers. The list contents and the View-all disclosure remain.
+    expect(content).toContain('Selected Clients');
     expect(content).toContain('View all clients');
     expect(content).toContain('additionalClients');
   });

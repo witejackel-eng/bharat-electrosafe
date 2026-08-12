@@ -16,10 +16,10 @@ import { Target, Compass } from 'lucide-react';
 
 /* ── Vision / Mission text ── */
 const vision =
-  "To become India's most trusted and preferred brand in electrical safety, industrial safety, infrastructure protection, PVC flooring, and waterproofing solutions by delivering innovative, high-quality, and standards-compliant products that contribute to safer workplaces and stronger infrastructure.";
+  'Make electrical and industrial protection products easier to specify, source and deploy with clear technical information.';
 
 const mission =
-  "To protect lives, assets, and infrastructure by providing reliable, durable, and high-performance safety and protection solutions that meet the highest quality standards, support industrial growth, and strengthen the nation's development under the Make in India initiative.";
+  'Manufacture and supply electrical safety and industrial protection products with clear specifications, documented testing where applicable and responsive project support.';
 
 export default function BrandsVisionMission() {
   return (
@@ -33,7 +33,7 @@ export default function BrandsVisionMission() {
             Vision &amp; Mission
           </p>
           <h2 className="text-2xl sm:text-3xl lg:text-[2rem] font-bold text-white tracking-tight leading-snug mb-3">
-            Driving safer industry through purpose and innovation.
+            Clear products, documented requirements and practical project support.
           </h2>
         </div>
 
