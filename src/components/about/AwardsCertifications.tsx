@@ -73,22 +73,27 @@ export default function AwardsCertifications() {
             {allTrustMarks.map((mark) => (
               <div
                 key={mark.label}
-                className="w-[240px] sm:w-[270px] md:w-[290px] lg:w-[310px] flex flex-col items-center gap-3 rounded-lg border border-be-grey-250 bg-be-warm-white p-5 text-center"
+                className="w-[240px] sm:w-[270px] md:w-[290px] lg:w-[320px] flex flex-col items-center gap-3 px-4 py-2 text-center"
               >
-                {/* Fixed-height area so marks of different intrinsic sizes read as one row */}
-                <span className="relative flex h-14 w-full items-center justify-center">
+                {/* Large clean logo on open whitespace — no card box, border, or
+                 *  filled background. object-contain never crops a mark. */}
+                <span className="relative flex h-16 sm:h-[68px] md:h-[72px] lg:h-[80px] w-full items-center justify-center">
                   <Image
                     src={mark.logo}
                     alt={mark.alt}
                     fill
                     className="object-contain"
-                    sizes="120px"
+                    sizes="200px"
                   />
                 </span>
                 <span className="text-body font-semibold text-be-charcoal-950">
                   {mark.label}
                 </span>
-                <span className="text-metadata text-be-grey-650">{mark.note}</span>
+                {/* Full existing note preserved — never shortened. min-height
+                 *  keeps marks of varying note length aligned as one row. */}
+                <span className="text-metadata text-be-grey-650 leading-snug min-h-[2.6em]">
+                  {mark.note}
+                </span>
                 {mark.document && (
                   <a
                     href={mark.document}
