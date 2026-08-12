@@ -1,7 +1,6 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
-import { RevealObserver } from '@/components/ui/RevealObserver';
 import { MobileStickyCTA } from '@/components/ui/MobileStickyCTA';
 import HomeHero from '@/components/home/HomeHero';
 import StatisticsStrip from '@/components/home/StatisticsStrip';
@@ -18,12 +17,9 @@ import RecentlyViewed from '@/components/home/RecentlyViewed';
  *
  * The homepage layout is server-rendered so all section content (hero, product
  * range, trust marks, capabilities, FAQ, CTA) appears in the initial HTML
- * without waiting for hydration. Only the interactive islands (Header, FAQ
- * accordion, BackToTop, RevealObserver) ship client JavaScript.
- *
- * RevealObserver is a progressive-enhancement island that toggles the
- * `revealed` CSS class for entrance animations — it renders nothing visible
- * and does not gate content.
+ * without waiting for hydration. Interactive islands ship client JavaScript
+ * only where needed. RevealObserver is mounted globally from the root layout
+ * so the same visibility behavior applies to every route.
  */
 export default function HomeShell() {
   return (
@@ -52,7 +48,6 @@ export default function HomeShell() {
       <Footer />
       <BackToTop />
       <MobileStickyCTA />
-      <RevealObserver />
     </div>
   );
 }
