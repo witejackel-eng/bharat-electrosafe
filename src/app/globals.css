@@ -538,6 +538,12 @@
       transform: none;
       transition: none;
     }
+    /* Mega-menu: disable sliding underline and content transitions */
+    .mega-menu-tab-indicator,
+    .mega-menu-content-panel {
+      transition: none !important;
+      transform: none !important;
+    }
     html {
       scroll-behavior: auto;
     }

@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
@@ -40,33 +39,6 @@ import OfficeLocation from '@/components/contact/OfficeLocation';
  *   5. Enquiry form
  */
 export default function ContactUsClient() {
-  const revealRef = useRef<boolean>(false);
-
-  useEffect(() => {
-    if (revealRef.current) return;
-    revealRef.current = true;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const revealElements = entry.target.querySelectorAll('.reveal-up');
-            revealElements.forEach((el) => {
-              el.classList.add('revealed');
-            });
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '-40px' }
-    );
-
-    const sections = document.querySelectorAll('section');
-    sections.forEach((section) => observer.observe(section));
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <div className="min-h-screen flex flex-col bg-be-warm-white">
       <Header />

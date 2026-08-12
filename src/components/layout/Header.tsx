@@ -41,6 +41,7 @@ import {
   type ProductNavSubGroup,
   type ProductNavLeaf,
 } from '@/data/product-navigation';
+import { ProductsMegaMenu } from './ProductsMegaMenu';
 
 /* ────────────────────────────────────────────
    Hover-intent delay constants
@@ -157,7 +158,7 @@ export function Header() {
   // Cleanup timeouts on unmount
   useEffect(() => { return () => { clearOpenTimeout(); clearCloseTimeout(); }; }, [clearOpenTimeout, clearCloseTimeout]);
 
-  // Destructure product groups for layout
+  // Destructure product groups for mobile layout
   const electricalGroup = productNavGroups[0]; // Electrical Insulating Mats
   const waterGroup = productNavGroups[1];       // Water Proofing Solutions
   const pvcGroup = productNavGroups[2];          // PVC Flooring Solutions
@@ -166,9 +167,6 @@ export function Header() {
   const domesticSub = (electricalGroup.children as ProductNavSubGroup[])[0];
   const internationalSub = (electricalGroup.children as ProductNavSubGroup[])[1];
 
-  // All product links for search dialog
-  const allProductLinks = getAllProductLinks();
-
   // Helper: flatten items for a group without sub-groups rendering
   const getGroupItems = (group: typeof productNavGroups[number]): ProductNavLeaf[] => {
     if (group.hasSubGroups) {
@@ -176,6 +174,9 @@ export function Header() {
     }
     return group.children as ProductNavLeaf[];
   };
+
+  // All product links for search dialog
+  const allProductLinks = getAllProductLinks();
 
   return (
     <header className="contents z-50">
@@ -480,192 +481,17 @@ export function Header() {
         </div>
 
         {/* ── Products Mega-Menu ──
-            Compact two-column stack layout per final spec.
-            Left:  Electrical → PVC
-            Right: Waterproofing → illustration → Other Products
-            No product photography. Visible abstract illustration. */}
+            Compact category-switcher: only one category expanded at a time.
+            Uses tablist/tab/tabpanel ARIA semantics. */}
         {dropdownOpen && (
           <div
             ref={megaMenuRef}
             id="products-mega-menu"
-            role="menu"
-            className="absolute left-1/2 -translate-x-1/2 top-full mt-1.5 w-[820px] xl:w-[840px] max-w-[calc(100vw-32px)] bg-be-white border border-be-grey-250/80 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.09),0_2px_6px_rgba(0,0,0,0.05)] overflow-hidden animate-mega-menu-in"
             onMouseEnter={handleDropdownEnter}
             onMouseLeave={handleDropdownLeave}
             onKeyDown={handleMegaMenuKeyDown}
-            aria-label="Product categories"
           >
-            <div className="px-5 py-3">
-              {/* Section eyebrow */}
-              <p className="text-[10px] font-bold text-be-yellow-600 uppercase tracking-[0.14em] mb-2">
-                PRODUCTS
-              </p>
-
-              {/* Two independent column stacks */}
-              <div className="grid grid-cols-[1.18fr_0.82fr] gap-x-6">
-
-                {/* ── LEFT COLUMN ── */}
-                <div className="flex flex-col min-w-0">
-
-                  {/* 01 Electrical Insulating Mats — Domestic + International side-by-side */}
-                  <div role="group" aria-label="Electrical Insulating Mats" className="animate-mega-fade-in" style={{ animationDelay: '0ms' }}>
-                    <p className="text-[13px] font-bold text-be-charcoal-950 uppercase tracking-[0.04em] mb-1">
-                      <span className="text-be-yellow-600 text-[11px] font-bold mr-1.5">01</span>
-                      Electrical Insulating Mats
-                    </p>
-
-                    {/* Domestic + International side-by-side */}
-                    <div className="grid grid-cols-2 gap-x-4">
-                      {/* Domestic Mats */}
-                      <div>
-                        <div className="flex items-baseline gap-1.5 mb-0.5">
-                          <p className="text-[11px] font-semibold text-be-charcoal-900">Domestic Mats</p>
-                          <span className="text-[9px] font-semibold text-be-yellow-700 bg-be-yellow-50 px-1 py-[0.5px] rounded">
-                            IS 15652:2006
-                          </span>
-                        </div>
-                        <div className="flex flex-col">
-                          {domesticSub.items.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              role="menuitem"
-                              className="mega-menu-item text-[13px] leading-[20px] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 px-1.5 py-[2px] rounded"
-                              onClick={() => setDropdownOpen(false)}
-                            >
-                              {item.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* International / Global */}
-                      <div>
-                        <div className="flex items-baseline gap-1.5 mb-0.5">
-                          <p className="text-[11px] font-semibold text-be-charcoal-900">International / Global</p>
-                          <span className="text-[9px] font-semibold text-be-yellow-700 bg-be-yellow-50 px-1 py-[0.5px] rounded">
-                            IEC 61111:2009
-                          </span>
-                        </div>
-                        <div className="flex flex-col">
-                          {internationalSub.items.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              role="menuitem"
-                              className="mega-menu-item text-[13px] leading-[20px] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 px-1.5 py-[2px] rounded"
-                              onClick={() => setDropdownOpen(false)}
-                            >
-                              {item.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 03 PVC Flooring Solutions */}
-                  <div role="group" aria-label="PVC Flooring Solutions" className="mt-3 animate-mega-fade-in" style={{ animationDelay: '80ms' }}>
-                    <p className="text-[13px] font-bold text-be-charcoal-950 uppercase tracking-[0.04em] mb-1">
-                      <span className="text-be-yellow-600 text-[11px] font-bold mr-1.5">03</span>
-                      PVC Flooring Solutions
-                    </p>
-                    <div className="flex flex-col">
-                      {getGroupItems(pvcGroup).map((item) => (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          role="menuitem"
-                          className="mega-menu-item text-[13px] leading-[20px] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 px-1.5 py-[2px] rounded"
-                          onClick={() => setDropdownOpen(false)}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* ── RIGHT COLUMN ── */}
-                <div className="flex flex-col min-w-0">
-
-                  {/* 02 Water Proofing Solutions */}
-                  <div role="group" aria-label="Water Proofing Solutions" className="animate-mega-fade-in" style={{ animationDelay: '40ms' }}>
-                    <p className="text-[13px] font-bold text-be-charcoal-950 uppercase tracking-[0.04em] mb-1">
-                      <span className="text-be-yellow-600 text-[11px] font-bold mr-1.5">02</span>
-                      Water Proofing Solutions
-                    </p>
-                    <div className="flex flex-col">
-                      {getGroupItems(waterGroup).map((item) => (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          role="menuitem"
-                          className="mega-menu-item text-[13px] leading-[20px] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 px-1.5 py-[2px] rounded"
-                          onClick={() => setDropdownOpen(false)}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Abstract blueprint illustration — dedicated slot */}
-                  <div className="my-1.5 h-[72px] flex items-center justify-center" aria-hidden="true">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/brand/products-menu-blueprint.svg"
-                      alt=""
-                      className="w-[170px] h-auto opacity-[0.24] pointer-events-none select-none"
-                    />
-                  </div>
-
-                  {/* 04 Other Products */}
-                  <div role="group" aria-label="Other Products" className="animate-mega-fade-in" style={{ animationDelay: '120ms' }}>
-                    <p className="text-[13px] font-bold text-be-charcoal-950 uppercase tracking-[0.04em] mb-1">
-                      <span className="text-be-yellow-600 text-[11px] font-bold mr-1.5">04</span>
-                      Other Products
-                    </p>
-                    <div className="flex flex-col">
-                      {getGroupItems(otherGroup).map((item) => (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          role="menuitem"
-                          className="mega-menu-item text-[13px] leading-[20px] font-medium text-be-charcoal-800 hover:bg-be-yellow-50/70 hover:text-be-charcoal-950 px-1.5 py-[2px] rounded"
-                          onClick={() => setDropdownOpen(false)}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom utility row */}
-              <div className="h-px bg-be-grey-200/80 mt-2 mb-1.5" />
-              <div className="flex items-center justify-between">
-                <Link
-                  href="/contact-us?type=technical-guidance"
-                  role="menuitem"
-                  className="inline-flex items-center gap-1 text-[0.75rem] font-semibold text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors"
-                  onClick={() => setDropdownOpen(false)}
-                >
-                  Technical Guidance
-                  <ArrowRight className="size-3" aria-hidden="true" />
-                </Link>
-                <Link
-                  href="/products"
-                  role="menuitem"
-                  className="inline-flex items-center gap-1 text-[0.75rem] font-semibold text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors"
-                  onClick={() => setDropdownOpen(false)}
-                >
-                  View All Products
-                  <ArrowRight className="size-3" aria-hidden="true" />
-                </Link>
-              </div>
-            </div>
+            <ProductsMegaMenu onClose={() => setDropdownOpen(false)} />
           </div>
         )}
         <ScrollProgress />
