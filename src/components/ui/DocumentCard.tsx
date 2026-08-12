@@ -73,13 +73,11 @@ export function DocumentCard({
   const showViewDownload = hasFile && !isDatasheet;
 
   // Request URL for the datasheet / unavailable document, prefilled.
-  const requestSubject = isDatasheet
-    ? 'Product Datasheet Request'
-    : 'Document Request';
+  const requestType = isDatasheet ? 'datasheet' : 'product';
   const requestMessage = isDatasheet
     ? `I would like to request the product datasheet for ${productName ?? 'this product'}.`
     : `I would like to request the ${type?.toLowerCase() ?? 'document'}: ${name}${productName ? ` for ${productName}` : ''}.`;
-  const requestHref = `/contact-us?subject=${encodeURIComponent(requestSubject)}&product=${encodeURIComponent(productName ?? '')}&message=${encodeURIComponent(requestMessage)}`;
+  const requestHref = `/contact-us?type=${requestType}&product=${encodeURIComponent(productName ?? '')}&message=${encodeURIComponent(requestMessage)}`;
 
   // If a genuine file exists, the thumbnail opens it in a new tab.
   const thumbHref = showViewDownload ? href : undefined;
@@ -193,11 +191,9 @@ export function documentRequestHref(
   productName?: string
 ): string {
   const isDatasheet = kind === 'datasheet';
-  const subject = isDatasheet
-    ? 'Product Datasheet Request'
-    : 'Document Request';
+  const type = isDatasheet ? 'datasheet' : 'product';
   const message = isDatasheet
     ? `I would like to request the product datasheet for ${productName ?? 'this product'}.`
     : `I would like to request ${name}${productName ? ` for ${productName}` : ''}.`;
-  return `/contact-us?subject=${encodeURIComponent(subject)}&product=${encodeURIComponent(productName ?? '')}&message=${encodeURIComponent(message)}`;
+  return `/contact-us?type=${type}&product=${encodeURIComponent(productName ?? '')}&message=${encodeURIComponent(message)}`;
 }
