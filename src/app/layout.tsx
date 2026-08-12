@@ -5,8 +5,6 @@ import { company } from "@/data/company";
 import { siteUrl, deploymentOrigin, allowIndexing } from "@/lib/site-url";
 import { siteOgImage, siteTwitterImage } from "@/lib/social-image";
 import { HomepageStructuredData } from "@/components/structured-data";
-import { CompareProvider } from "@/components/products/CompareContext";
-import { CompareBar } from "@/components/products/CompareBar";
 import { RevealObserver } from "@/components/ui/RevealObserver";
 
 // Variable-font configuration — a single Manrope variable font file replaces
@@ -127,10 +125,7 @@ export default function RootLayout({
         <noscript>
           <style dangerouslySetInnerHTML={{ __html: '.reveal-up,.stagger-reveal{opacity:1!important;transform:none!important}.stagger-reveal>*{opacity:1!important;transform:none!important}' }} />
         </noscript>
-        <CompareProvider>
-          {children}
-          <CompareBar />
-        </CompareProvider>
+        {children}
         {/* Global progressive-enhancement observer. It must live at the root
             because reveal classes are used outside the homepage as well. */}
         <RevealObserver />
