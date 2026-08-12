@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 /* ------------------------------------------------------------------ */
 /*  Props                                                              */
@@ -18,6 +19,12 @@ interface HorizontalCarouselProps {
   children: React.ReactNode;
   /** Show arrow controls (default true) */
   showArrows?: boolean;
+  /**
+   * Optional gap class for the scrollable track (e.g. "gap-2 sm:gap-3").
+   * Defaults to "gap-4". Only affects THIS carousel instance — existing
+   * consumers that omit the prop retain the original spacing.
+   */
+  gapClassName?: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -43,6 +50,7 @@ export function HorizontalCarousel({
   className,
   children,
   showArrows = true,
+  gapClassName,
 }: HorizontalCarouselProps) {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
@@ -235,7 +243,10 @@ export function HorizontalCarousel({
         role="region"
         aria-label={label}
         tabIndex={0}
-        className="flex overflow-x-auto scrollbar-hidden snap-x snap-mandatory gap-4 outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2 rounded-sm"
+        className={cn(
+          'flex overflow-x-auto scrollbar-hidden snap-x snap-mandatory outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2 rounded-sm',
+          gapClassName ?? 'gap-4',
+        )}
         style={{
           scrollSnapType: 'x mandatory',
           WebkitOverflowScrolling: 'touch',

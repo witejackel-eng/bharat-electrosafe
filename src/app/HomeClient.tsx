@@ -17,8 +17,8 @@ import HomeFAQCTA from '@/components/home/HomeFAQCTA';
  * pass):
  *
  *   Header → Hero → Statistics Strip → Product Range →
- *   Certifications / Testing → Industry References →
- *   Capability / Industries → FAQ → Footer
+ *   Certifications / Testing → Capability / Industries →
+ *   Industry References → FAQ → Footer
  *
  * Removed from this version:
  *   - The bundled TrustDocuments section (split into CertificationsSection
@@ -46,10 +46,10 @@ export default function HomeShell() {
         <ProductRange />
         {/* 4. Certifications, testing and registrations */}
         <CertificationsSection />
-        {/* 5. Industry references */}
-        <IndustryReferences />
-        {/* 6. Capability + industries (rendered once) */}
+        {/* 5. Capability + industries (rendered once) */}
         <CapabilityIndustries />
+        {/* 6. Industry references */}
+        <IndustryReferences />
         {/* 7. FAQ (final content section) + CTA */}
         <HomeFAQCTA />
       </main>
