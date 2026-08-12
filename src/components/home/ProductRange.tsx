@@ -39,7 +39,7 @@ const productGroups: ProductGroupCardData[] = [
       'IS 15652 and IEC 61111 insulating mat solutions for electrical safety around switchgear and substations.',
     visual: hvVisuals.homePreview,
     standardsLine: 'Domestic · IS 15652:2006  ·  International · IEC 61111',
-    objectPosition: 'center 30%',
+    objectPosition: 'center center',
   },
   {
     slug: 'bharat-membrane',
@@ -47,7 +47,7 @@ const productGroups: ProductGroupCardData[] = [
     description:
       'BharatMembrane and Bharat Hydro Seal systems for tunnels, containment and industrial waterproofing.',
     visual: membraneVisuals.homePreview,
-    objectPosition: 'center 40%',
+    objectPosition: 'center center',
   },
   {
     slug: 'pvc-flooring-solutions',
@@ -55,7 +55,7 @@ const productGroups: ProductGroupCardData[] = [
     description:
       'Industrial PVC flooring for electrical, technical and commercial environments.',
     visual: pvcFlooringVisuals.homePreview,
-    objectPosition: 'center 35%',
+    objectPosition: 'center center',
   },
   {
     slug: 'other-products',
@@ -89,7 +89,7 @@ function ProductGroupCard({ group, index }: { group: ProductGroupCardData; index
           src={visual.src}
           alt={visual.alt}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          className={`${visual.fit === 'contain' ? 'object-contain' : 'object-cover'} ${visual.fit === 'cover' ? 'group-hover:scale-105' : ''} transition-transform duration-300`}
           style={group.objectPosition ? { objectPosition: group.objectPosition } : undefined}
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 50vw"
         />

@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
@@ -24,7 +23,6 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { otherProductsVisuals } from '@/data/product-visuals';
-import { useRecentlyViewed } from '@/hooks/use-recently-viewed';
 
 /* ── Breadcrumb items ── */
 
@@ -93,11 +91,6 @@ const assuranceItems = [
 ];
 
 export default function OtherProductsClient() {
-  const { addToRecentlyViewed } = useRecentlyViewed();
-
-  useEffect(() => {
-    addToRecentlyViewed('other-products');
-  }, [addToRecentlyViewed]);
 
   return (
     <div className="min-h-screen flex flex-col bg-be-warm-white">

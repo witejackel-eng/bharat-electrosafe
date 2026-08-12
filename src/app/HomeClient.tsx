@@ -8,7 +8,6 @@ import ProductRange from '@/components/home/ProductRange';
 import TrustDocuments from '@/components/home/TrustDocuments';
 import CapabilityIndustries from '@/components/home/CapabilityIndustries';
 import HomeFAQCTA from '@/components/home/HomeFAQCTA';
-import RecentlyViewed from '@/components/home/RecentlyViewed';
 
 /**
  * HomeShell — Server Component.
@@ -20,7 +19,7 @@ import RecentlyViewed from '@/components/home/RecentlyViewed';
  * so the same visibility behavior applies to every route.
  *
  * Section order: Hero → Statistics → Capability/Industries → Product Range →
- * Trust → FAQ/CTA → Recently Viewed → Footer
+ * Trust → FAQ/CTA → Footer
  */
 export default function HomeShell() {
   return (
@@ -39,8 +38,6 @@ export default function HomeShell() {
         <TrustDocuments />
         {/* 6. FAQ + CTA */}
         <HomeFAQCTA />
-        {/* 7. Recently viewed — client-only, renders null if empty */}
-        <RecentlyViewed />
       </main>
       <Footer />
       <BackToTop />
