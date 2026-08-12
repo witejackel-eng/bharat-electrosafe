@@ -171,7 +171,16 @@ describe('Contact form security', () => {
         '/src/app/api/contact/route.ts',
     );
     const content = await file.text();
-    expect(content).toContain('z.strictObject');
+    // The route must reject unknown keys (strict validation) to prevent
+    // alias drift between frontend and API. Accept either z.strictObject
+    // (inline definition) or contactSchema.strict() (shared contract).
+    const hasStrict =
+      content.includes('z.strictObject') ||
+      content.includes('.strict()');
+    expect(hasStrict).toBe(true);
+    // The schema must be imported from the shared contract so frontend
+    // and API cannot drift apart.
+    expect(content).toContain('contact-schema');
   });
 
   test('contact route validates content type', async () => {
