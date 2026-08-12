@@ -41,6 +41,12 @@ export default function BHSClient({ product }: { product: ProductData }) {
       visuals={hydroSealVisuals}
       ctaHeadingPrefix="Project enquiry for"
       extraContent={specSection}
+      breadcrumbItems={[
+        { label: 'Home', href: '/' },
+        { label: 'Products', href: '/products' },
+        { label: 'Waterproofing Solutions', href: '/products/waterproofing-solutions' },
+        { label: product.name },
+      ]}
     />
   );
 }

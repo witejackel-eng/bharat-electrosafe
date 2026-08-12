@@ -38,6 +38,12 @@ export default function BMClient({ product }: { product: ProductData }) {
       visuals={membraneVisuals}
       ctaHeadingPrefix="Project enquiry for"
       extraContent={variantComparison}
+      breadcrumbItems={[
+        { label: 'Home', href: '/' },
+        { label: 'Products', href: '/products' },
+        { label: 'Waterproofing Solutions', href: '/products/waterproofing-solutions' },
+        { label: product.name },
+      ]}
     />
   );
 }

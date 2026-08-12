@@ -21,6 +21,9 @@ import { products } from '@/data/products';
 const staticPages: { path: string; priority: number; changeFrequency: 'monthly' | 'yearly' }[] = [
   { path: '/', priority: 1.0, changeFrequency: 'monthly' },
   { path: '/products', priority: 0.9, changeFrequency: 'monthly' },
+  { path: '/products/electrical-insulating-mats', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/products/electrical-insulating-mats/domestic', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/products/waterproofing-solutions', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/products/international-iec-61111', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/products/pvc-flooring-solutions', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/products/other-products', priority: 0.7, changeFrequency: 'monthly' },
@@ -48,8 +51,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  // New product-category pages (international-iec-61111, pvc-flooring-solutions,
-  // other-products) are included above as static pages because they are not
-  // part of the `products` registry array — they have no ProductData entry.
-  return [...staticEntries, ...productEntries];
+  // /products/electrical-insulating-mats is now a family hub (included as a
+  // static page above), not a product-detail page. Remove its product-slug
+  // entry to avoid a duplicate sitemap URL.
+  const filteredProductEntries = productEntries.filter(
+    (entry) => !entry.url.endsWith('/products/electrical-insulating-mats'),
+  );
+
+  return [...staticEntries, ...filteredProductEntries];
 }

@@ -4,7 +4,18 @@ import { ProductDetailTemplate } from '@/components/products/ProductDetailTempla
 import { hvVisuals } from '@/data/product-visuals';
 import type { ProductData } from '@/data/products';
 
-export default function EIMClient({ product }: { product: ProductData }) {
-
-  return <ProductDetailTemplate product={product} visuals={hvVisuals} />;
+export default function EIMClient({
+  product,
+  breadcrumbItems,
+}: {
+  product: ProductData;
+  breadcrumbItems?: { label: string; href?: string }[];
+}) {
+  return (
+    <ProductDetailTemplate
+      product={product}
+      visuals={hvVisuals}
+      breadcrumbItems={breadcrumbItems}
+    />
+  );
 }

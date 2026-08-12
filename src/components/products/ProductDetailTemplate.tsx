@@ -39,6 +39,8 @@ interface ProductDetailTemplateProps {
   ctaHeadingPrefix?: string;
   /** Optional extra content injected between sections. */
   extraContent?: React.ReactNode;
+  /** Override the breadcrumb trail (default: Home → Products → product.name). */
+  breadcrumbItems?: { label: string; href?: string }[];
 }
 
 export function ProductDetailTemplate({
@@ -46,13 +48,14 @@ export function ProductDetailTemplate({
   visuals,
   ctaHeadingPrefix,
   extraContent,
+  breadcrumbItems,
 }: ProductDetailTemplateProps) {
   return (
     <div className="min-h-screen flex flex-col bg-be-warm-white">
       <Header />
       <main className="flex-1">
         {/* 1–3. Hero + breadcrumb + assurance strip */}
-        <ProductHero product={product} visuals={visuals} />
+        <ProductHero product={product} visuals={visuals} breadcrumbItems={breadcrumbItems} />
 
         {/* 4. Overview + key features */}
         <ProductOverview product={product} />

@@ -18,7 +18,7 @@ const products: ProductItem[] = [
   {
     name: 'Electrical Insulating Mats',
     description: 'Class A, B & C voltage-rated insulation for electrical safety',
-    href: '/products/electrical-insulating-mats',
+    href: '/products/electrical-insulating-mats/domestic',
     badge: 'IS 15652',
     slotId: 'HOME-PRODUCT-EIM-01',
     accentColor: 'bg-be-yellow-400',

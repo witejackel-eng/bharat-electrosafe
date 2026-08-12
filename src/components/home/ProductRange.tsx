@@ -22,6 +22,7 @@ import {
 
 interface ProductGroupCardData {
   slug: string;
+  href: string;
   name: string;
   description: string;
   visual: ProductVisualRole;
@@ -34,6 +35,7 @@ interface ProductGroupCardData {
 const productGroups: ProductGroupCardData[] = [
   {
     slug: 'electrical-insulating-mats',
+    href: '/products/electrical-insulating-mats',
     name: 'Electrical Insulating Mats',
     description:
       'IS 15652 and IEC 61111 insulating mat solutions for electrical safety around switchgear and substations.',
@@ -42,7 +44,8 @@ const productGroups: ProductGroupCardData[] = [
     objectPosition: 'center center',
   },
   {
-    slug: 'bharat-membrane',
+    slug: 'waterproofing-solutions',
+    href: '/products/waterproofing-solutions',
     name: 'Waterproofing Solutions',
     description:
       'BharatMembrane and Bharat Hydro Seal systems for tunnels, containment and industrial waterproofing.',
@@ -51,6 +54,7 @@ const productGroups: ProductGroupCardData[] = [
   },
   {
     slug: 'pvc-flooring-solutions',
+    href: '/products/pvc-flooring-solutions',
     name: 'PVC Flooring Solutions',
     description:
       'Industrial PVC flooring for electrical, technical and commercial environments.',
@@ -59,6 +63,7 @@ const productGroups: ProductGroupCardData[] = [
   },
   {
     slug: 'other-products',
+    href: '/products/other-products',
     name: 'Other Products',
     description:
       'Rubber sheets, hose pipes, ESD mats and conveyor belts for industrial applications.',
@@ -76,7 +81,7 @@ function ProductGroupCard({ group, index }: { group: ProductGroupCardData; index
 
   return (
     <Link
-      href={`/products/${group.slug}`}
+      href={group.href}
       aria-label={`View ${group.name} product page`}
       className="hover-card-lift group relative flex flex-col rounded-xl border border-be-grey-250 bg-be-white overflow-hidden shadow-sm hover:shadow-xl hover:border-be-yellow-300 hover:-translate-y-1 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
     >

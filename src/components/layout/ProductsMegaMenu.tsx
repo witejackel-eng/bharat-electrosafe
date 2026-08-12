@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   ShieldCheck,
   Droplets,
@@ -31,6 +32,7 @@ interface CategoryConfig {
   fullName: string;
   icon: LucideIcon;
   groupId: string;
+  href: string;
 }
 
 const CATEGORIES: CategoryConfig[] = [
@@ -41,14 +43,16 @@ const CATEGORIES: CategoryConfig[] = [
     fullName: 'Electrical Insulating Mats',
     icon: ShieldCheck,
     groupId: 'electrical-insulating-mats',
+    href: '/products/electrical-insulating-mats',
   },
   {
     id: 'waterproofing',
     number: '02',
     label: 'Waterproofing',
-    fullName: 'Water Proofing Solutions',
+    fullName: 'Waterproofing Solutions',
     icon: Droplets,
     groupId: 'water-proofing-solutions',
+    href: '/products/waterproofing-solutions',
   },
   {
     id: 'pvc',
@@ -57,6 +61,7 @@ const CATEGORIES: CategoryConfig[] = [
     fullName: 'PVC Flooring Solutions',
     icon: Grid3X3,
     groupId: 'pvc-flooring-solutions',
+    href: '/products/pvc-flooring-solutions',
   },
   {
     id: 'other',
@@ -65,6 +70,7 @@ const CATEGORIES: CategoryConfig[] = [
     fullName: 'Other Products',
     icon: Package,
     groupId: 'other-products',
+    href: '/products/other-products',
   },
 ];
 
@@ -96,6 +102,7 @@ export function ProductsMegaMenu({ onClose }: ProductsMegaMenuProps) {
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const panelRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   // Product data from central navigation
   const electricalGroup = productNavGroups[0];
@@ -141,14 +148,16 @@ export function ProductsMegaMenu({ onClose }: ProductsMegaMenuProps) {
       clearTimeout(hoverTimeoutRef.current);
       hoverTimeoutRef.current = null;
     }
-    // Immediate on click — skip hover delay
-    if (category === activeCategory) return;
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setActiveCategory(category);
-      setIsTransitioning(false);
-    }, CONTENT_TRANSITION_DURATION);
-  }, [activeCategory]);
+    // Click on a category tab navigates to the family hub page.
+    // Panel switching is handled by hover (handleCategoryHover) and
+    // arrow-key navigation (handleTabKeyDown), so the user can still
+    // preview children before deciding to open the full category page.
+    const config = CATEGORIES.find((c) => c.id === category);
+    if (config?.href) {
+      onClose();
+      router.push(config.href);
+    }
+  }, [onClose, router]);
 
   // Keyboard navigation for tablist
   const handleTabKeyDown = useCallback((e: React.KeyboardEvent, category: ProductMenuCategory) => {
@@ -305,7 +314,9 @@ export function ProductsMegaMenu({ onClose }: ProductsMegaMenuProps) {
               <div className="flex-1 min-w-0">
                 <p className="text-[15px] font-semibold text-be-charcoal-950 mb-2.5 flex items-center gap-2">
                   <span className="w-[2px] h-4 bg-be-brand-yellow rounded-full shrink-0" aria-hidden="true" />
-                  Electrical Insulating Mats
+                  <Link href="/products/electrical-insulating-mats" onClick={onClose} className="hover:text-be-yellow-text-hover transition-colors">
+                    Electrical Insulating Mats
+                  </Link>
                 </p>
                 <div className="grid grid-cols-2 gap-x-7">
                   {/* Domestic Mats */}
@@ -360,7 +371,9 @@ export function ProductsMegaMenu({ onClose }: ProductsMegaMenuProps) {
               <div className="flex-1 min-w-0">
                 <p className="text-[15px] font-semibold text-be-charcoal-950 mb-2.5 flex items-center gap-2">
                   <span className="w-[2px] h-4 bg-be-brand-yellow rounded-full shrink-0" aria-hidden="true" />
-                  Water Proofing Solutions
+                  <Link href="/products/waterproofing-solutions" onClick={onClose} className="hover:text-be-yellow-text-hover transition-colors">
+                    Waterproofing Solutions
+                  </Link>
                 </p>
                 <div className="flex flex-col gap-[3px]">
                   {(waterGroup.children as ProductNavSubGroup[]).flatMap((sub) =>
@@ -391,7 +404,9 @@ export function ProductsMegaMenu({ onClose }: ProductsMegaMenuProps) {
               <div className="flex-1 min-w-0">
                 <p className="text-[15px] font-semibold text-be-charcoal-950 mb-2.5 flex items-center gap-2">
                   <span className="w-[2px] h-4 bg-be-brand-yellow rounded-full shrink-0" aria-hidden="true" />
-                  PVC Flooring Solutions
+                  <Link href="/products/pvc-flooring-solutions" onClick={onClose} className="hover:text-be-yellow-text-hover transition-colors">
+                    PVC Flooring Solutions
+                  </Link>
                 </p>
                 <div className="flex flex-col gap-[3px]">
                   {(pvcGroup.children as ProductNavLeaf[]).map((item) => (
@@ -420,7 +435,9 @@ export function ProductsMegaMenu({ onClose }: ProductsMegaMenuProps) {
               <div className="flex-1 min-w-0">
                 <p className="text-[15px] font-semibold text-be-charcoal-950 mb-2.5 flex items-center gap-2">
                   <span className="w-[2px] h-4 bg-be-brand-yellow rounded-full shrink-0" aria-hidden="true" />
-                  Other Products
+                  <Link href="/products/other-products" onClick={onClose} className="hover:text-be-yellow-text-hover transition-colors">
+                    Other Products
+                  </Link>
                 </p>
                 <div className="flex flex-col gap-[3px]">
                   {(otherGroup.children as ProductNavLeaf[]).map((item) => (
