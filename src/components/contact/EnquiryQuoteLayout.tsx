@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { company } from '@/data/company';
-import { Phone, MessageCircle, Loader2, CheckCircle2 } from 'lucide-react';
+import { Phone, Loader2, CheckCircle2 } from 'lucide-react';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { cn } from '@/lib/utils';
@@ -16,89 +15,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-/* ────────────────────────────────────────────
-   Zod schema (unchanged from original)
-   ──────────────────────────────────────────── */
-
-const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  company: z.string().optional(),
-  email: z.string().email('Please enter a valid email'),
-  phone: z.string().optional(),
-  enquiryType: z.enum(['general', 'product-info', 'quote', 'support', 'datasheet'], {
-    message: 'Please select an enquiry type',
-  }),
-  productInterest: z.string().optional(),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
-  operatingVoltage: z.string().optional(),
-  requiredDimensions: z.string().optional(),
-  quantity: z.string().optional(),
-  deliveryLocation: z.string().optional(),
-  _honeypot: z.string().max(0).optional(),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
-
-/* ────────────────────────────────────────────
-   Enquiry types (unchanged)
-   ──────────────────────────────────────────── */
-const enquiryTypes = [
-  { value: 'general', label: 'General Enquiry' },
-  { value: 'product-info', label: 'Product Information' },
-  { value: 'quote', label: 'Request Quote' },
-  { value: 'support', label: 'Technical Support' },
-  { value: 'datasheet', label: 'Product Datasheet Request' },
-];
-
-/* All six product families. Bharat Hydro Seal must remain. */
-const productInterests = [
-  { value: 'eim', label: 'Electrical Insulating Mats' },
-  { value: 'csim', label: 'Coloured Strip Insulating Mats' },
-  { value: 'bcim', label: 'Bi-Color Insulating Mats' },
-  { value: 'agrim', label: 'Auto-Glow / Reflective Band Insulating Mats' },
-  { value: 'bm', label: 'BharatMembrane' },
-  { value: 'bhs', label: 'Bharat Hydro Seal' },
-];
-
-/* ────────────────────────────────────────────
-   URL prefill helper (unchanged)
-   Reads query params set by "Request datasheet" /
-   "Request document" links on product pages.
-   ──────────────────────────────────────────── */
-function readPrefillFromUrl(): {
-  enquiryType: ContactFormData['enquiryType'] | undefined;
-  message: string;
-  productInterest: string | undefined;
-} {
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const subject = params.get('subject');
-    const product = params.get('product');
-    const message = params.get('message');
-
-    let enquiryType: ContactFormData['enquiryType'] | undefined = undefined;
-    if (subject === 'Product Datasheet Request') {
-      enquiryType = 'datasheet';
-    }
-
-    let productInterest: string | undefined;
-    if (product) {
-      const known = productInterests.find(
-        (p) => p.label.toLowerCase() === product.toLowerCase()
-      );
-      if (known) productInterest = known.value;
-    }
-
-    return {
-      enquiryType,
-      message: message ?? '',
-      productInterest,
-    };
-  } catch {
-    return { enquiryType: undefined, message: '', productInterest: undefined };
-  }
-}
+import {
+  contactSchema,
+  enquiryTypeLabels,
+  productOptions,
+  readContactPrefillFromUrl,
+  type ContactInput,
+  type EnquiryType,
+  type ProductValue,
+} from '@/lib/contact-schema';
 
 /* ────────────────────────────────────────────
    Shared input class names — every text/select
@@ -117,19 +42,29 @@ const fieldDisabledClass = 'opacity-60 cursor-not-allowed';
    Pure form — rendered in the right column of
    Chapter 1. Submission behaviour, validation,
    URL-prefill and honeypot are unchanged.
+
+   Schema is imported from src/lib/contact-schema.ts
+   so the frontend and API share one contract.
    ──────────────────────────────────────────── */
 
 export default function EnquiryQuoteLayout() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  const [fallback, setFallback] = useState<{
+    phone: string;
+    phoneTel: string;
+    email: string;
+  } | null>(null);
+  const formOpenAtRef = useRef<string>(String(Date.now()));
 
   /* Read query params on first client render so the form starts with the
      prefilled values. This avoids effect-timing issues with the controlled
      Radix Select, which needs the value present on the initial render. */
-  const prefilled = typeof window !== 'undefined'
-    ? readPrefillFromUrl()
-    : { enquiryType: undefined, message: '', productInterest: undefined };
+  const prefilled =
+    typeof window !== 'undefined'
+      ? readContactPrefillFromUrl()
+      : { enquiryType: undefined, product: undefined, message: '' };
 
   const {
     register,
@@ -138,21 +73,21 @@ export default function EnquiryQuoteLayout() {
     setValue,
     reset,
     formState: { errors },
-  } = useForm<ContactFormData>({
+  } = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
       name: '',
-      company: '',
+      companyName: '',
       email: '',
       phone: '',
       enquiryType: prefilled.enquiryType,
-      productInterest: prefilled.productInterest,
+      product: prefilled.product ?? '',
       message: prefilled.message,
-      operatingVoltage: '',
-      requiredDimensions: '',
+      voltage: '',
+      dimensions: '',
       quantity: '',
       deliveryLocation: '',
-      _honeypot: '',
+      website: '', // honeypot
     },
   });
 
@@ -168,21 +103,42 @@ export default function EnquiryQuoteLayout() {
     }
   }, [prefilled.message, setValue]);
 
-  const onSubmit = async (data: ContactFormData) => {
+  const onSubmit = async (data: ContactInput) => {
     setIsSubmitting(true);
     setSubmitError(false);
+    setFallback(null);
 
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          _formOpenAt: formOpenAtRef.current,
+        }),
       });
+
+      const json = await res.json().catch(() => ({}));
 
       if (res.ok) {
         setSubmitted(true);
+      } else if (res.status === 503 && json.fallback) {
+        // Honest fallback — email delivery not configured or failed
+        setSubmitError(true);
+        setFallback({
+          phone: json.fallback.phone || company.phonePrimary,
+          phoneTel: json.fallback.phoneTel || company.phonePrimaryTel,
+          email: json.fallback.email || company.email,
+        });
       } else {
         setSubmitError(true);
+        if (json.fallback) {
+          setFallback({
+            phone: json.fallback.phone || company.phonePrimary,
+            phoneTel: json.fallback.phoneTel || company.phonePrimaryTel,
+            email: json.fallback.email || company.email,
+          });
+        }
       }
     } catch {
       setSubmitError(true);
@@ -255,7 +211,15 @@ export default function EnquiryQuoteLayout() {
         >
           <p className="font-semibold">Something went wrong. Please try again or contact us directly.</p>
           <p className="text-body mt-1">
-            You can reach us at {company.email} or call {company.phonePrimary}.
+            You can reach us at{' '}
+            <a className="underline" href={fallback ? `mailto:${fallback.email}` : `mailto:${company.email}`}>
+              {fallback ? fallback.email : company.email}
+            </a>{' '}
+            or call{' '}
+            <a className="underline" href={fallback ? `tel:${fallback.phoneTel}` : `tel:${company.phonePrimaryTel}`}>
+              {fallback ? fallback.phone : company.phonePrimary}
+            </a>
+            .
           </p>
         </div>
       )}
@@ -263,7 +227,7 @@ export default function EnquiryQuoteLayout() {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
         {/* Honeypot field (hidden from users) */}
         <div className="sr-only" aria-hidden="true">
-          <input type="text" {...register('_honeypot')} tabIndex={-1} autoComplete="off" />
+          <input type="text" {...register('website')} tabIndex={-1} autoComplete="off" />
         </div>
 
         {/* Row 1: Name | Company */}
@@ -294,13 +258,13 @@ export default function EnquiryQuoteLayout() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="company" className="text-sm font-medium text-be-charcoal-800">
+            <label htmlFor="companyName" className="text-sm font-medium text-be-charcoal-800">
               Company
             </label>
             <input
-              id="company"
+              id="companyName"
               type="text"
-              {...register('company')}
+              {...register('companyName')}
               disabled={isSubmitting}
               autoComplete="organization"
               className={cn(fieldBaseClass, isSubmitting && fieldDisabledClass)}
@@ -309,7 +273,7 @@ export default function EnquiryQuoteLayout() {
           </div>
         </div>
 
-        {/* Row 2: Email | Phone */}
+        {/* Row 2: Email | Phone (both required) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="email" className="text-sm font-medium text-be-charcoal-800">
@@ -338,7 +302,7 @@ export default function EnquiryQuoteLayout() {
 
           <div className="flex flex-col gap-1.5">
             <label htmlFor="phone" className="text-sm font-medium text-be-charcoal-800">
-              Phone
+              Phone <span className="text-be-yellow-text" aria-hidden="true">*</span><span className="sr-only"> (required)</span>
             </label>
             <input
               id="phone"
@@ -346,9 +310,19 @@ export default function EnquiryQuoteLayout() {
               {...register('phone')}
               disabled={isSubmitting}
               autoComplete="tel"
-              className={cn(fieldBaseClass, isSubmitting && fieldDisabledClass)}
+              aria-required="true"
+              aria-invalid={errors.phone ? 'true' : undefined}
+              aria-describedby={errors.phone ? 'phone-error' : undefined}
+              className={cn(
+                fieldBaseClass,
+                errors.phone && fieldErrorClass,
+                isSubmitting && fieldDisabledClass
+              )}
               placeholder="Your phone number"
             />
+            {errors.phone && (
+              <span id="phone-error" className="text-sm text-red-600" role="alert">{errors.phone.message}</span>
+            )}
           </div>
         </div>
 
@@ -360,7 +334,7 @@ export default function EnquiryQuoteLayout() {
             </label>
             <Select
               value={enquiryType}
-              onValueChange={(val) => setValue('enquiryType', val as ContactFormData['enquiryType'], { shouldValidate: true })}
+              onValueChange={(val) => setValue('enquiryType', val as EnquiryType, { shouldValidate: true })}
               disabled={isSubmitting}
             >
               <SelectTrigger
@@ -377,7 +351,7 @@ export default function EnquiryQuoteLayout() {
                 <SelectValue placeholder="Select enquiry type" />
               </SelectTrigger>
               <SelectContent>
-                {enquiryTypes.map((type) => (
+                {enquiryTypeLabels.map((type) => (
                   <SelectItem key={type.value} value={type.value}>
                     {type.label}
                   </SelectItem>
@@ -390,17 +364,17 @@ export default function EnquiryQuoteLayout() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label id="productInterest-label" htmlFor="productInterest" className="text-sm font-medium text-be-charcoal-800">
+            <label id="product-label" htmlFor="product" className="text-sm font-medium text-be-charcoal-800">
               Product Interest
             </label>
             <Select
-              value={watch('productInterest')}
-              onValueChange={(val) => setValue('productInterest', val)}
+              value={watch('product')}
+              onValueChange={(val) => setValue('product', val)}
               disabled={isSubmitting}
             >
               <SelectTrigger
-                id="productInterest"
-                aria-labelledby="productInterest-label"
+                id="product"
+                aria-labelledby="product-label"
                 className={cn(
                   'h-11 w-full rounded-lg border border-be-grey-250 bg-be-white text-base focus:border-be-yellow-500',
                   isSubmitting && fieldDisabledClass
@@ -409,7 +383,7 @@ export default function EnquiryQuoteLayout() {
                 <SelectValue placeholder="Select a product" />
               </SelectTrigger>
               <SelectContent>
-                {productInterests.map((product) => (
+                {productOptions.map((product) => (
                   <SelectItem key={product.value} value={product.value}>
                     {product.label}
                   </SelectItem>
@@ -453,13 +427,13 @@ export default function EnquiryQuoteLayout() {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="operatingVoltage" className="text-sm font-medium text-be-charcoal-800">
+                <label htmlFor="voltage" className="text-sm font-medium text-be-charcoal-800">
                   Operating Voltage
                 </label>
                 <input
-                  id="operatingVoltage"
+                  id="voltage"
                   type="text"
-                  {...register('operatingVoltage')}
+                  {...register('voltage')}
                   disabled={isSubmitting}
                   className={cn(fieldBaseClass, isSubmitting && fieldDisabledClass)}
                   placeholder="e.g. 11 kV"
@@ -467,13 +441,13 @@ export default function EnquiryQuoteLayout() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="requiredDimensions" className="text-sm font-medium text-be-charcoal-800">
+                <label htmlFor="dimensions" className="text-sm font-medium text-be-charcoal-800">
                   Required Dimensions
                 </label>
                 <input
-                  id="requiredDimensions"
+                  id="dimensions"
                   type="text"
-                  {...register('requiredDimensions')}
+                  {...register('dimensions')}
                   disabled={isSubmitting}
                   className={cn(fieldBaseClass, isSubmitting && fieldDisabledClass)}
                   placeholder="e.g. 1000mm × 2000mm"

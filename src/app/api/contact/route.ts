@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
 import { Resend } from 'resend';
 import { company } from '@/data/company';
 import { isAllowedOrigin, parseOrigin } from '@/lib/origin';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { verifyTurnstile } from '@/lib/turnstile';
+import { contactSchema, type ContactInput } from '@/lib/contact-schema';
 
 /**
  * Contact form API route.
@@ -42,48 +42,12 @@ function escapeHtml(value: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// Zod schema — strict, trimmed, validated
+// Zod schema — imported from the shared contract (src/lib/contact-schema.ts)
+// so the frontend and API can never drift apart. `.strict()` rejects any
+// key not defined in the schema (prevents alias drift).
 // ---------------------------------------------------------------------------
 
-const ENQUIRY_TYPES = [
-  'general',
-  'product',
-  'quote',
-  'technical',
-  'partnership',
-] as const;
-
-const contactSchema = z.strictObject({
-  name: z.string().trim().min(2, 'Name is required').max(200),
-  companyName: z.string().trim().max(200).optional().default(''),
-  email: z.string().trim().email('A valid email is required').max(200)
-    .transform(v => v.toLowerCase()),
-  phone: z
-    .string()
-    .trim()
-    .min(1, 'Phone is required')
-    .max(60)
-    .regex(/^[+\d\s\-().]{1,60}$/, 'Please enter a valid phone number'),
-  enquiryType: z.enum(ENQUIRY_TYPES),
-  product: z.string().trim().max(200).optional().default(''),
-  message: z
-    .string()
-    .trim()
-    .min(10, 'Please provide a message of at least 10 characters')
-    .max(5000),
-  voltage: z.string().trim().max(100).optional().default(''),
-  dimensions: z.string().trim().max(300).optional().default(''),
-  quantity: z.string().trim().max(100).optional().default(''),
-  deliveryLocation: z.string().trim().max(300).optional().default(''),
-  // Anti-spam: honeypot field — must be empty
-  website: z.string().max(0).optional().default(''),
-  // Anti-spam: timing — form open timestamp (ms epoch)
-  _formOpenAt: z.string().optional(),
-  // Turnstile: client-side verification token
-  turnstileToken: z.string().trim().max(2048).optional(),
-});
-
-type ContactInput = z.infer<typeof contactSchema>;
+const strictContactSchema = contactSchema.strict();
 
 // ---------------------------------------------------------------------------
 // Email body builders
@@ -284,7 +248,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const parsed = contactSchema.safeParse(payload);
+  const parsed = strictContactSchema.safeParse(payload);
   if (!parsed.success) {
     const firstError = parsed.error.issues[0];
     const message = firstError
