@@ -48,8 +48,8 @@ export const leaders: Leader[] = [
       'Business professional with more than 25 years of experience across manufacturing, trading, real estate and infrastructure.',
     fullProfile: [
       'Krishan Kumar Khandelwal has more than 25 years of business experience across manufacturing, trading, real estate and infrastructure. As Co-Founder and Director of Bharat Electrosafe, he works across operations, quality assurance, production, vendor development, partner coordination and after-sales support.',
-      'His experience includes supply-chain management, customer relationships and commercial project work. At Bharat Electrosafe, he focuses on coordinating production, suppliers and customer requirements through delivery and after-sales activity.',
-      'His background in manufacturing operations, vendor management and customer coordination supports the company\'s day-to-day production and supply work.',
+      'His experience includes supply-chain management, customer relationships and commercial project work, including real estate development and management of commercial and residential projects. At Bharat Electrosafe, he focuses on coordinating production, suppliers and customer requirements through delivery and after-sales activity.',
+      'His background in manufacturing operations, vendor management and customer coordination supports the company\'s day-to-day production and supply work across project and repeat-order requirements.',
     ],
     imagePosition: 'center 20%',
   },
