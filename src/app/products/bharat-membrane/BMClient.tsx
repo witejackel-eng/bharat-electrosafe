@@ -22,28 +22,6 @@ export default function BMClient({ product }: { product: ProductData }) {
     addToRecentlyViewed('bharat-membrane');
   }, [addToRecentlyViewed]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const revealElements = entry.target.querySelectorAll('.reveal-up');
-            revealElements.forEach((el) => {
-              el.classList.add('revealed');
-            });
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '-40px' }
-    );
-
-    const sections = document.querySelectorAll('section');
-    sections.forEach((section) => observer.observe(section));
-
-    return () => observer.disconnect();
-  }, []);
-
   const variantComparison = (
     <SectionShell variant="technical" bg="bg-be-cream" topRule>
       <div className="flex flex-col gap-6">
