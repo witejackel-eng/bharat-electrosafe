@@ -155,12 +155,12 @@ export function InfiniteLogoRail({
   return (
     <div
       className={cn(
+        // NOTE: no edge mask. A previous 48px mask-image fade made
+        // logos at the viewport edges look partially transparent, which
+        // read as "still loading". The rail moves continuously, so any
+        // fade that overlaps logo glyphs is visible. Removing the mask
+        // keeps every logo fully opaque right up to the hard clip edge.
         'relative w-full overflow-hidden',
-        // Subtle white-friendly edge fade so logos appear to drift in
-        // and out at the viewport edges. Implemented via mask-image so
-        // the section background (white) shows through — no extra
-        // element, no blocking of pointer events on the logos.
-        '[mask-image:linear-gradient(to_right,transparent_0,#000_48px,#000_calc(100%-48px),transparent_100%)]',
         className,
       )}
       onPointerEnter={pauseOnHover ? () => setHoverPaused(true) : undefined}
