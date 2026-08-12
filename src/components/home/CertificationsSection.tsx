@@ -3,32 +3,34 @@
 import Image from 'next/image';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SectionShell } from '@/components/ui/SectionShell';
-import { HorizontalCarousel } from '@/components/ui/HorizontalCarousel';
+import { InfiniteLogoRail } from '@/components/ui/InfiniteLogoRail';
 import { allTrustMarks } from '@/data/trust';
 
 /**
- * CertificationsSection — homepage certifications, testing and registrations
- * rail.
+ * CertificationsSection — homepage certifications, testing and
+ * registrations rail.
  *
- * Visual model: a clean corporate certification strip where the LOGOS are
- * the focus — no boxed cards, no tinted backgrounds, no shadows. Each mark
- * sits on plain whitespace with its name and, where a released document
- * exists, a "View certificate" link. The per-item explanatory description
- * is intentionally omitted here so the logos read as a compact identity
- * strip.
+ * Interaction model: a seamless, continuously moving horizontal logo
+ * rail (InfiniteLogoRail) that drifts right → left at a calm, linear
+ * speed. The loop is mathematically seamless — no visible jump. The
+ * rail pauses on hover and on keyboard focus, and falls back to a
+ * static scrollable rail under `prefers-reduced-motion: reduce`.
  *
- * Responsive visibility (per spec):
- *   - Desktop  : ~5–6 items visible
- *   - Tablet   : ~3–4 items visible
- *   - Mobile   : ~1.5–2 items visible (swipe / arrow / keyboard)
+ * Visual model: a clean corporate certification strip where the LOGOS
+ * are the focus — no boxed cards, no tinted backgrounds, no shadows.
+ * Each mark sits on plain whitespace with its name and, where a
+ * released document exists, a "View certificate" link. The per-item
+ * explanatory description is intentionally omitted here so the logos
+ * read as a compact identity strip.
  *
- * Logo heights (enlarged ~30%):
+ * Logo heights (kept at the approved +30 % sizing):
  *   - Desktop  : ~100px visual height
  *   - Tablet   : ~94px
  *   - Mobile   : ~72px
  *
- * The carousel respects `prefers-reduced-motion` and supports touch/swipe,
- * arrow controls and keyboard navigation (←/→).
+ * Item cell widths are fixed responsively so the rail reserves its
+ * layout before images load (no CLS). Inter-logo spacing is small and
+ * dense per the design direction.
  */
 export default function CertificationsSection() {
   return (
@@ -42,15 +44,17 @@ export default function CertificationsSection() {
       </div>
 
       <div className="reveal-up pb-2">
-        <HorizontalCarousel
-          label="Certifications, testing and registrations"
-          autoAdvanceMs={5000}
-          gapClassName="gap-2 sm:gap-3 md:gap-3"
+        <InfiniteLogoRail
+          ariaLabel="Certifications, testing and registrations"
+          duration={42}
+          pauseOnHover
+          pauseOnFocus
+          itemSpacingClassName="pr-6 sm:pr-9 md:pr-11"
         >
           {allTrustMarks.map((mark) => (
             <div
               key={mark.label}
-              className="w-[155px] sm:w-[175px] md:w-[185px] lg:w-[195px] xl:w-[205px] flex flex-col items-center gap-2.5 px-2 py-1"
+              className="w-[155px] sm:w-[175px] md:w-[185px] lg:w-[195px] xl:w-[205px] flex flex-col items-center gap-2.5 py-1"
             >
               {/* Logo — large, clean, no box. object-contain never crops. */}
               <span className="relative flex h-[72px] sm:h-[84px] md:h-[94px] lg:h-[100px] w-full items-center justify-center">
@@ -77,7 +81,7 @@ export default function CertificationsSection() {
               )}
             </div>
           ))}
-        </HorizontalCarousel>
+        </InfiniteLogoRail>
       </div>
     </SectionShell>
   );
