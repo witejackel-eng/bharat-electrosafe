@@ -7,6 +7,7 @@ import { siteOgImage, siteTwitterImage } from "@/lib/social-image";
 import { HomepageStructuredData } from "@/components/structured-data";
 import { CompareProvider } from "@/components/products/CompareContext";
 import { CompareBar } from "@/components/products/CompareBar";
+import { RevealObserver } from "@/components/ui/RevealObserver";
 
 // Variable-font configuration — a single Manrope variable font file replaces
 // the previous five static weights (400/500/600/700/800). This reduces font
@@ -73,17 +74,6 @@ export const metadata: Metadata = {
   authors: [{ name: company.name }],
   creator: company.name,
   publisher: company.name,
-  /* The global keywords meta tag is removed — it is duplicated across
-     routes and not an effective SEO strategy. Per-page titles, descriptions,
-     canonicals, content, internal links and structured data are the real
-     priority. */
-  /* Icons are intentionally NOT declared here — App Router file
-     conventions in `src/app/` (icon.svg, favicon.ico, apple-icon.png)
-     automatically emit the correct <link> tags. Declaring them here
-     would create duplicate <link> entries. */
-  /* Root canonical covers only the homepage. Child routes must define
-     their own self-referencing canonical — no page may inherit the
-     homepage canonical. */
   alternates: {
     canonical: '/',
   },
@@ -122,48 +112,28 @@ export default function RootLayout({
   return (
     <html lang="en-IN" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
-        {/* Google Search Console verification — only output when a real
-            value exists. Do not commit a real verification token. */}
         {process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && (
           <meta
             name="google-site-verification"
             content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION}
           />
         )}
-        {/* Structured data: Organization + WebSite schemas.
-            Uses the centralised structured-data utility with @id,
-            verified fields only, and the production domain. No
-            LocalBusiness (registered office not verified as
-            customer-facing), no FAQPage (spec section 17), no fake
-            sameAs, foundingDate, numberOfEmployees, or unverified
-            claims. */}
         <HomepageStructuredData />
       </head>
       <body
         className={`${manrope.variable} antialiased bg-be-warm-white text-be-charcoal-950`}
         style={{ fontFamily: "var(--font-manrope), sans-serif" }}
       >
-        {/* noscript fallback: ensure reveal-up / stagger-reveal content is
-            visible when JavaScript is disabled. The CSS keeps these elements
-            at opacity:0 until the RevealObserver adds .revealed; without JS
-            they would be invisible. This <noscript> style overrides that. */}
         <noscript>
           <style dangerouslySetInnerHTML={{ __html: '.reveal-up,.stagger-reveal{opacity:1!important;transform:none!important}.stagger-reveal>*{opacity:1!important;transform:none!important}' }} />
         </noscript>
         <CompareProvider>
           {children}
-          {/* Sticky bottom compare tray — renders only when at least one
-              product is selected for comparison. Self-contained: manages
-              its own modal open state. Sits above the MobileStickyCTA on
-              mobile (bottom-14) and flush to the bottom on desktop. */}
           <CompareBar />
         </CompareProvider>
-        {/* Toaster removed from root layout — useToast() is never called
-            anywhere in the application. The contact form uses inline
-            success/error messages, not toasts. Mounting <Toaster /> globally
-            shipped @radix-ui/react-toast and related code on every route for
-            no benefit. If toast notifications are needed in future, mount
-            <Toaster /> only on the route that triggers them. */}
+        {/* Global progressive-enhancement observer. It must live at the root
+            because reveal classes are used outside the homepage as well. */}
+        <RevealObserver />
       </body>
     </html>
   );
