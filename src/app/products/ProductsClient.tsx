@@ -860,7 +860,10 @@ function TechnicalGuidanceCTA() {
             <PrimaryButton href="/contact-us?type=technical-guidance" size="lg">
               Request Technical Guidance
             </PrimaryButton>
-            <SecondaryButton href="/contact-us">
+            <SecondaryButton
+              href="/contact-us"
+              className="px-8 py-4 text-lg text-white border-white/70 hover:bg-white hover:text-be-navy-900 hover:border-white"
+            >
               Request a Quote
             </SecondaryButton>
           </div>

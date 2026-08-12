@@ -256,8 +256,8 @@ export interface CategoryVisual {
 export const categoryVisuals: CategoryVisual[] = [
   {
     groupId: 'electrical-insulating-mats',
-    src: '/media/categories/electrical-insulating-mats-category.png',
-    alt: 'Blue electrical insulating mat with raised circular surface pattern',
+    src: '/media/products/electrical-insulating-mats/electrical-insulating-mats-black-yellow-card.webp',
+    alt: 'Black electrical insulating mat with a yellow guided center strip and raised circular dot surface texture',
     isPlaceholder: false,
   },
   {
