@@ -71,15 +71,17 @@ export default function ClientsProjects() {
           {organisationReferences.map((org) => (
             <div
               key={org.name}
-              className="w-[260px] sm:w-[280px] md:w-[300px] lg:w-[320px] flex flex-col items-center gap-3 rounded-lg border border-be-grey-250 bg-be-white p-5 text-center"
+              className="w-[200px] sm:w-[220px] md:w-[240px] lg:w-[260px] flex flex-col items-center gap-4 px-4 py-3 text-center"
             >
-              <div className="relative h-12 w-full flex items-center justify-center">
+              {/* Clean corporate-logo rail — logo-led, no card box, border, or
+               *  filled background. object-contain never crops a logo. */}
+              <div className="relative h-14 sm:h-16 md:h-[68px] lg:h-[72px] w-full flex items-center justify-center">
                 <Image
                   src={org.logo}
                   alt={`${org.name} logo`}
                   fill
                   className="object-contain"
-                  sizes="140px"
+                  sizes="200px"
                 />
               </div>
               <span className="text-metadata font-semibold text-be-charcoal-950">
