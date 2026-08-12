@@ -16,6 +16,17 @@ import {
   ArrowRight,
   Sparkles,
   Palette,
+  Factory,
+  Building2,
+  Server,
+  Train,
+  BatteryCharging,
+  FlaskConical,
+  ClipboardCheck,
+  AlertTriangle,
+  Wrench,
+  Flame,
+  Droplets,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
@@ -30,6 +41,7 @@ import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { TechnicalBadge } from '@/components/ui/TechnicalBadge';
 import { ImageFrame } from '@/components/ui/ImageFrame';
+import { cn } from '@/lib/utils';
 import { FeatureList } from '@/components/ui/FeatureList';
 import { company } from '@/data/company';
 import { iecVisuals } from '@/data/product-visuals';
@@ -44,6 +56,74 @@ const iecClasses = [
   { class: 'Class 2', maxWorkingVoltage: '7 000 V', proofTestVoltage: '20 kV', thickness: '2 mm' },
   { class: 'Class 3', maxWorkingVoltage: '17 000 V', proofTestVoltage: '30 kV', thickness: '2 mm' },
   { class: 'Class 4', maxWorkingVoltage: '36 000 V', proofTestVoltage: '40 kV', thickness: '2 mm' },
+];
+
+/* ────────────────────────────────────────────
+   Applications — from client IEC 61111 brochure
+   ──────────────────────────────────────────── */
+
+const iecApplications: { icon: LucideIcon; label: string }[] = [
+  { icon: Zap, label: 'Electrical Substations' },
+  { icon: Factory, label: 'Power Plants' },
+  { icon: Shield, label: 'High Voltage Rooms' },
+  { icon: Building2, label: 'Switchgear Rooms' },
+  { icon: ClipboardCheck, label: 'Control Panels' },
+  { icon: Server, label: 'Data Centers' },
+  { icon: BatteryCharging, label: 'Battery Rooms' },
+  { icon: Zap, label: 'Transformer Stations' },
+  { icon: FlaskConical, label: 'Electrical Laboratories' },
+  { icon: Train, label: 'Railway Electrification Systems' },
+];
+
+/* Use & Safety precautions — conservative, technical wording. */
+const iecSafetyPrecautions: string[] = [
+  'Carry out regular visual inspection of mats before use.',
+  'Remove any damaged or worn mats from service immediately.',
+  'Select the correct voltage class for the working environment.',
+  'Ensure complete work-area coverage so the operator is fully protected.',
+  'Position mats correctly around the live equipment.',
+  'Avoid overlapping adjacent mats — edges can create trip and insulation gaps.',
+  'Keep the mat surface clean and free of conductive contamination.',
+  'Avoid contact with sharp objects that can puncture the insulating compound.',
+  'Use appropriate personal protective equipment alongside the mat.',
+  'Follow the manufacturer\u2019s installation and use instructions.',
+  'Ensure personnel are trained in correct mat selection and use.',
+];
+
+/* Installation steps — verbatim from brochure, no added adhesive advice. */
+const iecInstallationSteps: string[] = [
+  'Clean the installation area thoroughly before placement.',
+  'Place the mats in the required work locations around live equipment.',
+  'Ensure complete work-area coverage for operator protection.',
+  'Mats rely on their own weight and surface friction to remain in position.',
+];
+
+/* IEC FAQ — concise rewrites preserving brochure meaning. */
+const iecFaqItems: { q: string; a: string }[] = [
+  {
+    q: 'What does IEC 61111 cover?',
+    a: 'IEC 61111:2009 specifies requirements for insulating mats used for live working on electrical installations. It covers materials, classification by voltage, marking, testing and dimensions for mats that protect operators from electric shock.',
+  },
+  {
+    q: 'What are the electrical mat classes under IEC 61111?',
+    a: 'IEC 61111 defines five classes (0 through 4) based on maximum working voltage. Each class is tested at a proof voltage well above its working voltage to confirm the mat withstands the electrical stress of its intended environment.',
+  },
+  {
+    q: 'How are thickness and class related?',
+    a: 'Higher voltage classes generally require greater insulating thickness. The specific thickness for each class should be confirmed against the current standard text and the manufacturer\u2019s type-test documentation for the product being supplied.',
+  },
+  {
+    q: 'What other mat properties matter besides class?',
+    a: 'Beyond voltage class, consider mechanical durability, surface finish (anti-skid patterns), resistance to flame/oil/moisture where relevant, marking legibility, and whether a wear-indicator (bi-colour) or visibility (auto-glow) feature is needed for the application.',
+  },
+  {
+    q: 'What is the difference between IEC 61111 and ASTM D178?',
+    a: 'IEC 61111 is the international standard used in IEC-member markets; ASTM D178 is the North American standard for rubber insulating blankets and mats. They use different class systems and test methods. A mat certified to one standard is not automatically certified to the other.',
+  },
+  {
+    q: 'Why choose certified mats over non-certified mats?',
+    a: 'Certified mats carry type-test evidence from an accredited laboratory and carry permanently moulded marking that confirms the class, voltage and manufacturer. Non-certified mats lack this evidence and cannot be relied upon for operator protection near live equipment.',
+  },
 ];
 
 /* ────────────────────────────────────────────
@@ -455,7 +535,120 @@ export default function IECClient() {
         </SectionShell>
 
         {/* ══════════════════════════════════════
-            7. QUOTE CTA
+            7. APPLICATIONS
+            ══════════════════════════════════════ */}
+        <SectionShell variant="standard" bg="bg-be-white" topRule>
+          <SectionHeader
+            eyebrow="Applications"
+            title="Where IEC 61111 Mats Are Used"
+            supportingText="Typical applications for insulating mats across electrical and industrial installations."
+          />
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {iecApplications.map(({ icon: Icon, label }) => (
+              <div
+                key={label}
+                className="flex flex-col items-center gap-2 p-4 rounded-lg border border-be-grey-250 bg-be-cream text-center"
+              >
+                <Icon className="size-5 text-be-yellow-text" aria-hidden="true" />
+                <span className="text-sm font-medium text-be-charcoal-950 leading-tight">
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </SectionShell>
+
+        {/* ══════════════════════════════════════
+            8. MATERIAL / RESISTANCE CONSIDERATIONS
+            ══════════════════════════════════════ */}
+        <SectionShell variant="compact" bg="bg-be-cream" topRule ariaLabel="Material and resistance considerations">
+          <SectionHeader
+            eyebrow="Material & Resistance"
+            title="Resistance Considerations"
+            supportingText="Product documentation references resistance considerations including flame, mild acid/alkali, oil/water and moisture. Specific performance should be confirmed against the type-test documentation for the class and variant supplied."
+          />
+          <div className="mt-6 flex flex-wrap gap-3">
+            {[
+              { icon: Flame, label: 'Flame resistance' },
+              { icon: FlaskConical, label: 'Mild acid & alkali' },
+              { icon: Droplets, label: 'Oil & water' },
+              { icon: Eye, label: 'Moisture' },
+            ].map(({ icon: Icon, label }) => (
+              <div
+                key={label}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-be-grey-250 bg-be-white"
+              >
+                <Icon className="size-4 text-be-yellow-text" aria-hidden="true" />
+                <span className="text-sm font-medium text-be-charcoal-950">{label}</span>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4 text-metadata text-be-grey-650 leading-relaxed">
+            These are material considerations referenced in the product documentation, not independent performance guarantees. Confirm suitability for a specific environment during quotation.
+          </p>
+        </SectionShell>
+
+        {/* ══════════════════════════════════════
+            9. USE & SAFETY
+            ══════════════════════════════════════ */}
+        <SectionShell variant="standard" bg="bg-be-white" topRule ariaLabel="Use and safety">
+          <SectionHeader
+            eyebrow="Use & Safety"
+            title="Safe Use and Precautions"
+            supportingText="Follow these precautions to ensure the mat provides the intended operator protection."
+          />
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+            {iecSafetyPrecautions.map((precaution) => (
+              <div key={precaution} className="flex items-start gap-2.5">
+                <AlertTriangle className="size-4 shrink-0 mt-0.5 text-be-yellow-text" aria-hidden="true" />
+                <span className="text-body text-be-charcoal-800 leading-relaxed">{precaution}</span>
+              </div>
+            ))}
+          </div>
+        </SectionShell>
+
+        {/* ══════════════════════════════════════
+            10. INSTALLATION
+            ══════════════════════════════════════ */}
+        <SectionShell variant="compact" bg="bg-be-cream" topRule ariaLabel="Installation">
+          <SectionHeader
+            eyebrow="Installation"
+            title="Installation Guidance"
+            supportingText="Straightforward placement — no special tooling required."
+          />
+          <div className="mt-6 flex flex-col gap-3 max-w-2xl">
+            {iecInstallationSteps.map((step, i) => (
+              <div key={step} className="flex items-start gap-3">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-be-yellow-500 text-be-charcoal-950 text-sm font-bold">
+                  {i + 1}
+                </span>
+                <span className="text-body text-be-charcoal-800 leading-relaxed pt-0.5">{step}</span>
+              </div>
+            ))}
+          </div>
+        </SectionShell>
+
+        {/* ══════════════════════════════════════
+            11. IEC FAQ
+            ══════════════════════════════════════ */}
+        <SectionShell variant="standard" bg="bg-be-white" topRule ariaLabel="IEC frequently asked questions">
+          <SectionHeader
+            eyebrow="IEC FAQ"
+            title="Frequently Asked Questions"
+            supportingText="Practical answers about IEC 61111:2009 insulating mats — coverage, classes, properties and certification."
+          />
+          <div className="mt-6 flex flex-col gap-0 max-w-3xl">
+            {iecFaqItems.map((item, i) => (
+              <div key={item.q} className={cn('py-4', i > 0 && 'border-t border-be-grey-250')}>
+                <h3 className="text-base font-semibold text-be-charcoal-950 mb-1.5">{item.q}</h3>
+                <p className="text-body text-be-grey-650 leading-relaxed">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </SectionShell>
+
+        {/* ══════════════════════════════════════
+            12. QUOTE CTA
             ══════════════════════════════════════ */}
         <SectionShell variant="conversion" bg="bg-be-yellow-50" yellowAccent>
           <div className="flex flex-col items-center text-center gap-6 max-w-2xl mx-auto">
