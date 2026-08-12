@@ -23,28 +23,6 @@ export default function BiColorClient({ product }: { product: ProductData }) {
     addToRecentlyViewed('bi-color-insulating-mats');
   }, [addToRecentlyViewed]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const revealElements = entry.target.querySelectorAll('.reveal-up');
-            revealElements.forEach((el) => {
-              el.classList.add('revealed');
-            });
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '-40px' }
-    );
-
-    const sections = document.querySelectorAll('section');
-    sections.forEach((section) => observer.observe(section));
-
-    return () => observer.disconnect();
-  }, []);
-
   // Layer Construction subsection using the technicalDetail visual
   const layerConstruction = biColourVisuals.technicalDetail ? (
     <SectionShell variant="standard" bg="bg-be-warm-white" topRule>

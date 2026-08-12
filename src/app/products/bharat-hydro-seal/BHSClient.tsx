@@ -25,28 +25,6 @@ export default function BHSClient({ product }: { product: ProductData }) {
     addToRecentlyViewed('bharat-hydro-seal');
   }, [addToRecentlyViewed]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const revealElements = entry.target.querySelectorAll('.reveal-up');
-            revealElements.forEach((el) => {
-              el.classList.add('revealed');
-            });
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '-40px' }
-    );
-
-    const sections = document.querySelectorAll('section');
-    sections.forEach((section) => observer.observe(section));
-
-    return () => observer.disconnect();
-  }, []);
-
   const specSection = (
     <SectionShell variant="technical" bg="bg-be-cream" topRule>
       <div className="flex flex-col gap-6">
