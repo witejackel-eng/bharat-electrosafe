@@ -54,11 +54,12 @@
     <circle cx="0" cy="-8" r="6" fill="#FFFEF9"/>
     <circle cx="0" cy="-8" r="16" fill="none" stroke="#FFD43B" stroke-width="2" opacity="0.5"/>
   </g>
-  <rect x="20" y="388" width="290" height="56" rx="8" fill="#FFFEF9" stroke="#D8D7D1" stroke-width="1"/>
-  <rect x="20" y="388" width="4" height="56" fill="#FFC400" rx="2"/>
+  <rect x="20" y="372" width="300" height="72" rx="8" fill="#FFFEF9" stroke="#D8D7D1" stroke-width="1"/>
+  <rect x="20" y="372" width="4" height="72" fill="#FFC400" rx="2"/>
   <g font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
-    <text x="36" y="408" font-size="11" font-weight="700" fill="#242426" letter-spacing="0.8">BHARAT ELECTROSAFE</text>
-    <text x="36" y="424" font-size="10.5" font-weight="400" fill="#66666A">704, 7th Floor, I-thum, Tower A</text>
-    <text x="36" y="438" font-size="10.5" font-weight="400" fill="#66666A">Sector 62, Noida — 201309</text>
+    <text x="36" y="390" font-size="11" font-weight="700" fill="#242426" letter-spacing="0.8">BHARAT ELECTROSAFE</text>
+    <text x="36" y="406" font-size="10.5" font-weight="400" fill="#66666A">814, 8th Floor, I-thum, Tower A</text>
+    <text x="36" y="420" font-size="10.5" font-weight="400" fill="#66666A">Plot No. A-40, Sector-62</text>
+    <text x="36" y="434" font-size="10.5" font-weight="400" fill="#66666A">Noida — 201309</text>
   </g>
 </svg>
