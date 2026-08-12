@@ -26,7 +26,6 @@ import {
   hydroSealVisuals,
   productVisuals,
 } from '@/data/product-visuals';
-import { CompareToggle } from '@/components/products/CompareToggle';
 
 /* ────────────────────────────────────────────
    Extended comparison data — includes IEC, PVC, Other
@@ -279,16 +278,6 @@ function DomesticFeatureCard({ product }: { product: DomesticProduct }) {
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
         />
         <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/5 transition-colors duration-300" />
-        {/* Compare toggle — top-right of image, only for real products */}
-        {productData && (
-          <div className="absolute top-2.5 right-2.5 z-10">
-            <CompareToggle
-              slug={slug}
-              productName={productData.name}
-              variant="overlay"
-            />
-          </div>
-        )}
       </div>
       {/* Text content */}
       <div className="flex flex-col gap-1.5 p-5 flex-1">
