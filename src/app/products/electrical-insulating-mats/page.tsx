@@ -3,8 +3,8 @@ import { allowIndexing, buildUrl } from '@/lib/site-url';
 import EIMHubClient from './EIMHubClient';
 
 /* Category hub page for Electrical Insulating Mats.
-   The detailed domestic product experience now lives at
-   /products/electrical-insulating-mats/domestic. */
+   The detailed HV product experience lives at
+   /products/electrical-insulating-mats/high-voltage-electrical-insulation-mats. */
 export const metadata: Metadata = {
   title: 'Electrical Insulating Mats — Domestic & International',
   description:

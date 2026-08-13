@@ -52,35 +52,25 @@ export const hvVisuals: ProductVisuals = {
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/electrical-insulating-mats/eim-hero-electrical-insulating-mat.webp`,
-    alt: 'Blue electrical insulating mat partially rolled in a switchgear room',
-    fit: 'cover',
+    src: `${PROD}/electrical-insulating-mats/client-hv/coined-insulating-mat-11.png`,
+    alt: 'Coined pattern high voltage insulating mat — complete product view',
+    fit: 'contain',
   },
   gallery: [
     {
-      src: `${PROD}/electrical-insulating-mats/eim-overview-material-range.webp`,
-      alt: 'Electrical insulating mat material and surface range',
-      fit: 'cover',
-    },
-    {
-      src: `${PROD}/electrical-insulating-mats/eim-application-switchgear-floor.webp`,
-      alt: 'Blue insulating mat installed along electrical switchgear',
-      fit: 'cover',
-    },
-    {
-      src: `${ORIG}/hv/gallery-01.webp`,
-      alt: 'HV insulating mat — product view',
+      src: `${PROD}/electrical-insulating-mats/client-hv/coined-insulating-mat-3.png`,
+      alt: 'Coined pattern insulating mat — alternate view',
       fit: 'contain',
     },
     {
-      src: `${ORIG}/hv/gallery-02.webp`,
-      alt: 'HV insulating mat — IS marking detail',
+      src: `${PROD}/electrical-insulating-mats/client-hv/dotted-insulating-mat-7.jpg`,
+      alt: 'Dotted pattern insulating mat — product view',
       fit: 'contain',
     },
     {
-      src: `${PROD}/electrical-insulating-mats/gallery/01-blue-coin-mat.webp`,
-      alt: 'Blue coined-pattern insulating mat roll',
-      fit: 'cover',
+      src: `${PROD}/electrical-insulating-mats/client-hv/dotted-mat-with-guided-strip-2.png`,
+      alt: 'Dotted insulating mat with guided strip — hexagon pattern detail',
+      fit: 'contain',
     },
   ],
   application: {
@@ -167,24 +157,19 @@ export const biColourVisuals: ProductVisuals = {
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/bi-color-insulating-mats/bcim-hero-dual-layer-insulating-mat.webp`,
-    alt: 'Blue dual-layer insulating mat with contrasting red lower layer',
-    fit: 'cover',
+    src: `${PROD}/bi-color-insulating-mats/client-bi-colour/product-01.png`,
+    alt: 'Bi-Colour dual-layer insulating mat — complete product view',
+    fit: 'contain',
   },
   gallery: [
     {
-      src: `${PROD}/bi-color-insulating-mats/bcim-overview-dual-layer-closeup.webp`,
-      alt: 'Bi-Colour dual-layer closeup showing material construction',
-      fit: 'cover',
+      src: `${PROD}/bi-color-insulating-mats/client-bi-colour/product-02.png`,
+      alt: 'Bi-Colour insulating mat — alternate view showing dual-layer construction',
+      fit: 'contain',
     },
     {
-      src: `${PROD}/bi-color-insulating-mats/bcim-application-visible-wear-indicator.webp`,
-      alt: 'Bi-Colour mat with contrasting lower layer becoming visible as wear indicator',
-      fit: 'cover',
-    },
-    {
-      src: `${ORIG}/bi-color/gallery-01.webp`,
-      alt: 'Bi-Colour insulating mat alternate view',
+      src: `${PROD}/bi-color-insulating-mats/client-bi-colour/product-03.png`,
+      alt: 'Bi-Colour insulating mat — close-up detail',
       fit: 'contain',
     },
     {
@@ -222,29 +207,24 @@ export const coloredStripVisuals: ProductVisuals = {
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/coloured-strip-insulating-mats/csim-hero-coloured-strip-insulating-mat.webp`,
-    alt: 'Blue insulating mat with yellow safety boundary strips',
+    src: `${PROD}/coloured-strip-insulating-mats/gallery/01-yellow-strip-hexa-mat.webp`,
+    alt: 'Coloured strip insulating mat with yellow safety boundary — complete product view',
     fit: 'cover',
   },
   gallery: [
     {
-      src: `${PROD}/coloured-strip-insulating-mats/csim-overview-strip-construction.webp`,
-      alt: 'Coloured strip construction showing yellow safety boundary detail',
+      src: `${PROD}/coloured-strip-insulating-mats/gallery/02-yellow-strip-dot-mat.webp`,
+      alt: 'Coloured strip mat with dot pattern and yellow boundary strip',
+      fit: 'cover',
+    },
+    {
+      src: `${PROD}/coloured-strip-insulating-mats/gallery/03-yellow-strip-angled.webp`,
+      alt: 'Coloured strip insulating mat — angled view',
       fit: 'cover',
     },
     {
       src: `${PROD}/coloured-strip-insulating-mats/csim-application-switchgear-pathway.webp`,
       alt: 'Coloured strip mat installed beside switchgear as safety pathway',
-      fit: 'cover',
-    },
-    {
-      src: `${ORIG}/colored-strip/gallery-01.webp`,
-      alt: 'Colored Strip mat application view',
-      fit: 'cover',
-    },
-    {
-      src: `${PROD}/coloured-strip-insulating-mats/gallery/01-yellow-strip-hexa-mat.webp`,
-      alt: 'Yellow strip on hexa-pattern mat',
       fit: 'cover',
     },
   ],

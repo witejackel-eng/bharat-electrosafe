@@ -89,7 +89,7 @@ interface DomesticProduct {
 const DOMESTIC_PRODUCTS: DomesticProduct[] = [
   {
     name: 'HV Insulating Mats',
-    href: '/products/electrical-insulating-mats/domestic',
+    href: '/products/electrical-insulating-mats/high-voltage-electrical-insulation-mats',
     description: 'Standard high-voltage insulating mats for operator protection near live equipment.',
     imageSrc: hvVisuals.card.src,
     imageAlt: hvVisuals.card.alt,

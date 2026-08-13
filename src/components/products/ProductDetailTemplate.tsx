@@ -41,6 +41,8 @@ interface ProductDetailTemplateProps {
   extraContent?: React.ReactNode;
   /** Override the breadcrumb trail (default: Home → Products → product.name). */
   breadcrumbItems?: { label: string; href?: string }[];
+  /** Override the product display name (H1, carousel alt) without changing product.name data. */
+  displayName?: string;
 }
 
 export function ProductDetailTemplate({
@@ -49,13 +51,14 @@ export function ProductDetailTemplate({
   ctaHeadingPrefix,
   extraContent,
   breadcrumbItems,
+  displayName,
 }: ProductDetailTemplateProps) {
   return (
     <div className="min-h-screen flex flex-col bg-be-warm-white">
       <Header />
       <main className="flex-1">
         {/* 1–3. Hero + breadcrumb + assurance strip */}
-        <ProductHero product={product} visuals={visuals} breadcrumbItems={breadcrumbItems} />
+        <ProductHero product={product} visuals={visuals} breadcrumbItems={breadcrumbItems} displayName={displayName} />
 
         {/* 4. Overview + key features */}
         <ProductOverview product={product} />

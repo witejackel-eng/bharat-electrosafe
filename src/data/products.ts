@@ -423,55 +423,37 @@ const matDocuments: Document[] = [
 
 const EIM = '/media/products/electrical-insulating-mats';
 
-/* Ordered gallery — complete product, then surface, then the alternate
-   colour/pattern, then the moulded marking, then the supplied range.
+/* Ordered gallery — client-approved HV Insulating Mats folder images.
    Declared as a const so `overview` can point at a member instead of
    repeating its path and alt text. */
 const eimGallery: ProductGalleryImage[] = [
   {
-    src: `${EIM}/photo-domestic-primary-02.webp`,
-    alt: 'Blue electrical insulating mat sheet with a raised coin-pattern anti-skid surface',
-    caption: 'Coin-pattern anti-skid surface',
+    src: `${EIM}/client-hv/coined-insulating-mat-11.png`,
+    alt: 'Coined pattern high voltage insulating mat — complete product view',
+    caption: 'Coined insulating mat',
     type: 'product',
     fit: 'contain',
   },
   {
-    src: `${EIM}/gallery/02-coin-surface-detail.webp`,
-    alt: 'Close view of the raised coin pattern moulded into a blue insulating mat',
-    caption: 'Raised coin detail',
-    type: 'surface',
-    fit: 'cover',
-  },
-  {
-    src: `${EIM}/gallery/03-black-hexa-mat.webp`,
-    alt: 'Black electrical insulating mat sheet with a hexa-pattern anti-skid surface',
-    caption: 'Black mat, hexa anti-skid pattern',
+    src: `${EIM}/client-hv/coined-insulating-mat-3.png`,
+    alt: 'Coined pattern insulating mat — alternate view',
+    caption: 'Coined mat alternate view',
     type: 'alternate',
     fit: 'contain',
   },
   {
-    src: `${EIM}/gallery/04-hexa-surface-detail.webp`,
-    alt: 'Close view of the hexa anti-skid pattern on a black insulating mat',
-    caption: 'Hexa surface texture',
-    type: 'surface',
-    fit: 'cover',
-  },
-  {
-    /* Describes only what the photograph shows. The published specification
-       table on this page is IS 15652:2006; this mat carries an IEC 61111
-       marking. Neither figure is restated as the other. */
-    src: `${EIM}/gallery/05-iec-61111-marking.webp`,
-    alt: 'Marking moulded into an insulating mat reading Bharat Electrosafe, insulating mat, IEC 61111/2009 Class 2, maximum use voltage 17000 V',
-    caption: 'Moulded IEC 61111 Class 2 marking',
-    type: 'marking',
+    src: `${EIM}/client-hv/dotted-insulating-mat-7.jpg`,
+    alt: 'Dotted pattern insulating mat — product view',
+    caption: 'Dotted insulating mat',
+    type: 'product',
     fit: 'contain',
   },
   {
-    src: `${EIM}/gallery/06-colour-and-pattern-range.webp`,
-    alt: 'Fanned insulating mat samples in several colours showing coin and hexa anti-skid patterns',
-    caption: 'Colour and surface-pattern options',
+    src: `${EIM}/client-hv/dotted-mat-with-guided-strip-2.png`,
+    alt: 'Dotted insulating mat with guided strip — hexagon pattern detail',
+    caption: 'Hexagon mat with guided strip',
     type: 'alternate',
-    fit: 'cover',
+    fit: 'contain',
   },
 ];
 
@@ -487,7 +469,7 @@ const electricalInsulatingMats: ProductData = {
       fit: 'cover',
     },
     gallery: eimGallery,
-    overview: eimGallery[5],
+    overview: eimGallery[0],
     /* No genuine photograph of a mat installed in front of switchgear exists
        in the client archive. Rather than dress a studio shot as an
        installation, the slot stays empty and the shot is requested in
@@ -577,16 +559,15 @@ const electricalInsulatingMats: ProductData = {
 
 const CSIM = '/media/products/coloured-strip-insulating-mats';
 
-/* The yellow strip is this product's whole reason to exist, so it is
-   unmistakable in every slide. The previous hero was a coin-mat marking
-   close-up with no strip in frame at all. */
+/* Client-approved Coloured Strip gallery — the three previously rejected
+   images have been replaced with the approved gallery images. */
 const csimGallery: ProductGalleryImage[] = [
   {
-    src: `${CSIM}/product-03.webp`,
+    src: `${CSIM}/gallery/01-yellow-strip-hexa-mat.webp`,
     alt: 'Black hexa-pattern insulating mat with a high-visibility yellow strip running across it',
     caption: 'Yellow strip on a hexa-pattern mat',
     type: 'product',
-    fit: 'contain',
+    fit: 'cover',
   },
   {
     src: `${CSIM}/gallery/02-yellow-strip-dot-mat.webp`,
@@ -603,15 +584,7 @@ const csimGallery: ProductGalleryImage[] = [
     fit: 'contain',
   },
   {
-    src: `${CSIM}/gallery/04-edge-strip-production.webp`,
-    alt: 'Blue insulating mat with yellow edge strips down both sides, on the production line',
-    caption: 'Yellow edge strips on a blue mat',
-    type: 'installation',
-    fit: 'cover',
-    position: 'center',
-  },
-  {
-    src: `${CSIM}/gallery/05-switchroom-boundary.webp`,
+    src: `${CSIM}/csim-application-switchgear-pathway.webp`,
     alt: 'Blue insulating mat with a yellow boundary strip laid along a row of switchgear panels',
     caption: 'Marked walkway in front of switchgear',
     type: 'application',
@@ -632,8 +605,8 @@ const colouredStripInsulatingMats: ProductData = {
       fit: 'cover',
     },
     gallery: csimGallery,
-    overview: csimGallery[2],
-    application: csimGallery[4],
+    overview: csimGallery[0],
+    application: csimGallery[3],
   },
   assuranceItems: matAssuranceItems,
   description:
@@ -726,40 +699,37 @@ const colouredStripInsulatingMats: ProductData = {
 
 const BCIM = '/media/products/bi-color-insulating-mats';
 
-/* The only imagery the client holds for this family is their own published
-   illustration set — there is no photograph of a bi-colour mat anywhere in the
-   archive, and the product videos top out at 1024x576 with motion blur. The
-   illustrations are kept because they show the two-layer construction
-   truthfully; the first caption says plainly what they are, and the
-   photography is requested in docs/PRODUCT-PHOTOGRAPHY-GAPS.md. */
+/* Client-approved Bi-Colour gallery images from the Bi-Colour folder.
+   The first three images (product-01, product-02, product-03) replace
+   the previously rejected illustration set. */
 const bcimGallery: ProductGalleryImage[] = [
   {
-    src: `${BCIM}/product-03.webp`,
-    alt: 'Bi-color insulating mat part-rolled, showing a blue coin-pattern top layer over a red base layer',
-    caption: 'Two-layer construction (manufacturer illustration)',
+    src: `${BCIM}/client-bi-colour/product-01.png`,
+    alt: 'Bi-Colour dual-layer insulating mat — complete product view',
+    caption: 'Bi-Colour insulating mat',
     type: 'product',
     fit: 'contain',
   },
   {
-    src: `${BCIM}/gallery/02-layer-edge-detail.webp`,
-    alt: 'Cut edge of a bi-color insulating mat with detail callouts showing the blue and red layers bonded together',
-    caption: 'Layer boundary at the cut edge',
-    type: 'profile',
+    src: `${BCIM}/client-bi-colour/product-02.png`,
+    alt: 'Bi-Colour insulating mat — alternate view showing dual-layer construction',
+    caption: 'Dual-layer construction',
+    type: 'product',
     fit: 'contain',
   },
   {
-    src: `${BCIM}/gallery/03-contrasting-layers.webp`,
-    alt: 'Blue coin-pattern top layer of a bi-color insulating mat shown separated from its red base layer',
-    caption: 'The two layers separated',
+    src: `${BCIM}/client-bi-colour/product-03.png`,
+    alt: 'Bi-Colour insulating mat — close-up detail',
+    caption: 'Close-up detail',
+    type: 'product',
+    fit: 'contain',
+  },
+  {
+    src: `${BCIM}/gallery/01-dual-layer-roll.webp`,
+    alt: 'Bi-Colour dual-layer mat roll',
+    caption: 'Dual-layer mat roll',
     type: 'alternate',
-    fit: 'contain',
-  },
-  {
-    src: `${BCIM}/gallery/04-layer-cross-section.webp`,
-    alt: 'Cross-section diagram of a bi-color insulating mat, a 0.5 mm top layer bonded to a PVC bottom layer, with a probe showing how wear exposes the contrasting colour',
-    caption: 'Why two colours: wear exposes the layer beneath',
-    type: 'profile',
-    fit: 'contain',
+    fit: 'cover',
   },
 ];
 
@@ -775,7 +745,7 @@ const biColorInsulatingMats: ProductData = {
       fit: 'cover',
     },
     gallery: bcimGallery,
-    overview: bcimGallery[1],
+    overview: bcimGallery[0],
   },
   assuranceItems: matAssuranceItems,
   description:
