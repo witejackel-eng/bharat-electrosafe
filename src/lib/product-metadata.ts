@@ -36,8 +36,8 @@ interface ProductTitleSet {
 
 const productTitles: Record<string, ProductTitleSet> = {
   'electrical-insulating-mats': {
-    pageTitle: 'Electrical Insulating Mats to IS 15652:2006',
-    socialTitle: 'Electrical Insulating Mats to IS 15652:2006 | Bharat Electrosafe',
+    pageTitle: 'High Voltage Electrical Insulation Mats to IS 15652:2006',
+    socialTitle: 'High Voltage Electrical Insulation Mats to IS 15652:2006 | Bharat Electrosafe',
   },
   'coloured-strip-insulating-mats': {
     pageTitle: 'Coloured Strip Electrical Insulating Mats',

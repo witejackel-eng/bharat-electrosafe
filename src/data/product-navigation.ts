@@ -82,7 +82,7 @@ export const productNavGroups: ProductNavGroup[] = [
         items: [
           {
             name: 'HV Insulating Mats',
-            href: '/products/electrical-insulating-mats/domestic',
+            href: '/products/electrical-insulating-mats/high-voltage-electrical-insulation-mats',
             description: 'Standard high-voltage insulating mats for operator protection',
           },
           {

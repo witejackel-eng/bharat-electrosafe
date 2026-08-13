@@ -138,6 +138,13 @@ const nextConfig: NextConfig = {
       { source: '/BharatHydro-Seal.php', destination: '/products/bharat-hydro-seal' },
     ];
 
+    // Old HV domestic route → new canonical route
+    const domesticRedirect = {
+      source: '/products/electrical-insulating-mats/domestic',
+      destination: '/products/electrical-insulating-mats/high-voltage-electrical-insulation-mats',
+      permanent: true,
+    };
+
     // www → non-www redirect (supplements middleware, works at Vercel edge)
     const wwwRedirect = {
       source: '/:path*',
@@ -157,6 +164,7 @@ const nextConfig: NextConfig = {
         destination: r.destination,
         permanent: true,
       })),
+      domesticRedirect,
       wwwRedirect,
     ];
   },
