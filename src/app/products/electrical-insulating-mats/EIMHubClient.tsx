@@ -60,8 +60,6 @@ const domesticProducts: RangeProduct[] = [
   },
 ];
 
-/* International quick-link buttons and "Explore IEC Range" CTA removed per client request. */
-
 /* ────────────────────────────────────────────
    Product card
    ──────────────────────────────────────────── */
@@ -165,10 +163,37 @@ export default function EIMHubClient() {
                 IEC 61111:2009
               </span>
             </div>
-            <p className="text-body text-be-grey-650 max-w-2xl">
+            <p className="text-body text-be-grey-650 max-w-2xl mb-6">
               IEC 61111:2009 compliant insulating mats for export and international projects —
               Class 0 through Class 4.
             </p>
+            {/* Product navigation links */}
+            <div className="flex flex-wrap gap-3 mb-5">
+              <Link
+                href="/products/electrical-insulating-mats/international-iec-61111#hv-insulating-mats"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-be-charcoal-950 border border-be-grey-300 bg-be-white px-4 py-2 rounded-lg hover:border-be-yellow-400 hover:bg-be-yellow-50 hover:text-be-yellow-text-hover transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+              >
+                HV Insulating Mats
+                <ChevronRight className="size-3.5" aria-hidden="true" />
+              </Link>
+              <Link
+                href="/products/electrical-insulating-mats/international-iec-61111#auto-glow"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-be-charcoal-950 border border-be-grey-300 bg-be-white px-4 py-2 rounded-lg hover:border-be-yellow-400 hover:bg-be-yellow-50 hover:text-be-yellow-text-hover transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+              >
+                Auto Glow
+                <ChevronRight className="size-3.5" aria-hidden="true" />
+              </Link>
+              <Link
+                href="/products/electrical-insulating-mats/international-iec-61111#bi-colour"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-be-charcoal-950 border border-be-grey-300 bg-be-white px-4 py-2 rounded-lg hover:border-be-yellow-400 hover:bg-be-yellow-50 hover:text-be-yellow-text-hover transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+              >
+                Bi-Colour
+                <ChevronRight className="size-3.5" aria-hidden="true" />
+              </Link>
+            </div>
+            <SecondaryButton href="/products/electrical-insulating-mats/international-iec-61111">
+              View International / Global Products
+            </SecondaryButton>
           </div>
         </section>
 
