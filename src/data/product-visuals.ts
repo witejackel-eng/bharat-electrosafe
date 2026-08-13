@@ -252,18 +252,18 @@ export const iecVisuals: ProductVisuals = {
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/electrical-insulating-mats/eim-hero-electrical-insulating-mat.webp`,
+    src: `${PROD}/electrical-insulating-mats/client-hv-approved/domestic-hv-card.webp`,
     alt: 'Insulating mats to IEC 61111:2009',
     fit: 'cover',
   },
   gallery: [
     {
-      src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-hero-auto-glow-mat.webp`,
+      src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-card-dark.webp`,
       alt: 'IEC Auto Glow variant — reflective boundary band',
       fit: 'cover',
     },
     {
-      src: `${PROD}/bi-color-insulating-mats/bcim-hero-dual-layer-insulating-mat.webp`,
+      src: `${PROD}/bi-color-insulating-mats/client-approved/bi-colour-card-cross-section.webp`,
       alt: 'IEC Bi-Colour variant — dual-layer insulating mat',
       fit: 'cover',
     },
@@ -362,9 +362,9 @@ export const membraneVisuals: ProductVisuals = {
 
 export const hydroSealVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/bharat-hydro-seal/hydroseal-hero-waterstop-profile.webp`,
+    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-card-black.webp`,
     alt: 'PVC water-stop profile with central bulb and ribbed wings',
-    fit: 'cover',
+    fit: 'contain',
   },
   hero: {
     src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-black-profile-01.webp`,
@@ -388,8 +388,8 @@ export const hydroSealVisuals: ProductVisuals = {
       fit: 'contain',
     },
     {
-      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-white-profile-02.webp`,
-      alt: 'White water-stop profile alternate view',
+      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-light-profile.webp`,
+      alt: 'Light water-stop profile',
       fit: 'contain',
     },
     {
@@ -398,20 +398,20 @@ export const hydroSealVisuals: ProductVisuals = {
       fit: 'contain',
     },
     {
-      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-white-profile-03.webp`,
-      alt: 'White water-stop profile alternate front view',
+      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-black-alternate.webp`,
+      alt: 'Black water-stop alternate profile',
       fit: 'contain',
     },
   ],
   menuPreview: {
-    src: `${PROD}/bharat-hydro-seal/hydroseal-hero-waterstop-profile.webp`,
+    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-card-black.webp`,
     alt: 'Water Stop Seal preview',
-    fit: 'cover',
+    fit: 'contain',
   },
   homePreview: {
-    src: `${PROD}/bharat-hydro-seal/hydroseal-hero-waterstop-profile.webp`,
+    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-card-black.webp`,
     alt: 'Water Stop Seal',
-    fit: 'cover',
+    fit: 'contain',
   },
 };
 
