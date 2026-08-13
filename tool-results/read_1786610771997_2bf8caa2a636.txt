@@ -1,0 +1,550 @@
+     1→'use client';
+     2→
+     3→import { useState, useEffect, useRef, useCallback, startTransition } from 'react';
+     4→import Link from 'next/link';
+     5→import Image from 'next/image';
+     6→import { usePathname } from 'next/navigation';
+     7→import {
+     8→  Menu,
+     9→  ChevronDown,
+    10→  ChevronRight,
+    11→  ArrowRight,
+    12→  Search,
+    13→} from 'lucide-react';
+    14→import {
+    15→  Sheet,
+    16→  SheetTrigger,
+    17→  SheetContent,
+    18→  SheetHeader,
+    19→  SheetTitle,
+    20→} from '@/components/ui/sheet';
+    21→import {
+    22→  Accordion,
+    23→  AccordionItem,
+    24→  AccordionTrigger,
+    25→  AccordionContent,
+    26→} from '@/components/ui/accordion';
+    27→import { PrimaryButton } from '@/components/ui/PrimaryButton';
+    28→import { ScrollProgress } from '@/components/ui/ScrollProgress';
+    29→import {
+    30→  CommandDialog,
+    31→  CommandInput,
+    32→  CommandList,
+    33→  CommandGroup,
+    34→  CommandItem,
+    35→  CommandEmpty,
+    36→} from '@/components/ui/command';
+    37→import { cn } from '@/lib/utils';
+    38→import {
+    39→  productNavGroups,
+    40→  getAllProductLinks,
+    41→  type ProductNavSubGroup,
+    42→  type ProductNavLeaf,
+    43→} from '@/data/product-navigation';
+    44→import { ProductsMegaMenu } from './ProductsMegaMenu';
+    45→
+    46→/* ────────────────────────────────────────────
+    47→   Hover-intent delay constants
+    48→   ──────────────────────────────────────────── */
+    49→
+    50→const OPEN_DELAY = 100; // ms before opening on hover
+    51→const CLOSE_DELAY = 250; // ms grace period before closing
+    52→const ESCAPE_KEY = 'Escape';
+    53→
+    54→/* ────────────────────────────────────────────
+    55→   Logo asset constants
+    56→   ────────────────────────────────────────────
+    57→   Transparent PNG — 1260×675, approved Bharat Electrosafe logo.
+    58→   Trimmed from 1536×1024 source to remove excess transparent
+    59→   padding while preserving minimal margin for crisp rendering.
+    60→   Aspect ratio matches previous header logo (≈1.87) so CSS
+    61→   sizing rules produce the same visual footprint. */
+    62→
+    63→const LOGO_SRC = '/brand/bharat-electrosafe-logo-header.png';
+    64→const LOGO_WIDTH = 1260;
+    65→const LOGO_HEIGHT = 675;
+    66→
+    67→/* ────────────────────────────────────────────
+    68→   Header component
+    69→   ──────────────────────────────────────────── */
+    70→
+    71→export function Header() {
+    72→  const pathname = usePathname();
+    73→  const [dropdownOpen, setDropdownOpen] = useState(false);
+    74→  const [mobileOpen, setMobileOpen] = useState(false);
+    75→  const [searchOpen, setSearchOpen] = useState(false);
+    76→  const openTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    77→  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    78→  const megaMenuRef = useRef<HTMLDivElement>(null);
+    79→  const triggerRef = useRef<HTMLDivElement>(null);
+    80→
+    81→  const isProductActive = pathname.startsWith('/products');
+    82→
+    83→  // Close mobile menu on resize to desktop
+    84→  useEffect(() => {
+    85→    const handleResize = () => { if (window.innerWidth >= 1024) setMobileOpen(false); };
+    86→    window.addEventListener('resize', handleResize);
+    87→    return () => window.removeEventListener('resize', handleResize);
+    88→  }, []);
+    89→
+    90→  // Body scroll lock when mobile menu is open
+    91→  useEffect(() => {
+    92→    if (mobileOpen) {
+    93→      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    94→      document.body.style.overflow = 'hidden';
+    95→      if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
+    96→    } else {
+    97→      document.body.style.overflow = '';
+    98→      document.body.style.paddingRight = '';
+    99→    }
+   100→    return () => { document.body.style.overflow = ''; document.body.style.paddingRight = ''; };
+   101→  }, [mobileOpen]);
+   102→
+   103→  // Close dropdown on outside click
+   104→  useEffect(() => {
+   105→    if (!dropdownOpen) return;
+   106→    const handleClickOutside = (e: MouseEvent) => {
+   107→      if (
+   108→        megaMenuRef.current && !megaMenuRef.current.contains(e.target as Node) &&
+   109→        triggerRef.current && !triggerRef.current.contains(e.target as Node)
+   110→      ) setDropdownOpen(false);
+   111→    };
+   112→    document.addEventListener('mousedown', handleClickOutside);
+   113→    return () => document.removeEventListener('mousedown', handleClickOutside);
+   114→  }, [dropdownOpen]);
+   115→
+   116→  // Hover-intent handlers
+   117→  const clearOpenTimeout = useCallback(() => { if (openTimeoutRef.current) { clearTimeout(openTimeoutRef.current); openTimeoutRef.current = null; } }, []);
+   118→  const clearCloseTimeout = useCallback(() => { if (closeTimeoutRef.current) { clearTimeout(closeTimeoutRef.current); closeTimeoutRef.current = null; } }, []);
+   119→
+   120→  const handleDropdownEnter = useCallback(() => {
+   121→    clearCloseTimeout(); clearOpenTimeout();
+   122→    openTimeoutRef.current = setTimeout(() => setDropdownOpen(true), OPEN_DELAY);
+   123→  }, [clearCloseTimeout, clearOpenTimeout]);
+   124→
+   125→  const handleDropdownLeave = useCallback(() => {
+   126→    clearOpenTimeout(); clearCloseTimeout();
+   127→    closeTimeoutRef.current = setTimeout(() => setDropdownOpen(false), CLOSE_DELAY);
+   128→  }, [clearOpenTimeout, clearCloseTimeout]);
+   129→
+   130→  // Keyboard handler for dropdown trigger
+   131→  const handleDropdownKeyDown = useCallback((e: React.KeyboardEvent) => {
+   132→    if (e.key === ESCAPE_KEY) {
+   133→      setDropdownOpen(false);
+   134→      const triggerBtn = triggerRef.current?.querySelector('[aria-haspopup]');
+   135→      if (triggerBtn instanceof HTMLElement) triggerBtn.focus();
+   136→    }
+   137→    if (e.key === 'ArrowDown' && !dropdownOpen) { e.preventDefault(); setDropdownOpen(true); }
+   138→  }, [dropdownOpen]);
+   139→
+   140→  // Mega-menu keyboard navigation
+   141→  const handleMegaMenuKeyDown = useCallback((e: React.KeyboardEvent) => {
+   142→    if (e.key === ESCAPE_KEY) {
+   143→      setDropdownOpen(false);
+   144→      const triggerBtn = triggerRef.current?.querySelector('[aria-haspopup]');
+   145→      if (triggerBtn instanceof HTMLElement) triggerBtn.focus();
+   146→    }
+   147→    if (e.key === 'Tab' && megaMenuRef.current) {
+   148→      const focusable = megaMenuRef.current.querySelectorAll<HTMLElement>('a[href], button, [tabindex]:not([tabindex="-1"])');
+   149→      const first = focusable[0]; const last = focusable[focusable.length - 1];
+   150→      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+   151→      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+   152→    }
+   153→  }, []);
+   154→
+   155→  // Close dropdown on route change
+   156→  useEffect(() => { startTransition(() => setDropdownOpen(false)); }, [pathname]);
+   157→
+   158→  // Cleanup timeouts on unmount
+   159→  useEffect(() => { return () => { clearOpenTimeout(); clearCloseTimeout(); }; }, [clearOpenTimeout, clearCloseTimeout]);
+   160→
+   161→  // Destructure product groups for mobile layout
+   162→  const electricalGroup = productNavGroups[0]; // Electrical Insulating Mats
+   163→  const waterGroup = productNavGroups[1];       // Water Proofing Solutions
+   164→  const pvcGroup = productNavGroups[2];          // PVC Flooring Solutions
+   165→  const otherGroup = productNavGroups[3];        // Other Products
+   166→
+   167→  const domesticSub = (electricalGroup.children as ProductNavSubGroup[])[0];
+   168→  const internationalSub = (electricalGroup.children as ProductNavSubGroup[])[1];
+   169→
+   170→  // Helper: flatten items for a group without sub-groups rendering
+   171→  const getGroupItems = (group: typeof productNavGroups[number]): ProductNavLeaf[] => {
+   172→    if (group.hasSubGroups) {
+   173→      return (group.children as ProductNavSubGroup[]).flatMap((s) => s.items);
+   174→    }
+   175→    return group.children as ProductNavLeaf[];
+   176→  };
+   177→
+   178→  // All product links for search dialog
+   179→  const allProductLinks = getAllProductLinks();
+   180→
+   181→  return (
+   182→    <header className="contents z-50">
+   183→      {/* ── Main-Header Bar ── */}
+   184→      <div
+   185→        className="sticky top-0 z-50 be-header-navy h-16 lg:h-20"
+   186→      >
+   187→        {/* 3-column grid: Logo | Nav | CTA */}
+   188→        <div className="container-site page-horizontal-padding grid grid-cols-[minmax(0,1fr)_auto] items-center h-full gap-2 lg:grid-cols-[minmax(180px,1fr)_auto_minmax(180px,1fr)] lg:gap-4">
+   189→          {/* ── Column 1: Logo ── */}
+   190→          <div className="flex items-center justify-start min-w-0">
+   191→            <Link
+   192→              href="/"
+   193→              className="shrink-0 flex items-center py-1 lg:py-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800"
+   194→              aria-label="Bharat Electrosafe — Home"
+   195→            >
+   196→              <Image
+   197→                src={LOGO_SRC}
+   198→                alt="Bharat Electrosafe® logo"
+   199→                width={LOGO_WIDTH}
+   200→                height={LOGO_HEIGHT}
+   201→                sizes="(max-width: 1023px) 97px, 125px"
+   202→                className="object-contain h-[53px] lg:h-[68px] w-auto"
+   203→                priority
+   204→              />
+   205→            </Link>
+   206→          </div>
+   207→
+   208→          {/* ── Column 2: Desktop Navigation ── */}
+   209→          <nav className="hidden lg:flex items-center justify-center gap-1" aria-label="Main navigation">
+   210→            <Link
+   211→              href="/"
+   212→              className={cn(
+   213→                'px-3 py-2 text-sm font-medium transition-colors',
+   214→                pathname === '/'
+   215→                  ? 'text-be-brand-yellow'
+   216→                  : 'text-white/80 hover:text-white'
+   217→              )}
+   218→              aria-current={pathname === '/' ? 'page' : undefined}
+   219→            >
+   220→              Home
+   221→            </Link>
+   222→
+   223→            <Link
+   224→              href="/about-us"
+   225→              className={cn(
+   226→                'px-3 py-2 text-sm font-medium transition-colors',
+   227→                pathname === '/about-us' ? 'text-be-brand-yellow' : 'text-white/80 hover:text-white'
+   228→              )}
+   229→              aria-current={pathname === '/about-us' ? 'page' : undefined}
+   230→            >
+   231→              About Us
+   232→            </Link>
+   233→
+   234→            {/* Products: hover opens mega-menu */}
+   235→            <div
+   236→              ref={triggerRef}
+   237→              className="flex items-center relative"
+   238→              onMouseEnter={handleDropdownEnter}
+   239→              onMouseLeave={handleDropdownLeave}
+   240→              onKeyDown={handleDropdownKeyDown}
+   241→            >
+   242→              <Link
+   243→                href="/products"
+   244→                className={cn(
+   245→                  'px-2 py-2 text-sm font-medium transition-colors',
+   246→                  isProductActive && !dropdownOpen ? 'text-be-brand-yellow' : 'text-white/80 hover:text-white'
+   247→                )}
+   248→                aria-current={isProductActive ? 'page' : undefined}
+   249→              >
+   250→                Products
+   251→              </Link>
+   252→              <button
+   253→                type="button"
+   254→                className={cn(
+   255→                  'px-1.5 py-2 text-sm font-medium transition-colors',
+   256→                  dropdownOpen
+   257→                    ? 'text-be-brand-yellow'
+   258→                    : isProductActive
+   259→                      ? 'text-be-brand-yellow'
+   260→                      : 'text-white/80 hover:text-white'
+   261→                )}
+   262→                aria-expanded={dropdownOpen}
+   263→                aria-haspopup="true"
+   264→                aria-controls="products-mega-menu"
+   265→                aria-label={dropdownOpen ? 'Close products menu' : 'Open products menu'}
+   266→                onClick={() => setDropdownOpen((prev) => !prev)}
+   267→              >
+   268→                <ChevronDown
+   269→                  className={cn('size-3.5 transition-transform duration-200', dropdownOpen && 'rotate-180')}
+   270→                  aria-hidden="true"
+   271→                  focusable="false"
+   272→                />
+   273→              </button>
+   274→              {/* Subtle active indicator bar */}
+   275→              {(dropdownOpen || isProductActive) && (
+   276→                <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-0.5 w-6 bg-be-brand-yellow rounded-full" aria-hidden="true" />
+   277→              )}
+   278→            </div>
+   279→
+   280→            <Link
+   281→              href="/contact-us"
+   282→              className={cn(
+   283→                'px-3 py-2 text-sm font-medium transition-colors',
+   284→                pathname === '/contact-us' ? 'text-be-brand-yellow' : 'text-white/80 hover:text-white'
+   285→              )}
+   286→              aria-current={pathname === '/contact-us' ? 'page' : undefined}
+   287→            >
+   288→              Contact Us
+   289→            </Link>
+   290→
+   291→            {/* Search / Quick-find button */}
+   292→            <button
+   293→              type="button"
+   294→              onClick={() => setSearchOpen(true)}
+   295→              className="inline-flex items-center justify-center size-8 rounded-md text-white/80 hover:text-white hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800"
+   296→              aria-label="Search products"
+   297→            >
+   298→              <Search className="size-4" aria-hidden="true" />
+   299→            </button>
+   300→          </nav>
+   301→
+   302→          {/* ── Column 3: CTA + Mobile menu ── */}
+   303→          <div className="flex items-center justify-end gap-2 shrink-0 lg:shrink">
+   304→            <PrimaryButton
+   305→              href="/contact-us"
+   306→              className="hidden lg:inline-flex text-sm px-4 py-2 shadow-sm hover:shadow-sm hover:translate-y-0 min-h-[40px]"
+   307→            >
+   308→              Request a Quote
+   309→            </PrimaryButton>
+   310→
+   311→            {/* Mobile hamburger */}
+   312→            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+   313→              <SheetTrigger asChild>
+   314→                <button
+   315→                  type="button"
+   316→                  className="lg:hidden inline-flex items-center justify-center size-11 rounded-md text-white hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-be-navy-800"
+   317→                  aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+   318→                  aria-expanded={mobileOpen}
+   319→                  aria-controls="mobile-navigation-sheet"
+   320→                >
+   321→                  <Menu className="size-6" aria-hidden="true" focusable="false" />
+   322→                </button>
+   323→              </SheetTrigger>
+   324→
+   325→              <SheetContent side="right" className="w-[320px] sm:w-[360px] bg-be-navy-900 p-0 border-l border-white/10" id="mobile-navigation-sheet">
+   326→                <SheetHeader className="px-5 pt-5 pb-3 border-b border-white/10">
+   327→                  <SheetTitle className="flex items-center">
+   328→                    <Link href="/" onClick={() => setMobileOpen(false)}>
+   329→                      <Image
+   330→                        src={LOGO_SRC}
+   331→                        alt="Bharat Electrosafe® logo"
+   332→                        width={LOGO_WIDTH}
+   333→                        height={LOGO_HEIGHT}
+   334→                        sizes="160px"
+   335→                        className="object-contain w-[160px] h-auto"
+   336→                      />
+   337→                    </Link>
+   338→                  </SheetTitle>
+   339→                </SheetHeader>
+   340→
+   341→                <nav className="flex flex-col py-2 overflow-y-auto" aria-label="Mobile navigation">
+   342→                  <Link href="/"
+   343→                    className={cn('px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center', pathname === '/' ? 'text-be-brand-yellow bg-white/8 border-l-[3px] border-be-brand-yellow' : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow')}
+   344→                    onClick={() => setMobileOpen(false)} aria-current={pathname === '/' ? 'page' : undefined}
+   345→                  >Home</Link>
+   346→
+   347→                  <Link href="/about-us"
+   348→                    className={cn('px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center', pathname === '/about-us' ? 'text-be-brand-yellow bg-white/8 border-l-[3px] border-be-brand-yellow' : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow')}
+   349→                    onClick={() => setMobileOpen(false)} aria-current={pathname === '/about-us' ? 'page' : undefined}
+   350→                  >About Us</Link>
+   351→
+   352→                  {/* Products accordion */}
+   353→                  <Accordion type="single" collapsible className="px-0">
+   354→                    <AccordionItem value="products" className="border-b-0">
+   355→                      <AccordionTrigger className={cn('px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] hover:no-underline', isProductActive ? 'text-be-brand-yellow bg-white/8 border-l-[3px] border-be-brand-yellow' : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow')}>
+   356→                        Products
+   357→                      </AccordionTrigger>
+   358→                      <AccordionContent className="pb-2">
+   359→                        <div className="flex flex-col">
+   360→                          {/* Electrical Insulating Mats */}
+   361→                          <div className="pl-4">
+   362→                            <div className="px-3 py-2 text-[0.75rem] font-semibold text-be-brand-yellow uppercase tracking-wider">
+   363→                              Electrical Insulating Mats
+   364→                            </div>
+   365→                            {/* Domestic Mats */}
+   366→                            <div className="pl-3">
+   367→                              <div className="flex items-baseline gap-1 px-2 py-1">
+   368→                                <span className="text-[0.7rem] font-medium text-white/50 uppercase tracking-wider">Domestic Mats</span>
+   369→                                {domesticSub.standard && (
+   370→                                  <span className="text-[0.55rem] font-semibold text-be-brand-yellow/70">{domesticSub.standard}</span>
+   371→                                )}
+   372→                              </div>
+   373→                              {domesticSub.items.map((item) => (
+   374→                                <Link key={item.href} href={item.href}
+   375→                                  className="flex items-center px-2 py-2.5 text-sm text-white/85 hover:text-be-brand-yellow hover:bg-white/6 transition-colors min-h-[44px]"
+   376→                                  onClick={() => setMobileOpen(false)}
+   377→                                >{item.name}</Link>
+   378→                              ))}
+   379→                            </div>
+   380→                            {/* International / Global */}
+   381→                            <div className="pl-3 mt-1">
+   382→                              <div className="flex items-baseline gap-1 px-2 py-1">
+   383→                                <span className="text-[0.7rem] font-medium text-white/50 uppercase tracking-wider">International / Global</span>
+   384→                                {internationalSub.standard && (
+   385→                                  <span className="text-[0.55rem] font-semibold text-be-brand-yellow/70">{internationalSub.standard}</span>
+   386→                                )}
+   387→                              </div>
+   388→                              {internationalSub.items.map((item) => (
+   389→                                <Link key={item.href} href={item.href}
+   390→                                  className="flex items-center px-2 py-2.5 text-sm text-white/85 hover:text-be-brand-yellow hover:bg-white/6 transition-colors min-h-[44px]"
+   391→                                  onClick={() => setMobileOpen(false)}
+   392→                                >{item.name}</Link>
+   393→                              ))}
+   394→                            </div>
+   395→                          </div>
+   396→
+   397→                          {/* Water Proofing Solutions */}
+   398→                          <div className="pl-4 mt-2">
+   399→                            <div className="px-3 py-2 text-[0.75rem] font-semibold text-be-brand-yellow uppercase tracking-wider">
+   400→                              Water Proofing Solutions
+   401→                            </div>
+   402→                            <div className="pl-3">
+   403→                              {getGroupItems(waterGroup).map((item) => (
+   404→                                <Link key={item.href} href={item.href}
+   405→                                  className="flex items-center px-2 py-2.5 text-sm text-white/85 hover:text-be-brand-yellow hover:bg-white/6 transition-colors min-h-[44px]"
+   406→                                  onClick={() => setMobileOpen(false)}
+   407→                                >{item.name}</Link>
+   408→                              ))}
+   409→                            </div>
+   410→                          </div>
+   411→
+   412→                          {/* PVC Flooring Solutions */}
+   413→                          <div className="pl-4 mt-2">
+   414→                            <div className="px-3 py-2 text-[0.75rem] font-semibold text-be-brand-yellow uppercase tracking-wider">
+   415→                              PVC Flooring Solutions
+   416→                            </div>
+   417→                            <div className="pl-3">
+   418→                              {getGroupItems(pvcGroup).map((item) => (
+   419→                                <Link key={item.href} href={item.href}
+   420→                                  className="flex items-center px-2 py-2.5 text-sm text-white/85 hover:text-be-brand-yellow hover:bg-white/6 transition-colors min-h-[44px]"
+   421→                                  onClick={() => setMobileOpen(false)}
+   422→                                >{item.name}</Link>
+   423→                              ))}
+   424→                            </div>
+   425→                          </div>
+   426→
+   427→                          {/* Other Products */}
+   428→                          <div className="pl-4 mt-2">
+   429→                            <div className="px-3 py-2 text-[0.75rem] font-semibold text-be-brand-yellow uppercase tracking-wider">
+   430→                              Other Products
+   431→                            </div>
+   432→                            <div className="pl-3">
+   433→                              {getGroupItems(otherGroup).map((item) => (
+   434→                                <Link key={item.href} href={item.href}
+   435→                                  className="flex items-center px-2 py-2.5 text-sm text-white/85 hover:text-be-brand-yellow hover:bg-white/6 transition-colors min-h-[44px]"
+   436→                                  onClick={() => setMobileOpen(false)}
+   437→                                >{item.name}</Link>
+   438→                              ))}
+   439→                            </div>
+   440→                          </div>
+   441→
+   442→                          {/* View All + Technical Guidance */}
+   443→                          <div className="mt-2 mx-5 border-t border-white/10 pt-3 space-y-1">
+   444→                            <Link href="/products"
+   445→                              className="flex items-center justify-between px-3 py-2.5 text-sm font-semibold text-be-brand-yellow hover:bg-white/6 rounded-md transition-colors min-h-[44px]"
+   446→                              onClick={() => setMobileOpen(false)}
+   447→                            >
+   448→                              View All Products
+   449→                              <ChevronRight className="size-3.5" aria-hidden="true" />
+   450→                            </Link>
+   451→                            <Link href="/contact-us?type=technical-guidance"
+   452→                              className="flex items-center justify-between px-3 py-2.5 text-sm font-medium text-white/80 hover:text-be-brand-yellow hover:bg-white/6 rounded-md transition-colors min-h-[44px]"
+   453→                              onClick={() => setMobileOpen(false)}
+   454→                            >
+   455→                              Technical Guidance
+   456→                              <ChevronRight className="size-3.5" aria-hidden="true" />
+   457→                            </Link>
+   458→                          </div>
+   459→                        </div>
+   460→                      </AccordionContent>
+   461→                    </AccordionItem>
+   462→                  </Accordion>
+   463→
+   464→                  <div className="mx-5 my-1 h-px bg-white/10" />
+   465→
+   466→                  <Link href="/contact-us"
+   467→                    className={cn('px-5 py-3.5 text-base font-medium transition-colors min-h-[44px] flex items-center', pathname === '/contact-us' ? 'text-be-brand-yellow bg-white/8 border-l-[3px] border-be-brand-yellow' : 'text-white/90 hover:bg-white/6 hover:text-be-brand-yellow')}
+   468→                    onClick={() => setMobileOpen(false)} aria-current={pathname === '/contact-us' ? 'page' : undefined}
+   469→                  >Contact Us</Link>
+   470→                </nav>
+   471→
+   472→                {/* CTA at bottom of mobile sheet */}
+   473→                <div className="mt-auto px-5 pb-6 pt-4 border-t border-white/10">
+   474→                  <PrimaryButton href="/contact-us" className="w-full justify-center" onClick={() => setMobileOpen(false)}>
+   475→                    Request a Quote
+   476→                  </PrimaryButton>
+   477→                </div>
+   478→              </SheetContent>
+   479→            </Sheet>
+   480→          </div>
+   481→        </div>
+   482→
+   483→        {/* ── Products Mega-Menu ──
+   484→            Compact category-switcher: only one category expanded at a time.
+   485→            Uses tablist/tab/tabpanel ARIA semantics. */}
+   486→        {dropdownOpen && (
+   487→          <div
+   488→            ref={megaMenuRef}
+   489→            id="products-mega-menu"
+   490→            onMouseEnter={handleDropdownEnter}
+   491→            onMouseLeave={handleDropdownLeave}
+   492→            onKeyDown={handleMegaMenuKeyDown}
+   493→          >
+   494→            <ProductsMegaMenu onClose={() => setDropdownOpen(false)} />
+   495→          </div>
+   496→        )}
+   497→        <ScrollProgress />
+   498→      </div>
+   499→
+   500→      {/* ── Product Search Command Dialog ── */}
+   501→      <CommandDialog
+   502→        open={searchOpen}
+   503→        onOpenChange={setSearchOpen}
+   504→        title="Search Products"
+   505→        description="Find a product by name"
+   506→      >
+   507→        <CommandInput placeholder="Search products..." />
+   508→        <CommandList>
+   509→          <CommandEmpty>No products found.</CommandEmpty>
+   510→          {productNavGroups.map((group) => (
+   511→            <CommandGroup key={group.id} heading={group.name}>
+   512→              {group.hasSubGroups
+   513→                ? (group.children as ProductNavSubGroup[]).flatMap((sub) =>
+   514→                    sub.items.map((item) => (
+   515→                      <CommandItem
+   516→                        key={item.href}
+   517→                        value={`${item.name} ${group.name} ${sub.name}`}
+   518→                        onSelect={() => {
+   519→                          setSearchOpen(false);
+   520→                          window.location.href = item.href;
+   521→                        }}
+   522→                      >
+   523→                        <span className="truncate">{item.name}</span>
+   524→                        <span className="ml-auto text-xs text-muted-foreground truncate">
+   525→                          {sub.name}
+   526→                        </span>
+   527→                      </CommandItem>
+   528→                    ))
+   529→                  )
+   530→                : (group.children as ProductNavLeaf[]).map((item) => (
+   531→                    <CommandItem
+   532→                      key={item.href}
+   533→                      value={`${item.name} ${group.name}`}
+   534→                      onSelect={() => {
+   535→                        setSearchOpen(false);
+   536→                        window.location.href = item.href;
+   537→                      }}
+   538→                    >
+   539→                      <span className="truncate">{item.name}</span>
+   540→                    </CommandItem>
+   541→                  ))
+   542→              }
+   543→            </CommandGroup>
+   544→          ))}
+   545→        </CommandList>
+   546→      </CommandDialog>
+   547→    </header>
+   548→  );
+   549→}
+   550→
