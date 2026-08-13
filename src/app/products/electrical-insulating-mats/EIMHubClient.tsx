@@ -16,7 +16,7 @@ import {
   coloredStripVisuals,
   type ProductVisualRole,
 } from '@/data/product-visuals';
-import { ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 /* ────────────────────────────────────────────
    Domestic range data
@@ -31,8 +31,8 @@ interface RangeProduct {
 
 const domesticProducts: RangeProduct[] = [
   {
-    name: 'HV / Electrical Insulating Mats',
-    href: '/products/electrical-insulating-mats/domestic',
+    name: 'HV Electrical Insulating Mats',
+    href: '/products/electrical-insulating-mats/high-voltage-electrical-insulation-mats',
     description:
       'Standard high-voltage insulating mats for operator protection near live switchgear and substations.',
     visual: hvVisuals.card,
@@ -60,11 +60,7 @@ const domesticProducts: RangeProduct[] = [
   },
 ];
 
-const internationalProducts = [
-  { name: 'HV Insulating Mats', href: '/products/international-iec-61111#hv-insulating-mats' },
-  { name: 'Auto Glow', href: '/products/international-iec-61111#auto-glow' },
-  { name: 'Bi-Colour', href: '/products/international-iec-61111#bi-colour' },
-];
+/* International quick-link buttons and "Explore IEC Range" CTA removed per client request. */
 
 /* ────────────────────────────────────────────
    Product card
@@ -161,7 +157,7 @@ export default function EIMHubClient() {
         {/* ── International range ── */}
         <section className="bg-[#faf8f2]">
           <div className="container-site page-horizontal-padding py-12 lg:py-16">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
               <h2 className="text-2xl lg:text-3xl font-bold text-be-charcoal-950">
                 International / Global — IEC 61111:2009
               </h2>
@@ -169,30 +165,10 @@ export default function EIMHubClient() {
                 IEC 61111:2009
               </span>
             </div>
-            <p className="text-body text-be-grey-650 mb-6 max-w-2xl">
+            <p className="text-body text-be-grey-650 max-w-2xl">
               IEC 61111:2009 compliant insulating mats for export and international projects —
-              Class 0 through Class 4. The same domestic product families are available in the
-              IEC configuration.
+              Class 0 through Class 4.
             </p>
-            <div className="flex flex-wrap gap-3 mb-8">
-              {internationalProducts.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-be-grey-250 bg-be-white px-4 py-2.5 text-sm font-medium text-be-charcoal-800 hover:text-be-charcoal-950 hover:border-be-yellow-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
-                >
-                  {item.name}
-                  <ChevronRight className="size-3.5 text-be-yellow-600" aria-hidden="true" />
-                </Link>
-              ))}
-            </div>
-            <Link
-              href="/products/international-iec-61111"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-be-navy-800 hover:text-be-brand-blue transition-colors group/link"
-            >
-              Explore IEC Range
-              <ArrowRight className="size-4 group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true" />
-            </Link>
           </div>
         </section>
 

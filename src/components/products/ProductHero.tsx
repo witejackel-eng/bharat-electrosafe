@@ -51,9 +51,11 @@ interface ProductHeroProps {
   visuals: ProductVisuals;
   /** Override the breadcrumb trail (default: Home → Products → product.name). */
   breadcrumbItems?: { label: string; href?: string }[];
+  /** Override the product display name (H1, carousel alt) without changing product.name data. */
+  displayName?: string;
 }
 
-export function ProductHero({ product, visuals, breadcrumbItems: overrideBreadcrumb }: ProductHeroProps) {
+export function ProductHero({ product, visuals, breadcrumbItems: overrideBreadcrumb, displayName }: ProductHeroProps) {
   const breadcrumbItems = useMemo(
     () =>
       overrideBreadcrumb ?? [
@@ -83,7 +85,7 @@ export function ProductHero({ product, visuals, breadcrumbItems: overrideBreadcr
             <ProductImageCarousel
               hero={visuals.hero}
               gallery={visuals.gallery}
-              productName={product.name}
+              productName={displayName ?? product.name}
               className="product-hero-carousel"
             />
           </div>
@@ -99,7 +101,7 @@ export function ProductHero({ product, visuals, breadcrumbItems: overrideBreadcr
 
             {/* H1 */}
             <h1 className="product-hero-h1 text-product-h1 text-be-charcoal-950 mb-3 lg:mb-4">
-              {product.name}
+              {displayName ?? product.name}
             </h1>
 
             {/* Introduction */}

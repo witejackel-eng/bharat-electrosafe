@@ -22,7 +22,7 @@ const staticPages: { path: string; priority: number; changeFrequency: 'monthly' 
   { path: '/', priority: 1.0, changeFrequency: 'monthly' },
   { path: '/products', priority: 0.9, changeFrequency: 'monthly' },
   { path: '/products/electrical-insulating-mats', priority: 0.8, changeFrequency: 'monthly' },
-  { path: '/products/electrical-insulating-mats/domestic', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/products/electrical-insulating-mats/high-voltage-electrical-insulation-mats', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/products/waterproofing-solutions', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/products/international-iec-61111', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/products/pvc-flooring-solutions', priority: 0.8, changeFrequency: 'monthly' },
