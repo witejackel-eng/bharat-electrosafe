@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { buildUrl, canonicalOrigin, allowIndexing } from '@/lib/site-url';
 import { breadcrumbSchema, serializeJsonLd, type BreadcrumbItem } from '@/lib/structured-data';
+import { PRODUCT_ROUTES } from '@/data/product-routes';
 import IECClient from './IECClient';
 
 /* ────────────────────────────────────────────
@@ -10,7 +11,7 @@ import IECClient from './IECClient';
 const PAGE_TITLE = 'International Insulating Mats IEC 61111:2009';
 const PAGE_DESCRIPTION =
   'IEC 61111:2009 compliant insulating mats for international markets — Class 0 to Class 4, including auto-glow and bi-colour variants.';
-const CANONICAL_PATH = '/products/international-iec-61111';
+const CANONICAL_PATH = PRODUCT_ROUTES.international;
 const canonicalUrl = buildUrl(CANONICAL_PATH);
 
 export const metadata: Metadata = {
@@ -36,12 +37,13 @@ export const metadata: Metadata = {
 };
 
 /* ────────────────────────────────────────────
-   Structured data (breadcrumb only — no Product schema)
+   Structured data (breadcrumb — includes Electrical Insulating Mats parent)
    ──────────────────────────────────────────── */
 
 const breadcrumbItems: BreadcrumbItem[] = [
   { name: 'Home', href: '/' },
   { name: 'Products', href: '/products' },
+  { name: 'Electrical Insulating Mats', href: PRODUCT_ROUTES.electricalInsulatingMats },
   { name: 'International / Global (IEC 61111:2009)', href: CANONICAL_PATH },
 ];
 

@@ -131,9 +131,9 @@ const nextConfig: NextConfig = {
       { source: '/about-us.php', destination: '/about-us' },
       { source: '/contact-us.php', destination: '/contact-us' },
       { source: '/electrical-insulating-mats.php', destination: '/products/electrical-insulating-mats' },
-      { source: '/coloured-strip-insulating-mats.php', destination: '/products/coloured-strip-insulating-mats' },
-      { source: '/bi-color-insulating-mats.php', destination: '/products/bi-color-insulating-mats' },
-      { source: '/auto-glow-reflective-band-insulating-mat.php', destination: '/products/auto-glow-reflective-band-insulating-mats' },
+      { source: '/coloured-strip-insulating-mats.php', destination: '/products/electrical-insulating-mats/coloured-strip-insulating-mats' },
+      { source: '/bi-color-insulating-mats.php', destination: '/products/electrical-insulating-mats/bi-color-insulating-mats' },
+      { source: '/auto-glow-reflective-band-insulating-mat.php', destination: '/products/electrical-insulating-mats/auto-glow-reflective-band-insulating-mats' },
       { source: '/bharat-membrane.php', destination: '/products/bharat-membrane' },
       { source: '/BharatHydro-Seal.php', destination: '/products/bharat-hydro-seal' },
     ];
@@ -144,6 +144,32 @@ const nextConfig: NextConfig = {
       destination: '/products/electrical-insulating-mats/high-voltage-electrical-insulation-mats',
       permanent: true,
     };
+
+    // Legacy top-level product routes → nested canonical routes
+    // These ensure old URLs (before the Electrical Insulating Mats hierarchy)
+    // permanently redirect to the new nested paths.
+    const legacyProductRedirects = [
+      {
+        source: '/products/auto-glow-reflective-band-insulating-mats',
+        destination: '/products/electrical-insulating-mats/auto-glow-reflective-band-insulating-mats',
+        permanent: true,
+      },
+      {
+        source: '/products/bi-color-insulating-mats',
+        destination: '/products/electrical-insulating-mats/bi-color-insulating-mats',
+        permanent: true,
+      },
+      {
+        source: '/products/coloured-strip-insulating-mats',
+        destination: '/products/electrical-insulating-mats/coloured-strip-insulating-mats',
+        permanent: true,
+      },
+      {
+        source: '/products/international-iec-61111',
+        destination: '/products/electrical-insulating-mats/international-iec-61111',
+        permanent: true,
+      },
+    ];
 
     // www → non-www redirect (supplements middleware, works at Vercel edge)
     const wwwRedirect = {
@@ -165,6 +191,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       })),
       domesticRedirect,
+      ...legacyProductRedirects,
       wwwRedirect,
     ];
   },

@@ -87,17 +87,17 @@ export const productNavGroups: ProductNavGroup[] = [
           },
           {
             name: 'Auto Glow',
-            href: '/products/auto-glow-reflective-band-insulating-mats',
+            href: '/products/electrical-insulating-mats/auto-glow-reflective-band-insulating-mats',
             description: 'Insulating mats with reflective/glow visibility band for low-light conditions',
           },
           {
             name: 'Bi-Colour',
-            href: '/products/bi-color-insulating-mats',
+            href: '/products/electrical-insulating-mats/bi-color-insulating-mats',
             description: 'Dual-colour insulating mats with visible layer differentiation',
           },
           {
             name: 'Coloured Strip',
-            href: '/products/coloured-strip-insulating-mats',
+            href: '/products/electrical-insulating-mats/coloured-strip-insulating-mats',
             description: 'Insulating mats with high-visibility coloured boundary strip',
           },
         ],
@@ -105,21 +105,21 @@ export const productNavGroups: ProductNavGroup[] = [
       {
         name: 'International / Global',
         standard: 'IEC 61111:2009',
-        href: '/products/international-iec-61111',
+        href: '/products/electrical-insulating-mats/international-iec-61111',
         items: [
           {
             name: 'HV Insulating Mats',
-            href: '/products/international-iec-61111#hv-insulating-mats',
+            href: '/products/electrical-insulating-mats/international-iec-61111#hv-insulating-mats',
             description: 'IEC 61111 compliant high-voltage insulating mats',
           },
           {
             name: 'Auto Glow',
-            href: '/products/international-iec-61111#auto-glow',
+            href: '/products/electrical-insulating-mats/international-iec-61111#auto-glow',
             description: 'IEC 61111 compliant insulating mats with auto-glow feature',
           },
           {
             name: 'Bi-Colour',
-            href: '/products/international-iec-61111#bi-colour',
+            href: '/products/electrical-insulating-mats/international-iec-61111#bi-colour',
             description: 'IEC 61111 compliant bi-colour insulating mats',
           },
         ],

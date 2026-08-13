@@ -337,7 +337,7 @@ export function ProductsMegaMenu({ onClose }: ProductsMegaMenuProps) {
                   {/* International / Global */}
                   <div>
                     <div className="flex items-baseline gap-1.5 mb-1">
-                      <Link href="/products/international-iec-61111" onClick={onClose} className="text-[12px] font-semibold text-be-charcoal-900 hover:text-be-yellow-text-hover transition-colors">
+                      <Link href="/products/electrical-insulating-mats/international-iec-61111" onClick={onClose} className="text-[12px] font-semibold text-be-charcoal-900 hover:text-be-yellow-text-hover transition-colors">
                         International
                       </Link>
                       <span className="text-[9px] font-semibold text-be-yellow-700 bg-be-yellow-50 px-1 py-[0.5px] rounded">

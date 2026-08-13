@@ -4,6 +4,7 @@ import { ProductDetailTemplate } from '@/components/products/ProductDetailTempla
 import { biColourVisuals } from '@/data/product-visuals';
 import { SectionShell } from '@/components/ui/SectionShell';
 import { SectionHeader } from '@/components/ui/SectionHeader';
+import { PRODUCT_ROUTES } from '@/data/product-routes';
 import Image from 'next/image';
 import type { ProductData } from '@/data/products';
 
@@ -44,6 +45,12 @@ export default function BiColorClient({ product }: { product: ProductData }) {
       product={product}
       visuals={biColourVisuals}
       extraContent={layerConstruction}
+      breadcrumbItems={[
+        { label: 'Home', href: '/' },
+        { label: 'Products', href: PRODUCT_ROUTES.products },
+        { label: 'Electrical Insulating Mats', href: PRODUCT_ROUTES.electricalInsulatingMats },
+        { label: product.name },
+      ]}
     />
   );
 }

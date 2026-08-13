@@ -133,6 +133,7 @@ const iecFaqItems: { q: string; a: string }[] = [
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
   { label: 'Products', href: '/products' },
+  { label: 'Electrical Insulating Mats', href: '/products/electrical-insulating-mats' },
   { label: 'International / Global (IEC 61111:2009)' },
 ];
 
