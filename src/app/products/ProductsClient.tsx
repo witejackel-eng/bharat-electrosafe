@@ -28,6 +28,7 @@ import {
   otherProductsVisuals,
   productVisuals,
 } from '@/data/product-visuals';
+import { getCanonicalProductPath } from '@/data/product-routes';
 
 /* ────────────────────────────────────────────
    Extended comparison data — includes IEC, PVC, Other
@@ -670,7 +671,7 @@ function ComparisonSection() {
                 >
                   <th scope="row" className="text-left px-5 py-3.5 font-semibold text-be-charcoal-950 border-r border-be-grey-150">
                     <Link
-                      href={`/products/${row.slug}`}
+                      href={getCanonicalProductPath(row.slug)}
                       className="hover:text-be-yellow-text-hover transition-colors underline-offset-2 hover:underline"
                     >
                       {row.name}
@@ -701,7 +702,7 @@ function ComparisonSection() {
           {filteredData.map((row) => (
             <Link
               key={row.slug}
-              href={`/products/${row.slug}`}
+              href={getCanonicalProductPath(row.slug)}
               className="block rounded-xl border border-be-grey-250 bg-be-white p-5 hover:bg-be-yellow-50 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
             >
               <h3 className="text-lg font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors mb-3">
