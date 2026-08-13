@@ -337,6 +337,11 @@ export const membraneVisuals: ProductVisuals = {
       alt: 'Membrane seam welding detail',
       fit: 'cover',
     },
+    {
+      src: `${PROD}/bharat-membrane/gallery/04-grey-tunnel-membrane.webp`,
+      alt: 'Grey membrane lining installed inside a large tunnel structure with construction equipment',
+      fit: 'cover',
+    },
   ],
   application: {
     src: `${PROD}/bharat-membrane/bharatmembrane-application-containment.webp`,
@@ -373,18 +378,33 @@ export const hydroSealVisuals: ProductVisuals = {
   },
   gallery: [
     {
-      src: `${PROD}/bharat-hydro-seal/gallery/02-centre-bulb-profile.webp`,
-      alt: 'Centre bulb water stop profile — alternate view',
+      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-black-profile-01.webp`,
+      alt: 'Black water-stop profile with central bulb on light background',
       fit: 'contain',
     },
     {
-      src: `${PROD}/bharat-hydro-seal/product-03.webp`,
-      alt: 'PVC water stop profile detail',
+      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-white-profile-01.webp`,
+      alt: 'White water-stop profile',
       fit: 'contain',
     },
     {
-      src: `${PROD}/bharat-hydro-seal/product-04.webp`,
-      alt: 'Water stop seal product view',
+      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-black-profile-02.webp`,
+      alt: 'Black water-stop profile alternate view',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-white-profile-02.webp`,
+      alt: 'White water-stop profile alternate view',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-black-ribbed-profile.webp`,
+      alt: 'Black ribbed water-stop profile top view',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-white-profile-03.webp`,
+      alt: 'White water-stop profile alternate front view',
       fit: 'contain',
     },
   ],
