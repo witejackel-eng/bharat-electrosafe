@@ -378,11 +378,6 @@ export const hydroSealVisuals: ProductVisuals = {
       fit: 'contain',
     },
     {
-      src: `${PROD}/bharat-hydro-seal/gallery/03-flat-flange-profile.webp`,
-      alt: 'Flat flange water stop profile',
-      fit: 'contain',
-    },
-    {
       src: `${PROD}/bharat-hydro-seal/product-03.webp`,
       alt: 'PVC water stop profile detail',
       fit: 'contain',
