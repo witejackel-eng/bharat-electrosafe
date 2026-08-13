@@ -31,6 +31,10 @@ import {
   type BreadcrumbItem,
 } from '@/lib/structured-data';
 import { products } from '@/data/products';
+import {
+  getCanonicalProductPath,
+  getProductBreadcrumb,
+} from '@/data/product-routes';
 
 /* ────────────────────────────────────────────
    Homepage: Organization + WebSite
@@ -67,11 +71,17 @@ export function ProductPageStructuredData({ productSlug }: ProductPageStructured
   const product = products.find((p) => p.slug === productSlug);
   if (!product) return null;
 
-  const breadcrumbItems: BreadcrumbItem[] = [
-    { name: 'Home', href: '/' },
-    { name: 'Products', href: '/products' },
-    { name: product.name, href: `/products/${product.slug}` },
-  ];
+  // Use the central route resolver for the canonical URL
+  const canonicalPath = getCanonicalProductPath(productSlug);
+
+  // Build the breadcrumb from the central route hierarchy
+  const breadcrumbItems: BreadcrumbItem[] = getProductBreadcrumb(
+    productSlug,
+    product.name,
+  ).map((item) => ({
+    name: item.label,
+    href: item.href ?? canonicalPath,
+  }));
 
   return (
     <>
@@ -84,7 +94,7 @@ export function ProductPageStructuredData({ productSlug }: ProductPageStructured
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: serializeJsonLd(breadcrumbSchema(breadcrumbItems, `/products/${product.slug}`)),
+          __html: serializeJsonLd(breadcrumbSchema(breadcrumbItems, canonicalPath)),
         }}
       />
     </>

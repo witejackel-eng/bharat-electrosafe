@@ -372,26 +372,16 @@ export const membraneVisuals: ProductVisuals = {
 
 export const hydroSealVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-card-black.webp`,
-    alt: 'PVC water-stop profile with central bulb and ribbed wings',
-    fit: 'cover',
+    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-light-profile.webp`,
+    alt: 'PVC water-stop profile with central bulb and ribbed wings — white/light view',
+    fit: 'contain',
   },
   hero: {
-    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-card-black.webp`,
-    alt: 'PVC water-stop profile — product view',
-    fit: 'cover',
+    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-light-profile.webp`,
+    alt: 'PVC water-stop profile — white/light product view',
+    fit: 'contain',
   },
   gallery: [
-    {
-      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-light-profile.webp`,
-      alt: 'Water stop seal — light profile view',
-      fit: 'contain',
-    },
-    {
-      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-black-alternate.webp`,
-      alt: 'Water stop seal — black alternate view',
-      fit: 'contain',
-    },
     {
       src: `${PROD}/bharat-hydro-seal/gallery/02-centre-bulb-profile.webp`,
       alt: 'Centre bulb water stop profile — alternate view',
@@ -404,14 +394,14 @@ export const hydroSealVisuals: ProductVisuals = {
     },
   ],
   menuPreview: {
-    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-card-black.webp`,
-    alt: 'Water Stop Seal preview',
-    fit: 'cover',
+    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-light-profile.webp`,
+    alt: 'Water Stop Seal preview — white/light view',
+    fit: 'contain',
   },
   homePreview: {
-    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-card-black.webp`,
-    alt: 'Water Stop Seal',
-    fit: 'cover',
+    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-light-profile.webp`,
+    alt: 'Water Stop Seal — white/light view',
+    fit: 'contain',
   },
 };
 
@@ -461,7 +451,16 @@ export const pvcFlooringVisuals: ProductVisuals = {
 
 /* ────────────────────────────────────────────
    Other Products
+
+   The hero deliberately uses the SAME visual source as homePreview
+   (other-products-category.png) so they cannot drift apart.
    ──────────────────────────────────────────── */
+
+const otherProductsSharedVisual: ProductVisualRole = {
+  src: '/media/categories/other-products-category.png',
+  alt: 'Industrial rubber sheet, hose, ESD mat and conveyor belt products',
+  fit: 'contain',
+};
 
 export const otherProductsVisuals: ProductVisuals = {
   card: {
@@ -469,11 +468,7 @@ export const otherProductsVisuals: ProductVisuals = {
     alt: 'Industrial rubber sheet, hose, ESD mat and conveyor products',
     fit: 'cover',
   },
-  hero: {
-    src: `${PROD}/other-products/other-products-hero-industrial-range.webp`,
-    alt: 'Industrial rubber sheet, hose, ESD mat and conveyor products',
-    fit: 'cover',
-  },
+  hero: otherProductsSharedVisual,
   gallery: [
     {
       src: `${PROD}/other-products/rubber-sheet-product-angle-01.webp`,
@@ -506,11 +501,7 @@ export const otherProductsVisuals: ProductVisuals = {
     alt: 'Other products preview',
     fit: 'cover',
   },
-  homePreview: {
-    src: '/media/categories/other-products-category.png',
-    alt: 'Industrial rubber sheet, hose, ESD mat and conveyor belt products',
-    fit: 'contain',
-  },
+  homePreview: otherProductsSharedVisual,
 };
 
 /* ────────────────────────────────────────────

@@ -39,21 +39,21 @@ const domesticProducts: RangeProduct[] = [
   },
   {
     name: 'Auto Glow',
-    href: '/products/auto-glow-reflective-band-insulating-mats',
+    href: '/products/electrical-insulating-mats/auto-glow-reflective-band-insulating-mats',
     description:
       'Insulating mats with a reflective/glow visibility band for low-light and emergency conditions.',
     visual: autoGlowVisuals.card,
   },
   {
     name: 'Bi-Colour',
-    href: '/products/bi-color-insulating-mats',
+    href: '/products/electrical-insulating-mats/bi-color-insulating-mats',
     description:
       'Dual-colour insulating mats with visible layer differentiation for safety compliance.',
     visual: biColourVisuals.card,
   },
   {
     name: 'Coloured Strip',
-    href: '/products/coloured-strip-insulating-mats',
+    href: '/products/electrical-insulating-mats/coloured-strip-insulating-mats',
     description:
       'Insulating mats with a high-visibility coloured boundary strip for safe pathways.',
     visual: coloredStripVisuals.card,
@@ -65,17 +65,17 @@ const domesticProducts: RangeProduct[] = [
 const internationalProducts: { name: string; href: string; description: string }[] = [
   {
     name: 'HV Insulating Mats',
-    href: '/products/international-iec-61111#hv-insulating-mats',
+    href: '/products/electrical-insulating-mats/international-iec-61111#hv-insulating-mats',
     description: 'IEC 61111 compliant high-voltage insulating mats',
   },
   {
     name: 'Auto Glow',
-    href: '/products/international-iec-61111#auto-glow',
+    href: '/products/electrical-insulating-mats/international-iec-61111#auto-glow',
     description: 'IEC 61111 compliant insulating mats with auto-glow feature',
   },
   {
     name: 'Bi-Colour',
-    href: '/products/international-iec-61111#bi-colour',
+    href: '/products/electrical-insulating-mats/international-iec-61111#bi-colour',
     description: 'IEC 61111 compliant bi-colour insulating mats',
   },
 ];
@@ -203,7 +203,7 @@ export default function EIMHubClient() {
             </div>
 
             {/* View International / Global Products CTA */}
-            <SecondaryButton href="/products/international-iec-61111">
+            <SecondaryButton href="/products/electrical-insulating-mats/international-iec-61111">
               View International / Global Products
               <ChevronRight className="size-4 ml-1" />
             </SecondaryButton>
