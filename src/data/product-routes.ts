@@ -47,7 +47,9 @@ export const productRoutes: ProductRoute[] = [
     key: 'high-voltage-electrical-insulation-mats',
     displayName: 'HV Electrical Insulating Mats',
     canonicalPath: '/products/electrical-insulating-mats/high-voltage-electrical-insulation-mats',
-    legacyPaths: ['/products/electrical-insulating-mats/domestic'],
+    legacyPaths: [
+      '/products/electrical-insulating-mats/domestic',
+    ],
     parentKey: 'electrical-insulating-mats',
   },
 
@@ -55,8 +57,10 @@ export const productRoutes: ProductRoute[] = [
   {
     key: 'auto-glow-reflective-band-insulating-mats',
     displayName: 'Auto Glow',
-    canonicalPath: '/products/auto-glow-reflective-band-insulating-mats',
-    legacyPaths: [],
+    canonicalPath: '/products/electrical-insulating-mats/auto-glow-reflective-band-insulating-mats',
+    legacyPaths: [
+      '/products/auto-glow-reflective-band-insulating-mats',
+    ],
     parentKey: 'electrical-insulating-mats',
   },
 
@@ -64,8 +68,10 @@ export const productRoutes: ProductRoute[] = [
   {
     key: 'bi-color-insulating-mats',
     displayName: 'Bi-Colour',
-    canonicalPath: '/products/bi-color-insulating-mats',
-    legacyPaths: [],
+    canonicalPath: '/products/electrical-insulating-mats/bi-color-insulating-mats',
+    legacyPaths: [
+      '/products/bi-color-insulating-mats',
+    ],
     parentKey: 'electrical-insulating-mats',
   },
 
@@ -73,8 +79,10 @@ export const productRoutes: ProductRoute[] = [
   {
     key: 'coloured-strip-insulating-mats',
     displayName: 'Coloured Strip',
-    canonicalPath: '/products/coloured-strip-insulating-mats',
-    legacyPaths: [],
+    canonicalPath: '/products/electrical-insulating-mats/coloured-strip-insulating-mats',
+    legacyPaths: [
+      '/products/coloured-strip-insulating-mats',
+    ],
     parentKey: 'electrical-insulating-mats',
   },
 
@@ -82,9 +90,11 @@ export const productRoutes: ProductRoute[] = [
   {
     key: 'international-iec-61111',
     displayName: 'International / Global (IEC 61111:2009)',
-    canonicalPath: '/products/international-iec-61111',
-    legacyPaths: [],
-    parentKey: 'products',
+    canonicalPath: '/products/electrical-insulating-mats/international-iec-61111',
+    legacyPaths: [
+      '/products/international-iec-61111',
+    ],
+    parentKey: 'electrical-insulating-mats',
     anchors: [
       { id: 'hv-insulating-mats', label: 'HV Insulating Mats' },
       { id: 'auto-glow', label: 'Auto Glow' },
@@ -154,6 +164,63 @@ export function getCanonicalPath(key: string): string | undefined {
   return getRoute(key)?.canonicalPath;
 }
 
+/**
+ * Resolve a product slug to its canonical path.
+ *
+ * This is the CRITICAL function that prevents the `/products/${slug}`
+ * anti-pattern. Every component that constructs a product URL MUST
+ * go through this function (or use PRODUCT_ROUTES directly).
+ *
+ * For products nested under Electrical Insulating Mats, this returns
+ * the full nested path. For top-level products, it returns the simple
+ * `/products/${slug}` path.
+ */
+export function getCanonicalProductPath(slug: string): string {
+  const route = getRoute(slug);
+  if (route) return route.canonicalPath;
+
+  // Fallback: if the slug is not in the route manifest, construct
+  // the default top-level path. This should NOT happen for known
+  // products — it's a safety net only.
+  return `/products/${slug}`;
+}
+
+/**
+ * Build the full breadcrumb trail for a product by walking the
+ * parentKey chain up to the root.
+ */
+export function getProductBreadcrumb(
+  slug: string,
+  displayName?: string,
+): { label: string; href?: string }[] {
+  const route = getRoute(slug);
+  if (!route) {
+    return [
+      { label: 'Home', href: '/' },
+      { label: 'Products', href: '/products' },
+      { label: displayName ?? slug },
+    ];
+  }
+
+  // Walk the parent chain
+  const trail: { label: string; href?: string }[] = [];
+  let current: ProductRoute | undefined = route;
+
+  while (current) {
+    trail.unshift({
+      label: current.displayName,
+      // The current (leaf) item has no href — it's the current page
+      ...(current.key !== slug ? { href: current.canonicalPath } : {}),
+    });
+    current = current.parentKey ? getRoute(current.parentKey) : undefined;
+  }
+
+  // Prepend Home
+  trail.unshift({ label: 'Home', href: '/' });
+
+  return trail;
+}
+
 /** Get all legacy paths that must redirect. */
 export function getAllLegacyRedirects(): { from: string; to: string }[] {
   const redirects: { from: string; to: string }[] = [];
@@ -169,3 +236,22 @@ export function getAllLegacyRedirects(): { from: string; to: string }[] {
 export function isLegacyPath(path: string): boolean {
   return productRoutes.some((r) => r.legacyPaths.includes(path));
 }
+
+/**
+ * Static PRODUCT_ROUTES object for direct imports.
+ * Use this when you need a specific route without a function call.
+ */
+export const PRODUCT_ROUTES = {
+  products: '/products' as const,
+  electricalInsulatingMats: '/products/electrical-insulating-mats' as const,
+  hv: '/products/electrical-insulating-mats/high-voltage-electrical-insulation-mats' as const,
+  autoGlow: '/products/electrical-insulating-mats/auto-glow-reflective-band-insulating-mats' as const,
+  biColour: '/products/electrical-insulating-mats/bi-color-insulating-mats' as const,
+  colouredStrip: '/products/electrical-insulating-mats/coloured-strip-insulating-mats' as const,
+  international: '/products/electrical-insulating-mats/international-iec-61111' as const,
+  waterproofingSolutions: '/products/waterproofing-solutions' as const,
+  geoMembrane: '/products/bharat-membrane' as const,
+  hydroSeal: '/products/bharat-hydro-seal' as const,
+  pvcFlooring: '/products/pvc-flooring-solutions' as const,
+  otherProducts: '/products/other-products' as const,
+};

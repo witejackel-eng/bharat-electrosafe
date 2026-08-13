@@ -28,6 +28,7 @@ import {
   otherProductsVisuals,
   productVisuals,
 } from '@/data/product-visuals';
+import { getCanonicalProductPath } from '@/data/product-routes';
 
 /* ────────────────────────────────────────────
    Extended comparison data — includes IEC, PVC, Other
@@ -97,7 +98,7 @@ const DOMESTIC_PRODUCTS: DomesticProduct[] = [
   },
   {
     name: 'Auto Glow',
-    href: '/products/auto-glow-reflective-band-insulating-mats',
+    href: '/products/electrical-insulating-mats/auto-glow-reflective-band-insulating-mats',
     description: 'Insulating mats with reflective/glow visibility band for low-light and emergency conditions.',
     imageSrc: autoGlowVisuals.card.src,
     imageAlt: autoGlowVisuals.card.alt,
@@ -105,7 +106,7 @@ const DOMESTIC_PRODUCTS: DomesticProduct[] = [
   },
   {
     name: 'Bi-Colour',
-    href: '/products/bi-color-insulating-mats',
+    href: '/products/electrical-insulating-mats/bi-color-insulating-mats',
     description: 'Dual-colour insulating mats with visible layer differentiation for safety compliance.',
     imageSrc: biColourVisuals.card.src,
     imageAlt: biColourVisuals.card.alt,
@@ -113,7 +114,7 @@ const DOMESTIC_PRODUCTS: DomesticProduct[] = [
   },
   {
     name: 'Coloured Strip',
-    href: '/products/coloured-strip-insulating-mats',
+    href: '/products/electrical-insulating-mats/coloured-strip-insulating-mats',
     description: 'Insulating mats with high-visibility coloured boundary strip for safe pathways.',
     imageSrc: coloredStripVisuals.card.src,
     imageAlt: coloredStripVisuals.card.alt,
@@ -364,7 +365,7 @@ function ElectricalInsulatingMatsSection() {
                 </ul>
               </div>
               <Link
-                href="/products/international-iec-61111"
+                href="/products/electrical-insulating-mats/international-iec-61111"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-be-navy-800 hover:text-be-brand-blue transition-colors group/link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded"
               >
                 Explore IEC Range
@@ -670,7 +671,7 @@ function ComparisonSection() {
                 >
                   <th scope="row" className="text-left px-5 py-3.5 font-semibold text-be-charcoal-950 border-r border-be-grey-150">
                     <Link
-                      href={`/products/${row.slug}`}
+                      href={getCanonicalProductPath(row.slug)}
                       className="hover:text-be-yellow-text-hover transition-colors underline-offset-2 hover:underline"
                     >
                       {row.name}
@@ -701,7 +702,7 @@ function ComparisonSection() {
           {filteredData.map((row) => (
             <Link
               key={row.slug}
-              href={`/products/${row.slug}`}
+              href={getCanonicalProductPath(row.slug)}
               className="block rounded-xl border border-be-grey-250 bg-be-white p-5 hover:bg-be-yellow-50 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
             >
               <h3 className="text-lg font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors mb-3">

@@ -5,6 +5,7 @@ import { BackToTop } from '@/components/ui/BackToTop';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
 import { productNavigationItems } from '@/data/products';
+import { getCanonicalProductPath } from '@/data/product-routes';
 
 export default function NotFound() {
   return (
@@ -67,7 +68,7 @@ export default function NotFound() {
               {productNavigationItems.map((product) => (
                 <li key={product.slug}>
                   <Link
-                    href={`/products/${product.slug}`}
+                    href={getCanonicalProductPath(product.slug)}
                     className="text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors underline-offset-2 hover:underline"
                   >
                     {product.name}

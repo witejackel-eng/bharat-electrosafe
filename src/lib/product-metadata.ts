@@ -22,6 +22,7 @@ import type { Metadata } from 'next';
 import { ProductData } from '@/data/products';
 import { allowIndexing, buildUrl, canonicalOrigin } from '@/lib/site-url';
 import { siteOgImage, siteTwitterImage } from '@/lib/social-image';
+import { getCanonicalProductPath } from '@/data/product-routes';
 
 /**
  * SEO titles per product slug — specific and factual, not keyword-stuffed.
@@ -41,7 +42,7 @@ const productTitles: Record<string, ProductTitleSet> = {
   },
   'coloured-strip-insulating-mats': {
     pageTitle: 'Coloured Strip Electrical Insulating Mats',
-    socialTitle: 'Coloured Strip Electrical Insulating Mats | Bharat Electrosafe',
+    socialTitle: 'Coloured Strip Electrical Insulating& Mats | Bharat Electrosafe',
   },
   'bi-color-insulating-mats': {
     pageTitle: 'Bi-Color Electrical Insulating Mats',
@@ -94,11 +95,10 @@ const productOgImages: Partial<Record<string, string>> = {
  * Generate a full Metadata object for a product page from the central
  * product data. Returns not-found metadata for invalid slugs.
  *
- * When a product has a dedicated social-card image (see `productOgImages`),
- * both `openGraph.images` and `twitter.images` use that product-specific
- * asset. When no product-specific image exists (e.g. bharat-hydro-seal),
- * both fall back to the site-wide OG/Twitter image from
- * `@/lib/social-image` so the route always has a complete social card.
+ * IMPORTANT: Canonical URL is derived from the central route resolver
+ * (getCanonicalProductPath), NOT from `/products/${slug}`. This ensures
+ * nested products (e.g. Auto Glow under Electrical Insulating Mats) get
+ * the correct canonical path.
  */
 export function generateProductMetadata(product: ProductData): Metadata {
   const slug = product.slug;
@@ -107,7 +107,7 @@ export function generateProductMetadata(product: ProductData): Metadata {
     socialTitle: `${product.name} | Bharat Electrosafe`,
   };
   const description = product.description;
-  const canonicalUrl = buildUrl(`/products/${slug}`);
+  const canonicalUrl = buildUrl(getCanonicalProductPath(slug));
   const ogImage = productOgImages[slug];
 
   const ogImages = ogImage

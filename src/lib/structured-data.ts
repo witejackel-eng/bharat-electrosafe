@@ -28,6 +28,7 @@ import {
   products,
   type ProductData,
 } from '@/data/products';
+import { getCanonicalProductPath } from '@/data/product-routes';
 
 /* ────────────────────────────────────────────
    Stable entity IDs
@@ -37,7 +38,7 @@ export const ORG_ID = `${siteUrl}/#organization`;
 export const WEBSITE_ID = `${siteUrl}/#website`;
 
 export function productId(slug: string): string {
-  return `${siteUrl}/products/${slug}#product`;
+  return `${siteUrl}${getCanonicalProductPath(slug)}#product`;
 }
 
 export function webPageId(path: string): string {
@@ -120,10 +121,10 @@ export function productPageSchema(product: ProductData) {
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    '@id': webPageId(`/products/${product.slug}`),
+    '@id': webPageId(getCanonicalProductPath(product.slug)),
     name: product.name,
     description: product.description,
-    url: buildUrl(`/products/${product.slug}`),
+    url: buildUrl(getCanonicalProductPath(product.slug)),
     isPartOf: {
       '@id': WEBSITE_ID,
     },
@@ -202,7 +203,7 @@ export function productsCollectionPageSchema() {
         '@type': 'ListItem',
         position: index + 1,
         name: product.name,
-        url: buildUrl(`/products/${product.slug}`),
+        url: buildUrl(getCanonicalProductPath(product.slug)),
       })),
     },
   };

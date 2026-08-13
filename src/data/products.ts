@@ -13,6 +13,8 @@
  * publishes no figure, no figure is invented.
  */
 
+import { getCanonicalProductPath } from '@/data/product-routes';
+
 export interface QuickFact {
   icon: string;
   label: string;
@@ -1481,7 +1483,7 @@ export const productNavigationItems: ProductNavItem[] = products.map((p) => ({
   slug: p.slug,
   description: p.description,
   thumbnail: p.images.thumbnail,
-  href: `/products/${p.slug}`,
+  href: getCanonicalProductPath(p.slug),
   category: p.category,
   categoryDisplayName: productCategories[p.category].displayName,
 }));
