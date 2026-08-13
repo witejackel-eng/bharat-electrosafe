@@ -112,7 +112,7 @@ const DOMESTIC_PRODUCTS: DomesticProduct[] = [
     objectFit: biColourVisuals.card.fit,
   },
   {
-    name: 'Colored Strip',
+    name: 'Coloured Strip',
     href: '/products/coloured-strip-insulating-mats',
     description: 'Insulating mats with high-visibility coloured boundary strip for safe pathways.',
     imageSrc: coloredStripVisuals.card.src,

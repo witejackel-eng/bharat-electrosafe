@@ -13,6 +13,10 @@
  *   technicalDetail — diagrams, cross-sections, markings
  *   menuPreview  — mega-menu hover preview
  *   homePreview  — homepage product range section
+ *
+ * Provenance:
+ *   CLIENT_SOURCE   — image from client-supplied ZIP assets (v3 WEBSITE_READY or zai-assets)
+ *   ORIGINAL_SITE   — image from client's original website (original-site-product-refresh-assets)
  */
 
 export interface ProductVisualRole {
@@ -36,30 +40,44 @@ export interface ProductVisuals {
    Base paths
    ──────────────────────────────────────────── */
 
-const ORIG = '/media/products/original-site';
 const PROD = '/media/products';
-const BRAND = '/brand';
 
 /* ────────────────────────────────────────────
    HV Insulating Mats
-   Carousel: 01 → 02 → 03 → existing gallery
+   CLIENT_SOURCE — v3 WEBSITE_READY/01_domestic_hv_insulating_mats
+   Plus client-hv/ direct camera uploads
    ──────────────────────────────────────────── */
 
 export const hvVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/electrical-insulating-mats/eim-product-card-black-yellow-mat.webp`,
-    alt: 'Black insulating mat with a central yellow safety strip and raised circular surface texture',
+    src: `${PROD}/electrical-insulating-mats/client-hv-approved/domestic-hv-card.webp`,
+    alt: 'High voltage insulating mat — coined surface pattern with yellow safety strip',
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/electrical-insulating-mats/client-hv/coined-insulating-mat-11.png`,
-    alt: 'Coined pattern high voltage insulating mat — complete product view',
+    src: `${PROD}/electrical-insulating-mats/client-hv-approved/domestic-hv-clean-product.webp`,
+    alt: 'High voltage insulating mat — clean product view',
     fit: 'contain',
   },
   gallery: [
     {
-      src: `${PROD}/electrical-insulating-mats/client-hv/coined-insulating-mat-3.png`,
+      src: `${PROD}/electrical-insulating-mats/client-hv-approved/domestic-hv-detail.webp`,
+      alt: 'HV insulating mat — surface detail view',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv-approved/domestic-hv-range.webp`,
+      alt: 'HV insulating mat — product range view',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv/coined-insulating-mat-11.png`,
       alt: 'Coined pattern insulating mat — alternate view',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv/coined-insulating-mat-3.png`,
+      alt: 'Coined pattern insulating mat — close-up',
       fit: 'contain',
     },
     {
@@ -73,92 +91,84 @@ export const hvVisuals: ProductVisuals = {
       fit: 'contain',
     },
   ],
-  application: {
-    src: `${PROD}/electrical-insulating-mats/eim-application-switchgear-floor.webp`,
-    alt: 'Blue insulating mat installed along electrical switchgear',
-    fit: 'cover',
-  },
+  /* application: removed — no approved client application photograph available.
+     eim-application-switchgear-floor.webp was a synthetic scene (UNVERIFIED). */
   menuPreview: {
-    src: `${PROD}/electrical-insulating-mats/eim-hero-electrical-insulating-mat.webp`,
+    src: `${PROD}/electrical-insulating-mats/client-hv-approved/domestic-hv-card.webp`,
     alt: 'HV insulating mat preview',
     fit: 'cover',
   },
   homePreview: {
-    src: `${PROD}/electrical-insulating-mats/electrical-insulating-mats-black-yellow-card.webp`,
-    alt: 'Black electrical insulating mat with a yellow guided center strip and raised circular dot surface texture',
+    src: `${PROD}/electrical-insulating-mats/client-hv-approved/domestic-hv-card.webp`,
+    alt: 'HV electrical insulating mat — coined surface with yellow guided center strip',
     fit: 'cover',
   },
 };
 
 /* ────────────────────────────────────────────
    Auto Glow / Reflective Band
-   Carousel: 10 → 11 → 12 → existing gallery
+   CLIENT_SOURCE — v3 WEBSITE_READY/02_auto_glow
    ──────────────────────────────────────────── */
 
 export const autoGlowVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-hero-auto-glow-mat.webp`,
-    alt: 'Black insulating mat with green visibility boundary band',
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-card-dark.webp`,
+    alt: 'Auto Glow insulating mat with photoluminescent visibility band in low light',
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-hero-auto-glow-mat.webp`,
-    alt: 'Black insulating mat with green visibility boundary band',
-    fit: 'cover',
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-clean-product.webp`,
+    alt: 'Auto Glow insulating mat — clean product view',
+    fit: 'contain',
   },
   gallery: [
     {
-      src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-overview-visibility-band.webp`,
-      alt: 'Auto Glow reflective visibility band detail',
+      src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-card-dark.webp`,
+      alt: 'Auto Glow mat — visibility band in low-light conditions',
       fit: 'cover',
     },
     {
-      src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-application-low-light-switchgear.webp`,
-      alt: 'Auto Glow mat in low-light conditions showing glow visibility',
+      src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-application-dark.webp`,
+      alt: 'Auto Glow mat application in dark conditions showing glow visibility',
       fit: 'cover',
     },
     {
-      src: `${ORIG}/auto-glow/gallery-01.webp`,
-      alt: 'Auto Glow reflective band detail',
-      fit: 'contain',
-    },
-    {
-      src: `${ORIG}/auto-glow/gallery-02.webp`,
-      alt: 'Auto Glow reflective band — low-light application',
+      src: `${PROD}/auto-glow-reflective-band-insulating-mats/product-demo-glowing-dark.png`,
+      alt: 'Auto Glow reflective band — glowing in darkness',
       fit: 'cover',
     },
   ],
   application: {
-    src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-application-low-light-switchgear.webp`,
-    alt: 'Auto Glow mat in low-light switchgear application',
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-application-dark.webp`,
+    alt: 'Auto Glow mat in dark switchgear application showing glow visibility',
     fit: 'cover',
   },
   menuPreview: {
-    src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-hero-auto-glow-mat.webp`,
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-card-dark.webp`,
     alt: 'Auto Glow mat preview',
     fit: 'cover',
   },
   homePreview: {
-    src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-hero-auto-glow-mat.webp`,
-    alt: 'Auto Glow reflective band in low light',
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-card-dark.webp`,
+    alt: 'Auto Glow reflective band insulating mat',
     fit: 'cover',
   },
 };
 
 /* ────────────────────────────────────────────
    Bi-Colour
-   Carousel: 07 → 08 → 09 → existing gallery
+   CLIENT_SOURCE — v3 WEBSITE_READY/03_bi_colour + zai-assets bi-colour
    ──────────────────────────────────────────── */
 
 export const biColourVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/bi-color-insulating-mats/bcim-hero-dual-layer-insulating-mat.webp`,
-    alt: 'Blue dual-layer insulating mat with contrasting red lower layer',
+    src: `${PROD}/bi-color-insulating-mats/client-approved/bi-colour-card-cross-section.webp`,
+    alt: 'Bi-Colour insulating mat — dual-layer cross-section showing contrasting layers',
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/bi-color-insulating-mats/client-bi-colour/product-01.png`,
-    alt: 'Bi-Colour dual-layer insulating mat — complete product view',
+    src: `${PROD}/bi-color-insulating-mats/client-approved/bi-colour-clean-product.webp`,
+    alt: 'Bi-Colour dual-layer insulating mat — clean product view',
     fit: 'contain',
   },
   gallery: [
@@ -173,8 +183,8 @@ export const biColourVisuals: ProductVisuals = {
       fit: 'contain',
     },
     {
-      src: `${PROD}/bi-color-insulating-mats/gallery/01-dual-layer-roll.webp`,
-      alt: 'Bi-Colour dual-layer mat roll',
+      src: `${PROD}/bi-color-insulating-mats/client-approved/bi-colour-layer-detail.webp`,
+      alt: 'Bi-Colour mat — layer detail showing wear indicator',
       fit: 'cover',
     },
   ],
@@ -184,97 +194,97 @@ export const biColourVisuals: ProductVisuals = {
     fit: 'contain',
   },
   menuPreview: {
-    src: `${PROD}/bi-color-insulating-mats/bcim-hero-dual-layer-insulating-mat.webp`,
+    src: `${PROD}/bi-color-insulating-mats/client-approved/bi-colour-card-cross-section.webp`,
     alt: 'Bi-Colour mat preview',
     fit: 'cover',
   },
   homePreview: {
-    src: `${PROD}/bi-color-insulating-mats/bcim-hero-dual-layer-insulating-mat.webp`,
-    alt: 'Bi-Colour insulating mats',
+    src: `${PROD}/bi-color-insulating-mats/client-approved/bi-colour-card-cross-section.webp`,
+    alt: 'Bi-Colour insulating mats — dual-layer wear indicator',
     fit: 'cover',
   },
 };
 
 /* ────────────────────────────────────────────
-   Colored Strip
-   Carousel: 04 → 05 → 06 → existing gallery
+   Coloured Strip
+   CLIENT_SOURCE — v3 WEBSITE_READY/04_colored_strip
    ──────────────────────────────────────────── */
 
 export const coloredStripVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/coloured-strip-insulating-mats/csim-hero-coloured-strip-insulating-mat.webp`,
-    alt: 'Blue insulating mat with yellow safety boundary strips',
+    src: `${PROD}/coloured-strip-insulating-mats/client-approved/colored-strip-card-installation.webp`,
+    alt: 'Coloured strip insulating mat installed as safety pathway boundary',
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/coloured-strip-insulating-mats/gallery/01-yellow-strip-hexa-mat.webp`,
-    alt: 'Coloured strip insulating mat with yellow safety boundary — complete product view',
-    fit: 'cover',
+    src: `${PROD}/coloured-strip-insulating-mats/client-approved/colored-strip-clean-product.webp`,
+    alt: 'Coloured strip insulating mat — clean product view with yellow safety boundary',
+    fit: 'contain',
   },
   gallery: [
     {
-      src: `${PROD}/coloured-strip-insulating-mats/gallery/02-yellow-strip-dot-mat.webp`,
-      alt: 'Coloured strip mat with dot pattern and yellow boundary strip',
+      src: `${PROD}/coloured-strip-insulating-mats/client-approved/colored-strip-production.webp`,
+      alt: 'Coloured strip mat — production view',
       fit: 'cover',
     },
     {
-      src: `${PROD}/coloured-strip-insulating-mats/gallery/03-yellow-strip-angled.webp`,
-      alt: 'Coloured strip insulating mat — angled view',
+      src: `${PROD}/coloured-strip-insulating-mats/client-approved/colored-strip-card-installation.webp`,
+      alt: 'Coloured strip mat — installed in switchgear pathway',
       fit: 'cover',
     },
     {
-      src: `${PROD}/coloured-strip-insulating-mats/csim-application-switchgear-pathway.webp`,
-      alt: 'Coloured strip mat installed beside switchgear as safety pathway',
-      fit: 'cover',
+      src: `${PROD}/coloured-strip-insulating-mats/client-approved/colored-strip-clean-product.webp`,
+      alt: 'Coloured strip insulating mat — product detail',
+      fit: 'contain',
     },
   ],
   application: {
-    src: `${PROD}/coloured-strip-insulating-mats/csim-application-switchgear-pathway.webp`,
-    alt: 'Colored strip insulating mat installed as safety pathway boundary',
+    src: `${PROD}/coloured-strip-insulating-mats/client-approved/colored-strip-card-installation.webp`,
+    alt: 'Coloured strip insulating mat installed as safety pathway boundary',
     fit: 'cover',
   },
   menuPreview: {
-    src: `${PROD}/coloured-strip-insulating-mats/csim-hero-coloured-strip-insulating-mat.webp`,
-    alt: 'Colored Strip mat preview',
+    src: `${PROD}/coloured-strip-insulating-mats/client-approved/colored-strip-card-installation.webp`,
+    alt: 'Coloured Strip mat preview',
     fit: 'cover',
   },
   homePreview: {
-    src: `${PROD}/coloured-strip-insulating-mats/csim-hero-coloured-strip-insulating-mat.webp`,
-    alt: 'Colored Strip insulating mats',
+    src: `${PROD}/coloured-strip-insulating-mats/client-approved/colored-strip-card-installation.webp`,
+    alt: 'Coloured Strip insulating mats',
     fit: 'cover',
   },
 };
 
 /* ────────────────────────────────────────────
    IEC 61111:2009 International
-   Reuses: 01 (HV), 10 (Auto Glow), 07 (Bi-Colour)
+   Uses client-approved HV, Auto Glow, Bi-Colour card images + IEC marking photos
    ──────────────────────────────────────────── */
 
 export const iecVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/electrical-insulating-mats/eim-hero-electrical-insulating-mat.webp`,
+    src: `${PROD}/electrical-insulating-mats/client-hv-approved/domestic-hv-card.webp`,
     alt: 'IEC 61111:2009 compliant insulating mat',
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/electrical-insulating-mats/eim-hero-electrical-insulating-mat.webp`,
+    src: `${PROD}/electrical-insulating-mats/client-hv-approved/domestic-hv-card.webp`,
     alt: 'Insulating mats to IEC 61111:2009',
     fit: 'cover',
   },
   gallery: [
     {
-      src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-hero-auto-glow-mat.webp`,
+      src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-card-dark.webp`,
       alt: 'IEC Auto Glow variant — reflective boundary band',
       fit: 'cover',
     },
     {
-      src: `${PROD}/bi-color-insulating-mats/bcim-hero-dual-layer-insulating-mat.webp`,
+      src: `${PROD}/bi-color-insulating-mats/client-approved/bi-colour-card-cross-section.webp`,
       alt: 'IEC Bi-Colour variant — dual-layer insulating mat',
       fit: 'cover',
     },
     {
       src: `${PROD}/international-iec/iec-61111-class-0-2-2mm.webp`,
-      alt: 'IEC 61111 Class 0–2, 2mm insulating mat',
+      alt: 'IEC 61111 Class 0-2, 2mm insulating mat',
       fit: 'contain',
     },
     {
@@ -284,7 +294,7 @@ export const iecVisuals: ProductVisuals = {
     },
   ],
   menuPreview: {
-    src: `${PROD}/electrical-insulating-mats/eim-hero-electrical-insulating-mat.webp`,
+    src: `${PROD}/electrical-insulating-mats/client-hv-approved/domestic-hv-card.webp`,
     alt: 'IEC 61111 mat preview',
     fit: 'cover',
   },
@@ -297,34 +307,34 @@ export const iecVisuals: ProductVisuals = {
 
 /* ────────────────────────────────────────────
    Geo Membrane (BharatMembrane)
-   Carousel: 13 (white tunnel) → 14 (seam) → 15 (containment) → existing orange tunnel
+   CLIENT_SOURCE — v3 WEBSITE_READY/06_geo_membrane
    ──────────────────────────────────────────── */
 
 export const membraneVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/bharat-membrane/bharatmembrane-tunnel-lining-clean.webp`,
+    src: `${PROD}/bharat-membrane/client-approved/geo-membrane-card-tunnel.webp`,
     alt: 'PVC waterproof membrane lining inside an underground tunnel',
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/bharat-membrane/bharatmembrane-tunnel-lining-clean.webp`,
-    alt: 'White waterproof membrane lining installed inside an underground tunnel',
+    src: `${PROD}/bharat-membrane/client-approved/geo-membrane-card-tunnel.webp`,
+    alt: 'Geo membrane tunnel lining installation',
     fit: 'cover',
   },
   gallery: [
     {
-      src: `${PROD}/bharat-membrane/bharatmembrane-overview-thermal-seam.webp`,
-      alt: 'BharatMembrane thermal seam welding detail',
+      src: `${PROD}/bharat-membrane/client-approved/geo-membrane-installation-worker.webp`,
+      alt: 'Geo membrane installation with worker for scale',
       fit: 'cover',
     },
     {
-      src: `${PROD}/bharat-membrane/bharatmembrane-application-containment.webp`,
-      alt: 'Large containment basin lined with geomembrane',
+      src: `${PROD}/bharat-membrane/client-approved/geo-membrane-large-scale.webp`,
+      alt: 'Large-scale geo membrane containment installation',
       fit: 'cover',
     },
     {
       src: `${PROD}/bharat-membrane/gallery/01-tunnel-membrane-lining.webp`,
-      alt: 'Original BharatMembrane tunnel membrane lining installation',
+      alt: 'BharatMembrane tunnel membrane lining installation',
       fit: 'cover',
     },
     {
@@ -339,12 +349,12 @@ export const membraneVisuals: ProductVisuals = {
     },
   ],
   application: {
-    src: `${PROD}/bharat-membrane/bharatmembrane-application-containment.webp`,
-    alt: 'Geo-membrane containment basin lining application',
+    src: `${PROD}/bharat-membrane/client-approved/geo-membrane-installation-worker.webp`,
+    alt: 'Geo-membrane installation application',
     fit: 'cover',
   },
   menuPreview: {
-    src: `${PROD}/bharat-membrane/bharatmembrane-tunnel-lining-clean.webp`,
+    src: `${PROD}/bharat-membrane/client-approved/geo-membrane-card-tunnel.webp`,
     alt: 'Geo Membrane tunnel preview',
     fit: 'cover',
   },
@@ -357,21 +367,31 @@ export const membraneVisuals: ProductVisuals = {
 
 /* ────────────────────────────────────────────
    Bharat Hydro Seal (Water Stop)
-   Carousel: 16 → existing profile → existing application
+   CLIENT_SOURCE — v3 WEBSITE_READY/07_water_stop_seal
    ──────────────────────────────────────────── */
 
 export const hydroSealVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/bharat-hydro-seal/hydroseal-hero-waterstop-profile.webp`,
+    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-card-black.webp`,
     alt: 'PVC water-stop profile with central bulb and ribbed wings',
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/bharat-hydro-seal/hydroseal-hero-waterstop-profile.webp`,
-    alt: 'PVC water-stop profile with central bulb and ribbed wings',
+    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-card-black.webp`,
+    alt: 'PVC water-stop profile — product view',
     fit: 'cover',
   },
   gallery: [
+    {
+      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-light-profile.webp`,
+      alt: 'Water stop seal — light profile view',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-black-alternate.webp`,
+      alt: 'Water stop seal — black alternate view',
+      fit: 'contain',
+    },
     {
       src: `${PROD}/bharat-hydro-seal/gallery/02-centre-bulb-profile.webp`,
       alt: 'Centre bulb water stop profile — alternate view',
@@ -382,24 +402,14 @@ export const hydroSealVisuals: ProductVisuals = {
       alt: 'Flat flange water stop profile',
       fit: 'contain',
     },
-    {
-      src: `${PROD}/bharat-hydro-seal/product-03.webp`,
-      alt: 'PVC water stop profile detail',
-      fit: 'contain',
-    },
-    {
-      src: `${PROD}/bharat-hydro-seal/product-04.webp`,
-      alt: 'Water stop seal product view',
-      fit: 'contain',
-    },
   ],
   menuPreview: {
-    src: `${PROD}/bharat-hydro-seal/hydroseal-hero-waterstop-profile.webp`,
+    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-card-black.webp`,
     alt: 'Water Stop Seal preview',
     fit: 'cover',
   },
   homePreview: {
-    src: `${PROD}/bharat-hydro-seal/hydroseal-hero-waterstop-profile.webp`,
+    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-card-black.webp`,
     alt: 'Water Stop Seal',
     fit: 'cover',
   },
@@ -407,7 +417,6 @@ export const hydroSealVisuals: ProductVisuals = {
 
 /* ────────────────────────────────────────────
    PVC Flooring (Bharat Smart Floor)
-   Carousel: 17 → 18 → 19
    ──────────────────────────────────────────── */
 
 export const pvcFlooringVisuals: ProductVisuals = {
@@ -452,7 +461,6 @@ export const pvcFlooringVisuals: ProductVisuals = {
 
 /* ────────────────────────────────────────────
    Other Products
-   Carousel: 20 → 21 → 22 → hose crop → 24 → 23
    ──────────────────────────────────────────── */
 
 export const otherProductsVisuals: ProductVisuals = {

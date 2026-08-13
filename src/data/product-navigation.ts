@@ -96,7 +96,7 @@ export const productNavGroups: ProductNavGroup[] = [
             description: 'Dual-colour insulating mats with visible layer differentiation',
           },
           {
-            name: 'Colored Strip',
+            name: 'Coloured Strip',
             href: '/products/coloured-strip-insulating-mats',
             description: 'Insulating mats with high-visibility coloured boundary strip',
           },
@@ -256,8 +256,8 @@ export interface CategoryVisual {
 export const categoryVisuals: CategoryVisual[] = [
   {
     groupId: 'electrical-insulating-mats',
-    src: '/media/products/electrical-insulating-mats/electrical-insulating-mats-black-yellow-card.webp',
-    alt: 'Black electrical insulating mat with a yellow guided center strip and raised circular dot surface texture',
+    src: '/media/products/electrical-insulating-mats/client-hv-approved/domestic-hv-card.webp',
+    alt: 'HV electrical insulating mat — coined surface with yellow guided center strip',
     isPlaceholder: false,
   },
   {
