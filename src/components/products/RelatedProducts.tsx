@@ -7,6 +7,7 @@ import { SectionShell } from '@/components/ui/SectionShell';
 import { getProductBySlug } from '@/data/products';
 import type { ProductData } from '@/data/products';
 import { cn } from '@/lib/utils';
+import { getCanonicalProductPath } from '@/data/product-routes';
 
 /* ── Accent colors for differentiation ── */
 
@@ -45,7 +46,7 @@ export function RelatedProducts({ product }: RelatedProductsProps) {
           {related.map((rp) => (
             <Link
               key={rp.slug}
-              href={`/products/${rp.slug}`}
+              href={getCanonicalProductPath(rp.slug)}
               className={cn(
                 'hover-card-lift flex flex-col rounded-lg border bg-be-white overflow-hidden group',
                 accentColors[rp.slug] ?? 'border-be-grey-250'

@@ -2,8 +2,9 @@
  * Next.js Metadata API — sitemap.
  *
  * Contains all valid public routes: homepage, about, contact and
- * every product page. Uses the central site URL helper so that
- * every entry resolves against the official production domain.
+ * every product page. Uses the central site URL helper and the
+ * canonical product-route resolver so that every entry resolves
+ * against the official production domain using canonical paths only.
  *
  * When indexing is disabled, returns an empty array so that no
  * misleading production URLs are exposed from staging/preview.
@@ -17,16 +18,11 @@
 import type { MetadataRoute } from 'next';
 import { buildUrl, allowIndexing } from '@/lib/site-url';
 import { products } from '@/data/products';
+import { getCanonicalProductPath, productRoutes } from '@/data/product-routes';
 
 const staticPages: { path: string; priority: number; changeFrequency: 'monthly' | 'yearly' }[] = [
   { path: '/', priority: 1.0, changeFrequency: 'monthly' },
   { path: '/products', priority: 0.9, changeFrequency: 'monthly' },
-  { path: '/products/electrical-insulating-mats', priority: 0.8, changeFrequency: 'monthly' },
-  { path: '/products/electrical-insulating-mats/high-voltage-electrical-insulation-mats', priority: 0.8, changeFrequency: 'monthly' },
-  { path: '/products/waterproofing-solutions', priority: 0.8, changeFrequency: 'monthly' },
-  { path: '/products/international-iec-61111', priority: 0.8, changeFrequency: 'monthly' },
-  { path: '/products/pvc-flooring-solutions', priority: 0.8, changeFrequency: 'monthly' },
-  { path: '/products/other-products', priority: 0.7, changeFrequency: 'monthly' },
   { path: '/about-us', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/contact-us', priority: 0.8, changeFrequency: 'yearly' },
 ];
@@ -45,18 +41,41 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
-  const productEntries: MetadataRoute.Sitemap = products.map((product) => ({
-    url: buildUrl(`/products/${product.slug}`),
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-  }));
+  // Build product entries from the canonical route manifest.
+  // This replaces the old `/products/${slug}` anti-pattern and ensures
+  // nested routes (e.g. /products/electrical-insulating-mats/auto-glow-...)
+  // are correctly represented.
+  const seenUrls = new Set<string>();
+  const productEntries: MetadataRoute.Sitemap = [];
 
-  // /products/electrical-insulating-mats is now a family hub (included as a
-  // static page above), not a product-detail page. Remove its product-slug
-  // entry to avoid a duplicate sitemap URL.
-  const filteredProductEntries = productEntries.filter(
-    (entry) => !entry.url.endsWith('/products/electrical-insulating-mats'),
-  );
+  // Add all routes from the product route manifest (excluding the bare /products hub
+  // which is already in staticPages).
+  for (const route of productRoutes) {
+    if (route.canonicalPath === '/products') continue; // already in staticPages
+    const url = buildUrl(route.canonicalPath);
+    if (!seenUrls.has(url)) {
+      seenUrls.add(url);
+      productEntries.push({
+        url,
+        changeFrequency: 'monthly',
+        priority: route.canonicalPath.startsWith('/products/electrical-insulating-mats/') ? 0.8 : 0.8,
+      });
+    }
+  }
 
-  return [...staticEntries, ...filteredProductEntries];
+  // Also add any products from the registry that aren't covered by the route manifest
+  // (safety net — should be rare).
+  for (const product of products) {
+    const url = buildUrl(getCanonicalProductPath(product.slug));
+    if (!seenUrls.has(url)) {
+      seenUrls.add(url);
+      productEntries.push({
+        url,
+        changeFrequency: 'monthly',
+        priority: 0.8,
+      });
+    }
+  }
+
+  return [...staticEntries, ...productEntries];
 }

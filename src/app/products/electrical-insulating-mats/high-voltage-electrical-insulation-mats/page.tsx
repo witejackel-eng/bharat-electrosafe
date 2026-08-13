@@ -46,7 +46,7 @@ const breadcrumbItems = [
 export default function HighVoltageElectricalInsulationMatsPage() {
   return (
     <>
-      <ProductPageStructuredData productSlug="electrical-insulating-mats" />
+      <ProductPageStructuredData productSlug="electrical-insulating-mats" routeKey="high-voltage-electrical-insulation-mats" />
       <EIMClient product={product!} breadcrumbItems={breadcrumbItems} displayName={HV_PAGE_TITLE} />
     </>
   );

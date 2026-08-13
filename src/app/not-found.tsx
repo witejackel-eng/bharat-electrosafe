@@ -67,7 +67,7 @@ export default function NotFound() {
               {productNavigationItems.map((product) => (
                 <li key={product.slug}>
                   <Link
-                    href={`/products/${product.slug}`}
+                    href={product.href}
                     className="text-base text-be-grey-650 hover:text-be-yellow-text-hover transition-colors underline-offset-2 hover:underline"
                   >
                     {product.name}

@@ -22,6 +22,7 @@ import type { Metadata } from 'next';
 import { ProductData } from '@/data/products';
 import { allowIndexing, buildUrl, canonicalOrigin } from '@/lib/site-url';
 import { siteOgImage, siteTwitterImage } from '@/lib/social-image';
+import { getCanonicalProductPath } from '@/data/product-routes';
 
 /**
  * SEO titles per product slug — specific and factual, not keyword-stuffed.
@@ -107,7 +108,8 @@ export function generateProductMetadata(product: ProductData): Metadata {
     socialTitle: `${product.name} | Bharat Electrosafe`,
   };
   const description = product.description;
-  const canonicalUrl = buildUrl(`/products/${slug}`);
+  const canonicalPath = getCanonicalProductPath(slug);
+  const canonicalUrl = buildUrl(canonicalPath);
   const ogImage = productOgImages[slug];
 
   const ogImages = ogImage
