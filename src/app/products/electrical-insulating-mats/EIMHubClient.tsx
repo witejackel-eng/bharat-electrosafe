@@ -52,7 +52,7 @@ const domesticProducts: RangeProduct[] = [
     visual: biColourVisuals.card,
   },
   {
-    name: 'Colored Strip',
+    name: 'Coloured Strip',
     href: '/products/coloured-strip-insulating-mats',
     description:
       'Insulating mats with a high-visibility coloured boundary strip for safe pathways.',
@@ -60,7 +60,25 @@ const domesticProducts: RangeProduct[] = [
   },
 ];
 
-/* International quick-link buttons and "Explore IEC Range" CTA removed per client request. */
+/* International quick-link data — restored for proper navigation to IEC range. */
+
+const internationalProducts: { name: string; href: string; description: string }[] = [
+  {
+    name: 'HV Insulating Mats',
+    href: '/products/international-iec-61111#hv-insulating-mats',
+    description: 'IEC 61111 compliant high-voltage insulating mats',
+  },
+  {
+    name: 'Auto Glow',
+    href: '/products/international-iec-61111#auto-glow',
+    description: 'IEC 61111 compliant insulating mats with auto-glow feature',
+  },
+  {
+    name: 'Bi-Colour',
+    href: '/products/international-iec-61111#bi-colour',
+    description: 'IEC 61111 compliant bi-colour insulating mats',
+  },
+];
 
 /* ────────────────────────────────────────────
    Product card
@@ -165,10 +183,30 @@ export default function EIMHubClient() {
                 IEC 61111:2009
               </span>
             </div>
-            <p className="text-body text-be-grey-650 max-w-2xl">
+            <p className="text-body text-be-grey-650 max-w-2xl mb-6">
               IEC 61111:2009 compliant insulating mats for export and international projects —
               Class 0 through Class 4.
             </p>
+
+            {/* International product links */}
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 mb-6">
+              {internationalProducts.map((product) => (
+                <Link
+                  key={product.href}
+                  href={product.href}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-be-grey-250 bg-be-white text-sm font-medium text-be-charcoal-950 hover:bg-be-cream hover:border-be-yellow-300 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+                >
+                  <ChevronRight className="size-3.5 text-be-yellow-text" aria-hidden="true" />
+                  {product.name}
+                </Link>
+              ))}
+            </div>
+
+            {/* View International / Global Products CTA */}
+            <SecondaryButton href="/products/international-iec-61111">
+              View International / Global Products
+              <ChevronRight className="size-4 ml-1" />
+            </SecondaryButton>
           </div>
         </section>
 

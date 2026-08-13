@@ -282,7 +282,7 @@ export default function IECClient() {
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* HV Card */}
-            <div className="group flex flex-col rounded-xl border border-be-grey-250 bg-be-white overflow-hidden hover:shadow-lg transition-shadow">
+            <div id="hv-insulating-mats" className="scroll-mt-24 group flex flex-col rounded-xl border border-be-grey-250 bg-be-white overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative aspect-[4/3] overflow-hidden bg-be-cream">
                 <Image
                   src={iecVisuals.hero.src}
@@ -310,7 +310,7 @@ export default function IECClient() {
             </div>
 
             {/* Auto Glow Card */}
-            <div className="group flex flex-col rounded-xl border border-be-grey-250 bg-be-white overflow-hidden hover:shadow-lg transition-shadow">
+            <div id="auto-glow" className="scroll-mt-24 group flex flex-col rounded-xl border border-be-grey-250 bg-be-white overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative aspect-[4/3] overflow-hidden bg-be-cream">
                 <Image
                   src={iecVisuals.gallery[0].src}
@@ -338,7 +338,7 @@ export default function IECClient() {
             </div>
 
             {/* Bi-Colour Card */}
-            <div className="group flex flex-col rounded-xl border border-be-grey-250 bg-be-white overflow-hidden hover:shadow-lg transition-shadow">
+            <div id="bi-colour" className="scroll-mt-24 group flex flex-col rounded-xl border border-be-grey-250 bg-be-white overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative aspect-[4/3] overflow-hidden bg-be-cream">
                 <Image
                   src={iecVisuals.gallery[1].src}
