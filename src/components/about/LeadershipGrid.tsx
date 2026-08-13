@@ -119,15 +119,19 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
   /** Click anywhere on the card → toggle flip / lock */
   const handleCardClick = useCallback(
     (event: React.MouseEvent) => {
-      // Avoid double-toggling if the click originated from the front
-      // face button (which already calls handleToggle). The button
-      // click will bubble up; we only handle card-level clicks that
-      // did NOT originate from that button.
+      // Card-level toggle. Ignore clicks that originated from ANY
+      // button inside the card — the View Profile and Back buttons
+      // each manage their own toggle and also call stopPropagation().
+      // Without this guard, a Back-button tap would bubble here and
+      // call handleToggle a SECOND time, cancelling the close. That
+      // double-toggle is the root cause of the mobile "Back button
+      // reopens the card" bug (desktop was masked because users
+      // close cards via hover-leave, not Back).
       const target = event.target as HTMLElement;
-      if (target.closest(`#${buttonId}`)) return;
+      if (target.closest('button')) return;
       handleToggle();
     },
-    [handleToggle, buttonId],
+    [handleToggle],
   );
 
   /** Keyboard handler for the card wrapper */
@@ -156,7 +160,14 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
       tabIndex={-1}
     >
       {/* ── Front face — Portrait presentation ── */}
-      <div className="be-leader-flip-front" aria-hidden={isFlipped || undefined}>
+      {/* pointer-events-none when flipped so the rotated-away front
+          face cannot intercept taps (some mobile browsers still
+          hit-test backface-hidden elements). Only the visible face
+          is ever interactive. */}
+      <div
+        className={cn('be-leader-flip-front', isFlipped && 'pointer-events-none')}
+        aria-hidden={isFlipped || undefined}
+      >
         {/* Portrait — shorter aspect ratio for compact height */}
         <div className="relative w-full aspect-[3/4] overflow-hidden bg-be-navy-800">
           <Image
@@ -189,7 +200,12 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
           <button
             id={buttonId}
             type="button"
-            onClick={handleToggle}
+            onClick={(event) => {
+              // Isolate the button tap from the card-level onClick so
+              // the flip toggles exactly once (no double-toggle).
+              event.stopPropagation();
+              handleToggle();
+            }}
             aria-expanded={isFlipped}
             aria-controls={bioRegionId}
             aria-label={`View profile of ${leader.name}`}
@@ -205,7 +221,7 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
       {/* ── Back face — Biography presentation ── */}
       <div
         id={bioRegionId}
-        className="be-leader-flip-back"
+        className={cn('be-leader-flip-back', !isFlipped && 'pointer-events-none')}
         aria-hidden={!isFlipped || undefined}
         role={isFlipped ? 'region' : undefined}
         aria-labelledby={buttonId}
@@ -242,7 +258,13 @@ function LeaderFlipCard({ leader, index }: LeaderFlipCardProps) {
           <div className="p-3 sm:p-4 border-t border-be-grey-250">
             <button
               type="button"
-              onClick={handleToggle}
+              onClick={(event) => {
+                // Isolate the Back tap from the card-level onClick so
+                // the close is not immediately cancelled by a second
+                // toggle bubbling up to the card.
+                event.stopPropagation();
+                handleToggle();
+              }}
               aria-expanded={isFlipped}
               aria-controls={bioRegionId}
               aria-label={`Return to portrait of ${leader.name}`}
