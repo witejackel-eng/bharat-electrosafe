@@ -367,9 +367,9 @@ export const hydroSealVisuals: ProductVisuals = {
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/bharat-hydro-seal/hydroseal-hero-waterstop-profile.webp`,
-    alt: 'PVC water-stop profile with central bulb and ribbed wings',
-    fit: 'cover',
+    src: `${PROD}/bharat-hydro-seal/client-approved/water-stop-black-profile-01.webp`,
+    alt: 'Black water-stop profile with central bulb on light background',
+    fit: 'contain',
   },
   gallery: [
     {
