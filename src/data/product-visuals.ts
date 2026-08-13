@@ -97,35 +97,30 @@ export const hvVisuals: ProductVisuals = {
 
 export const autoGlowVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-hero-auto-glow-mat.webp`,
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-card-dark.webp`,
     alt: 'Black insulating mat with green visibility boundary band',
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-hero-auto-glow-mat.webp`,
-    alt: 'Black insulating mat with green visibility boundary band',
-    fit: 'cover',
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-clean-product.webp`,
+    alt: 'Auto Glow reflective band insulating mat — clean product view',
+    fit: 'contain',
   },
   gallery: [
     {
-      src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-overview-visibility-band.webp`,
-      alt: 'Auto Glow reflective visibility band detail',
-      fit: 'cover',
-    },
-    {
-      src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-application-low-light-switchgear.webp`,
-      alt: 'Auto Glow mat in low-light conditions showing glow visibility',
-      fit: 'cover',
-    },
-    {
-      src: `${ORIG}/auto-glow/gallery-01.webp`,
-      alt: 'Auto Glow reflective band detail',
+      src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-card-dark.webp`,
+      alt: 'Auto Glow reflective band — dark card view',
       fit: 'contain',
     },
     {
-      src: `${ORIG}/auto-glow/gallery-02.webp`,
-      alt: 'Auto Glow reflective band — low-light application',
-      fit: 'cover',
+      src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-application-dark.webp`,
+      alt: 'Auto Glow mat in low-light application',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/auto-glow-reflective-band-insulating-mats/product-demo-glowing-dark.png`,
+      alt: 'Auto Glow mat demonstrating glow visibility in dark conditions',
+      fit: 'contain',
     },
   ],
   application: {
@@ -152,7 +147,7 @@ export const autoGlowVisuals: ProductVisuals = {
 
 export const biColourVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/bi-color-insulating-mats/bcim-hero-dual-layer-insulating-mat.webp`,
+    src: `${PROD}/bi-color-insulating-mats/client-approved/bi-colour-card-cross-section.webp`,
     alt: 'Blue dual-layer insulating mat with contrasting red lower layer',
     fit: 'cover',
   },
@@ -202,7 +197,7 @@ export const biColourVisuals: ProductVisuals = {
 
 export const coloredStripVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/coloured-strip-insulating-mats/csim-hero-coloured-strip-insulating-mat.webp`,
+    src: `${PROD}/coloured-strip-insulating-mats/client-approved/colored-strip-card-installation.webp`,
     alt: 'Blue insulating mat with yellow safety boundary strips',
     fit: 'cover',
   },
@@ -477,9 +472,9 @@ export const otherProductsVisuals: ProductVisuals = {
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/other-products/other-products-hero-industrial-range.webp`,
+    src: '/media/categories/other-products-category.png',
     alt: 'Industrial rubber sheet, hose, ESD mat and conveyor products',
-    fit: 'cover',
+    fit: 'contain',
   },
   gallery: [
     {
