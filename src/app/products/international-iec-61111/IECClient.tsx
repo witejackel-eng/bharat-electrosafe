@@ -54,8 +54,8 @@ const iecClasses = [
   { class: 'Class 0', maxWorkingVoltage: '500 V', proofTestVoltage: '5 kV', thickness: '2 mm' },
   { class: 'Class 1', maxWorkingVoltage: '1 000 V', proofTestVoltage: '10 kV', thickness: '2 mm' },
   { class: 'Class 2', maxWorkingVoltage: '7 000 V', proofTestVoltage: '20 kV', thickness: '2 mm' },
-  { class: 'Class 3', maxWorkingVoltage: '17 000 V', proofTestVoltage: '30 kV', thickness: '2 mm' },
-  { class: 'Class 4', maxWorkingVoltage: '36 000 V', proofTestVoltage: '40 kV', thickness: '2 mm' },
+  { class: 'Class 3', maxWorkingVoltage: '17 000 V', proofTestVoltage: '30 kV', thickness: '2 mm *' },
+  { class: 'Class 4', maxWorkingVoltage: '36 000 V', proofTestVoltage: '40 kV', thickness: '2 mm *' },
 ];
 
 /* ────────────────────────────────────────────
@@ -374,7 +374,7 @@ export default function IECClient() {
           <SectionHeader
             eyebrow="Technical Specifications"
             title="IEC 61111:2009 Classification Table"
-            supportingText="Voltage class, maximum working voltage, and proof test voltage per IEC 61111:2009. All five classes share a minimum mat thickness of 2 mm."
+            supportingText="Voltage class, maximum working voltage, and proof test voltage per IEC 61111:2009. Classes 0–2 have a minimum mat thickness of 2 mm; higher classes may require greater thickness — confirm against the manufacturer's type-test documentation."
           />
 
           <div className="mt-6 overflow-x-auto">
@@ -406,6 +406,9 @@ export default function IECClient() {
               All values per IEC 61111:2009 Table 1. Proof test voltage is the
               withstand voltage applied during routine verification. These are
               IEC classifications — do not confuse with IS 15652:2006 Classes A–D.
+              {' '}* Minimum thickness for Class 3 and 4 may exceed 2 mm depending on
+              the manufacturer and type-test documentation; confirm against the
+              specific product datasheet.
             </p>
           </div>
         </SectionShell>
