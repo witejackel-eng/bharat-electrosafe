@@ -50,7 +50,7 @@ export default function ValuesSection() {
     <SectionShell variant="standard" bg="bg-be-white" topRule>
       <div className="reveal-up mb-10">
         <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-3">
-          Our Values
+          Core Values
         </p>
         <h2 className="text-section-h2 text-be-charcoal-950 accent-line-yellow">
           The principles that guide us
