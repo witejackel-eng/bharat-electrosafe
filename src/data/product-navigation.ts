@@ -139,8 +139,8 @@ export const productNavGroups: ProductNavGroup[] = [
         items: [
           {
             name: 'Geo Membrane Lining',
-            href: '/products/bharat-membrane',
-            description: 'BharatMembrane PVC geo-membrane for containment and lining',
+            href: '/products/geo-membrane-lining',
+            description: 'Geo Membrane Lining PVC geo-membrane for containment and lining',
           },
         ],
       },
@@ -149,8 +149,8 @@ export const productNavGroups: ProductNavGroup[] = [
         items: [
           {
             name: 'Water Stop Seal',
-            href: '/products/bharat-hydro-seal',
-            description: 'Bharat Hydro Seal PVC water stop profile for construction joints',
+            href: '/products/water-stop-seal',
+            description: 'Water Stop Seal PVC water stop profile for construction joints',
           },
         ],
       },
@@ -167,7 +167,7 @@ export const productNavGroups: ProductNavGroup[] = [
       {
         name: 'PVC Flooring Solutions',
         href: '/products/pvc-flooring-solutions',
-        description: 'Bharat Smart Floor — PVC flooring for industrial, electrical and commercial applications',
+        description: 'BharatSmart Floor™ — PVC flooring for industrial, electrical and commercial applications',
       },
     ],
   },

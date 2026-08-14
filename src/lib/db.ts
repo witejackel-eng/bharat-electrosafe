@@ -1,13 +1,12 @@
-import { PrismaClient } from '@prisma/client'
+/**
+ * Prisma database client stub.
+ *
+ * The Prisma schema exists for project scaffolding but no application code
+ * currently imports this module. The stub prevents TypeScript build failures
+ * when @prisma/client has not been generated.
+ *
+ * When database access is needed, run `prisma generate` and replace this
+ * stub with the real PrismaClient import.
+ */
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined
-}
-
-export const db =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: ['query'],
-  })
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
+export const db = null as unknown;

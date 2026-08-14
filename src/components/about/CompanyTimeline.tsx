@@ -32,7 +32,7 @@ const milestones: Milestone[] = [
     year: '2024',
     title: 'Product Range Growth',
     description:
-      'Launched specialised products including Auto-Glow mats and BharatMembrane.',
+      'Launched specialised products including Auto-Glow mats and Geo Membrane Lining.',
   },
 ];
 

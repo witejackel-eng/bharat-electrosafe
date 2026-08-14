@@ -59,7 +59,7 @@ const manrope = Manrope({
  * at /products/bharat-hydro-seal with dedicated metadata.
  */
 const siteDescription =
-  'Manufacturer of electrical insulating mats, visible-safety mat variants, BharatMembrane PVC geo-membranes and Bharat Hydro Seal water stops for industrial applications.';
+  'Manufacturer of electrical insulating mats, visible-safety mat variants, Geo Membrane Lining PVC geo-membranes and Water Stop Seal water stops for industrial applications.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(deploymentOrigin),

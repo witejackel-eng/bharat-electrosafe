@@ -47,9 +47,9 @@ export const homeFaqs: SiteFAQ[] = [
   },
   {
     question:
-      'Do BharatMembrane and Bharat Hydro Seal follow the same electrical standards as insulating mats?',
+      'Do Geo Membrane Lining and Water Stop Seal follow the same electrical standards as insulating mats?',
     answer:
-      'No. BharatMembrane and Bharat Hydro Seal are waterproofing and civil-protection products and do not inherit IS 15652:2006 insulating-mat certification, electrical insulation classes, the BIS insulating-mat licence or ERDA/NTH electrical-mat test reports. BharatMembrane is presented for applications covered by IS 15909:2020 and Bharat Hydro Seal references IS 15058:2002. They must not be specified as electrical safety mats.',
+      'No. Geo Membrane Lining and Water Stop Seal are waterproofing products and do not inherit IS 15652:2006 insulating-mat certification, electrical insulation classes, the BIS insulating-mat licence or ERDA/NTH electrical-mat test reports. Geo Membrane Lining is presented for applications covered by IS 15909:2020 and Water Stop Seal references IS 15058:2002. They must not be specified as electrical safety mats.',
   },
 ];
 
@@ -173,17 +173,17 @@ export const productFaqsBySlug: Record<string, SiteFAQ[]> = {
     },
   ],
 
-  /* ── BharatMembrane (civil — NO IS 15652 / no BIS mat licence) ── */
+  /* ── Geo Membrane Lining (civil — NO IS 15652 / no BIS mat licence) ── */
   'bharat-membrane': [
     {
-      question: 'What standard does BharatMembrane comply with?',
+      question: 'What standard does Geo Membrane Lining comply with?',
       answer:
-        'BharatMembrane is presented for applications covered by IS 15909:2020. Request the current product documentation for the exact membrane grade and project approval requirements.',
+        'Geo Membrane Lining is presented for applications covered by IS 15909:2020. Request the current product documentation for the exact membrane grade and project approval requirements.',
     },
     {
-      question: 'Can BharatMembrane be used in below-grade and underwater applications?',
+      question: 'Can Geo Membrane Lining be used in below-grade and underwater applications?',
       answer:
-        'BharatMembrane is used in below-grade waterproofing including basements, foundations, tunnel linings and other submerged or earth-retained structures. Thicker grades are recommended for higher hydrostatic pressure and continuous water exposure. Confirm the appropriate grade with the technical team for the specific project conditions.',
+        'Geo Membrane Lining is used in below-grade waterproofing including basements, foundations, tunnel linings and other submerged or earth-retained structures. Thicker grades are recommended for higher hydrostatic pressure and continuous water exposure. Confirm the appropriate grade with the technical team for the specific project conditions.',
     },
     {
       question: 'What dimensions are available?',
@@ -202,15 +202,15 @@ export const productFaqsBySlug: Record<string, SiteFAQ[]> = {
     },
   ],
 
-  /* ── Bharat Hydro Seal (civil — NO IS 15652 / no BIS mat licence) ── */
+  /* ── Water Stop Seal (civil — NO IS 15652 / no BIS mat licence) ── */
   'bharat-hydro-seal': [
     {
       question: 'What are PVC water stops and where are they used?',
       answer:
-        'Bharat Hydro Seal is a PVC water-stop product for concrete construction and expansion joints. The product information references IS 15058:2002. Request the current product and compliance documents required for your project.',
+        'Water Stop Seal is a PVC water-stop product for concrete construction and expansion joints. The product information references IS 15058:2002. Request the current product and compliance documents required for your project.',
     },
     {
-      question: 'What profiles are available for Bharat Hydro Seal?',
+      question: 'What profiles are available for Water Stop Seal?',
       answer:
         'Profiles are available in centre-bulb, dumbbell and ribbed configurations to suit different joint types and movement requirements. Profile selection depends on the joint type, expected movement, water pressure and project specification. Intersections and terminations require an appropriate joining method to form a continuous system.',
     },

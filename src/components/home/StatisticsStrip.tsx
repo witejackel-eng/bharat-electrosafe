@@ -1,4 +1,4 @@
-import { Globe, Users, LayoutGrid, ShieldCheck } from 'lucide-react';
+import { Globe, Users, LayoutGrid, ShieldCheck, Briefcase, Award } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { companyStatistics, type StatIconKey } from '@/data/trust';
 import { AnimatedStatValue } from '@/components/home/AnimatedStatValue';
@@ -35,6 +35,8 @@ const iconMap: Record<StatIconKey, LucideIcon> = {
   users: Users,
   grid: LayoutGrid,
   shield: ShieldCheck,
+  briefcase: Briefcase,
+  award: Award,
 };
 
 export default function StatisticsStrip() {
@@ -81,7 +83,7 @@ export default function StatisticsStrip() {
         </div>
         {/* Subtle footnote for company-stated figures */}
         <p className="mt-4 text-center text-[0.625rem] sm:text-[0.6875rem] text-be-grey-400 leading-none">
-          Countries served and customer figures are company-stated.
+          Figures are company-stated.
         </p>
       </div>
     </section>

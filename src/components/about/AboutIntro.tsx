@@ -16,10 +16,10 @@ import { ShieldCheck, Layers, Droplets, Zap } from 'lucide-react';
  */
 
 const productRange = [
-  { icon: Zap, title: 'High Voltage Insulating Mats', standard: 'IS 15652 & IEC 61111' },
+  { icon: Zap, title: 'High Voltage Insulating Mats', standard: 'IS 15652:2006 & IEC 61111:2009' },
   { icon: Layers, title: 'Geo Membrane Lining', standard: 'IS 15909:2020' },
-  { icon: Droplets, title: 'Water Proofing Solutions', standard: 'BharatHydro Water Stop Seals' },
-  { icon: ShieldCheck, title: 'PVC Flooring + Other Products', standard: 'IS 3462 • ESD Mats • Conveyor Belts' },
+  { icon: Droplets, title: 'Water Stop Seal', standard: 'IS 15058:2002' },
+  { icon: ShieldCheck, title: 'PVC Flooring', standard: 'IS 3462:1986' },
 ];
 
 export default function AboutIntro() {

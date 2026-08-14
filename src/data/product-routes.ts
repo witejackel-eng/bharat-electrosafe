@@ -111,21 +111,21 @@ export const productRoutes: ProductRoute[] = [
     parentKey: 'products',
   },
 
-  // ── Geo Membrane ──
+  // ── Geo Membrane Lining (migrated from /products/bharat-membrane) ──
   {
     key: 'bharat-membrane',
     displayName: 'Geo Membrane Lining',
-    canonicalPath: '/products/bharat-membrane',
-    legacyPaths: [],
+    canonicalPath: '/products/geo-membrane-lining',
+    legacyPaths: ['/products/bharat-membrane'],
     parentKey: 'waterproofing-solutions',
   },
 
-  // ── Water Stop Seal ──
+  // ── Water Stop Seal (migrated from /products/bharat-hydro-seal) ──
   {
     key: 'bharat-hydro-seal',
     displayName: 'Water Stop Seal',
-    canonicalPath: '/products/bharat-hydro-seal',
-    legacyPaths: [],
+    canonicalPath: '/products/water-stop-seal',
+    legacyPaths: ['/products/bharat-hydro-seal'],
     parentKey: 'waterproofing-solutions',
   },
 
@@ -250,8 +250,8 @@ export const PRODUCT_ROUTES = {
   colouredStrip: '/products/electrical-insulating-mats/coloured-strip-insulating-mats' as const,
   international: '/products/electrical-insulating-mats/international-iec-61111' as const,
   waterproofingSolutions: '/products/waterproofing-solutions' as const,
-  geoMembrane: '/products/bharat-membrane' as const,
-  hydroSeal: '/products/bharat-hydro-seal' as const,
+  geoMembrane: '/products/geo-membrane-lining' as const,
+  hydroSeal: '/products/water-stop-seal' as const,
   pvcFlooring: '/products/pvc-flooring-solutions' as const,
   otherProducts: '/products/other-products' as const,
 };

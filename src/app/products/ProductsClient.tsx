@@ -48,7 +48,7 @@ const extendedComparisonData: ProductComparisonRow[] = [
     name: 'PVC Flooring Solutions',
     slug: 'pvc-flooring-solutions',
     primaryPurpose: 'Industrial and commercial flooring',
-    distinguishingFeature: 'Bharat Smart Floor — PVC flooring system',
+    distinguishingFeature: 'BharatSmart Floor™ — PVC flooring system',
     typicalApplication: 'Factories, electrical rooms and commercial spaces',
     applicableStandard: 'IS 3462:1986',
   },
@@ -414,7 +414,7 @@ function WaterproofingSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
           {/* Geo Membrane */}
           <Link
-            href="/products/bharat-membrane"
+            href="/products/geo-membrane-lining"
             className="group relative flex flex-col rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.09)] hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
           >
             <div className="relative w-full overflow-hidden bg-[#f8f8f6] aspect-[16/10]">
@@ -428,7 +428,7 @@ function WaterproofingSection() {
               <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/5 transition-colors duration-300" />
             </div>
             <div className="flex flex-col gap-1.5 p-5 flex-1">
-              <span className="text-xs font-medium text-be-grey-650">BharatMembrane</span>
+              <span className="text-xs font-medium text-be-grey-650">Geo Membrane Lining</span>
               <h3 className="text-xl font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
                 Geo Membrane Lining
               </h3>
@@ -443,7 +443,7 @@ function WaterproofingSection() {
 
           {/* Water Stop Seal */}
           <Link
-            href="/products/bharat-hydro-seal"
+            href="/products/water-stop-seal"
             className="group relative flex flex-col rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.09)] hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
           >
             <div className="relative w-full overflow-hidden bg-[#f8f8f6] aspect-[16/10]">
@@ -457,7 +457,7 @@ function WaterproofingSection() {
               <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/5 transition-colors duration-300" />
             </div>
             <div className="flex flex-col gap-1.5 p-5 flex-1">
-              <span className="text-xs font-medium text-be-grey-650">Bharat Hydro Seal</span>
+              <span className="text-xs font-medium text-be-grey-650">Water Stop Seal</span>
               <h3 className="text-xl font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
                 Water Stop Seal
               </h3>
@@ -510,7 +510,7 @@ function PvcAndOtherSection() {
                 PVC Flooring Solutions
               </h3>
               <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed mb-1">
-                Bharat Smart Floor — industrial, electrical-room and commercial PVC flooring.
+                BharatSmart Floor™ — industrial, electrical-room and commercial PVC flooring.
               </p>
               <span className="text-xs font-medium text-be-grey-650 bg-be-grey-150 px-2.5 py-0.5 rounded-full inline-block mb-4">
                 IS 3462:1986
