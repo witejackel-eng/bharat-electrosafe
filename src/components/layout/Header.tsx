@@ -322,7 +322,7 @@ export function Header() {
                 </button>
               </SheetTrigger>
 
-              <SheetContent side="right" className="w-[320px] sm:w-[360px] bg-be-navy-900 p-0 border-l border-white/10" id="mobile-navigation-sheet">
+              <SheetContent side="right" className="w-[320px] sm:w-[360px] bg-be-navy-900 p-0 border-l border-white/10 [&>button]:text-white [&>button]:opacity-100 [&>button]:size-11 [&>button]:flex [&>button]:items-center [&>button]:justify-center [&>button]:hover:text-be-brand-yellow [&>button]:hover:bg-white/10 [&>button]:focus-visible:ring-be-brand-yellow [&>button>svg]:size-5" id="mobile-navigation-sheet">
                 <SheetHeader className="px-5 pt-5 pb-3 border-b border-white/10">
                   <SheetTitle className="flex items-center">
                     <Link href="/" onClick={() => setMobileOpen(false)}>
