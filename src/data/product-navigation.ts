@@ -161,13 +161,13 @@ export const productNavGroups: ProductNavGroup[] = [
     number: '03',
     name: 'PVC Flooring Solutions',
     href: '/products/pvc-flooring-solutions',
-    description: 'Industrial, electrical and commercial PVC flooring (IS 3462:1986)',
+    description: 'PVC flooring for residential, office and commercial interiors (IS 3462:1986)',
     hasSubGroups: false,
     children: [
       {
         name: 'PVC Flooring Solutions',
         href: '/products/pvc-flooring-solutions',
-        description: 'BharatSmart Floor™ — PVC flooring for industrial, electrical and commercial applications',
+        description: 'BharatSmart Floor™ — PVC flooring for homes, offices and commercial interiors',
       },
     ],
   },
@@ -269,7 +269,7 @@ export const categoryVisuals: CategoryVisual[] = [
   {
     groupId: 'pvc-flooring-solutions',
     src: '/media/categories/pvc-flooring-solutions-category.png',
-    alt: 'Industrial PVC flooring being installed in an electrical equipment room',
+    alt: 'BharatSmart Floor PVC flooring for residential and commercial interiors',
     isPlaceholder: false,
   },
   {

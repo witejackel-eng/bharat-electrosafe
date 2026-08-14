@@ -343,3 +343,101 @@ Stage Summary:
 - Typecheck: PASS (only pre-existing Prisma db.ts error, unrelated to changes)
 - 3 files changed: manifest.ts, WaterproofingHubClient.tsx, faqs.ts
 - All 9 audit checks completed; all violations fixed
+---
+Task ID: final
+Agent: main
+Task: Client Update 2026-08-14 — Full Implementation (Phases 1-7)
+
+Work Log:
+- Cloned repository, recorded baseline SHA: 80050e3
+- Read all uploaded files: IMPLEMENTATION_PLAN.md, MASTER_PROMPT_ZAI.md, BHARAT_ELECTROSAFE_CLIENT_UPDATE_2026-08-14.zip
+- Extracted zip bundle with all client assets, manifests, and source content
+
+Phase 1 — Baseline + Asset Import:
+- Created production media directories
+- Copied autoglow26 homepage image to /public/media/home/product-range/
+- Copied About poster to /public/media/about/
+- Copied 5 award images to /public/media/awards/client-2026-08-14/
+- Copied 4 MP4 videos to /public/media/videos/industry/
+- Copied 4 video posters to /public/media/video-posters/
+
+Phase 2 — Shared Data Updates:
+- trust.ts: Updated companyStatistics (1,070 / 11 / 5 / 712), added ERDA 3.0 mm, updated awards (5 client images), broadened capabilityPoints (6 product families)
+- team.ts: Updated Vishnu Gupta leadership profile with client-supplied content
+- product-routes.ts: Updated canonical paths to /products/geo-membrane-lining and /products/water-stop-seal
+- Created selected-clients.ts with 17 clients (Reliance first)
+
+Phase 3 — Homepage:
+- HomeHero.tsx: Converted to 4-slide Embla carousel (Electrical Mats, Waterproofing, PVC, Other Products)
+- StatisticsStrip.tsx: Added Briefcase/Award icons, updated footnote
+- ProductRange.tsx: Changed heading to "Products for electrical safety", updated Electrical card image
+- IndustryReferences.tsx: Added "View all clients" disclosure
+- page.tsx: Updated homepage metadata
+
+Phase 4 — About Us:
+- AboutIntro.tsx: Updated 4 product tiles (HV Mats, Geo Membrane, Water Stop Seal, PVC Flooring)
+- Created CompanyProfile.tsx (Who We Are section with client poster)
+- BrandsVisionMission.tsx: Updated Vision/Mission text
+- AwardsCertifications.tsx: Converted awards to Embla infinite carousel
+- ClientsProjects.tsx: White background, InfiniteLogoRail, client disclosure, merged video carousel
+- AboutUsShell.tsx: Wired CompanyProfile, removed ActiveParticipation
+- about-us/page.tsx: Updated metadata
+
+Phase 5 — Naming/Route/Footer/PVC:
+- Footer.tsx: Geo Membrane Lining + Water Stop Seal links
+- Created /products/geo-membrane-lining/page.tsx and /products/water-stop-seal/page.tsx
+- next.config.ts: Added legacy redirects
+- Public naming migration across 13+ files
+- PVCFlooringClient.tsx: BharatSmart Floor™ with ™ symbol
+- product-navigation.ts: Updated display names and hrefs
+
+Phase 6 — SEO/Indexing/Standards:
+- Sitemap, structured data, canonical URLs all aligned
+- Standards audit: IS 15652:2006, IEC 61111:2009, IS 15909:2020, IS 15058:2002, IS 3462:1986
+- ISO/IEC 17025 preserved
+- Removed "civil protection" from manifest, WaterproofingHubClient, faqs
+- Final naming audit: no disallowed old names in visible UI/metadata
+
+Phase 7 — QA:
+- Typecheck: PASS
+- Lint: PASS (0 errors, 0 warnings)
+- Build: PASS (production build successful)
+- New routes present: /products/geo-membrane-lining, /products/water-stop-seal
+
+Committed and pushed to GitHub: b7c0ad8 on main branch
+
+Stage Summary:
+- 57 files changed, 1544 insertions, 426 deletions
+- All 6 implementation phases complete
+- Typecheck, lint, and build all pass
+- Code pushed to https://github.com/witejackel-eng/bharat-electrosafe
+- Scheduled webDevReview cron task created (every 15 minutes, job_id: 322956)
+
+---
+Task ID: 1
+Agent: main
+Task: Adjust hero carousel autoplay timing (3s interval, ~600ms transition, 1.5s resume after interaction)
+
+Work Log:
+- Read current HomeHero.tsx to understand existing Embla carousel implementation (delay: 5500, stopOnInteraction: false, stopOnMouseEnter: true)
+- Researched Embla Carousel v8.6 `duration` option — it's a physics factor (default 25 ≈ 1s), not milliseconds
+- Simulated animation timing: duration=14 → ~600ms transition (within 500-650ms target)
+- Changed Autoplay config: delay 5500→3000, stopOnInteraction: true, removed stopOnMouseEnter (custom hover handling)
+- Added `duration: 14` to Embla carousel options for ~600ms transitions
+- Implemented custom mouseenter/mouseleave for hover: pause on enter, resume immediately on leave
+- Implemented 1500ms resume timer after manual arrow clicks, dot clicks, drag/swipe, and focus-out
+- Added pointerUp event listener for drag/swipe resume scheduling
+- Added timer cleanup on component unmount
+- Updated dot indicator click handler to also schedule resume timer
+- Kept all existing features: infinite loop, manual controls, centered arrows, swipe, keyboard, reduced-motion
+- Ran lint: clean (0 errors, 0 warnings)
+- Ran build: success
+- Git diff verified: only HomeHero.tsx timing logic changed
+- Committed (cf38eb4) and pushed to GitHub main
+
+Stage Summary:
+- Hero carousel now auto-advances every 3 seconds
+- Transition duration approximately 600ms (Embla duration: 14)
+- After manual arrow/swipe/dot: autoplay resumes after 1500ms
+- Hover: pauses while pointer is over hero, resumes immediately on leave
+- No changes to slide content, arrows, layout, or any other carousel

@@ -61,7 +61,7 @@ const productGroups: ProductGroupCardData[] = [
     href: '/products/pvc-flooring-solutions',
     name: 'PVC Flooring Solutions',
     description:
-      'Industrial PVC flooring for electrical, technical and commercial environments.',
+      'PVC flooring for homes, offices, retail spaces and modern commercial interiors.',
     visual: pvcFlooringVisuals.homePreview,
     objectPosition: 'center center',
   },
