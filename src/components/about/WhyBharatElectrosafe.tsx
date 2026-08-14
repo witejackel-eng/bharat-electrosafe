@@ -82,7 +82,7 @@ export default function WhyBharatElectrosafe() {
           {/* Values strip — compact horizontal row */}
           <div className="reveal-up">
             <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-3">
-              Our Values
+              Core Values
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {values.map((value) => {
