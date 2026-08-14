@@ -309,7 +309,7 @@ export const membraneVisuals: ProductVisuals = {
   gallery: [
     {
       src: `${PROD}/bharat-membrane/bharatmembrane-overview-thermal-seam.webp`,
-      alt: 'BharatMembrane thermal seam welding detail',
+      alt: 'Geo Membrane Lining thermal seam welding detail',
       fit: 'cover',
     },
     {
@@ -319,7 +319,7 @@ export const membraneVisuals: ProductVisuals = {
     },
     {
       src: `${PROD}/bharat-membrane/gallery/01-tunnel-membrane-lining.webp`,
-      alt: 'Original BharatMembrane tunnel membrane lining installation',
+      alt: 'Original Geo Membrane Lining tunnel membrane lining installation',
       fit: 'cover',
     },
     {

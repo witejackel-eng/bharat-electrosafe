@@ -46,9 +46,9 @@ const products: ProductItem[] = [
     accentColor: 'bg-be-yellow-500',
   },
   {
-    name: 'BharatMembrane',
+    name: 'Geo Membrane Lining',
     description: 'Engineered waterproofing membrane for infrastructure',
-    href: '/products/bharat-membrane',
+    href: '/products/geo-membrane-lining',
     slotId: 'HOME-PRODUCT-BM-01',
     accentColor: 'bg-be-charcoal-800',
   },

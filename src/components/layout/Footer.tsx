@@ -33,7 +33,8 @@ const companyLinks = [
  */
 const footerProductFamilies = [
   { name: 'Electrical Insulating Mats', href: '/products/electrical-insulating-mats' },
-  { name: 'Waterproofing Solutions', href: '/products/waterproofing-solutions' },
+  { name: 'Geo Membrane Lining', href: '/products/geo-membrane-lining' },
+  { name: 'Water Stop Seal', href: '/products/water-stop-seal' },
   { name: 'PVC Flooring Solutions', href: '/products/pvc-flooring-solutions' },
   { name: 'Other Products', href: '/products/other-products' },
 ];

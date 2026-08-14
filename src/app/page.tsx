@@ -39,14 +39,14 @@ export const metadata: Metadata = {
     absolute: 'Electrical Insulating Mats Manufacturer India | Bharat Electrosafe',
   },
   description:
-    'Manufacturer of electrical insulating mats, PVC flooring and waterproofing solutions, BharatMembrane PVC geo-membranes and Bharat Hydro Seal water stops for industrial applications.',
+    'Manufacturer of electrical insulating mats, Geo Membrane Lining, Water Stop Seal, PVC flooring and industrial rubber products for electrical, industrial and infrastructure applications.',
   alternates: {
     canonical: buildUrl('/'),
   },
   openGraph: {
     title: 'Electrical Insulating Mats Manufacturer India | Bharat Electrosafe',
     description:
-      'Manufacturer of electrical insulating mats, visible-safety mat variants, BharatMembrane PVC geo-membranes and Bharat Hydro Seal water stops for industrial applications.',
+      'Manufacturer of electrical insulating mats, Geo Membrane Lining, Water Stop Seal, PVC flooring and industrial rubber products for electrical, industrial and infrastructure applications.',
     url: buildUrl('/'),
     type: 'website',
     images: [siteOgImage],
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Electrical Insulating Mats Manufacturer India | Bharat Electrosafe',
     description:
-      'Manufacturer of electrical insulating mats, visible-safety mat variants, BharatMembrane PVC geo-membranes and Bharat Hydro Seal water stops for industrial applications.',
+      'Manufacturer of electrical insulating mats, Geo Membrane Lining, Water Stop Seal, PVC flooring and industrial rubber products for electrical, industrial and infrastructure applications.',
     images: [siteTwitterImage],
   },
   robots: allowIndexing

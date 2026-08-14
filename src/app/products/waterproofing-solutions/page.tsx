@@ -5,14 +5,14 @@ import WaterproofingHubClient from './WaterproofingHubClient';
 export const metadata: Metadata = {
   title: 'Waterproofing Solutions — Geo Membrane & Water Stop',
   description:
-    'Bharat Electrosafe waterproofing solutions: BharatMembrane PVC geo-membrane lining for tunnels and containment, and Bharat Hydro Seal PVC water-stop profiles for construction joints.',
+      'Bharat Electrosafe waterproofing solutions: Geo Membrane Lining PVC geo-membrane lining for tunnels and containment, and Water Stop Seal PVC water-stop profiles for construction joints.',
   alternates: {
     canonical: buildUrl('/products/waterproofing-solutions'),
   },
   openGraph: {
     title: 'Waterproofing Solutions — Geo Membrane & Water Stop | Bharat Electrosafe',
     description:
-      'BharatMembrane geo-membrane lining and Bharat Hydro Seal water-stop profiles for civil infrastructure waterproofing.',
+      'Geo Membrane Lining geo-membrane lining and Water Stop Seal water-stop profiles for civil infrastructure waterproofing.',
     url: buildUrl('/products/waterproofing-solutions'),
     type: 'website',
   },

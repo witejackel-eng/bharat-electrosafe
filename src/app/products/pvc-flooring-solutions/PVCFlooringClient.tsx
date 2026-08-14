@@ -40,7 +40,7 @@ const breadcrumbItems = [
 
 const keyBenefits = [
   { icon: Shield, text: 'PVC flooring manufactured to IS 3462:1986 for industrial, electrical and commercial flooring applications' },
-  { icon: Layers, text: 'Bharat Smart Floor product range — engineered PVC flooring solutions' },
+  { icon: Layers, text: 'BharatSmart Floor™ product range — engineered PVC flooring solutions' },
   { icon: HardHat, text: 'Designed for demanding industrial environments where durability and safety are essential' },
   { icon: Zap, text: 'Suitable for electrical flooring applications where operator safety is a priority' },
 ];
@@ -91,7 +91,7 @@ export default function PVCFlooringClient() {
               {/* Badges */}
               <div className="flex flex-wrap gap-2 mb-2.5 lg:mb-3">
                 <TechnicalBadge label="IS 3462:1986" />
-                <TechnicalBadge label="Bharat Smart Floor" />
+                <TechnicalBadge label="BharatSmart Floor™" />
               </div>
 
               {/* Eyebrow + H1 */}
@@ -102,7 +102,7 @@ export default function PVCFlooringClient() {
 
               {/* Introduction */}
               <p className="product-hero-intro text-body-large text-be-grey-650 leading-relaxed mb-4 lg:mb-5">
-                Bharat Smart Floor PVC flooring solutions for industrial, electrical
+                BharatSmart Floor™ PVC flooring solutions for industrial, electrical
                 and commercial flooring applications — manufactured as per
                 IS 3462:1986.
               </p>
@@ -179,8 +179,8 @@ export default function PVCFlooringClient() {
             <div className="lg:w-[55%] flex flex-col gap-6">
               <SectionHeader
                 eyebrow="Product Overview"
-                title="Bharat Smart Floor Overview"
-                supportingText="Bharat Smart Floor is Bharat Electrosafe's PVC flooring product line, providing flooring solutions for industrial, electrical and commercial applications as per IS 3462:1986. The range is designed to meet the demanding requirements of environments where durability, safety and regulatory compliance are essential."
+                title="BharatSmart Floor™ Overview"
+                supportingText="BharatSmart Floor™ is Bharat Electrosafe's PVC flooring product line, providing flooring solutions for industrial, electrical and commercial applications as per IS 3462:1986. The range is designed to meet the demanding requirements of environments where durability, safety and regulatory compliance are essential."
               />
 
               <FeatureList
@@ -208,7 +208,7 @@ export default function PVCFlooringClient() {
               <SectionHeader
                 eyebrow="Applications"
                 title="Where It's Used"
-                supportingText="Bharat Smart Floor PVC flooring is designed for industrial, electrical and commercial flooring applications as per IS 3462:1986."
+                supportingText="BharatSmart Floor™ PVC flooring is designed for industrial, electrical and commercial flooring applications as per IS 3462:1986."
               />
 
               <div className="flex flex-col gap-4">
@@ -244,7 +244,7 @@ export default function PVCFlooringClient() {
             <SectionHeader
               eyebrow="Standards Compliance"
               title="IS 3462:1986 Compliant"
-              supportingText="Bharat Smart Floor PVC flooring is manufactured as per IS 3462:1986, the Indian Standard for PVC floor coverings. Detailed technical specifications, thickness options and surface pattern availability are provided on request with a formal quotation."
+              supportingText="BharatSmart Floor™ PVC flooring is manufactured as per IS 3462:1986, the Indian Standard for PVC floor coverings. Detailed technical specifications, thickness options and surface pattern availability are provided on request with a formal quotation."
             />
 
             {/* Clean standards card — no invented data */}

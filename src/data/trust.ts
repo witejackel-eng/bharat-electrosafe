@@ -94,6 +94,12 @@ export const primaryTrustMarks: TrustMark[] = [
     document: '/documents/certifications/erda-test-report-2-5mm.pdf',
   },
   {
+    label: 'ERDA testing — 3.0 mm',
+    note: 'Insulating mats tested through ERDA — 3.0 mm thickness',
+    logo: '/media/certifications/erda.webp',
+    alt: 'Electrical Research and Development Association mark',
+  },
+  {
     label: 'NTH testing',
     note: 'National Test House testing referenced by the company',
     logo: '/media/certifications/nth.webp',
@@ -201,31 +207,54 @@ export interface Award {
  * Industrial Fair 2025 exhibitor); with no standalone image of either they are
  * left out rather than illustrated with a crop.
  */
+/**
+ * Recognition the company can evidence — five client-supplied images
+ * from the 2026-08-14 update bundle.
+ */
 export const awards: Award[] = [
   {
-    title: 'Emerging Business in India',
-    presenter: 'Make in India Conclave, organised by ABP News',
+    title: 'Bharat Electrosafe recognition portfolio',
+    presenter: 'Client-supplied recognition collection',
     detail:
-      'Received by Co-Founder & Director Vishnu Gupta, presented by Shri Chirag Paswan, Honourable Cabinet Minister.',
-    image: '/media/awards/award-01.webp',
-    alt: 'Vishnu Gupta receiving the Emerging Business in India award at the Make in India Conclave',
-    fit: 'cover',
+      'A grouped photograph of Bharat Electrosafe awards and industry-event recognitions.',
+    image: '/media/awards/client-2026-08-14/awards-1.jpeg',
+    alt: 'Grouped photograph of Bharat Electrosafe awards and industry-event recognitions',
+    fit: 'contain',
   },
   {
-    title: 'Young Entrepreneur with Emerging Start-Up',
-    presenter: 'Times Power Icons Awards, presented by the Times Group',
-    detail: 'Received by Co-Founder & Director Vishnu Gupta.',
-    image: '/media/awards/award-02.webp',
-    alt: 'Vishnu Gupta receiving the Young Entrepreneur with Emerging Start-Up award at the Times Power Icons Awards',
-    fit: 'cover',
+    title: 'Bronze Sponsor recognition — India Rubber & Tyre Show 2025',
+    presenter: 'Rubber Manufacturers Welfare Association',
+    detail:
+      'Presented to Bharat Electrosafe Pvt. Ltd. in recognition of support as Bronze Sponsor.',
+    image: '/media/awards/client-2026-08-14/awards-2.jpeg',
+    alt: 'Bronze Sponsor recognition at India Rubber and Tyre Show 2025',
+    fit: 'contain',
   },
   {
     title: 'Exhibitor appreciation — PlastIndia 2026',
     presenter: 'PlastIndia Foundation',
     detail:
-      'Presented to Bharatelectrosafe Pvt. Ltd. for participation as an exhibitor at PlastIndia 2026, Bharat Mandapam, New Delhi.',
-    image: '/media/awards/photo-03.webp',
+      'Presented to Bharat Electrosafe Pvt. Ltd. for participation as an exhibitor at PlastIndia 2026, Bharat Mandapam, New Delhi.',
+    image: '/media/awards/client-2026-08-14/awards-3.jpeg',
     alt: 'PlastIndia Foundation plaque presented to Bharatelectrosafe Pvt. Ltd. for exhibiting at PlastIndia 2026',
+    fit: 'contain',
+  },
+  {
+    title: 'Young Entrepreneur with Emerging Start-Up',
+    presenter: 'Times Power Icons Awards, presented by the Times Group',
+    detail:
+      'Recognition associated with Bharat Electrosafe\'s leadership and entrepreneurial journey.',
+    image: '/media/awards/client-2026-08-14/awards-4.jpeg',
+    alt: 'Young Entrepreneur with Emerging Start-Up award at Times Power Icons Awards',
+    fit: 'contain',
+  },
+  {
+    title: 'Emerging Business in India',
+    presenter: 'Make in India Conclave, organised by ABP News',
+    detail:
+      'Received by Co-Founder & Director Vishnu Gupta; the company\'s published source states it was presented by Shri Chirag Paswan, Honourable Cabinet Minister.',
+    image: '/media/awards/client-2026-08-14/awards-5.jpeg',
+    alt: 'Vishnu Gupta receiving the Emerging Business in India award at the Make in India Conclave',
     fit: 'contain',
   },
 ];
@@ -311,7 +340,7 @@ export const scaleFacts = [
  * - grid   → LayoutGrid
  * - shield → ShieldCheck
  */
-export type StatIconKey = 'globe' | 'users' | 'grid' | 'shield';
+export type StatIconKey = 'globe' | 'users' | 'grid' | 'shield' | 'briefcase' | 'award';
 
 export interface CompanyStatistic {
   /** Large display value (e.g. "11+", "1,000+"). */
@@ -327,43 +356,35 @@ export interface CompanyStatistic {
 /**
  * Homepage credibility strip — four statistics.
  *
- * "11+" and "1,000+" are company-stated figures from Bharat Electrosafe's
- * own source material. They are NOT independently audited. The
- * `companyStated` flag is preserved in data but not rendered on the
- * compact homepage cards; a subtle footnote may appear below the strip.
- *
- * Product Groups is derived from `productGroupCount` in the product
- * registry (4 top-level groups). The detailed product registry may contain
- * more records because the first group is split into domestic variants —
- * that does not change the public group count.
- *
- * Insulation Classes (3) refers to the domestic Class A, B and C range
- * per IS 15652:2006.
+ * Client-supplied company-stated figures as of 2026-08-14 update.
+ * These are NOT independently audited. The `companyStated` flag is
+ * preserved in data but not rendered on the compact homepage cards;
+ * a subtle footnote appears below the strip.
  */
 export const companyStatistics: CompanyStatistic[] = [
   {
-    value: '11+',
+    value: '1,070',
+    label: 'Happy Customers Served',
+    icon: 'users',
+    companyStated: true,
+  },
+  {
+    value: '11',
     label: 'Countries Served',
     icon: 'globe',
     companyStated: true,
   },
   {
-    value: '1,000+',
-    label: 'Customers',
-    icon: 'users',
+    value: '5',
+    label: 'Years of Work',
+    icon: 'briefcase',
     companyStated: true,
   },
   {
-    value: String(productGroupCount),
-    label: 'Product Groups',
-    icon: 'grid',
-    companyStated: false,
-  },
-  {
-    value: '3',
-    label: 'Insulation Classes',
-    icon: 'shield',
-    companyStated: false,
+    value: '712',
+    label: 'Successful Projects',
+    icon: 'award',
+    companyStated: true,
   },
 ];
 
@@ -371,37 +392,40 @@ export const companyStatistics: CompanyStatistic[] = [
    Manufacturing and capability
    ──────────────────────────────────────────── */
 
-/** Condensed from the source site's "Why Choose Us" list. Nothing added. */
+/**
+ * Six capability points covering all major product families.
+ * Updated 2026-08-14 to broaden beyond insulating mats per client directive.
+ */
 export const capabilityPoints = [
   {
-    title: 'Insulating-mat compound and product manufacturing',
+    title: 'Electrical insulating mat manufacturing',
     description:
-      'An integrated production setup running from compound manufacturing through to the finished insulating mat.',
+      'An integrated production setup running from compound manufacturing through to finished insulating mats, with domestic and international product configurations.',
   },
   {
-    title: 'Class A, B and C product configurations',
+    title: 'Geo Membrane Lining',
     description:
-      'Production configurations covering Class A (3.3 kV), Class B (11 kV) and Class C (33 kV) insulating mats.',
+      'PVC geo-membrane solutions for tunnel waterproofing, containment, lining and environmental protection applications, referenced to IS 15909:2020.',
   },
   {
-    title: 'Anti-skid surface options',
+    title: 'Water Stop Seal',
     description:
-      'Coin, dot and hexa-pattern surface configurations.',
+      'Water-stop profiles for concrete construction and expansion joints, referenced to IS 15058:2002.',
   },
   {
-    title: 'Visible-safety variants',
+    title: 'PVC Flooring',
     description:
-      'Coloured-strip, bi-color and auto-glow / reflective band variants on the standard insulating-mat platform.',
+      'BharatSmart Floor™ PVC flooring for industrial, electrical and commercial applications as per IS 3462:1986.',
   },
   {
-    title: 'Project-specific dimensions',
+    title: 'Other industrial products',
     description:
-      'Standard rolls and project-specific lengths quoted against the enquiry.',
+      'Rubber Sheets, Rubber Hose Pipes, ESD Mats and Conveyor Belts for industrial rubber and safety requirements.',
   },
   {
-    title: 'Product documentation and enquiry support',
+    title: 'Testing, documentation and project support',
     description:
-      'Available documentation is confirmed for the selected product during quotation.',
+      'BIS licence and ERDA/NTH testing are referenced for the insulating-mat range, with product documentation and enquiry support provided where available.',
   },
 ] as const;
 

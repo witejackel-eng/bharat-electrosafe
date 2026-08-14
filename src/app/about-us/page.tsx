@@ -14,14 +14,14 @@ const FULL_TITLE = `${PAGE_TITLE} | Bharat Electrosafe`;
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description:
-    'Learn about Bharat Electrosafe, its electrical insulating-mat and engineered PVC product range, leadership, manufacturing approach and documentation.',
+    'Bharat Electrosafe — India\'s trusted manufacturer of electrical safety products, Geo Membrane Lining, Water Stop Seal, PVC flooring and industrial rubber products. Leadership, manufacturing and compliance.',
   alternates: {
     canonical: buildUrl('/about-us'),
   },
   openGraph: {
     title: FULL_TITLE,
     description:
-      'Learn about Bharat Electrosafe, its electrical insulating-mat and engineered PVC product range, leadership, manufacturing approach and documentation.',
+      'Bharat Electrosafe — India\'s trusted manufacturer of electrical safety products, Geo Membrane Lining, Water Stop Seal, PVC flooring and industrial rubber products. Leadership, manufacturing and compliance.',
     url: buildUrl('/about-us'),
     type: 'website',
     images: [siteOgImage],
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: FULL_TITLE,
     description:
-      'Learn about Bharat Electrosafe, its electrical insulating-mat and engineered PVC product range, leadership, manufacturing approach and documentation.',
+      'Bharat Electrosafe — India\'s trusted manufacturer of electrical safety products, Geo Membrane Lining, Water Stop Seal, PVC flooring and industrial rubber products. Leadership, manufacturing and compliance.',
     images: [siteTwitterImage],
   },
   robots: allowIndexing
