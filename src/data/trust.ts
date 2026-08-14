@@ -415,7 +415,7 @@ export const capabilityPoints = [
   {
     title: 'PVC Flooring',
     description:
-      'BharatSmart Floor™ PVC flooring for industrial, electrical and commercial applications as per IS 3462:1986.',
+      'BharatSmart Floor™ PVC flooring for residential, office and commercial interiors as per IS 3462:1986.',
   },
   {
     title: 'Other industrial products',

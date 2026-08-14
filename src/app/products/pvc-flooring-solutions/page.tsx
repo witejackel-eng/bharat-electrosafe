@@ -7,7 +7,7 @@ import PVCFlooringClient from './PVCFlooringClient';
 const pageTitle = 'PVC Flooring Solutions IS 3462:1986';
 const socialTitle = 'PVC Flooring Solutions IS 3462:1986 | Bharat Electrosafe';
 const description =
-  'BharatSmart Floor™ PVC flooring solutions for industrial, electrical and commercial applications — IS 3462:1986 compliant.';
+  'BharatSmart Floor™ PVC flooring for homes, offices and commercial interiors, including residential spaces, workspaces, reception areas, retail interiors and similar applications — IS 3462:1986.';
 const path = '/products/pvc-flooring-solutions';
 const canonicalUrl = buildUrl(path);
 
