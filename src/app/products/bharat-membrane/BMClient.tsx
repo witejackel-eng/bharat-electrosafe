@@ -21,7 +21,7 @@ export default function BMClient({ product }: { product: ProductData }) {
         <SectionHeader
           eyebrow="Membrane Properties"
           title="Variant Comparison"
-          supportingText="BharatMembrane is available in three thickness variants. Each variant is optimised for different exposure levels and project requirements."
+          supportingText="Geo Membrane Lining is available in three thickness variants. Each variant is optimised for different exposure levels and project requirements."
         />
         <DataTable
           headers={product.specifications.headers}

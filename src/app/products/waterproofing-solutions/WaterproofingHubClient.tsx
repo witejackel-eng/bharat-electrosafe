@@ -22,17 +22,17 @@ interface WaterproofingProduct {
 
 const products: WaterproofingProduct[] = [
   {
-    name: 'BharatMembrane',
+    name: 'Geo Membrane Lining',
     descriptor: 'Geo Membrane Lining',
-    href: '/products/bharat-membrane',
+    href: '/products/geo-membrane-lining',
     description:
       'Engineered PVC geo-membrane for waterproofing, lining and containment in tunnels, civil works and environmental projects.',
     visual: membraneVisuals.card,
   },
   {
-    name: 'Bharat Hydro Seal',
+    name: 'Water Stop Seal',
     descriptor: 'Water Stop Seal',
-    href: '/products/bharat-hydro-seal',
+    href: '/products/water-stop-seal',
     description:
       'PVC water-stop profile for construction joints in concrete water-retaining structures.',
     visual: hydroSealVisuals.card,
@@ -61,7 +61,7 @@ export default function WaterproofingHubClient() {
                 Waterproofing Solutions
               </h1>
               <p className="text-body-large text-be-grey-650 leading-relaxed">
-                Bharat Electrosafe provides engineered waterproofing and civil-protection
+                Bharat Electrosafe provides engineered waterproofing
                 systems — PVC geo-membrane lining for tunnels and containment, and PVC water-stop
                 profiles for concrete construction joints.
               </p>

@@ -1049,7 +1049,7 @@ const bmGallery: ProductGalleryImage[] = [
 
 const bharatMembrane: ProductData = {
   slug: 'bharat-membrane',
-  name: 'BharatMembrane',
+  name: 'Geo Membrane Lining',
   shortName: 'BM',
   category: 'waterproofing-civil-protection',
   images: {
@@ -1066,7 +1066,7 @@ const bharatMembrane: ProductData = {
   description:
     'PVC geo-membranes for tunnel waterproofing, containment, lining and barrier applications in civil and environmental projects.',
   introduction:
-    'BharatMembrane is a range of PVC geo-membranes for tunnel waterproofing, containment, lining and barrier applications in civil and environmental engineering projects. Referenced standard: IS 15909:2020. Product profile, thickness, welding method and suitability should be reviewed against the project specification before selection.',
+    'Geo Membrane Lining is a range of PVC geo-membranes for tunnel waterproofing, containment, lining and barrier applications in civil and environmental engineering projects. Referenced standard: IS 15909:2020. Product profile, thickness, welding method and suitability should be reviewed against the project specification before selection.',
   badges: ['IS 15909:2020', 'PVC geo-membrane', 'Thermally weldable', 'Custom fabrication'],
   quickFacts: [
     { icon: 'droplets', label: 'Function', value: 'Waterproofing and containment' },
@@ -1074,7 +1074,7 @@ const bharatMembrane: ProductData = {
     { icon: 'award', label: 'Standard', value: 'IS 15909:2020' },
   ],
   overviewText:
-    'BharatMembrane is a PVC geo-membrane for civil and environmental engineering applications. Sheets are seamable by thermal welding, producing continuous joints without adhesives, and custom fabrication is available so roll sizes suit the project. Request the current product documentation for the exact membrane grade and project approval requirements.',
+    'Geo Membrane Lining is a PVC geo-membrane for civil and environmental engineering applications. Sheets are seamable by thermal welding, producing continuous joints without adhesives, and custom fabrication is available so roll sizes suit the project. Request the current product documentation for the exact membrane grade and project approval requirements.',
   keyBenefits: [
     { icon: 'shield', text: 'PVC geo-membrane for barrier and containment applications' },
     { icon: 'hammer', text: 'Puncture and tear resistance' },
@@ -1254,7 +1254,7 @@ const bhsGallery: ProductGalleryImage[] = [
 
 const bharatHydroSeal: ProductData = {
   slug: 'bharat-hydro-seal',
-  name: 'Bharat Hydro Seal',
+  name: 'Water Stop Seal',
   shortName: 'Hydro-Seal',
   category: 'waterproofing-civil-protection',
   images: {
@@ -1278,7 +1278,7 @@ const bharatHydroSeal: ProductData = {
   description:
     'PVC and rubber water-stop profiles for construction and expansion joints in concrete structures.',
   introduction:
-    'Bharat Hydro Seal water-stop profiles are designed to reduce water passage through properly constructed construction and expansion joints in concrete structures. Referenced standard: IS 15058:2002. Profile selection depends on joint type, movement, water pressure, installation method and project specification.',
+    'Water Stop Seal water-stop profiles are designed to reduce water passage through properly constructed construction and expansion joints in concrete structures. Referenced standard: IS 15058:2002. Profile selection depends on joint type, movement, water pressure, installation method and project specification.',
   badges: ['IS 15058:2002', 'PVC Water Stop', 'Multiple profiles', 'Weldable at intersections'],
   quickFacts: [
     { icon: 'droplets', label: 'Function', value: 'Water stop sealing for construction joints' },
@@ -1286,7 +1286,7 @@ const bharatHydroSeal: ProductData = {
     { icon: 'shield', label: 'Material', value: 'PVC and rubber compounds' },
   ],
   overviewText:
-    'Bharat Hydro Seal profiles are made from PVC and rubber compounds and are available in centre-bulb, dumbbell and ribbed configurations. Profile selection depends on the joint type, expected movement, water pressure and project specification. Intersections and terminations require an appropriate joining method to form a continuous system. Request the current product and compliance documents required for your project.',
+    'Water Stop Seal profiles are made from PVC and rubber compounds and are available in centre-bulb, dumbbell and ribbed configurations. Profile selection depends on the joint type, expected movement, water pressure and project specification. Intersections and terminations require an appropriate joining method to form a continuous system. Request the current product and compliance documents required for your project.',
   keyBenefits: [
     { icon: 'droplets', text: 'PVC water-stop profiles for construction and expansion joints' },
     { icon: 'bolt', text: 'Available in centre-bulb, dumbbell and ribbed configurations' },
@@ -1547,7 +1547,7 @@ export const productComparisonData: ProductComparisonRow[] = [
     applicableStandard: 'IS 15652:2006',
   },
   {
-    name: 'BharatMembrane',
+    name: 'Geo Membrane Lining',
     slug: 'bharat-membrane',
     primaryPurpose: 'Waterproofing and containment',
     distinguishingFeature: 'Engineered PVC geomembrane',
@@ -1555,7 +1555,7 @@ export const productComparisonData: ProductComparisonRow[] = [
     applicableStandard: 'IS 15909:2020',
   },
   {
-    name: 'Bharat Hydro Seal',
+    name: 'Water Stop Seal',
     slug: 'bharat-hydro-seal',
     primaryPurpose: 'Construction-joint water sealing',
     distinguishingFeature: 'PVC water stop profile',

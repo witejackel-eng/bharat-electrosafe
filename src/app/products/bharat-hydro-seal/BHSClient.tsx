@@ -24,7 +24,7 @@ export default function BHSClient({ product }: { product: ProductData }) {
         <SectionHeader
           eyebrow="Water Stop Properties"
           title="Product Specifications"
-          supportingText="Bharat Hydro Seal water stops reference IS 15058:2002 and are available in multiple profile configurations for construction and expansion joints in concrete structures."
+          supportingText="Water Stop Seal water stops reference IS 15058:2002 and are available in multiple profile configurations for construction and expansion joints in concrete structures."
         />
         <DataTable
           headers={product.specifications.headers}

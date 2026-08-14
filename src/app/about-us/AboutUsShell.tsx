@@ -3,32 +3,28 @@ import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
 import { MobileStickyCTA } from '@/components/ui/MobileStickyCTA';
 import AboutIntro from '@/components/about/AboutIntro';
+import CompanyProfile from '@/components/about/CompanyProfile';
 import CompanyLeadership from '@/components/about/CompanyLeadership';
 import BrandsVisionMission from '@/components/about/BrandsVisionMission';
 import WhyBharatElectrosafe from '@/components/about/WhyBharatElectrosafe';
 import AwardsCertifications from '@/components/about/AwardsCertifications';
 import ClientsProjects from '@/components/about/ClientsProjects';
-import ActiveParticipation from '@/components/about/ActiveParticipation';
 import AboutCTA from '@/components/about/AboutCTA';
 
 /**
  * AboutUsShell — Server Component.
  *
- * Compact 8-section structure:
+ * Compact section structure:
  *   1. ABOUT / WHO WE ARE              (AboutIntro — warm white bg)
- *   2. LEADERSHIP                       (CompanyLeadership — white bg, flip cards)
- *   3. BRANDS + VISION / MISSION        (BrandsVisionMission — navy band)
- *   4. WHY BHARAT ELECTROSAFE           (WhyBharatElectrosafe — cream bg)
- *   5. RECOGNITION & TRUST              (AwardsCertifications — white bg)
- *   6. CLIENTS & INDUSTRY               (ClientsProjects — warm neutral bg)
- *   7. INDUSTRY PARTICIPATION           (ActiveParticipation — warm white/cream bg)
+ *   2. COMPANY PROFILE                 (CompanyProfile — warm white bg)
+ *   3. LEADERSHIP                       (CompanyLeadership — white bg, flip cards)
+ *   4. BRANDS + VISION / MISSION        (BrandsVisionMission — navy band)
+ *   5. WHY BHARAT ELECTROSAFE           (WhyBharatElectrosafe — cream bg)
+ *   6. RECOGNITION & TRUST              (AwardsCertifications — white bg)
+ *   7. CLIENTS & INDUSTRY + MEDIA       (ClientsProjects — white bg, includes video carousel)
  *   8. CTA                              (AboutCTA — yellow/navy emphasis)
  *
- * Color rhythm alternates warm-white → white → navy → cream → white → warm-neutral → cream → yellow
- * to create visual separation without monotony.
- *
- * The shared <RevealObserver /> drives `.reveal-up` entrance animations.
- * All page content is server-rendered for SEO, accessibility, and optimal LCP.
+ * ActiveParticipation has been merged into ClientsProjects (video carousel).
  */
 
 export default function AboutUsShell() {
@@ -39,23 +35,23 @@ export default function AboutUsShell() {
         {/* 1. About / Who We Are — warm white bg */}
         <AboutIntro />
 
-        {/* 2. Leadership — white bg, flip cards */}
+        {/* 2. Company Profile — warm white bg */}
+        <CompanyProfile />
+
+        {/* 3. Leadership — white bg, flip cards */}
         <CompanyLeadership />
 
-        {/* 3. Brands + Vision / Mission — navy band (self-contained) */}
+        {/* 4. Brands + Vision / Mission — navy band (self-contained) */}
         <BrandsVisionMission />
 
-        {/* 4. Why Bharat Electrosafe — cream bg */}
+        {/* 5. Why Bharat Electrosafe — cream bg */}
         <WhyBharatElectrosafe />
 
-        {/* 5. Recognition & Trust — white bg */}
+        {/* 6. Recognition & Trust — white bg */}
         <AwardsCertifications />
 
-        {/* 6. Clients & Industry — warm neutral bg */}
+        {/* 7. Clients & Industry + Media — white bg (includes video carousel) */}
         <ClientsProjects />
-
-        {/* 7. Industry Participation — cream bg */}
-        <ActiveParticipation />
 
         {/* 8. CTA — yellow/navy emphasis */}
         <AboutCTA />

@@ -16,10 +16,10 @@ import { Target, Compass } from 'lucide-react';
 
 /* ── Vision / Mission text ── */
 const vision =
-  'Make electrical and industrial protection products easier to specify, source and deploy with clear technical information.';
+  'To be the most trusted name in electrical safety by delivering world-class insulating products that help businesses create secure and compliant workspaces.';
 
 const mission =
-  'Manufacture and supply electrical safety and industrial protection products with clear specifications, documented testing where applicable and responsive project support.';
+  'To safeguard lives and assets by providing superior electrical insulation solutions that adhere to the highest quality and safety standards.';
 
 export default function BrandsVisionMission() {
   return (

@@ -66,8 +66,8 @@ export const productOptions: { value: ProductValue; label: string }[] = [
   { value: 'csim', label: 'Coloured Strip Insulating Mats' },
   { value: 'bcim', label: 'Bi-Colour Insulating Mats' },
   { value: 'agrim', label: 'Auto-Glow / Reflective Band Insulating Mats' },
-  { value: 'bm', label: 'BharatMembrane' },
-  { value: 'bhs', label: 'Bharat Hydro Seal' },
+  { value: 'bm', label: 'Geo Membrane Lining' },
+  { value: 'bhs', label: 'Water Stop Seal' },
 ];
 
 /* ────────────────────────────────────────────

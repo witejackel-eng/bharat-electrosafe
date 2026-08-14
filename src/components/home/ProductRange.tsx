@@ -39,7 +39,11 @@ const productGroups: ProductGroupCardData[] = [
     name: 'Electrical Insulating Mats',
     description:
       'IS 15652 and IEC 61111 insulating mat solutions for electrical safety around switchgear and substations.',
-    visual: hvVisuals.homePreview,
+    visual: {
+      src: '/media/home/product-range/electrical-insulating-mats-autoglow26.png',
+      alt: 'AutoGlow reflective band electrical insulating mat with safety visibility strip',
+      fit: 'cover' as const,
+    },
     standardsLine: 'Domestic · IS 15652:2006  ·  International · IEC 61111',
     objectPosition: 'center center',
   },
@@ -48,7 +52,7 @@ const productGroups: ProductGroupCardData[] = [
     href: '/products/waterproofing-solutions',
     name: 'Waterproofing Solutions',
     description:
-      'BharatMembrane and Bharat Hydro Seal systems for tunnels, containment and industrial waterproofing.',
+      'Geo Membrane Lining and Water Stop Seal systems for tunnels, containment and industrial waterproofing.',
     visual: membraneVisuals.homePreview,
     objectPosition: 'center center',
   },
@@ -147,7 +151,7 @@ export default function ProductRange() {
       <div className="reveal-up mb-8">
         <SectionHeader
           eyebrow="PRODUCT RANGE"
-          title="Products for electrical safety and civil protection"
+          title="Products for electrical safety"
           supportingText="Electrical insulating mats, waterproofing systems, PVC flooring and related industrial rubber products."
         />
       </div>

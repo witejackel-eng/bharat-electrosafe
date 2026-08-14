@@ -52,15 +52,14 @@ const productTitles: Record<string, ProductTitleSet> = {
     pageTitle: 'Auto-Glow and Reflective Band Insulating Mats',
     socialTitle: 'Auto-Glow and Reflective Band Insulating Mats | Bharat Electrosafe',
   },
-  /* BharatMembrane is a product brand name — keeping it in the title is
-     intentional, not accidental site-name repetition. */
+  /* Geo Membrane Lining — product brand name updated to public display name */
   'bharat-membrane': {
-    pageTitle: 'BharatMembrane PVC Geo-Membrane',
-    socialTitle: 'BharatMembrane PVC Geo-Membrane | Bharat Electrosafe',
+    pageTitle: 'Geo Membrane Lining PVC Geo-Membrane',
+    socialTitle: 'Geo Membrane Lining PVC Geo-Membrane | Bharat Electrosafe',
   },
   'bharat-hydro-seal': {
-    pageTitle: 'Bharat Hydro Seal PVC and Rubber Water Stops',
-    socialTitle: 'Bharat Hydro Seal PVC and Rubber Water Stops | Bharat Electrosafe',
+    pageTitle: 'Water Stop Seal PVC and Rubber Water Stops',
+    socialTitle: 'Water Stop Seal PVC and Rubber Water Stops | Bharat Electrosafe',
   },
 };
 

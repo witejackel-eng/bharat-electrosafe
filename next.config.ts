@@ -134,8 +134,8 @@ const nextConfig: NextConfig = {
       { source: '/coloured-strip-insulating-mats.php', destination: '/products/electrical-insulating-mats/coloured-strip-insulating-mats' },
       { source: '/bi-color-insulating-mats.php', destination: '/products/electrical-insulating-mats/bi-color-insulating-mats' },
       { source: '/auto-glow-reflective-band-insulating-mat.php', destination: '/products/electrical-insulating-mats/auto-glow-reflective-band-insulating-mats' },
-      { source: '/bharat-membrane.php', destination: '/products/bharat-membrane' },
-      { source: '/BharatHydro-Seal.php', destination: '/products/bharat-hydro-seal' },
+      { source: '/bharat-membrane.php', destination: '/products/geo-membrane-lining' },
+      { source: '/BharatHydro-Seal.php', destination: '/products/water-stop-seal' },
     ];
 
     // Old HV domestic route → new canonical route
@@ -151,6 +151,12 @@ const nextConfig: NextConfig = {
       { source: '/products/bi-color-insulating-mats', destination: '/products/electrical-insulating-mats/bi-color-insulating-mats' },
       { source: '/products/coloured-strip-insulating-mats', destination: '/products/electrical-insulating-mats/coloured-strip-insulating-mats' },
       { source: '/products/international-iec-61111', destination: '/products/electrical-insulating-mats/international-iec-61111' },
+    ];
+
+    // Legacy waterproofing product routes → new canonical routes
+    const waterproofingRedirects = [
+      { source: '/products/bharat-membrane', destination: '/products/geo-membrane-lining' },
+      { source: '/products/bharat-hydro-seal', destination: '/products/water-stop-seal' },
     ];
 
     // www → non-www redirect (supplements middleware, works at Vercel edge)
@@ -174,6 +180,11 @@ const nextConfig: NextConfig = {
       })),
       domesticRedirect,
       ...legacyProductRedirects.map((r) => ({
+        source: r.source,
+        destination: r.destination,
+        permanent: true,
+      })),
+      ...waterproofingRedirects.map((r) => ({
         source: r.source,
         destination: r.destination,
         permanent: true,
