@@ -235,12 +235,33 @@ export default function HomeHero() {
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
   const rootRef = useRef<HTMLDivElement>(null);
   const autoplayRef = useRef(
-    Autoplay({ delay: 5500, stopOnInteraction: false, stopOnMouseEnter: true })
+    Autoplay({ delay: 3000, stopOnInteraction: true })
   );
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 14 }, [
     autoplayRef.current,
   ]);
+
+  /* ── Pointer-over tracking for hover pause/resume ── */
+  const isPointerOverRef = useRef(false);
+  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearResumeTimer = useCallback(() => {
+    if (resumeTimerRef.current) {
+      clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+    }
+  }, []);
+
+  const scheduleAutoplayResume = useCallback((delayMs: number) => {
+    clearResumeTimer();
+    resumeTimerRef.current = setTimeout(() => {
+      resumeTimerRef.current = null;
+      if (!prefersReducedMotion.current && !isPointerOverRef.current) {
+        autoplayRef.current.play();
+      }
+    }, delayMs);
+  }, [clearResumeTimer]);
 
   /* ── Reduced-motion detection ── */
   const prefersReducedMotion = useRef(false);
@@ -265,21 +286,48 @@ export default function HomeHero() {
     setScrollSnaps(emblaApi.scrollSnapList());
     emblaApi.on('select', onSelect);
     emblaApi.on('reInit', onSelect);
+    /* After a drag/swipe, schedule autoplay resume (plugin already stopped it). */
+    const onPointerUp = () => {
+      scheduleAutoplayResume(1500);
+    };
+    emblaApi.on('pointerUp', onPointerUp);
     return () => {
       emblaApi.off('select', onSelect);
+      emblaApi.off('pointerUp', onPointerUp);
+      clearResumeTimer();
     };
-  }, [emblaApi, onSelect]);
+  }, [emblaApi, onSelect, scheduleAutoplayResume, clearResumeTimer]);
 
-  /* ── Scroll helpers ── */
+  /* ── Scroll helpers (stop autoplay, schedule resume after 1500 ms) ── */
   const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
+    if (!emblaApi) return;
+    emblaApi.scrollPrev();
+    scheduleAutoplayResume(1500);
+  }, [emblaApi, scheduleAutoplayResume]);
 
   const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
+    if (!emblaApi) return;
+    emblaApi.scrollNext();
+    scheduleAutoplayResume(1500);
+  }, [emblaApi, scheduleAutoplayResume]);
 
-  /* ── Pause on focus-in, resume on focus-out ── */
+  /* ── Hover: pause while pointer is over hero, resume immediately on leave ── */
+  const handleMouseEnter = useCallback(() => {
+    isPointerOverRef.current = true;
+    clearResumeTimer();
+    if (!prefersReducedMotion.current) {
+      autoplayRef.current.stop();
+    }
+  }, [clearResumeTimer]);
+
+  const handleMouseLeave = useCallback(() => {
+    isPointerOverRef.current = false;
+    if (!prefersReducedMotion.current) {
+      autoplayRef.current.play();
+    }
+  }, []);
+
+  /* ── Focus: pause on focus-in, schedule resume on focus-out ── */
   const handleFocusIn = useCallback(() => {
     if (!prefersReducedMotion.current) {
       autoplayRef.current.stop();
@@ -287,10 +335,8 @@ export default function HomeHero() {
   }, []);
 
   const handleFocusOut = useCallback(() => {
-    if (!prefersReducedMotion.current) {
-      autoplayRef.current.play();
-    }
-  }, []);
+    scheduleAutoplayResume(1500);
+  }, [scheduleAutoplayResume]);
 
   return (
     <section
@@ -299,6 +345,8 @@ export default function HomeHero() {
     >
       <div
         ref={rootRef}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         onFocusCapture={handleFocusIn}
         onBlurCapture={handleFocusOut}
       >
@@ -336,7 +384,12 @@ export default function HomeHero() {
                       ? 'bg-be-yellow-500 scale-125'
                       : 'bg-be-grey-300 hover:bg-be-grey-400'
                   }`}
-                  onClick={() => emblaApi?.scrollTo(idx)}
+                  onClick={() => {
+                    if (emblaApi) {
+                      emblaApi.scrollTo(idx);
+                      scheduleAutoplayResume(1500);
+                    }
+                  }}
                 />
               ))}
             </div>
