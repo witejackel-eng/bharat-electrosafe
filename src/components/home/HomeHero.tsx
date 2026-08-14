@@ -99,23 +99,23 @@ const HERO_SLIDES: HeroSlide[] = [
   },
   /* ── Slide 3: PVC Flooring ── */
   {
-    eyebrow: 'PVC FLOORING · IS 3462:1986',
+    eyebrow: 'PVC FLOORING · BHARATSMART FLOOR™',
     headingTag: 'h2',
     heading:
-      'PVC Flooring for Industrial, Electrical and Commercial Applications',
-    lede: 'BharatSmart Floor™ is Bharat Electrosafe\'s PVC flooring range for industrial, electrical and commercial environments, manufactured as per IS 3462:1986.',
+      'PVC Flooring for Homes, Offices and Modern Interiors',
+    lede: 'BharatSmart Floor™ provides PVC flooring for residential, office and commercial interiors, including homes, workspaces, reception areas, retail spaces and similar indoor environments.',
     primaryCta: { label: 'Explore PVC Flooring', href: '/products/pvc-flooring-solutions' },
     secondaryCta: { label: 'Request a Quote', href: '/contact-us?type=quote' },
     proofItems: [
       { label: 'IS 3462:1986', icon: ShieldCheck },
       { label: 'BharatSmart Floor™', icon: LayoutGrid },
-      { label: 'Industrial flooring', icon: Layers },
-      { label: 'Electrical & commercial applications', icon: Zap },
+      { label: 'Residential flooring', icon: Layers },
+      { label: 'Office & commercial interiors', icon: Zap },
     ],
     imageSrc:
-      '/media/products/pvc-flooring-solutions/pvc-flooring-overview-surface-detail.webp',
+      '/media/products/pvc-flooring-solutions/bharatsmart-floor-residential-interior.webp',
     imageAlt:
-      'PVC flooring material surface detail and flexible edge for industrial and electrical environments',
+      'Wood-look BharatSmart Floor PVC flooring in a modern residential living and home-office interior',
   },
   /* ── Slide 4: Other Products ── */
   {

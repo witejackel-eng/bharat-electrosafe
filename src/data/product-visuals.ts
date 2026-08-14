@@ -422,13 +422,13 @@ export const hydroSealVisuals: ProductVisuals = {
 
 export const pvcFlooringVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/pvc-flooring-solutions/pvc-flooring-hero-roll-to-installation.webp`,
-    alt: 'Industrial PVC flooring roll inside an electrical control room',
+    src: `${PROD}/pvc-flooring-solutions/bharatsmart-floor-residential-interior.webp`,
+    alt: 'Wood-look BharatSmart Floor PVC flooring in a modern residential living and home-office interior',
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/pvc-flooring-solutions/pvc-flooring-hero-roll-to-installation.webp`,
-    alt: 'Industrial PVC flooring roll transitioning to installed flooring',
+    src: `${PROD}/pvc-flooring-solutions/bharatsmart-floor-residential-interior.webp`,
+    alt: 'Wood-look BharatSmart Floor PVC flooring in a modern residential living and home-office interior',
     fit: 'cover',
   },
   gallery: [
@@ -438,24 +438,24 @@ export const pvcFlooringVisuals: ProductVisuals = {
       fit: 'cover',
     },
     {
-      src: `${PROD}/pvc-flooring-solutions/pvc-flooring-application-electrical-room.webp`,
-      alt: 'PVC flooring installed in electrical control room',
+      src: `${PROD}/pvc-flooring-solutions/bharatsmart-floor-office-reception.webp`,
+      alt: 'Wood-look BharatSmart Floor PVC flooring in a modern office reception and waiting area',
       fit: 'cover',
     },
   ],
   application: {
-    src: `${PROD}/pvc-flooring-solutions/pvc-flooring-application-electrical-room.webp`,
-    alt: 'PVC flooring installed in electrical control room application',
+    src: `${PROD}/pvc-flooring-solutions/bharatsmart-floor-office-reception.webp`,
+    alt: 'Wood-look BharatSmart Floor PVC flooring in a modern office reception and waiting area',
     fit: 'cover',
   },
   menuPreview: {
-    src: `${PROD}/pvc-flooring-solutions/pvc-flooring-hero-roll-to-installation.webp`,
-    alt: 'PVC Flooring preview',
+    src: `${PROD}/pvc-flooring-solutions/bharatsmart-floor-residential-interior.webp`,
+    alt: 'BharatSmart Floor PVC flooring for residential and commercial interiors',
     fit: 'cover',
   },
   homePreview: {
-    src: '/media/categories/pvc-flooring-solutions-category.png',
-    alt: 'Industrial PVC flooring being installed in an electrical equipment room',
+    src: `${PROD}/pvc-flooring-solutions/bharatsmart-floor-residential-interior.webp`,
+    alt: 'BharatSmart Floor PVC flooring in a residential and commercial interior',
     fit: 'cover',
   },
 };

@@ -15,13 +15,11 @@ import { FeatureList } from '@/components/ui/FeatureList';
 import { ImageFrame } from '@/components/ui/ImageFrame';
 import {
   Layers,
-  Factory,
   Zap,
   Building2,
   Shield,
   Check,
   Ruler,
-  HardHat,
   Phone,
   FileText,
   Download,
@@ -39,29 +37,29 @@ const breadcrumbItems = [
 /* ── Key benefits (source-supported only) ── */
 
 const keyBenefits = [
-  { icon: Shield, text: 'PVC flooring manufactured to IS 3462:1986 for industrial, electrical and commercial flooring applications' },
-  { icon: Layers, text: 'BharatSmart Floor™ product range — engineered PVC flooring solutions' },
-  { icon: HardHat, text: 'Designed for demanding industrial environments where durability and safety are essential' },
-  { icon: Zap, text: 'Suitable for electrical flooring applications where operator safety is a priority' },
+  { icon: Shield, text: 'PVC flooring manufactured as per IS 3462:1986 for residential and commercial interior flooring applications' },
+  { icon: Layers, text: 'BharatSmart Floor™ product range — PVC flooring for homes, offices and commercial interiors' },
+  { icon: Building2, text: 'Designed for residential and commercial interior flooring applications' },
+  { icon: Zap, text: 'Available as a practical finished flooring option for everyday indoor spaces' },
 ];
 
 /* ── Applications (source-supported) ── */
 
 const applications = [
   {
-    icon: Factory,
-    name: 'Industrial Flooring',
-    description: 'Heavy-duty PVC flooring for factories, workshops and industrial production areas.',
-  },
-  {
-    icon: Zap,
-    name: 'Electrical Flooring',
-    description: 'PVC flooring for electrical rooms, substations and switchgear areas where insulation performance is required.',
+    icon: Shield,
+    name: 'Homes & Apartments',
+    description: 'PVC flooring for living spaces, bedrooms, home offices and other residential interiors.',
   },
   {
     icon: Building2,
-    name: 'Commercial Flooring',
-    description: 'PVC flooring for commercial buildings, offices and public-access areas.',
+    name: 'Offices & Workspaces',
+    description: 'Flooring for offices, reception areas, meeting spaces, waiting areas and shared work environments.',
+  },
+  {
+    icon: Layers,
+    name: 'Retail & Commercial Interiors',
+    description: 'PVC flooring for showrooms, shops, customer-facing spaces and other commercial interiors.',
   },
 ];
 
@@ -102,9 +100,7 @@ export default function PVCFlooringClient() {
 
               {/* Introduction */}
               <p className="product-hero-intro text-body-large text-be-grey-650 leading-relaxed mb-4 lg:mb-5">
-                BharatSmart Floor™ PVC flooring solutions for industrial, electrical
-                and commercial flooring applications — manufactured as per
-                IS 3462:1986.
+                BharatSmart Floor™ PVC flooring is designed for homes, offices and commercial interiors, providing a practical and attractive flooring surface for everyday indoor spaces.
               </p>
 
               {/* CTA buttons */}
@@ -180,7 +176,7 @@ export default function PVCFlooringClient() {
               <SectionHeader
                 eyebrow="Product Overview"
                 title="BharatSmart Floor™ Overview"
-                supportingText="BharatSmart Floor™ is Bharat Electrosafe's PVC flooring product line, providing flooring solutions for industrial, electrical and commercial applications as per IS 3462:1986. The range is designed to meet the demanding requirements of environments where durability, safety and regulatory compliance are essential."
+                supportingText="BharatSmart Floor™ is Bharat Electrosafe's PVC flooring range for residential, office and commercial interiors. It is suitable for spaces such as homes, apartments, offices, reception areas, retail interiors, clinics, educational spaces and hospitality environments. The range provides a practical finished flooring surface for everyday interior use."
               />
 
               <FeatureList
@@ -208,7 +204,7 @@ export default function PVCFlooringClient() {
               <SectionHeader
                 eyebrow="Applications"
                 title="Where It's Used"
-                supportingText="BharatSmart Floor™ PVC flooring is designed for industrial, electrical and commercial flooring applications as per IS 3462:1986."
+                supportingText="BharatSmart Floor™ PVC flooring is designed for residential, office and commercial interior applications as per IS 3462:1986."
               />
 
               <div className="flex flex-col gap-4">

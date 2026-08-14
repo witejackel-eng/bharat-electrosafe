@@ -18,7 +18,7 @@ const productScope = [
   'High Voltage Electrical Insulating Mats (IS 15652:2006 & IEC 61111:2009; ERDA-tested and BIS licensed)',
   'Geo Membrane Lining (IS 15909:2020 for containment, lining and environmental protection applications)',
   'Water Stop Seal (IS 15058:2002 for concrete joint sealing and water leakage prevention)',
-  'PVC Flooring Solutions (IS 3462:1986 for industrial, electrical and commercial flooring applications)',
+  'PVC Flooring Solutions (IS 3462:1986 for residential, office and commercial interior flooring applications)',
   'Other Products: Rubber Sheets, Rubber Hose Pipes, ESD Mats, Conveyor Belts',
 ];
 

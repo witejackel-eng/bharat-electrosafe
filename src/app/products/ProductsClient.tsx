@@ -47,9 +47,9 @@ const extendedComparisonData: ProductComparisonRow[] = [
   {
     name: 'PVC Flooring Solutions',
     slug: 'pvc-flooring-solutions',
-    primaryPurpose: 'Industrial and commercial flooring',
+    primaryPurpose: 'Residential and commercial interior flooring',
     distinguishingFeature: 'BharatSmart Floor™ — PVC flooring system',
-    typicalApplication: 'Factories, electrical rooms and commercial spaces',
+    typicalApplication: 'Homes, offices, reception areas and commercial interiors',
     applicableStandard: 'IS 3462:1986',
   },
   {
@@ -510,7 +510,7 @@ function PvcAndOtherSection() {
                 PVC Flooring Solutions
               </h3>
               <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed mb-1">
-                BharatSmart Floor™ — industrial, electrical-room and commercial PVC flooring.
+                BharatSmart Floor™ — PVC flooring for homes, offices and commercial interiors.
               </p>
               <span className="text-xs font-medium text-be-grey-650 bg-be-grey-150 px-2.5 py-0.5 rounded-full inline-block mb-4">
                 IS 3462:1986
@@ -767,7 +767,7 @@ function SelectionGuideSection() {
       eyebrow: 'PVC FLOORING',
       heading: 'PVC Flooring Solutions',
       lines: [
-        <>Industrial / electrical / commercial flooring use</>,
+        <>Residential / office / commercial interior flooring</>,
       ],
       Icon: Layers,
     },
