@@ -1358,14 +1358,16 @@
       white-space: nowrap;
     }
   }
-  @media (max-width: 359px) {
-    /* Very narrow screens — stack vertically */
+  @media (max-width: 479px) {
+    /* Narrow mobile — stack CTA buttons vertically so long labels
+       (e.g. "Explore Waterproofing") never overflow their button. */
     .be-split-hero__ctas {
       flex-direction: column;
       flex-wrap: nowrap;
     }
     .be-split-hero__ctas .be-hero-cta {
       width: 100%;
+      min-width: 0;
     }
   }
 
