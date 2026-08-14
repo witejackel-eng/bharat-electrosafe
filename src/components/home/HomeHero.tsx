@@ -235,7 +235,7 @@ export default function HomeHero() {
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
   const rootRef = useRef<HTMLDivElement>(null);
   const autoplayRef = useRef(
-    Autoplay({ delay: 5500, stopOnInteraction: true, stopOnMouseEnter: true })
+    Autoplay({ delay: 5500, stopOnInteraction: false, stopOnMouseEnter: true })
   );
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
@@ -321,7 +321,7 @@ export default function HomeHero() {
 
         {/* ── Carousel controls: prev/next arrows + dot indicators ── */}
         <div className="container-site page-horizontal-padding">
-          <div className="flex items-center justify-end gap-3 -mt-2 pb-2 pt-3 sm:pt-4">
+          <div className="flex items-center justify-center gap-3 -mt-2 pb-2 pt-3 sm:pt-4">
             {/* Dot indicators */}
             <div className="flex items-center gap-1.5 mr-3" role="tablist">
               {scrollSnaps.map((_, idx) => (
