@@ -202,16 +202,10 @@ export default function AwardsCertifications() {
                       unoptimized
                     />
                   </span>
-                  {/* Tight spacing: title right below logo */}
+                  {/* Certification name — logo + name only, no description */}
                   <span className="text-sm font-semibold text-be-charcoal-950 text-center leading-tight">
                     {mark.label}
                   </span>
-                  {/* Description below title with tight gap */}
-                  {mark.note && (
-                    <span className="text-metadata text-be-grey-650 text-center leading-snug">
-                      {mark.note}
-                    </span>
-                  )}
                   {/* Download hover/focus affordance */}
                   {isDownloadable && (
                     <span
@@ -265,23 +259,23 @@ export default function AwardsCertifications() {
             })}
 
             {/* ── Reliance — client reference (NOT a certification) ──
-                No logo asset exists in the project. Rendered as a text-only
-                card clearly labelled "Client reference" so the UI never
-                implies Reliance issued a certification or accreditation. */}
+                No logo asset exists in the project. Rendered as a text-based
+                card in the same logo+name format as certification items,
+                but using the organisation name as the visual "logo". The
+                label clearly identifies it so the UI never implies an
+                accreditation that does not exist. */}
             <div
-              className="w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center justify-center gap-1.5 py-1 text-center"
+              className="w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center gap-1.5 py-1 text-center"
             >
-              {/* Text-based card — no logo, just the organisation name */}
+              {/* Text-based logo area — same height as certification logos */}
               <span className="relative flex h-14 sm:h-16 md:h-[72px] lg:h-[80px] w-full items-center justify-center">
                 <span className="text-base sm:text-lg md:text-xl font-bold text-be-charcoal-950 leading-tight">
                   Reliance
                 </span>
               </span>
+              {/* Name only — same treatment as certification labels */}
               <span className="text-sm font-semibold text-be-charcoal-950 text-center leading-tight">
                 Reliance Industries Limited
-              </span>
-              <span className="text-metadata text-be-grey-650 text-center leading-snug">
-                Client reference
               </span>
             </div>
           </InfiniteLogoRail>
