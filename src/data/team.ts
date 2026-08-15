@@ -79,22 +79,22 @@ export interface Value {
   description: string;
 }
 
-/** Company values. */
+/** Company values — exact client-supplied wording from Core Values artwork. */
 export const companyValues: Value[] = [
   {
     title: 'Respect',
-    description: 'Treat people, commitments and working relationships with respect.',
+    description: 'Thoughtful of showing regard for another person.',
   },
   {
     title: 'Trust',
-    description: 'Communicate clearly and follow through on commitments.',
+    description: 'Confidence in each other\u2019s capabilities and intentions.',
   },
   {
     title: 'Ownership',
-    description: 'Take responsibility for work, decisions and outcomes.',
+    description: 'Take responsibility for one\u2019s own decisions and actions.',
   },
   {
-    title: 'Teamwork',
-    description: 'Work together across functions to complete commitments and solve problems.',
+    title: 'Integrated Team Work',
+    description: 'Every person to work towards the larger group objective.',
   },
 ];

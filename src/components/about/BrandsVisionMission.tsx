@@ -16,10 +16,10 @@ import { Target, Compass } from 'lucide-react';
 
 /* ── Vision / Mission text ── */
 const vision =
-  'To be the most trusted name in electrical safety by delivering world-class insulating products that help businesses create secure and compliant workspaces.';
+  'To become India\u2019s most trusted and preferred brand in electrical safety, industrial safety, infrastructure protection, PVC flooring, and waterproofing solutions by delivering innovative, high-quality, and standards-compliant products that contribute to safer workplaces and stronger infrastructure.';
 
 const mission =
-  'To safeguard lives and assets by providing superior electrical insulation solutions that adhere to the highest quality and safety standards.';
+  'To protect lives, assets, and infrastructure by providing reliable, durable, and high-performance safety and protection solutions that meet the highest quality standards, support industrial growth, and strengthen the nation\u2019s development under the Make in India initiative.';
 
 export default function BrandsVisionMission() {
   return (
@@ -48,7 +48,7 @@ export default function BrandsVisionMission() {
                   <Compass className="h-4.5 w-4.5 text-be-yellow-400" aria-hidden="true" />
                 </div>
                 <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-be-yellow-400">
-                  Vision
+                  Our Vision
                 </p>
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-white mb-2.5 tracking-tight">
@@ -72,7 +72,7 @@ export default function BrandsVisionMission() {
                   <Target className="h-4.5 w-4.5 text-be-yellow-400" aria-hidden="true" />
                 </div>
                 <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-be-yellow-400">
-                  Mission
+                  Our Mission
                 </p>
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-white mb-2.5 tracking-tight">
