@@ -3,7 +3,6 @@ import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
 import { MobileStickyCTA } from '@/components/ui/MobileStickyCTA';
 import AboutIntro from '@/components/about/AboutIntro';
-import CompanyProfile from '@/components/about/CompanyProfile';
 import CompanyLeadership from '@/components/about/CompanyLeadership';
 import BrandsVisionMission from '@/components/about/BrandsVisionMission';
 import WhyBharatElectrosafe from '@/components/about/WhyBharatElectrosafe';
@@ -15,14 +14,17 @@ import AboutCTA from '@/components/about/AboutCTA';
  * AboutUsShell — Server Component.
  *
  * Compact section structure:
- *   1. ABOUT / WHO WE ARE              (AboutIntro — warm white bg)
- *   2. COMPANY PROFILE                 (CompanyProfile — warm white bg)
- *   3. LEADERSHIP                       (CompanyLeadership — white bg, flip cards)
- *   4. BRANDS + VISION / MISSION        (BrandsVisionMission — navy band)
- *   5. WHY BHARAT ELECTROSAFE           (WhyBharatElectrosafe — cream bg)
- *   6. RECOGNITION & TRUST              (AwardsCertifications — white bg)
- *   7. CLIENTS & INDUSTRY + MEDIA       (ClientsProjects — white bg, includes video carousel)
- *   8. CTA                              (AboutCTA — yellow/navy emphasis)
+ *   1. ABOUT / WHO WE ARE + COMPANY PROFILE  (AboutIntro — warm white bg, two-column with images)
+ *   2. LEADERSHIP                       (CompanyLeadership — white bg, flip cards)
+ *   3. BRANDS + VISION / MISSION        (BrandsVisionMission — navy band)
+ *   4. WHY BHARAT ELECTROSAFE           (WhyBharatElectrosafe — cream bg)
+ *   5. RECOGNITION & TRUST              (AwardsCertifications — white bg)
+ *   6. CLIENTS & INDUSTRY + MEDIA       (ClientsProjects — white bg, includes video carousel)
+ *   7. CTA                              (AboutCTA — yellow/navy emphasis)
+ *
+ * CompanyProfile is merged into AboutIntro for a balanced two-column layout
+ * where text content (Who We Are + Company Profile) fills the same height
+ * as the stacked images on the right.
  *
  * ActiveParticipation has been merged into ClientsProjects (video carousel).
  */
@@ -32,28 +34,25 @@ export default function AboutUsShell() {
     <div className="min-h-screen flex flex-col bg-be-warm-white">
       <Header />
       <main className="flex-1">
-        {/* 1. About / Who We Are — warm white bg */}
+        {/* 1. About / Who We Are + Company Profile — warm white bg */}
         <AboutIntro />
 
-        {/* 2. Company Profile — warm white bg */}
-        <CompanyProfile />
-
-        {/* 3. Leadership — white bg, flip cards */}
+        {/* 2. Leadership — white bg, flip cards */}
         <CompanyLeadership />
 
-        {/* 4. Brands + Vision / Mission — navy band (self-contained) */}
+        {/* 3. Brands + Vision / Mission — navy band (self-contained) */}
         <BrandsVisionMission />
 
-        {/* 5. Why Bharat Electrosafe — cream bg */}
+        {/* 4. Why Bharat Electrosafe — cream bg */}
         <WhyBharatElectrosafe />
 
-        {/* 6. Recognition & Trust — white bg */}
+        {/* 5. Recognition & Trust — white bg */}
         <AwardsCertifications />
 
-        {/* 7. Clients & Industry + Media — white bg (includes video carousel) */}
+        {/* 6. Clients & Industry + Media — white bg (includes video carousel) */}
         <ClientsProjects />
 
-        {/* 8. CTA — yellow/navy emphasis */}
+        {/* 7. CTA — yellow/navy emphasis */}
         <AboutCTA />
       </main>
       <Footer />
