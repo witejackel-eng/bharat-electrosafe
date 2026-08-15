@@ -27,9 +27,11 @@ import { CheckCircle2 } from 'lucide-react';
  * column matches the content column height. The image fills
  * its container via `fill` + `object-cover`.
  *
- * Lower section: CSS Grid with items-start; the short closing
+ * Lower section: CSS Grid with items-stretch; the short closing
  * paragraph is vertically centered beside the taller poster
- * via `self-center` for a balanced relationship.
+ * via `flex items-center` on its grid cell for a balanced
+ * relationship. The poster renders at its natural portrait
+ * dimensions (object-contain preserves the artwork).
  *
  * Mobile: stacks vertically — image → text → image → text.
  * On mobile the image returns to a natural aspect-ratio
@@ -191,11 +193,12 @@ export default function AboutIntro() {
       </div>
 
       {/* ── Lower area: poster image (left) + closing paragraph (right) ──
-       *  CSS Grid with items-start. The poster image (portrait) is
+       *  CSS Grid with items-stretch. The poster image (portrait) is
        *  naturally taller than the short closing paragraph. The text
-       *  is vertically centered beside the poster via self-center
-       *  on desktop, creating a balanced image/content relationship. */}
-      <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1fr] items-start gap-8 lg:gap-10 mt-10 lg:mt-14">
+       *  cell uses flex items-center to vertically center the text
+       *  beside the poster on desktop, creating a balanced
+       *  image/content relationship. */}
+      <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1fr] items-stretch gap-8 lg:gap-10 mt-10 lg:mt-14">
         {/* Left — Client-supplied poster */}
         <div className="reveal-up order-2 lg:order-1">
           <div className="rounded-lg overflow-hidden bg-be-cream/40 p-3">
@@ -211,8 +214,9 @@ export default function AboutIntro() {
         </div>
 
         {/* Right — Closing company paragraph — vertically centered
-         *  beside the poster on desktop for a balanced layout. */}
-        <div className="reveal-up order-1 lg:order-2 lg:self-center">
+         *  beside the poster on desktop via flex items-center within
+         *  the stretched grid cell, for a balanced layout. */}
+        <div className="reveal-up order-1 lg:order-2 lg:flex lg:items-center">
           <p className="text-body-large text-be-grey-650 leading-relaxed">
             At Bharat Electrosafe, we combine engineering excellence,
             compliance assurance, and customer-centric innovation to deliver
