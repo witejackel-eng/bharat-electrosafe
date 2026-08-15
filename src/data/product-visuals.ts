@@ -97,8 +97,8 @@ export const hvVisuals: ProductVisuals = {
 
 export const autoGlowVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-card-dark.webp`,
-    alt: 'Black insulating mat with green visibility boundary band',
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow1-client-provided.webp`,
+    alt: 'Blue Auto Glow insulating mat with yellow and white visibility bands',
     fit: 'cover',
   },
   hero: {

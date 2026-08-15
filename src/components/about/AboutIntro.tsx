@@ -8,9 +8,12 @@ import { ShieldCheck, Layers, Droplets, Zap } from 'lucide-react';
 /**
  * AboutIntro — "Who We Are" hero section.
  *
- * Tight, premium two-column layout with concise company description
- * and compact product-range summary. Controlled editorial image frame
- * (aspect-ratio 4:3, max-height ~440px).
+ * Two-column editorial layout:
+ *   LEFT  — text column (eyebrow, H1, intro, product range)
+ *   RIGHT — media column (two approved images stacked vertically)
+ *
+ * The stacked media column visually balances the full company profile
+ * height. On mobile, images and6stack naturally.
  *
  * Content source: client About docx.
  */
@@ -32,13 +35,13 @@ export default function AboutIntro() {
 
       {/* Two-column layout — 55/45 split */}
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
-        {/* Left — Who We Are */}
+        {/* Left — Who We Are text column */}
         <div className="lg:w-[55%] reveal-up">
           <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-2">
             Who We Are
           </p>
           <h1 className="text-page-h1 text-be-charcoal-950 mb-4">
-            About Bharat Electrosafe
+            Bharat Electrosafe
           </h1>
           <p className="text-body-large text-be-grey-650 max-w-xl mb-5">
             Bharat Electrosafe manufactures electrical insulating mats for
@@ -71,15 +74,28 @@ export default function AboutIntro() {
           </div>
         </div>
 
-        {/* Right — manufacturing/product visual — controlled editorial frame */}
-        <div className="lg:w-[45%] reveal-up">
-          <div className="rounded-lg overflow-hidden max-h-[400px]">
+        {/* Right — media column: two approved images stacked vertically */}
+        <div className="lg:w-[45%] reveal-up flex flex-col gap-4">
+          {/* Technician / insulating-mat application image — object-cover */}
+          <div className="rounded-lg overflow-hidden">
             <Image
               src="/media/hero/bharat-electrosafe-insulating-mat-hero.webp"
               alt="Bharat Electrosafe electrical insulating mat in use"
               width={800}
               height={600}
               className="w-full h-auto object-cover"
+              sizes="(max-width: 768px) 100vw, 45vw"
+            />
+          </div>
+
+          {/* Client-supplied poster — object-contain (never crop embedded text or logos) */}
+          <div className="rounded-lg overflow-hidden bg-be-cream/40 p-3">
+            <Image
+              src="/media/about/electrical-insulation-mat-poster-client-provided.png"
+              alt="Bharat Electrosafe electrical insulation mat poster"
+              width={700}
+              height={900}
+              className="w-full h-auto object-contain"
               sizes="(max-width: 768px) 100vw, 45vw"
             />
           </div>

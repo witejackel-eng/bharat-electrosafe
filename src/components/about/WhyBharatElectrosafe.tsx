@@ -5,7 +5,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SectionShell } from '@/components/ui/SectionShell';
 import { capabilityPoints } from '@/data/trust';
 import { companyValues } from '@/data/team';
-import { CheckCircle2, ShieldCheck, BadgeCheck, HeadsetIcon, Sparkles, Users } from 'lucide-react';
+import { CheckCircle2, ShieldCheck, BadgeCheck, HeadsetIcon, Users } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 /**
@@ -13,12 +13,9 @@ import type { LucideIcon } from 'lucide-react';
  *
  * Merges three former sections into one compact presentation:
  *   - Why Choose Us (capability points from trust.ts)
- *   - Company Values (from team.ts companyValues)
- *   - Manufacturing quality (production-line image + DataTable)
- *
- * Desktop layout: Left = capability bullets (max 6) + values strip,
- *                 Right = manufacturing image.
- * Mobile: stacks vertically.
+ *   - Company Values (from team.ts companyValues) — now with
+ *     official Core Values client artwork image beside value points
+ *   - Manufacturing quality (production-line image + summary)
  *
  * Content sources: src/data/trust.ts capabilityPoints,
  *                  src/data/team.ts companyValues.
@@ -28,7 +25,7 @@ const iconMap: Record<string, LucideIcon> = {
   Respect: ShieldCheck,
   Trust: BadgeCheck,
   Ownership: HeadsetIcon,
-  Teamwork: Users,
+  'Integrated Team Work': Users,
 };
 
 /** Only the core values (not Mission/Vision — those are in BrandsVisionMission) */
@@ -79,35 +76,54 @@ export default function WhyBharatElectrosafe() {
             ))}
           </ul>
 
-          {/* Values strip — compact horizontal row */}
+          {/* Core Values — image + value points layout */}
           <div className="reveal-up">
-            <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-3">
+            <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-4">
               Core Values
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {values.map((value) => {
-                const Icon = iconMap[value.title] ?? ShieldCheck;
-                return (
-                  <div
-                    key={value.title}
-                    className="flex flex-col items-center text-center gap-2 rounded-lg border border-be-grey-250 bg-be-white p-3"
-                  >
-                    <div className="flex items-center justify-center w-8 h-8 rounded-md bg-be-navy-800">
-                      <Icon
-                        className="h-4 w-4 text-be-white"
-                        aria-hidden="true"
-                        focusable="false"
-                      />
+            <div className="flex flex-col sm:flex-row gap-5">
+              {/* Left — official Core Values client artwork */}
+              <div className="sm:w-[45%] shrink-0">
+                <div className="rounded-lg overflow-hidden bg-be-white p-3 border border-be-grey-250">
+                  <Image
+                    src="/media/about/core-values.webp"
+                    alt="Bharat Electrosafe Core Values artwork showing Respect, Trust, Ownership and Integrated Team Work"
+                    width={600}
+                    height={400}
+                    className="w-full h-auto object-contain"
+                    sizes="(max-width: 640px) 100vw, 45vw"
+                  />
+                </div>
+              </div>
+
+              {/* Right — accessible HTML value points */}
+              <div className="flex-1 flex flex-col gap-3">
+                {values.map((value) => {
+                  const Icon = iconMap[value.title] ?? ShieldCheck;
+                  return (
+                    <div
+                      key={value.title}
+                      className="flex items-start gap-3 p-3 rounded-lg border border-be-grey-250 bg-be-white"
+                    >
+                      <div className="flex items-center justify-center w-8 h-8 rounded-md bg-be-navy-800 shrink-0">
+                        <Icon
+                          className="h-4 w-4 text-be-white"
+                          aria-hidden="true"
+                          focusable="false"
+                        />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-be-charcoal-950 tracking-tight leading-tight">
+                          {value.title}
+                        </p>
+                        <p className="text-[0.8rem] text-be-grey-650 leading-snug mt-0.5">
+                          {value.description}
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-xs font-bold text-be-charcoal-950 tracking-tight leading-tight">
-                      {value.title}
-                    </p>
-                    <p className="text-[0.7rem] text-be-grey-650 leading-snug hidden sm:block">
-                      {value.description}
-                    </p>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

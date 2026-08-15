@@ -367,11 +367,21 @@ export default function HomeHero() {
           </div>
         </div>
 
-        {/* ── Carousel controls: prev/next arrows + dot indicators ── */}
+        {/* ── Carousel controls: ← dots →  (order per client feedback) ── */}
         <div className="container-site page-horizontal-padding">
-          <div className="flex items-center justify-center gap-3 -mt-2 pb-2 pt-3 sm:pt-4">
-            {/* Dot indicators */}
-            <div className="flex items-center gap-1.5 mr-3" role="tablist">
+          <div className="flex items-center justify-center gap-3 pb-3 pt-3 sm:pt-4">
+            {/* Prev arrow — transparent, lightweight style */}
+            <button
+              type="button"
+              onClick={scrollPrev}
+              aria-label="Previous slide"
+              className="flex items-center justify-center size-11 rounded-lg text-be-charcoal-800 hover:text-be-yellow-600 hover:bg-be-yellow-50 active:bg-be-yellow-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2"
+            >
+              <ArrowLeft className="size-5" aria-hidden="true" />
+            </button>
+
+            {/* Dot indicators — between the arrows */}
+            <div className="flex items-center gap-2" role="tablist">
               {scrollSnaps.map((_, idx) => (
                 <button
                   key={idx}
@@ -394,22 +404,12 @@ export default function HomeHero() {
               ))}
             </div>
 
-            {/* Prev arrow */}
-            <button
-              type="button"
-              onClick={scrollPrev}
-              aria-label="Previous slide"
-              className="flex items-center justify-center size-11 rounded-lg border border-be-grey-250 bg-be-white/80 text-be-charcoal-800 shadow-sm hover:bg-be-white hover:border-be-yellow-400 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2"
-            >
-              <ArrowLeft className="size-5" aria-hidden="true" />
-            </button>
-
-            {/* Next arrow */}
+            {/* Next arrow — transparent, lightweight style */}
             <button
               type="button"
               onClick={scrollNext}
               aria-label="Next slide"
-              className="flex items-center justify-center size-11 rounded-lg border border-be-grey-250 bg-be-white/80 text-be-charcoal-800 shadow-sm hover:bg-be-white hover:border-be-yellow-400 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2"
+              className="flex items-center justify-center size-11 rounded-lg text-be-charcoal-800 hover:text-be-yellow-600 hover:bg-be-yellow-50 active:bg-be-yellow-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2"
             >
               <ArrowRight className="size-5" aria-hidden="true" />
             </button>
