@@ -63,7 +63,7 @@ export default function AboutIntro() {
               Who We Are
             </p>
             {/* Single-line on desktop (lg+), natural wrap on mobile */}
-            <h1 className="text-page-h1 text-be-charcoal-950 mb-4 whitespace-nowrap lg:whitespace-nowrap">
+            <h1 className="text-page-h1 text-be-charcoal-950 mb-4 whitespace-normal lg:whitespace-nowrap">
               Bharat Electrosafe
             </h1>
             <p className="text-body-large text-be-grey-650 max-w-xl mb-5">
@@ -85,7 +85,7 @@ export default function AboutIntro() {
                     <Icon className="h-4 w-4 text-be-yellow-text" aria-hidden="true" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-be-charcoal-950 leading-snug">
+                    <p className="text-sm font-bold text-be-charcoal-950 leading-snug">
                       {title}
                     </p>
                     <p className="text-metadata text-be-grey-650 mt-0.5">
