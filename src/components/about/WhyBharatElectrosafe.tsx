@@ -107,7 +107,7 @@ export default function WhyBharatElectrosafe() {
         </div>
 
         {/* Right — core values image + manufacturing summary (sticky to fill space) */}
-        <div className="lg:w-[42%] reveal-up lg:sticky lg:top-24 lg:self-start">
+        <div className="lg:w-[42%] reveal-up lg:sticky lg:top-6 lg:self-start">
           <div className="rounded-lg overflow-hidden">
             <Image
               src="/media/about/core-values.webp"
