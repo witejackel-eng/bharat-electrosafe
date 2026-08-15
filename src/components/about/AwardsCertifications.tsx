@@ -7,29 +7,27 @@ import Autoplay from 'embla-carousel-autoplay';
 import { ChevronLeft, ChevronRight, Download } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SectionShell } from '@/components/ui/SectionShell';
-import { HorizontalCarousel } from '@/components/ui/HorizontalCarousel';
+import { InfiniteLogoRail } from '@/components/ui/InfiniteLogoRail';
 import { awards, allTrustMarks } from '@/data/trust';
 
 /**
  * About-page recognition section.
  *
  * Awards are presented in a responsive looping carousel using
- * embla-carousel-react with auto-advance. Certifications, testing
- * and memberships remain as a horizontal carousel.
+ * embla-carousel-react with auto-advance.
  *
- * Awards carousel:
- *   - Mobile: 1 card, Tablet: 2 cards, Desktop: 3 cards
- *   - loop: true, auto-advance ~5 seconds
- *   - Prev/next arrows, pause on hover/focus
- *   - Swipe/drag, keyboard support
- *   - prefers-reduced-motion disables auto-advance
- *   - Award images use object-contain (don't crop plaque/trophy text)
+ * Certifications, testing and memberships use the same InfiniteLogoRail
+ * component as the homepage — a seamless, continuously moving horizontal
+ * rail that drifts right → left. The loop is mathematically seamless
+ * (no visible jump), pauses on hover/focus, and falls back to a static
+ * scrollable rail under prefers-reduced-motion.
  *
- * Certification items with an attached document are interactive:
- *   - The item is wrapped in a real <a> element
- *   - Hover/focus shows a subtle Download pill
- *   - Clicking opens the PDF in a new tab
- *   - Items without a document remain static
+ * Certification card spacing is tight: logo → title → description
+ * with minimal gaps, matching the editorial density of the homepage rail.
+ *
+ * Reliance is included as a client reference (not a certification) —
+ * it appears in the rail with appropriate labelling so the UI never
+ * implies an accreditation that does not exist.
  */
 
 const AUTOPLAY_DELAY = 5000;
@@ -168,7 +166,7 @@ export default function AwardsCertifications() {
           </div>
         </div>
 
-        {/* ── Certifications, testing and memberships — carousel ── */}
+        {/* ── Certifications and memberships — infinite logo rail ── */}
         <div className="reveal-up">
           <SectionHeader
             eyebrow="Certifications and memberships"
@@ -178,30 +176,43 @@ export default function AwardsCertifications() {
         </div>
 
         <div className="reveal-up">
-          <HorizontalCarousel label="Certifications and memberships" autoAdvanceMs={4500}>
+          <InfiniteLogoRail
+            ariaLabel="Certifications and memberships"
+            duration={42}
+            pauseOnHover
+            pauseOnFocus
+            itemSpacingClassName="pr-2 sm:pr-3 md:pr-4"
+          >
             {allTrustMarks.map((mark) => {
               const isDownloadable = !!mark.document;
 
               const inner = (
                 <>
-                  <span className="relative flex h-16 sm:h-[68px] md:h-[72px] lg:h-[80px] w-full items-center justify-center">
+                  {/* Logo — object-contain never crops.
+                      Eager + unoptimized: these are tiny local WebP identity
+                      assets drifting through a continuously moving rail. */}
+                  <span className="relative flex h-14 sm:h-16 md:h-[72px] lg:h-[80px] w-full items-center justify-center">
                     <Image
                       src={mark.logo}
                       alt={mark.alt}
                       fill
                       className="object-contain"
-                      sizes="200px"
+                      sizes="(max-width: 639px) 140px, (max-width: 767px) 160px, (max-width: 1023px) 180px, 200px"
+                      loading="eager"
+                      unoptimized
                     />
                   </span>
-                  <span className="text-body font-semibold text-be-charcoal-950">
+                  {/* Tight spacing: title right below logo */}
+                  <span className="text-sm font-semibold text-be-charcoal-950 text-center leading-tight">
                     {mark.label}
                   </span>
-                  <span className="text-metadata text-be-grey-650 leading-snug min-h-[2.6em]">
-                    {mark.note}
-                  </span>
-                  {/* Download hover/focus affordance — only for items with a document.
-                      On mobile (no hover), a small persistent download icon indicator
-                      is shown instead so touch users can discover the interaction. */}
+                  {/* Description below title with tight gap */}
+                  {mark.note && (
+                    <span className="text-metadata text-be-grey-650 text-center leading-snug">
+                      {mark.note}
+                    </span>
+                  )}
+                  {/* Download hover/focus affordance */}
                   {isDownloadable && (
                     <span
                       className="flex items-center gap-1 text-[0.65rem] font-semibold text-be-yellow-text
@@ -216,8 +227,7 @@ export default function AwardsCertifications() {
                       Download
                     </span>
                   )}
-                  {/* Mobile touch indicator — small persistent icon for downloadable items.
-                      Hidden on sm+ where hover works reliably. */}
+                  {/* Mobile touch indicator */}
                   {isDownloadable && (
                     <span
                       className="flex items-center justify-center sm:hidden"
@@ -237,7 +247,7 @@ export default function AwardsCertifications() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Download ${mark.label} document`}
-                    className="group/mark w-[240px] sm:w-[270px] md:w-[290px] lg:w-[320px] flex flex-col items-center gap-3 px-4 py-2 text-center cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+                    className="group/mark w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center gap-1.5 py-1 text-center cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
                   >
                     {inner}
                   </a>
@@ -247,13 +257,34 @@ export default function AwardsCertifications() {
               return (
                 <div
                   key={mark.label}
-                  className="w-[240px] sm:w-[270px] md:w-[290px] lg:w-[320px] flex flex-col items-center gap-3 px-4 py-2 text-center"
+                  className="w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center gap-1.5 py-1 text-center"
                 >
                   {inner}
                 </div>
               );
             })}
-          </HorizontalCarousel>
+
+            {/* ── Reliance — client reference (NOT a certification) ──
+                No logo asset exists in the project. Rendered as a text-only
+                card clearly labelled "Client reference" so the UI never
+                implies Reliance issued a certification or accreditation. */}
+            <div
+              className="w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center justify-center gap-1.5 py-1 text-center"
+            >
+              {/* Text-based card — no logo, just the organisation name */}
+              <span className="relative flex h-14 sm:h-16 md:h-[72px] lg:h-[80px] w-full items-center justify-center">
+                <span className="text-base sm:text-lg md:text-xl font-bold text-be-charcoal-950 leading-tight">
+                  Reliance
+                </span>
+              </span>
+              <span className="text-sm font-semibold text-be-charcoal-950 text-center leading-tight">
+                Reliance Industries Limited
+              </span>
+              <span className="text-metadata text-be-grey-650 text-center leading-snug">
+                Client reference
+              </span>
+            </div>
+          </InfiniteLogoRail>
         </div>
       </div>
     </SectionShell>
