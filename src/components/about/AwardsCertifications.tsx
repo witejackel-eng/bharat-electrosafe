@@ -22,8 +22,8 @@ import { awards, allTrustMarks } from '@/data/trust';
  * (no visible jump), pauses on hover/focus, and falls back to a static
  * scrollable rail under prefers-reduced-motion.
  *
- * Certification card spacing is tight: logo → title → description
- * with minimal gaps, matching the editorial density of the homepage rail.
+ * Certification cards show LOGO + NAME only — no long description.
+ * Logo → name gap is tight (gap-1) with no empty vertical whitespace.
  *
  * Reliance is included as a client reference (not a certification) —
  * it appears in the rail with appropriate labelling so the UI never
@@ -241,7 +241,7 @@ export default function AwardsCertifications() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Download ${mark.label} document`}
-                    className="group/mark w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center gap-1.5 py-1 text-center cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+                    className="group/mark w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center gap-1 py-1 text-center cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
                   >
                     {inner}
                   </a>
@@ -251,7 +251,7 @@ export default function AwardsCertifications() {
               return (
                 <div
                   key={mark.label}
-                  className="w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center gap-1.5 py-1 text-center"
+                  className="w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center gap-1 py-1 text-center"
                 >
                   {inner}
                 </div>
@@ -265,7 +265,7 @@ export default function AwardsCertifications() {
                 label clearly identifies it so the UI never implies an
                 accreditation that does not exist. */}
             <div
-              className="w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center gap-1.5 py-1 text-center"
+              className="w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center gap-1 py-1 text-center"
             >
               {/* Text-based logo area — same height as certification logos */}
               <span className="relative flex h-14 sm:h-16 md:h-[72px] lg:h-[80px] w-full items-center justify-center">
