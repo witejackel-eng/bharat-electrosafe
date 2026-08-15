@@ -24,6 +24,9 @@ import { ShieldCheck, Layers, Droplets, Zap, CheckCircle2 } from 'lucide-react';
  * container). This creates clear structural separation with premium,
  * editorial spacing.
  *
+ * "Bharat Electrosafe" is displayed as a single-line heading on desktop
+ * (whitespace-nowrap at lg+) and naturally wraps on smaller viewports.
+ *
  * Content source: client About docx.
  */
 
@@ -59,7 +62,8 @@ export default function AboutIntro() {
             <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-2">
               Who We Are
             </p>
-            <h1 className="text-page-h1 text-be-charcoal-950 mb-4">
+            {/* Single-line on desktop (lg+), natural wrap on mobile */}
+            <h1 className="text-page-h1 text-be-charcoal-950 mb-4 whitespace-nowrap lg:whitespace-nowrap">
               Bharat Electrosafe
             </h1>
             <p className="text-body-large text-be-grey-650 max-w-xl mb-5">
