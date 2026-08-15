@@ -369,15 +369,15 @@ export default function HomeHero() {
 
         {/* ── Carousel controls: ← dots →  (order per client feedback) ── */}
         <div className="container-site page-horizontal-padding">
-          <div className="flex items-center justify-center gap-3 pb-3 pt-3 sm:pt-4">
-            {/* Prev arrow — transparent, lightweight style */}
+          <div className="flex items-center justify-center gap-4 pb-1.5 pt-1.5">
+            {/* Prev arrow — minimal transparent style */}
             <button
               type="button"
               onClick={scrollPrev}
               aria-label="Previous slide"
-              className="flex items-center justify-center size-11 rounded-lg text-be-charcoal-800 hover:text-be-yellow-600 hover:bg-be-yellow-50 active:bg-be-yellow-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2"
+              className="flex items-center justify-center size-10 rounded-full text-be-charcoal-800/50 hover:text-be-charcoal-800 hover:bg-be-charcoal-800/5 active:bg-be-charcoal-800/10 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-charcoal-800/30 focus-visible:ring-offset-2"
             >
-              <ArrowLeft className="size-5" aria-hidden="true" />
+              <ArrowLeft className="size-4" aria-hidden="true" />
             </button>
 
             {/* Dot indicators — between the arrows */}
@@ -389,10 +389,10 @@ export default function HomeHero() {
                   role="tab"
                   aria-selected={idx === selectedIndex}
                   aria-label={`Go to slide ${idx + 1}`}
-                  className={`size-2.5 rounded-full transition-all duration-300 ${
+                  className={`size-2 rounded-full transition-all duration-300 ${
                     idx === selectedIndex
-                      ? 'bg-be-yellow-500 scale-125'
-                      : 'bg-be-grey-300 hover:bg-be-grey-400'
+                      ? 'bg-be-charcoal-800 scale-125'
+                      : 'bg-be-charcoal-800/20 hover:bg-be-charcoal-800/40'
                   }`}
                   onClick={() => {
                     if (emblaApi) {
@@ -404,14 +404,14 @@ export default function HomeHero() {
               ))}
             </div>
 
-            {/* Next arrow — transparent, lightweight style */}
+            {/* Next arrow — minimal transparent style */}
             <button
               type="button"
               onClick={scrollNext}
               aria-label="Next slide"
-              className="flex items-center justify-center size-11 rounded-lg text-be-charcoal-800 hover:text-be-yellow-600 hover:bg-be-yellow-50 active:bg-be-yellow-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-2"
+              className="flex items-center justify-center size-10 rounded-full text-be-charcoal-800/50 hover:text-be-charcoal-800 hover:bg-be-charcoal-800/5 active:bg-be-charcoal-800/10 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-charcoal-800/30 focus-visible:ring-offset-2"
             >
-              <ArrowRight className="size-5" aria-hidden="true" />
+              <ArrowRight className="size-4" aria-hidden="true" />
             </button>
           </div>
         </div>
