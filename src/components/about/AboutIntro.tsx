@@ -3,17 +3,20 @@
 import Image from 'next/image';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { SectionShell } from '@/components/ui/SectionShell';
-import { ShieldCheck, Layers, Droplets, Zap } from 'lucide-react';
+import { ShieldCheck, Layers, Droplets, Zap, CheckCircle2 } from 'lucide-react';
 
 /**
- * AboutIntro — "Who We Are" hero section.
+ * AboutIntro — "Who We Are" hero section with integrated Company Profile.
  *
  * Two-column editorial layout:
- *   LEFT  — text column (eyebrow, H1, intro, product range)
+ *   LEFT  — text column (Who We Are intro + Company Profile + Product Scope)
  *   RIGHT — media column (two approved images stacked vertically)
  *
- * The stacked media column visually balances the full company profile
- * height. On mobile, images and6stack naturally.
+ * The Company Profile content is integrated into the left column so the
+ * combined text height balances the stacked images on the right,
+ * creating a cohesive, visually balanced composition.
+ *
+ * On mobile, images stack between text blocks naturally.
  *
  * Content source: client About docx.
  */
@@ -25,6 +28,14 @@ const productRange = [
   { icon: ShieldCheck, title: 'PVC Flooring', standard: 'IS 3462:1986' },
 ];
 
+const productScope = [
+  'High Voltage Electrical Insulating Mats (IS 15652:2006 & IEC 61111:2009; ERDA-tested and BIS licensed)',
+  'Geo Membrane Lining (IS 15909:2020 for containment, lining and environmental protection applications)',
+  'Water Stop Seal (IS 15058:2002 for concrete joint sealing and water leakage prevention)',
+  'PVC Flooring Solutions (IS 3462:1986 for residential, office and commercial interior flooring applications)',
+  'Other Products: Rubber Sheets, Rubber Hose Pipes, ESD Mats, Conveyor Belts',
+];
+
 export default function AboutIntro() {
   return (
     <SectionShell variant="hero" bg="be-page-top-tint">
@@ -34,9 +45,10 @@ export default function AboutIntro() {
       </div>
 
       {/* Two-column layout — 55/45 split */}
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
-        {/* Left — Who We Are text column */}
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
+        {/* Left — Who We Are + Company Profile text column */}
         <div className="lg:w-[55%] reveal-up">
+          {/* ── Who We Are ── */}
           <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-2">
             Who We Are
           </p>
@@ -52,7 +64,7 @@ export default function AboutIntro() {
           </p>
 
           {/* Product range — compact 2×2 grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-8">
             {productRange.map(({ icon: Icon, title, standard }) => (
               <div
                 key={title}
@@ -72,10 +84,60 @@ export default function AboutIntro() {
               </div>
             ))}
           </div>
+
+          {/* ── Company Profile (integrated) ── */}
+          <div className="reveal-up">
+            <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-2">
+              Company Profile
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-be-charcoal-950 tracking-tight leading-snug mb-4">
+              About Bharat Electrosafe
+            </h2>
+
+            <p className="text-body-large text-be-grey-650 leading-relaxed mb-3">
+              At Bharat Electrosafe, we are India&rsquo;s trusted name in
+              precision-engineered electrical safety, industrial safety,
+              infrastructure protection, PVC flooring, and waterproofing
+              solutions. Proudly contributing to the nation&rsquo;s safety and
+              development under the Make in India initiative, we are committed
+              to delivering high-quality products that protect lives, ensure
+              compliance, and support critical industrial, commercial, and
+              infrastructure operations across multiple sectors.
+            </p>
+
+            <p className="text-body text-be-grey-650 leading-relaxed mb-5">
+              With a strong focus on quality, durability, and regulatory
+              compliance, our solutions are designed to meet the highest Indian
+              standards and serve industries such as power, construction,
+              infrastructure, water management, manufacturing, and industrial
+              utilities.
+            </p>
+
+            {/* Product scope list */}
+            <p className="text-sm font-bold uppercase tracking-wider text-be-charcoal-950 mb-3">
+              Product Scope
+            </p>
+            <ul className="flex flex-col gap-2.5">
+              {productScope.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-2.5"
+                >
+                  <CheckCircle2
+                    className="h-4 w-4 text-be-yellow-text mt-1 shrink-0"
+                    aria-hidden="true"
+                  />
+                  <span className="text-body text-be-grey-650 leading-snug">
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* Right — media column: two approved images stacked vertically */}
-        <div className="lg:w-[45%] reveal-up flex flex-col gap-4">
+        <div className="lg:w-[45%] reveal-up flex flex-col gap-4 lg:sticky lg:top-24">
           {/* Technician / insulating-mat application image — object-cover */}
           <div className="rounded-lg overflow-hidden">
             <Image
