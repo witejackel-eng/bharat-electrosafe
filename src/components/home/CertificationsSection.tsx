@@ -24,13 +24,9 @@ import { allTrustMarks } from '@/data/trust';
  * interactive link that opens the PDF. A subtle "Download" pill
  * appears on hover/focus.
  *
- * Logo → name gap is intentionally tight (gap-1) to avoid empty
- * vertical whitespace where a description used to be.
- *
- * Logo heights (enlarged for prominence):
- *   - Desktop  : ~132px visual height
- *   - Tablet   : ~106-120px
- *   - Mobile   : ~88px
+ * Logo → name gap is intentionally tight (gap-1.5) for a compact,
+ * premium feel. Logo heights are slightly enlarged (~15%) for
+ * better recognisability.
  *
  * Item cell widths are fixed responsively so the rail reserves its
  * layout before images load (no CLS).
@@ -60,19 +56,16 @@ export default function CertificationsSection() {
             const inner = (
               <>
                 {/* Logo — large, clean, no box. object-contain never crops.
+                    Slightly enlarged (~15%) for better recognisability.
                     Eager + unoptimized: these are tiny local WebP identity
-                    assets drifting through a continuously moving rail, so
-                    they must be fetched/decoded immediately and served
-                    directly (no Next image-optimization hop). No priority
-                    is set so these never compete with hero/above-the-fold
-                    resources. */}
-                <span className="relative flex h-[88px] sm:h-[106px] md:h-[120px] lg:h-[132px] w-full items-center justify-center">
+                    assets drifting through a continuously moving rail. */}
+                <span className="relative flex h-[100px] sm:h-[120px] md:h-[136px] lg:h-[150px] w-full items-center justify-center">
                   <Image
                     src={mark.logo}
                     alt={mark.alt}
                     fill
                     className="object-contain"
-                    sizes="(max-width: 639px) 105px, (max-width: 767px) 120px, (max-width: 1023px) 130px, 140px"
+                    sizes="(max-width: 639px) 115px, (max-width: 767px) 130px, (max-width: 1023px) 145px, 155px"
                     loading="eager"
                     unoptimized
                   />
@@ -119,7 +112,7 @@ export default function CertificationsSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Download ${mark.label} document`}
-                  className="group/mark w-[105px] sm:w-[120px] md:w-[130px] lg:w-[135px] xl:w-[140px] flex flex-col items-center gap-1 py-1 cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+                  className="group/mark w-[115px] sm:w-[130px] md:w-[145px] lg:w-[150px] xl:w-[155px] flex flex-col items-center gap-1.5 py-1 cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
                 >
                   {inner}
                 </a>
@@ -129,7 +122,7 @@ export default function CertificationsSection() {
             return (
               <div
                 key={mark.label}
-                className="w-[105px] sm:w-[120px] md:w-[130px] lg:w-[135px] xl:w-[140px] flex flex-col items-center gap-1 py-1"
+                className="w-[115px] sm:w-[130px] md:w-[145px] lg:w-[150px] xl:w-[155px] flex flex-col items-center gap-1.5 py-1"
               >
                 {inner}
               </div>
