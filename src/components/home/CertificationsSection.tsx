@@ -19,10 +19,13 @@ import { allTrustMarks } from '@/data/trust';
  *
  * Visual model: a clean corporate certification strip where the LOGOS
  * are the focus — no boxed cards, no tinted backgrounds, no shadows.
- * Each mark sits on plain whitespace with its name. For marks with an
- * attached document, the item itself is an interactive link that opens
- * the PDF. A subtle "Download" pill appears on hover/focus. Items
- * without a document remain static (no pointer cursor, no hover effect).
+ * Each mark shows LOGO + NAME only (no long description).
+ * For marks with an attached document, the item itself is an
+ * interactive link that opens the PDF. A subtle "Download" pill
+ * appears on hover/focus.
+ *
+ * Logo → name gap is intentionally tight (gap-1) to avoid empty
+ * vertical whitespace where a description used to be.
  *
  * Logo heights (enlarged for prominence):
  *   - Desktop  : ~132px visual height
@@ -30,8 +33,7 @@ import { allTrustMarks } from '@/data/trust';
  *   - Mobile   : ~88px
  *
  * Item cell widths are fixed responsively so the rail reserves its
- * layout before images load (no CLS). Inter-logo spacing is tight
- * and dense per the design direction — logos dominate, gaps recede.
+ * layout before images load (no CLS).
  */
 export default function CertificationsSection() {
   return (
@@ -75,6 +77,7 @@ export default function CertificationsSection() {
                     unoptimized
                   />
                 </span>
+                {/* Certification name — logo + name only, no description */}
                 <span className="text-metadata text-center font-semibold text-be-charcoal-950 leading-tight">
                   {mark.label}
                 </span>
@@ -116,7 +119,7 @@ export default function CertificationsSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Download ${mark.label} document`}
-                  className="group/mark w-[105px] sm:w-[120px] md:w-[130px] lg:w-[135px] xl:w-[140px] flex flex-col items-center gap-1.5 py-1 cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+                  className="group/mark w-[105px] sm:w-[120px] md:w-[130px] lg:w-[135px] xl:w-[140px] flex flex-col items-center gap-1 py-1 cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
                 >
                   {inner}
                 </a>
@@ -126,7 +129,7 @@ export default function CertificationsSection() {
             return (
               <div
                 key={mark.label}
-                className="w-[105px] sm:w-[120px] md:w-[130px] lg:w-[135px] xl:w-[140px] flex flex-col items-center gap-1.5 py-1"
+                className="w-[105px] sm:w-[120px] md:w-[130px] lg:w-[135px] xl:w-[140px] flex flex-col items-center gap-1 py-1"
               >
                 {inner}
               </div>
