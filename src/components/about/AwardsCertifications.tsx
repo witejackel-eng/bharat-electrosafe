@@ -23,11 +23,11 @@ import { awards, allTrustMarks } from '@/data/trust';
  * scrollable rail under prefers-reduced-motion.
  *
  * Certification cards show LOGO + NAME only — no long description.
- * Logo → name gap is tight (gap-1) with no empty vertical whitespace.
+ * Logo → name gap is tight (gap-1.5) with no empty vertical whitespace.
  *
- * Reliance is included as a client reference (not a certification) —
- * it appears in the rail with appropriate labelling so the UI never
- * implies an accreditation that does not exist.
+ * Reliance is NOT shown here — it is an industry reference/client,
+ * not a certification. It appears in the Industry References section
+ * via the organisationReferences data in trust.ts.
  */
 
 const AUTOPLAY_DELAY = 5000;
@@ -188,16 +188,15 @@ export default function AwardsCertifications() {
 
               const inner = (
                 <>
-                  {/* Logo — object-contain never crops.
-                      Eager + unoptimized: these are tiny local WebP identity
-                      assets drifting through a continuously moving rail. */}
-                  <span className="relative flex h-14 sm:h-16 md:h-[72px] lg:h-[80px] w-full items-center justify-center">
+                  {/* Logo — object-contain never crops. Slightly enlarged
+                      for better recognisability (~15% larger than previous). */}
+                  <span className="relative flex h-16 sm:h-[72px] md:h-[84px] lg:h-[92px] w-full items-center justify-center">
                     <Image
                       src={mark.logo}
                       alt={mark.alt}
                       fill
                       className="object-contain"
-                      sizes="(max-width: 639px) 140px, (max-width: 767px) 160px, (max-width: 1023px) 180px, 200px"
+                      sizes="(max-width: 639px) 150px, (max-width: 767px) 170px, (max-width: 1023px) 195px, 210px"
                       loading="eager"
                       unoptimized
                     />
@@ -241,7 +240,7 @@ export default function AwardsCertifications() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Download ${mark.label} document`}
-                    className="group/mark w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center gap-1 py-1 text-center cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+                    className="group/mark w-[150px] sm:w-[170px] md:w-[190px] lg:w-[210px] xl:w-[215px] flex flex-col items-center gap-1.5 py-1 text-center cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
                   >
                     {inner}
                   </a>
@@ -251,33 +250,12 @@ export default function AwardsCertifications() {
               return (
                 <div
                   key={mark.label}
-                  className="w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center gap-1 py-1 text-center"
+                  className="w-[150px] sm:w-[170px] md:w-[190px] lg:w-[210px] xl:w-[215px] flex flex-col items-center gap-1.5 py-1 text-center"
                 >
                   {inner}
                 </div>
               );
             })}
-
-            {/* ── Reliance — client reference (NOT a certification) ──
-                No logo asset exists in the project. Rendered as a text-based
-                card in the same logo+name format as certification items,
-                but using the organisation name as the visual "logo". The
-                label clearly identifies it so the UI never implies an
-                accreditation that does not exist. */}
-            <div
-              className="w-[140px] sm:w-[160px] md:w-[180px] lg:w-[195px] xl:w-[200px] flex flex-col items-center gap-1 py-1 text-center"
-            >
-              {/* Text-based logo area — same height as certification logos */}
-              <span className="relative flex h-14 sm:h-16 md:h-[72px] lg:h-[80px] w-full items-center justify-center">
-                <span className="text-base sm:text-lg md:text-xl font-bold text-be-charcoal-950 leading-tight">
-                  Reliance
-                </span>
-              </span>
-              {/* Name only — same treatment as certification labels */}
-              <span className="text-sm font-semibold text-be-charcoal-950 text-center leading-tight">
-                Reliance Industries Limited
-              </span>
-            </div>
           </InfiniteLogoRail>
         </div>
       </div>
