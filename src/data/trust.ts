@@ -114,10 +114,9 @@ export const primaryTrustMarks: TrustMark[] = [
   },
   {
     label: 'CE mark',
-    note: 'CE marking certificate held by the company',
+    note: 'CE conformity marking referenced by the company',
     logo: '/media/certifications/ce.webp',
     alt: 'CE conformity mark',
-    document: '/documents/certifications/ce-marking-certificate.pdf',
   },
 ];
 
@@ -176,9 +175,10 @@ export const allTrustMarks: TrustMark[] = [
   },
   {
     label: 'ACL Certification',
-    note: 'Certification mark referenced by the company',
+    note: 'Certificate of Compliance ACL25053002 — Accura Certification Limited (expires 29/05/2026)',
     logo: '/media/certifications/acl.webp',
     alt: 'ACL certification mark',
+    document: '/documents/certifications/acl25053002-bharat-electrosafe.pdf',
   },
 ];
 
