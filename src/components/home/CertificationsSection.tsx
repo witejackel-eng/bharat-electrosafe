@@ -116,7 +116,7 @@ export default function CertificationsSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Download ${mark.label} document`}
-                  className="group/mark w-[105px] sm:w-[120px] md:w-[130px] lg:w-[135px] xl:w-[140px] flex flex-col items-center gap-2.5 py-1 cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+                  className="group/mark w-[105px] sm:w-[120px] md:w-[130px] lg:w-[135px] xl:w-[140px] flex flex-col items-center gap-1.5 py-1 cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
                 >
                   {inner}
                 </a>
@@ -126,7 +126,7 @@ export default function CertificationsSection() {
             return (
               <div
                 key={mark.label}
-                className="w-[105px] sm:w-[120px] md:w-[130px] lg:w-[135px] xl:w-[140px] flex flex-col items-center gap-2.5 py-1"
+                className="w-[105px] sm:w-[120px] md:w-[130px] lg:w-[135px] xl:w-[140px] flex flex-col items-center gap-1.5 py-1"
               >
                 {inner}
               </div>
