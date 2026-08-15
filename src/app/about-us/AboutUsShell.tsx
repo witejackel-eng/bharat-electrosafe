@@ -13,20 +13,17 @@ import AboutCTA from '@/components/about/AboutCTA';
 /**
  * AboutUsShell — Server Component.
  *
- * Compact section structure:
- *   1. ABOUT / WHO WE ARE + COMPANY PROFILE  (AboutIntro — warm white bg, two-column with images)
- *   2. LEADERSHIP                       (CompanyLeadership — white bg, flip cards)
- *   3. BRANDS + VISION / MISSION        (BrandsVisionMission — navy band)
- *   4. WHY BHARAT ELECTROSAFE           (WhyBharatElectrosafe — cream bg)
- *   5. RECOGNITION & TRUST              (AwardsCertifications — white bg)
- *   6. CLIENTS & INDUSTRY + MEDIA       (ClientsProjects — white bg, includes video carousel)
- *   7. CTA                              (AboutCTA — yellow/navy emphasis)
+ * Section structure:
+ *   1. WHO WE ARE + COMPANY PROFILE  (AboutIntro — two separate sections with full-width divider)
+ *   2. LEADERSHIP                    (CompanyLeadership — warm-white bg, flip cards)
+ *   3. BRANDS + VISION / MISSION     (BrandsVisionMission — navy band)
+ *   4. WHY BHARAT ELECTROSAFE        (WhyBharatElectrosafe — cream bg)
+ *   5. RECOGNITION & TRUST           (AwardsCertifications — white bg)
+ *   6. CLIENTS & INDUSTRY + MEDIA    (ClientsProjects — white bg, includes video carousel)
+ *   7. CTA                           (AboutCTA — yellow/navy emphasis)
  *
- * CompanyProfile is merged into AboutIntro for a balanced two-column layout
- * where text content (Who We Are + Company Profile) fills the same height
- * as the stacked images on the right.
- *
- * ActiveParticipation has been merged into ClientsProjects (video carousel).
+ * AboutIntro renders Who We Are and Company Profile as two independent
+ * sections separated by a full-viewport-width 1px divider.
  */
 
 export default function AboutUsShell() {
@@ -34,7 +31,7 @@ export default function AboutUsShell() {
     <div className="min-h-screen flex flex-col bg-be-warm-white">
       <Header />
       <main className="flex-1">
-        {/* 1. About / Who We Are + Company Profile — warm white bg */}
+        {/* 1. Who We Are + Company Profile — two sections with full-width divider */}
         <AboutIntro />
 
         {/* 2. Leadership — white bg, flip cards */}
@@ -43,12 +40,11 @@ export default function AboutUsShell() {
         {/* 3. Brands + Vision / Mission — navy band (self-contained) */}
         <BrandsVisionMission />
 
-        {/* ── Section divider: deliberate transition between Who We Are area and Why Bharat Electrosafe ── */}
-        <div className="py-14 lg:py-16" aria-hidden="true">
-          <div className="container-site page-horizontal-padding">
-            <div className="be-section-divider" />
-          </div>
-        </div>
+        {/* ── Full-width section divider ── */}
+        <div
+          className="w-full h-px bg-be-grey-250"
+          aria-hidden="true"
+        />
 
         {/* 4. Why Bharat Electrosafe — cream bg */}
         <WhyBharatElectrosafe />
