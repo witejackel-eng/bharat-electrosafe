@@ -23,15 +23,16 @@ import { CheckCircle2 } from 'lucide-react';
  *   │                          │  beside poster)          │
  *   └──────────────────────────┴──────────────────────────┘
  *
- * Upper section: CSS Grid with items-stretch so the image
- * column matches the content column height. The image fills
- * its container via `fill` + `object-cover`.
+ * Upper section: CSS Grid with items-stretch. The image column
+ * uses flex-col + flex-1 internally so the image container
+ * stretches to fill the full grid cell height, and the Image
+ * (fill + object-cover) fills that container.
  *
- * Lower section: CSS Grid with items-stretch; the short closing
- * paragraph is vertically centered beside the taller poster
- * via `flex items-center` on its grid cell for a balanced
- * relationship. The poster renders at its natural portrait
- * dimensions (object-contain preserves the artwork).
+ * Lower section: CSS Grid with items-stretch. The text cell uses
+ * flex-col + justify-center internally to vertically center the
+ * short closing paragraph beside the taller poster image.
+ * The poster renders at its natural portrait dimensions
+ * (object-contain preserves the artwork).
  *
  * Mobile: stacks vertically — image → text → image → text.
  * On mobile the image returns to a natural aspect-ratio
@@ -173,13 +174,13 @@ export default function AboutIntro() {
         </div>
 
         {/* Right — Hero image — stretches to match content height on
-         *  desktop via CSS Grid items-stretch. On mobile, returns to
-         *  a natural 4:3 aspect ratio instead of stretching. The image
-         *  fills its container with object-cover to avoid distortion
-         *  while covering the full area. */}
-        <div className="reveal-up">
+         *  desktop. The grid child uses lg:flex-col so the inner image
+         *  container (lg:flex-1) stretches to fill the full cell height.
+         *  On mobile, returns to a natural 4:3 aspect ratio. The Image
+         *  (fill + object-cover) fills the container without distortion. */}
+        <div className="reveal-up lg:flex lg:flex-col">
           <div className="relative rounded-lg overflow-hidden
-            aspect-[4/3] lg:aspect-auto lg:h-full
+            aspect-[4/3] lg:aspect-auto lg:flex-1
           ">
             <Image
               src="/media/hero/bharat-electrosafe-insulating-mat-hero.webp"
@@ -214,9 +215,9 @@ export default function AboutIntro() {
         </div>
 
         {/* Right — Closing company paragraph — vertically centered
-         *  beside the poster on desktop via flex items-center within
-         *  the stretched grid cell, for a balanced layout. */}
-        <div className="reveal-up order-1 lg:order-2 lg:flex lg:items-center">
+         *  beside the poster on desktop via flex-col + justify-center
+         *  within the stretched grid cell, for a balanced layout. */}
+        <div className="reveal-up order-1 lg:order-2 lg:flex lg:flex-col lg:justify-center">
           <p className="text-body-large text-be-grey-650 leading-relaxed">
             At Bharat Electrosafe, we combine engineering excellence,
             compliance assurance, and customer-centric innovation to deliver
