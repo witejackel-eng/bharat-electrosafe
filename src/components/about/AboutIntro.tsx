@@ -86,7 +86,7 @@ export default function AboutIntro() {
           </div>
 
           {/* ── Section divider between Who We Are and Company Profile ── */}
-          <div className="be-section-divider my-8" aria-hidden="true" />
+          <div className="be-section-divider my-12" aria-hidden="true" />
 
           {/* ── Company Profile (integrated) ── */}
           <div className="reveal-up">

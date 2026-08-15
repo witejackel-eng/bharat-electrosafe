@@ -76,34 +76,29 @@ export default function WhyBharatElectrosafe() {
             ))}
           </ul>
 
-          {/* Core Values — value points only (image moved to right column) */}
+          {/* Core Values — compact horizontal cards in 2×2 grid */}
           <div className="reveal-up">
-            <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-4">
+            <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-3">
               Core Values
             </p>
-            <div className="flex flex-col gap-3">
+            <div className="grid grid-cols-2 gap-2.5">
               {values.map((value) => {
                 const Icon = iconMap[value.title] ?? ShieldCheck;
                 return (
                   <div
                     key={value.title}
-                    className="flex items-start gap-3 p-3 rounded-lg border border-be-grey-250 bg-be-white"
+                    className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-be-grey-250 bg-be-white"
                   >
-                    <div className="flex items-center justify-center w-8 h-8 rounded-md bg-be-navy-800 shrink-0">
+                    <div className="flex items-center justify-center w-7 h-7 rounded-md bg-be-navy-800 shrink-0">
                       <Icon
-                        className="h-4 w-4 text-be-white"
+                        className="h-3.5 w-3.5 text-be-white"
                         aria-hidden="true"
                         focusable="false"
                       />
                     </div>
-                    <div>
-                      <p className="text-sm font-bold text-be-charcoal-950 tracking-tight leading-tight">
-                        {value.title}
-                      </p>
-                      <p className="text-[0.8rem] text-be-grey-650 leading-snug mt-0.5">
-                        {value.description}
-                      </p>
-                    </div>
+                    <p className="text-xs font-bold text-be-charcoal-950 tracking-tight leading-tight">
+                      {value.title}
+                    </p>
                   </div>
                 );
               })}
@@ -111,8 +106,8 @@ export default function WhyBharatElectrosafe() {
           </div>
         </div>
 
-        {/* Right — manufacturing image */}
-        <div className="lg:w-[42%] reveal-up">
+        {/* Right — core values image + manufacturing summary (sticky to fill space) */}
+        <div className="lg:w-[42%] reveal-up lg:sticky lg:top-24 lg:self-start">
           <div className="rounded-lg overflow-hidden">
             <Image
               src="/media/about/core-values.webp"
