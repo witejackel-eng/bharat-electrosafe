@@ -24,9 +24,10 @@ import { CheckCircle2 } from 'lucide-react';
  *   └──────────────────────────┴──────────────────────────┘
  *
  * Upper section: CSS Grid with items-stretch. The image column
- * uses flex-col + flex-1 internally so the image container
- * stretches to fill the full grid cell height, and the Image
- * (fill + object-cover) fills that container.
+ * uses `position: relative` on the grid item and `position: absolute;
+ * inset: 0` on the image container, guaranteeing the image fills
+ * the full stretched grid cell height. On mobile, an in-flow
+ * aspect-[4/3] spacer provides natural height.
  *
  * Lower section: CSS Grid with items-stretch. The text cell uses
  * flex-col + justify-center internally to vertically center the
@@ -173,15 +174,19 @@ export default function AboutIntro() {
           </ul>
         </div>
 
-        {/* Right — Hero image — stretches to match content height on
-         *  desktop. The grid child uses lg:flex-col so the inner image
-         *  container (lg:flex-1) stretches to fill the full cell height.
-         *  On mobile, returns to a natural 4:3 aspect ratio. The Image
-         *  (fill + object-cover) fills the container without distortion. */}
-        <div className="reveal-up lg:flex lg:flex-col">
-          <div className="relative rounded-lg overflow-hidden
-            aspect-[4/3] lg:aspect-auto lg:flex-1
-          ">
+        {/* Right — Hero image — fills the full grid cell height on
+         *  desktop. The grid item is `relative` so the absolutely
+         *  positioned image container (`inset-0`) fills the entire
+         *  stretched cell. On mobile, an in-flow aspect-[4/3] spacer
+         *  provides the container's natural height, and the absolute
+         *  image overlays it. */}
+        <div className="reveal-up relative">
+          {/* In-flow spacer: gives the cell a natural height on mobile.
+           *   On desktop (lg+), aspect-auto removes the fixed ratio and
+           *   the grid stretch takes over as the height source. */}
+          <div className="aspect-[4/3] lg:aspect-auto" aria-hidden="true" />
+          {/* Absolutely positioned image container: fills the grid cell. */}
+          <div className="absolute inset-0 rounded-lg overflow-hidden">
             <Image
               src="/media/hero/bharat-electrosafe-insulating-mat-hero.webp"
               alt="Bharat Electrosafe electrical insulating mat in use"
