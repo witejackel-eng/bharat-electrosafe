@@ -43,6 +43,13 @@ export default function AboutUsShell() {
         {/* 3. Brands + Vision / Mission — navy band (self-contained) */}
         <BrandsVisionMission />
 
+        {/* ── Section divider: deliberate transition between Who We Are area and Why Bharat Electrosafe ── */}
+        <div className="py-14 lg:py-16" aria-hidden="true">
+          <div className="container-site page-horizontal-padding">
+            <div className="be-section-divider" />
+          </div>
+        </div>
+
         {/* 4. Why Bharat Electrosafe — cream bg */}
         <WhyBharatElectrosafe />
 
