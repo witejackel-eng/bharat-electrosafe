@@ -12,18 +12,28 @@ import { CheckCircle2 } from 'lucide-react';
  *   ┌──────────────────────────┬──────────────────────────┐
  *   │ WHO WE ARE               │                          │
  *   │ Bharat Electrosafe       │  insulating-mat hero     │
- *   │ profile paragraph 1      │  image                   │
- *   │ profile paragraph 2      │                          │
+ *   │ profile paragraph 1      │  image (stretched to     │
+ *   │ profile paragraph 2      │  match content height)   │
  *   │ Product Scope heading    │                          │
  *   │ product list...          │                          │
  *   ├──────────────────────────┼──────────────────────────┤
  *   │                          │                          │
  *   │ electrical-insulation    │  closing company         │
- *   │ poster image             │  paragraph               │
- *   │                          │                          │
+ *   │ poster image             │  paragraph (centered     │
+ *   │                          │  beside poster)          │
  *   └──────────────────────────┴──────────────────────────┘
  *
+ * Upper section: CSS Grid with items-stretch so the image
+ * column matches the content column height. The image fills
+ * its container via `fill` + `object-cover`.
+ *
+ * Lower section: CSS Grid with items-start; the short closing
+ * paragraph is vertically centered beside the taller poster
+ * via `self-center` for a balanced relationship.
+ *
  * Mobile: stacks vertically — image → text → image → text.
+ * On mobile the image returns to a natural aspect-ratio
+ * (aspect-[4/3]) instead of stretching.
  *
  * "Bharat Electrosafe" is a single-line heading on desktop
  * (whitespace-nowrap at lg+), natural wrap on smaller viewports.
@@ -31,8 +41,6 @@ import { CheckCircle2 } from 'lucide-react';
  * Content source: client-approved About docx — verbatim.
  *
  * Product names are bold (font-bold), standards remain normal weight.
- * The old 2×2 product-range card grid is removed — it duplicated
- * the same information as the Product Scope list below it.
  */
 
 export default function AboutIntro() {
@@ -43,10 +51,13 @@ export default function AboutIntro() {
         <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'About Us' }]} />
       </div>
 
-      {/* ── Upper area: Who We Are text (left) + hero image (right) ── */}
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
+      {/* ── Upper area: Who We Are text (left) + hero image (right) ──
+       *  CSS Grid with items-stretch: the image column stretches to
+       *  match the content column height, eliminating the gap where
+       *  the image previously ended prematurely. */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.85fr] items-stretch gap-8 lg:gap-10">
         {/* Left — Who We Are text column */}
-        <div className="lg:w-[55%] reveal-up">
+        <div className="reveal-up">
           <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-2">
             Who We Are
           </p>
@@ -159,25 +170,34 @@ export default function AboutIntro() {
           </ul>
         </div>
 
-        {/* Right — Who We Are image (insulating-mat hero) */}
-        <div className="lg:w-[45%] reveal-up">
-          <div className="rounded-lg overflow-hidden">
+        {/* Right — Hero image — stretches to match content height on
+         *  desktop via CSS Grid items-stretch. On mobile, returns to
+         *  a natural 4:3 aspect ratio instead of stretching. The image
+         *  fills its container with object-cover to avoid distortion
+         *  while covering the full area. */}
+        <div className="reveal-up">
+          <div className="relative rounded-lg overflow-hidden
+            aspect-[4/3] lg:aspect-auto lg:h-full
+          ">
             <Image
               src="/media/hero/bharat-electrosafe-insulating-mat-hero.webp"
               alt="Bharat Electrosafe electrical insulating mat in use"
-              width={800}
-              height={600}
-              className="w-full h-auto object-cover"
-              sizes="(max-width: 768px) 100vw, 45vw"
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 1024px) 100vw, 45vw"
             />
           </div>
         </div>
       </div>
 
-      {/* ── Lower area: poster image (left) + closing paragraph (right) ── */}
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start mt-10 lg:mt-14">
+      {/* ── Lower area: poster image (left) + closing paragraph (right) ──
+       *  CSS Grid with items-start. The poster image (portrait) is
+       *  naturally taller than the short closing paragraph. The text
+       *  is vertically centered beside the poster via self-center
+       *  on desktop, creating a balanced image/content relationship. */}
+      <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1fr] items-start gap-8 lg:gap-10 mt-10 lg:mt-14">
         {/* Left — Client-supplied poster */}
-        <div className="lg:w-[45%] reveal-up order-2 lg:order-1">
+        <div className="reveal-up order-2 lg:order-1">
           <div className="rounded-lg overflow-hidden bg-be-cream/40 p-3">
             <Image
               src="/media/about/electrical-insulation-mat-poster-client-provided.png"
@@ -185,13 +205,14 @@ export default function AboutIntro() {
               width={700}
               height={900}
               className="w-full h-auto object-contain"
-              sizes="(max-width: 768px) 100vw, 45vw"
+              sizes="(max-width: 1024px) 100vw, 45vw"
             />
           </div>
         </div>
 
-        {/* Right — Closing company paragraph */}
-        <div className="lg:w-[55%] reveal-up order-1 lg:order-2">
+        {/* Right — Closing company paragraph — vertically centered
+         *  beside the poster on desktop for a balanced layout. */}
+        <div className="reveal-up order-1 lg:order-2 lg:self-center">
           <p className="text-body-large text-be-grey-650 leading-relaxed">
             At Bharat Electrosafe, we combine engineering excellence,
             compliance assurance, and customer-centric innovation to deliver
