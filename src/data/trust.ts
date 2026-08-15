@@ -175,7 +175,7 @@ export const allTrustMarks: TrustMark[] = [
   },
   {
     label: 'ACL Certification',
-    note: 'Certificate of Compliance ACL25053002 — Accura Certification Limited (expires 29/05/2026)',
+    note: 'Certificate of Compliance ACL25053002 — Accura Certification Limited — Expired 29 May 2026',
     logo: '/media/certifications/acl.webp',
     alt: 'ACL certification mark',
     document: '/documents/certifications/acl25053002-bharat-electrosafe.pdf',
