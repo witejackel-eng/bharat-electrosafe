@@ -282,6 +282,7 @@ export const organisationReferences: OrganisationLogo[] = [
   { name: 'PTCUL', logo: '/media/clients/ptcul.webp' },
   { name: 'Indian Oil', logo: '/media/clients/indian-oil.webp' },
   { name: 'SAIL', logo: '/media/clients/sail.webp' },
+  { name: 'Reliance Industries Limited', logo: '/media/clients/reliance.webp' },
 ];
 
 export const organisationReferenceHeading = 'Industry references';
