@@ -52,7 +52,7 @@ const productGroups: ProductGroupCardData[] = [
     href: '/products/waterproofing-solutions',
     name: 'Waterproofing Solutions',
     description:
-      'Geo Membrane Lining and Water Stop Seal systems for tunnels, containment and industrial waterproofing.',
+      'Geo Membrane Lining and Water Stop Seal solutions for tunnels, containment and industrial waterproofing.',
     visual: membraneVisuals.homePreview,
     objectPosition: 'center center',
   },
