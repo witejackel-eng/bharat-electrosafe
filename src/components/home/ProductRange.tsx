@@ -151,8 +151,8 @@ export default function ProductRange() {
       <div className="reveal-up mb-8">
         <SectionHeader
           eyebrow="PRODUCT RANGE"
-          title="Products for electrical safety"
-          supportingText="Electrical insulating mats, waterproofing systems, PVC flooring and related industrial rubber products."
+          title="Products for electrical safety, industrial safety & infrastructure protection"
+          supportingText="Electrical Insulating Mats, Waterproofing Solutions, PVC Flooring and related industrial rubber products."
         />
       </div>
 

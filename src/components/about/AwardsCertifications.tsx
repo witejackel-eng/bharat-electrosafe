@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SectionShell } from '@/components/ui/SectionShell';
 import { HorizontalCarousel } from '@/components/ui/HorizontalCarousel';
@@ -24,6 +24,12 @@ import { awards, allTrustMarks } from '@/data/trust';
  *   - Swipe/drag, keyboard support
  *   - prefers-reduced-motion disables auto-advance
  *   - Award images use object-contain (don't crop plaque/trophy text)
+ *
+ * Certification items with an attached document are interactive:
+ *   - The item is wrapped in a real <a> element
+ *   - Hover/focus shows a subtle Download pill
+ *   - Clicking opens the PDF in a new tab
+ *   - Items without a document remain static
  */
 
 const AUTOPLAY_DELAY = 5000;
@@ -173,39 +179,80 @@ export default function AwardsCertifications() {
 
         <div className="reveal-up">
           <HorizontalCarousel label="Certifications and memberships" autoAdvanceMs={4500}>
-            {allTrustMarks.map((mark) => (
-              <div
-                key={mark.label}
-                className="w-[240px] sm:w-[270px] md:w-[290px] lg:w-[320px] flex flex-col items-center gap-3 px-4 py-2 text-center"
-              >
-                <span className="relative flex h-16 sm:h-[68px] md:h-[72px] lg:h-[80px] w-full items-center justify-center">
-                  <Image
-                    src={mark.logo}
-                    alt={mark.alt}
-                    fill
-                    className="object-contain"
-                    sizes="200px"
-                  />
-                </span>
-                <span className="text-body font-semibold text-be-charcoal-950">
-                  {mark.label}
-                </span>
-                <span className="text-metadata text-be-grey-650 leading-snug min-h-[2.6em]">
-                  {mark.note}
-                </span>
-                {mark.document && (
+            {allTrustMarks.map((mark) => {
+              const isDownloadable = !!mark.document;
+
+              const inner = (
+                <>
+                  <span className="relative flex h-16 sm:h-[68px] md:h-[72px] lg:h-[80px] w-full items-center justify-center">
+                    <Image
+                      src={mark.logo}
+                      alt={mark.alt}
+                      fill
+                      className="object-contain"
+                      sizes="200px"
+                    />
+                  </span>
+                  <span className="text-body font-semibold text-be-charcoal-950">
+                    {mark.label}
+                  </span>
+                  <span className="text-metadata text-be-grey-650 leading-snug min-h-[2.6em]">
+                    {mark.note}
+                  </span>
+                  {/* Download hover/focus affordance — only for items with a document.
+                      On mobile (no hover), a small persistent download icon indicator
+                      is shown instead so touch users can discover the interaction. */}
+                  {isDownloadable && (
+                    <span
+                      className="flex items-center gap-1 text-[0.65rem] font-semibold text-be-yellow-text
+                                 opacity-0 translate-y-1
+                                 group-hover/mark:opacity-100 group-hover/mark:translate-y-0
+                                 group-focus-visible/mark:opacity-100 group-focus-visible/mark:translate-y-0
+                                 transition-all duration-200 ease-out
+                                 sm:opacity-0 sm:translate-y-1"
+                      aria-hidden="true"
+                    >
+                      <Download className="size-3" />
+                      Download
+                    </span>
+                  )}
+                  {/* Mobile touch indicator — small persistent icon for downloadable items.
+                      Hidden on sm+ where hover works reliably. */}
+                  {isDownloadable && (
+                    <span
+                      className="flex items-center justify-center sm:hidden"
+                      aria-hidden="true"
+                    >
+                      <Download className="size-3 text-be-yellow-text/70" />
+                    </span>
+                  )}
+                </>
+              );
+
+              if (isDownloadable) {
+                return (
                   <a
+                    key={mark.label}
                     href={mark.document}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`View ${mark.label} certificate`}
-                    className="text-metadata font-semibold text-be-yellow-text underline underline-offset-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500"
+                    aria-label={`Download ${mark.label} document`}
+                    className="group/mark w-[240px] sm:w-[270px] md:w-[290px] lg:w-[320px] flex flex-col items-center gap-3 px-4 py-2 text-center cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
                   >
-                    View certificate
+                    {inner}
                   </a>
-                )}
-              </div>
-            ))}
+                );
+              }
+
+              return (
+                <div
+                  key={mark.label}
+                  className="w-[240px] sm:w-[270px] md:w-[290px] lg:w-[320px] flex flex-col items-center gap-3 px-4 py-2 text-center"
+                >
+                  {inner}
+                </div>
+              );
+            })}
           </HorizontalCarousel>
         </div>
       </div>
