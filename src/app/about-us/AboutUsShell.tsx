@@ -14,7 +14,7 @@ import AboutCTA from '@/components/about/AboutCTA';
  * AboutUsShell — Server Component.
  *
  * Section structure:
- *   1. WHO WE ARE + COMPANY PROFILE  (AboutIntro — two separate sections with full-width divider)
+ *   1. WHO WE ARE                     (AboutIntro — single coherent About section with two-image layout)
  *   2. LEADERSHIP                    (CompanyLeadership — warm-white bg, flip cards)
  *   3. BRANDS + VISION / MISSION     (BrandsVisionMission — navy band)
  *   4. WHY BHARAT ELECTROSAFE        (WhyBharatElectrosafe — cream bg)
@@ -22,8 +22,9 @@ import AboutCTA from '@/components/about/AboutCTA';
  *   6. CLIENTS & INDUSTRY + MEDIA    (ClientsProjects — white bg, includes video carousel)
  *   7. CTA                           (AboutCTA — yellow/navy emphasis)
  *
- * AboutIntro renders Who We Are and Company Profile as two independent
- * sections separated by a full-viewport-width 1px divider.
+ * AboutIntro renders Who We Are as a single section with approved content,
+ * two-column image/content layout, bold product names, and no content
+ * duplication.
  */
 
 export default function AboutUsShell() {
@@ -31,7 +32,7 @@ export default function AboutUsShell() {
     <div className="min-h-screen flex flex-col bg-be-warm-white">
       <Header />
       <main className="flex-1">
-        {/* 1. Who We Are + Company Profile — two sections with full-width divider */}
+        {/* 1. Who We Are — single coherent About section with two-image layout */}
         <AboutIntro />
 
         {/* 2. Leadership — white bg, flip cards */}
