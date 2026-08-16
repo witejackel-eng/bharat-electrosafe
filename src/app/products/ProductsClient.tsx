@@ -1,8 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Zap, Droplets, Layers, Package, ChevronRight, Sheet, Cable, ShieldCheck, ArrowRight } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -12,6 +13,7 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { PrimaryButton } from '@/components/ui/PrimaryButton';
 import { SecondaryButton } from '@/components/ui/SecondaryButton';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   productComparisonData,
   ProductComparisonRow,
@@ -26,9 +28,46 @@ import {
   hydroSealVisuals,
   pvcFlooringVisuals,
   otherProductsVisuals,
-  productVisuals,
 } from '@/data/product-visuals';
 import { getCanonicalProductPath } from '@/data/product-routes';
+
+/* ────────────────────────────────────────────
+   Product category tabs — single source of truth
+   ────────────────────────────────────────────
+   Drives the tab strip, the active-category state,
+   and the URL `?category=` parameter. The four
+   numbered families mirror productNavGroups
+   (electrical=01, waterproofing=02, pvc=03,
+   other=04). Compare is the 5th, unnumbered tab
+   and renders the existing ComparisonSection. */
+type ProductTabId = 'electrical' | 'waterproofing' | 'pvc' | 'other' | 'compare';
+
+interface ProductTab {
+  id: ProductTabId;
+  number: string;
+  label: string;
+}
+
+const PRODUCT_TABS: ProductTab[] = [
+  { id: 'electrical',    number: '01', label: 'Electrical Insulating Mats' },
+  { id: 'waterproofing', number: '02', label: 'Waterproofing' },
+  { id: 'pvc',           number: '03', label: 'PVC Flooring' },
+  { id: 'other',         number: '04', label: 'Other Products' },
+  { id: 'compare',       number: '',   label: 'Compare' },
+];
+
+const DEFAULT_TAB_ID: ProductTabId = 'electrical';
+const URL_PARAM = 'category';
+
+/** Resolve a raw ?category= value to a valid tab id, falling back to
+ *  the default tab for unknown/missing values. Centralises validation so
+ *  the initial state and the back/forward sync effect agree. */
+function resolveTabId(raw: string | null | undefined): ProductTabId {
+  if (raw && PRODUCT_TABS.some((t) => t.id === raw)) {
+    return raw as ProductTabId;
+  }
+  return DEFAULT_TAB_ID;
+}
 
 /* ────────────────────────────────────────────
    Extended comparison data — includes IEC, PVC, Other
@@ -61,18 +100,6 @@ const extendedComparisonData: ProductComparisonRow[] = [
     applicableStandard: 'On request',
   },
 ];
-
-/* ────────────────────────────────────────────
-   Category nav items for sticky navigator
-   ──────────────────────────────────────────── */
-
-const CATEGORY_NAV_ITEMS = [
-  { id: 'electrical-insulating-mats', label: 'Electrical Insulating Mats' },
-  { id: 'waterproofing', label: 'Waterproofing' },
-  { id: 'pvc-other', label: 'PVC Flooring' },
-  { id: 'other-products-section', label: 'Other Products' },
-  { id: 'compare-products', label: 'Compare' },
-] as const;
 
 /* ────────────────────────────────────────────
    Domestic product card data
@@ -216,45 +243,77 @@ function ProductsHero() {
 }
 
 /* ────────────────────────────────────────────
-   Section 2: Sticky Product Category Navigator
-   ──────────────────────────────────────────── */
+   Section 2: Product Category Tabs
+   ────────────────────────────────────────────
+   Same-page tab navigation built on the shadcn/Radix
+   Tabs primitive. Replaces the old anchor-scroll
+   CategoryNavigator. Selecting a tab switches the
+   visible product family WITHOUT scrolling the page.
 
-function CategoryNavigator({ activeId }: { activeId: string }) {
-  const handleClick = useCallback((id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, []);
+   Visual language is preserved from the previous
+   navigator: a white bar with a bottom hairline,
+   yellow-active pill (bg-be-yellow-500), and
+   navy/hover-grey inactive state.
 
+   Accessibility (provided by Radix Tabs):
+   - role="tablist" on the list, role="tab" on each
+     trigger, role="tabpanel" on each content
+   - aria-selected, aria-controls, aria-labelledby
+   - roving tabindex + Arrow Left/Right/Home/End
+   - data-state="active|inactive" styling hooks
+
+   Mobile: the tab list scrolls horizontally
+   (overflow-x-auto + scrollbar-hidden) so all five
+   tabs remain reachable on narrow screens without
+   wrapping or overflowing the page. The active tab
+   is auto-scrolled into view via the onValueChange
+   handler in ProductsClient. */
+
+function ProductCategoryTabs({
+  activeId,
+  onChange,
+  listRef,
+}: {
+  activeId: ProductTabId;
+  onChange: (next: ProductTabId) => void;
+  listRef?: React.Ref<HTMLDivElement>;
+}) {
   return (
-    <nav
-      aria-label="Product categories"
-      className="bg-be-white border-b border-be-grey-150"
-    >
+    <nav aria-label="Product categories" className="bg-be-white border-b border-be-grey-150">
       <div className="container-site page-horizontal-padding">
-        <div className="flex items-center gap-1 h-[52px] overflow-x-auto scrollbar-none -mx-1 px-1">
-          {CATEGORY_NAV_ITEMS.map((item) => {
-            const isActive = activeId === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleClick(item.id)}
-                className={`
-                  shrink-0 px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200
+        <Tabs
+          value={activeId}
+          onValueChange={(v) => onChange(v as ProductTabId)}
+          className="flex-col gap-0"
+        >
+          <TabsList
+            ref={listRef}
+            aria-label="Product categories"
+            className="
+              inline-flex h-[52px] w-full items-center gap-1 overflow-x-auto scrollbar-hidden
+              rounded-none border-0 bg-transparent p-0 -mx-1 px-1
+            "
+          >
+            {PRODUCT_TABS.map((tab) => (
+              <TabsTrigger
+                key={tab.id}
+                value={tab.id}
+                className="
+                  shrink-0 rounded-md border-0 px-4 py-2 text-sm font-medium whitespace-nowrap
+                  shadow-none transition-colors duration-200
                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500
-                  ${isActive
-                    ? 'bg-be-yellow-500 text-be-charcoal-950'
-                    : 'text-be-navy-800 hover:text-be-charcoal-950 hover:bg-be-grey-150'
-                  }
-                `}
-                aria-current={isActive ? 'true' : undefined}
+                  data-[state=active]:bg-be-yellow-500 data-[state=active]:text-be-charcoal-950 data-[state=active]:shadow-none
+                  data-[state=inactive]:text-be-navy-800 data-[state=inactive]:hover:text-be-charcoal-950 data-[state=inactive]:hover:bg-be-grey-150
+                "
               >
-                {item.label}
-              </button>
-            );
-          })}
-        </div>
+                {tab.number && (
+                  <span className="tabular-nums mr-1.5 opacity-60">{tab.number}</span>
+                )}
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
       </div>
     </nav>
   );
@@ -476,92 +535,132 @@ function WaterproofingSection() {
 }
 
 /* ────────────────────────────────────────────
-   Section 5: PVC Flooring + Other Products (Combined)
-   ──────────────────────────────────────────── */
+   Section 5: PVC Flooring Solutions (03)
+   ────────────────────────────────────────────
+   Split out of the former "03 INDUSTRIAL &
+   FLOORING SOLUTIONS" combined section. Preserves
+   all existing PVC content: the homePreview image,
+   BharatSmart Floor™ copy, the IS 3462:1986 pill,
+   and the "Explore Flooring" link to the detail
+   page. Rendered as a standalone full-width
+   section with the same card visual quality as the
+   other product families. */
 
-function PvcAndOtherSection() {
+function PvcFlooringSection() {
   return (
-    <section id="pvc-other" className="bg-be-white scroll-mt-24">
+    <section id="pvc-flooring" className="bg-be-white">
       <div className="container-site page-horizontal-padding py-16 lg:py-20">
         {/* Section heading */}
         <div className="mb-10 lg:mb-12">
           <div className="flex items-baseline gap-4 mb-2">
             <span className="text-4xl font-bold text-be-yellow-500/60 tabular-nums">03</span>
-            <Eyebrow>INDUSTRIAL &amp; FLOORING SOLUTIONS</Eyebrow>
+            <Eyebrow>PVC FLOORING SOLUTIONS</Eyebrow>
           </div>
+          <p className="text-be-grey-650 text-base max-w-2xl mt-3">
+            BharatSmart Floor™ — PVC flooring for residential, office and commercial interiors (IS 3462:1986).
+          </p>
         </div>
 
-        {/* Two panels */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
-          {/* PVC Flooring Panel */}
-          <div className="rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
-            {/* Visual area */}
-            <div className="relative w-full aspect-[16/9] bg-[#f8f8f6] overflow-hidden">
-              <Image
-                src={pvcFlooringVisuals.homePreview.src}
-                alt={pvcFlooringVisuals.homePreview.alt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-            <div className="p-5">
-              <h3 className="text-xl font-semibold text-be-charcoal-950 mb-1.5">
-                PVC Flooring Solutions
-              </h3>
-              <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed mb-1">
-                BharatSmart Floor™ — PVC flooring for homes, offices and commercial interiors.
-              </p>
-              <span className="text-xs font-medium text-be-grey-650 bg-be-grey-150 px-2.5 py-0.5 rounded-full inline-block mb-4">
-                IS 3462:1986
-              </span>
-              <div>
-                <Link
-                  href="/products/pvc-flooring-solutions"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-be-yellow-text hover:text-be-yellow-text-hover transition-colors group/link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded"
-                >
-                  Explore Flooring
-                  <ChevronRight className="size-4 group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true" />
-                </Link>
-              </div>
+        {/* PVC Flooring feature panel — text + image composition */}
+        <div className="rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)] flex flex-col md:flex-row">
+          {/* Visual area */}
+          <div className="relative w-full md:w-1/2 aspect-[16/9] md:aspect-auto bg-[#f8f8f6] overflow-hidden">
+            <Image
+              src={pvcFlooringVisuals.homePreview.src}
+              alt={pvcFlooringVisuals.homePreview.alt}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </div>
+          {/* Text content */}
+          <div className="flex flex-col justify-center p-6 md:p-8 md:w-1/2">
+            <h3 className="text-2xl font-semibold text-be-charcoal-950 mb-2">
+              PVC Flooring Solutions
+            </h3>
+            <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed mb-3">
+              BharatSmart Floor™ — PVC flooring for homes, offices and commercial interiors.
+            </p>
+            <span className="text-xs font-medium text-be-grey-650 bg-be-grey-150 px-2.5 py-0.5 rounded-full inline-block mb-5 w-fit">
+              IS 3462:1986
+            </span>
+            <div>
+              <Link
+                href="/products/pvc-flooring-solutions"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-be-yellow-text hover:text-be-yellow-text-hover transition-colors group/link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded"
+              >
+                Explore Flooring
+                <ChevronRight className="size-4 group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true" />
+              </Link>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-          {/* Other Products Panel */}
-          <div className="rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)] flex flex-col">
-            <div className="p-5 flex-1 flex flex-col">
-              {/* Top accent */}
-              <div className="h-1 w-full bg-gradient-to-r from-be-yellow-500 via-be-yellow-400 to-be-yellow-500 rounded-t mb-5 -mt-5 -mx-5 w-[calc(100%+40px)]" aria-hidden="true" />
-              <h3 className="text-xl font-semibold text-be-charcoal-950 mb-1.5">
-                Other Products
-              </h3>
-              <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed mb-5">
-                Industrial rubber and electrostatic-discharge products for general and specialist environments.
-              </p>
-              {/* Icon list */}
-              <div className="flex flex-col gap-3 mb-6 flex-1">
-                {OTHER_PRODUCTS_ITEMS.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="flex items-center gap-3 text-sm font-medium text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors group/item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded"
-                  >
-                    <span className="flex items-center justify-center size-8 rounded-lg bg-be-grey-150 text-be-grey-650 group-hover/item:bg-be-yellow-50 group-hover/item:text-be-yellow-text transition-colors">
-                      <item.Icon className="size-4" aria-hidden="true" />
-                    </span>
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-              <div>
+/* ────────────────────────────────────────────
+   Section 6: Other Products (04)
+   ────────────────────────────────────────────
+   Split out of the former "03 INDUSTRIAL &
+   FLOORING SOLUTIONS" combined section. Preserves
+   all existing Other Products content: the
+   introductory copy, the 4-item icon list
+   (Rubber Sheet, Rubber Hose Pipe, ESD Mat,
+   Conveyor Belt) with their anchor links, and the
+   "Explore Products" link. Rendered as a
+   standalone full-width section. */
+
+function OtherProductsSection() {
+  return (
+    <section id="other-products" className="bg-be-warm-white">
+      <div className="container-site page-horizontal-padding py-16 lg:py-20">
+        {/* Section heading */}
+        <div className="mb-10 lg:mb-12">
+          <div className="flex items-baseline gap-4 mb-2">
+            <span className="text-4xl font-bold text-be-yellow-500/60 tabular-nums">04</span>
+            <Eyebrow>OTHER PRODUCTS</Eyebrow>
+          </div>
+          <p className="text-be-grey-650 text-base max-w-2xl mt-3">
+            Industrial rubber and electrostatic-discharge products for general and specialist environments.
+          </p>
+        </div>
+
+        {/* Other Products panel */}
+        <div className="rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+          <div className="p-6 md:p-8">
+            {/* Top accent — preserved from the original Other Products panel */}
+            <div className="h-1 w-full bg-gradient-to-r from-be-yellow-500 via-be-yellow-400 to-be-yellow-500 rounded-t mb-6 -mt-6 -mx-6 md:-mx-8 w-[calc(100%+3rem)] md:w-[calc(100%+4rem)]" aria-hidden="true" />
+            <h3 className="text-2xl font-semibold text-be-charcoal-950 mb-2">
+              Other Products
+            </h3>
+            <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed mb-6">
+              Industrial rubber and electrostatic-discharge products for general and specialist environments.
+            </p>
+            {/* Icon list — preserved exactly (4 items + anchor links) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+              {OTHER_PRODUCTS_ITEMS.map((item) => (
                 <Link
-                  href="/products/other-products"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-be-yellow-text hover:text-be-yellow-text-hover transition-colors group/link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded"
+                  key={item.name}
+                  href={item.href}
+                  className="flex items-center gap-3 text-sm font-medium text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors group/item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded p-2 -m-2"
                 >
-                  Explore Products
-                  <ChevronRight className="size-4 group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true" />
+                  <span className="flex items-center justify-center size-8 rounded-lg bg-be-grey-150 text-be-grey-650 group-hover/item:bg-be-yellow-50 group-hover/item:text-be-yellow-text transition-colors">
+                    <item.Icon className="size-4" aria-hidden="true" />
+                  </span>
+                  {item.name}
                 </Link>
-              </div>
+              ))}
+            </div>
+            <div>
+              <Link
+                href="/products/other-products"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-be-yellow-text hover:text-be-yellow-text-hover transition-colors group/link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded"
+              >
+                Explore Products
+                <ChevronRight className="size-4 group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true" />
+              </Link>
             </div>
           </div>
         </div>
@@ -876,33 +975,69 @@ function TechnicalGuidanceCTA() {
 
 /* ────────────────────────────────────────────
    Main ProductsClient component
-   ──────────────────────────────────────────── */
+   ────────────────────────────────────────────
+   Single source of truth: `activeCategory` (a
+   ProductTabId). Derived from the URL `?category=`
+   search param on mount and kept in sync with
+   browser back/forward. Tab clicks update both the
+   state and the URL (via router.replace, so tab
+   switches don't pollute history — refresh still
+   restores the selected tab from the URL).
 
-export default function ProductsClient() {
-  const [activeSection, setActiveSection] = useState('electrical-insulating-mats');
+   useSearchParams() requires a <Suspense> boundary
+   in Next.js 13+ when used in a client component
+   rendered by a server component. The default
+   export below wraps the inner component in
+   <Suspense> to satisfy that requirement. */
 
+function ProductsClientInner() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const tabsListRef = useRef<HTMLDivElement>(null);
+
+  // activeCategory is DERIVED from the URL search param
+  // (single source of truth = the URL). This avoids a
+  // duplicated state copy and the cascading-render
+  // problem of syncing state inside an effect. The URL
+  // is updated by handleTabChange on user clicks, and
+  // browser back/forward naturally updates the URL
+  // (which re-derives activeCategory on the next render).
+  const activeCategory: ProductTabId = resolveTabId(searchParams.get(URL_PARAM));
+
+  // Auto-scroll the active tab into view on mobile so
+  // selecting a tab from another interaction (e.g.
+  // back/forward) keeps the active pill visible in the
+  // horizontally-scrollable strip. Runs after the
+  // active tab changes.
   useEffect(() => {
-    // IntersectionObserver for active section tracking in sticky nav
-    const sectionIds = CATEGORY_NAV_ITEMS.map((item) => item.id);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // Find the topmost visible section
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        }
-      },
-      { threshold: 0.2, rootMargin: '-140px 0px -60% 0px' },
+    const list = tabsListRef.current;
+    if (!list) return;
+    const activeBtn = list.querySelector<HTMLButtonElement>(
+      `[data-state="active"]`,
     );
+    if (activeBtn) {
+      activeBtn.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest',
+      });
+    }
+  }, [activeCategory]);
 
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const handleTabChange = useCallback(
+    (next: ProductTabId) => {
+      // Update the URL with router.replace + scroll:false.
+      // The address bar reflects the selection, refresh
+      // restores it, but no scroll jump or history entry
+      // is created. activeCategory re-derives from the
+      // new searchParams on the next render.
+      const sp = new URLSearchParams(searchParams.toString());
+      sp.set(URL_PARAM, next);
+      router.replace(`${pathname}?${sp.toString()}`, { scroll: false });
+    },
+    [pathname, router, searchParams],
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-be-warm-white">
@@ -920,17 +1055,39 @@ export default function ProductsClient() {
 
         {/* 1. Hero (split layout) */}
         <ProductsHero />
-        {/* 2. Sticky category navigator */}
-        <CategoryNavigator activeId={activeSection} />
-        {/* 3. Electrical Insulating Mats */}
-        <ElectricalInsulatingMatsSection />
-        {/* 4. Waterproofing */}
-        <WaterproofingSection />
-        {/* 5. PVC + Other Products */}
-        <PvcAndOtherSection />
-        {/* 6. Product Comparison */}
-        <ComparisonSection />
-        {/* 7. Selection Guide */}
+
+        {/* 2. Category tabs + active category content.
+            The tab strip and the visible content share
+            one source of truth (activeCategory), so the
+            selected tab and displayed family can never
+            disagree. Selecting a tab switches content
+            in place — no anchor scroll, no page jump. */}
+        <ProductCategoryTabs activeId={activeCategory} onChange={handleTabChange} listRef={tabsListRef} />
+
+        {/* Active category content. Each TabsContent only
+            mounts its panel when active (Radix default),
+            keeping the DOM lean and avoiding hidden
+            duplicate IDs. */}
+        <Tabs value={activeCategory} onValueChange={(v) => handleTabChange(v as ProductTabId)} className="flex-col gap-0">
+          <TabsContent value="electrical" className="focus-visible:outline-none">
+            <ElectricalInsulatingMatsSection />
+          </TabsContent>
+          <TabsContent value="waterproofing" className="focus-visible:outline-none">
+            <WaterproofingSection />
+          </TabsContent>
+          <TabsContent value="pvc" className="focus-visible:outline-none">
+            <PvcFlooringSection />
+          </TabsContent>
+          <TabsContent value="other" className="focus-visible:outline-none">
+            <OtherProductsSection />
+          </TabsContent>
+          <TabsContent value="compare" className="focus-visible:outline-none">
+            <ComparisonSection />
+          </TabsContent>
+        </Tabs>
+
+        {/* 7. Selection Guide — always visible below the
+            tab panels (it cross-references all families). */}
         <SelectionGuideSection />
         {/* 8. Technical Guidance CTA */}
         <TechnicalGuidanceCTA />
@@ -939,5 +1096,13 @@ export default function ProductsClient() {
       <BackToTop />
       <MobileStickyCTA />
     </div>
+  );
+}
+
+export default function ProductsClient() {
+  return (
+    <Suspense fallback={null}>
+      <ProductsClientInner />
+    </Suspense>
   );
 }
