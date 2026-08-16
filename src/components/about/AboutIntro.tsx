@@ -3,6 +3,13 @@
 import Image from 'next/image';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { SectionShell } from '@/components/ui/SectionShell';
+import {
+  Zap,
+  Layers,
+  Shield,
+  LayoutGrid,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 /**
  * AboutIntro — "Who We Are" section (intro only, no product list).
@@ -13,25 +20,67 @@ import { SectionShell } from '@/components/ui/SectionShell';
  *   │ Bharat Electrosafe       │  insulating-mat hero     │
  *   │ profile paragraph 1      │  image (centered         │
  *   │ profile paragraph 2      │  vertically beside       │
- *   │ profile paragraph 3      │  the text content)       │
- *   │ [BIS · ERDA · ISO]      │                          │
+ *   │                          │  the text content)       │
+ *   │ ┌──────────┬──────────┐ │                          │
+ *   │ │ standards│ standards│ │                          │
+ *   │ ├──────────┼──────────┤ │                          │
+ *   │ │ standards│ standards│ │                          │
+ *   │ └──────────┴──────────┘ │                          │
  *   └──────────────────────────┴──────────────────────────┘
  *
  * CSS Grid with items-center: the image column is vertically
  * centered beside the text column. The image uses a fixed
  * aspect-[4/3] ratio container on all viewports.
  *
- * Compact trust-badge row beneath the third paragraph adds
- * visual weight and reinforces credibility at a glance.
+ * A compact 2 × 2 standards / product-reference grid sits below
+ * the two profile paragraphs, listing the four key product
+ * standards the company manufactures to. This replaces the
+ * previous credential badge row (BIS / ERDA / ISO) — those
+ * credentials remain referenced in the dedicated Certifications
+ * and Quality sections elsewhere on the site.
  *
- * The product bullet list lives in the separate ProductScope
- * component that pairs with the poster image.
+ * The closing engineering-excellence paragraph now lives in the
+ * ProductScope component, immediately beneath "Other Products".
  *
  * "Bharat Electrosafe" is a single-line heading on desktop
  * (whitespace-nowrap at lg+), natural wrap on smaller viewports.
  *
  * Content source: client-approved restructured copy — verbatim.
  */
+
+/* ── Standards / product-reference items ──
+ *   Four product lines with their governing Indian (and where
+ *   relevant, international) standards. Reuses the existing
+ *   lucide-react icon set already imported elsewhere on the
+ *   site — no new icon library introduced. */
+interface StandardItem {
+  title: string;
+  standard: string;
+  icon: LucideIcon;
+}
+
+const STANDARD_ITEMS: StandardItem[] = [
+  {
+    title: 'High Voltage Insulating Mats',
+    standard: 'IS 15652:2006 & IEC 61111:2009',
+    icon: Zap,
+  },
+  {
+    title: 'Geo Membrane Lining',
+    standard: 'IS 15909:2020',
+    icon: Layers,
+  },
+  {
+    title: 'Water Stop Seal',
+    standard: 'IS 15058:2002',
+    icon: Shield,
+  },
+  {
+    title: 'PVC Flooring',
+    standard: 'IS 3462:1986',
+    icon: LayoutGrid,
+  },
+];
 
 export default function AboutIntro() {
   return (
@@ -45,7 +94,7 @@ export default function AboutIntro() {
        *  CSS Grid with items-center: the image is vertically
        *  centered beside the text column. */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.85fr] items-center gap-8 lg:gap-10">
-        {/* Left — Who We Are text column (three paragraphs + badge row) */}
+        {/* Left — Who We Are text column (two paragraphs + standards grid) */}
         <div className="reveal-up">
           <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-2">
             Who We Are
@@ -66,7 +115,7 @@ export default function AboutIntro() {
             infrastructure operations across multiple sectors.
           </p>
 
-          <p className="text-about-body text-be-grey-650 leading-relaxed mb-4">
+          <p className="text-about-body text-be-grey-650 leading-relaxed mb-5">
             With a strong focus on quality, durability, and regulatory
             compliance, our solutions are designed to meet the highest Indian
             standards and serve industries such as power, construction,
@@ -74,25 +123,36 @@ export default function AboutIntro() {
             utilities.
           </p>
 
-          <p className="text-about-body text-be-grey-650 leading-relaxed mb-5">
-            At Bharat Electrosafe, we combine engineering excellence,
-            compliance assurance, and customer-centric innovation to deliver
-            reliable, durable, and standards-compliant solutions for modern
-            industry and infrastructure.
-          </p>
-
-          {/* Compact trust-badge row — adds visual weight and
-           * reinforces credibility at a glance. */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center rounded-full bg-be-yellow-50 border border-be-yellow-400/60 px-3 py-1 text-xs font-semibold text-be-charcoal-950 tracking-wide">
-              BIS Licensed
-            </span>
-            <span className="inline-flex items-center rounded-full bg-be-yellow-50 border border-be-yellow-400/60 px-3 py-1 text-xs font-semibold text-be-charcoal-950 tracking-wide">
-              ERDA Tested
-            </span>
-            <span className="inline-flex items-center rounded-full bg-be-yellow-50 border border-be-yellow-400/60 px-3 py-1 text-xs font-semibold text-be-charcoal-950 tracking-wide">
-              ISO 9001:2015
-            </span>
+          {/* Compact 2 × 2 standards / product-reference grid —
+           *   replaces the previous credential badge row. Each
+           *   cell pairs a small brand-coloured icon with the
+           *   product line title and its governing standard(s).
+           *   Cells share a consistent height, subtle border,
+           *   and restrained spacing so the grid reads as one
+           *   balanced block inside the hero. */}
+          <div className="grid grid-cols-2 gap-3">
+            {STANDARD_ITEMS.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.title}
+                  className="flex items-start gap-2.5 rounded-lg border border-be-grey-250 bg-be-white p-3"
+                >
+                  <Icon
+                    className="size-4 text-be-yellow-text mt-0.5 shrink-0"
+                    aria-hidden="true"
+                  />
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-be-charcoal-950 leading-tight">
+                      {item.title}
+                    </p>
+                    <p className="text-xs text-be-grey-650 leading-snug mt-0.5">
+                      {item.standard}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 

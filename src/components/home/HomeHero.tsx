@@ -404,10 +404,11 @@ export default function HomeHero() {
           </div>
         </div>
 
-        {/* ── Carousel controls: ← dots →  (tight cluster, lower-right) ──
+        {/* ── Carousel controls: ← dots →  (one centered cluster) ──
             Prev arrow, dot indicators and next arrow are grouped into a
-            single right-aligned flex cluster and sit together in the
-            lower-right corner of the hero.
+            single horizontally-centered flex cluster. The dots remain
+            physically between the two arrows and the whole group is
+            centered relative to the hero — never split to the far edges.
 
             Mobile spacing fix: each 44px arrow button holds a 16px icon.
             With justify-center, the icon is centred in the button leaving
@@ -424,12 +425,12 @@ export default function HomeHero() {
             preserved and the button boxes do not overlap the dots.
 
             On >=640px (sm:) the original justify-center + gap-3 layout is
-            restored, so desktop/tablet are visually unchanged.
+            restored, so desktop/tablet read as one centered group.
 
             All behaviour (loop, autoplay, pause on hover/focus,
             prefers-reduced-motion, dot/arrow navigation) is unchanged. */}
         <div className="container-site page-horizontal-padding">
-          <div className="flex items-center justify-end gap-2 sm:gap-3 pb-1.5 pt-1.5">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 pb-1.5 pt-1.5">
             {/* Prev arrow — 44px touch target; icon aligned to inner (right)
                 edge on mobile so it sits flush next to the dots. */}
             <button
