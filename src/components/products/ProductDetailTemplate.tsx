@@ -60,12 +60,9 @@ export function ProductDetailTemplate({
         {/* 1–3. Hero + breadcrumb + assurance strip */}
         <ProductHero product={product} visuals={visuals} breadcrumbItems={breadcrumbItems} displayName={displayName} />
 
-        {/* 4. Overview + key features */}
-        <ProductOverview product={product} />
-
-        {/* 4b. Product video — shown when visuals.video is provided */}
+        {/* 3b. Product video — shown when visuals.video is provided */}
         {visuals.video && (
-          <section aria-label="Product video" className="bg-be-white border-t border-be-grey-250 py-10 md:py-14 lg:py-16">
+          <section aria-label="Product video" className="bg-be-page-top-tint py-10 md:py-14 lg:py-16">
             <div className="container-site page-horizontal-padding">
               <div className="max-w-4xl mx-auto">
                 <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-3">
@@ -87,6 +84,9 @@ export function ProductDetailTemplate({
             </div>
           </section>
         )}
+
+        {/* 4. Overview + key features */}
+        <ProductOverview product={product} />
 
         {/* 5. Applications */}
         <ProductApplications product={product} />
