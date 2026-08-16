@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { Download } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SectionShell } from '@/components/ui/SectionShell';
 import { InfiniteLogoRail } from '@/components/ui/InfiniteLogoRail';
