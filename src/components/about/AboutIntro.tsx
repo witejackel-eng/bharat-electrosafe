@@ -6,7 +6,7 @@ import { SectionShell } from '@/components/ui/SectionShell';
 import { CheckCircle2 } from 'lucide-react';
 
 /**
- * AboutIntro — "Who We Are" single coherent About section.
+ * AboutIntro — "Who We Are" section (intro only, no product list).
  *
  * Layout (desktop):
  *   ┌──────────────────────────┬──────────────────────────┐
@@ -14,37 +14,22 @@ import { CheckCircle2 } from 'lucide-react';
  *   │ Bharat Electrosafe       │  insulating-mat hero     │
  *   │ profile paragraph 1      │  image (stretched to     │
  *   │ profile paragraph 2      │  match content height)   │
- *   │ Product Scope heading    │                          │
- *   │ product list...          │                          │
- *   ├──────────────────────────┼──────────────────────────┤
- *   │                          │                          │
- *   │ electrical-insulation    │  closing company         │
- *   │ poster image             │  paragraph (centered     │
- *   │                          │  beside poster)          │
+ *   │ profile paragraph 3      │                          │
  *   └──────────────────────────┴──────────────────────────┘
  *
- * Upper section: CSS Grid with items-stretch. The image column
- * uses `position: relative` on the grid item and `position: absolute;
- * inset: 0` on the image container, guaranteeing the image fills
- * the full stretched grid cell height. On mobile, an in-flow
- * aspect-[4/3] spacer provides natural height.
+ * CSS Grid with items-stretch. The image column uses `position:
+ * relative` on the grid item and `position: absolute; inset: 0`
+ * on the image container, guaranteeing the image fills the full
+ * stretched grid cell height. On mobile, an in-flow aspect-[4/3]
+ * spacer provides natural height.
  *
- * Lower section: CSS Grid with items-stretch. The text cell uses
- * flex-col + justify-center internally to vertically center the
- * short closing paragraph beside the taller poster image.
- * The poster renders at its natural portrait dimensions
- * (object-contain preserves the artwork).
- *
- * Mobile: stacks vertically — image → text → image → text.
- * On mobile the image returns to a natural aspect-ratio
- * (aspect-[4/3]) instead of stretching.
+ * The product bullet list has been moved to a separate
+ * ProductScope component that pairs with the poster image.
  *
  * "Bharat Electrosafe" is a single-line heading on desktop
  * (whitespace-nowrap at lg+), natural wrap on smaller viewports.
  *
- * Content source: client-approved About docx — verbatim.
- *
- * Product names are bold (font-bold), standards remain normal weight.
+ * Content source: client-approved restructured copy — verbatim.
  */
 
 export default function AboutIntro() {
@@ -55,12 +40,11 @@ export default function AboutIntro() {
         <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'About Us' }]} />
       </div>
 
-      {/* ── Upper area: Who We Are text (left) + hero image (right) ──
+      {/* ── Who We Are text (left) + hero image (right) ──
        *  CSS Grid with items-stretch: the image column stretches to
-       *  match the content column height, eliminating the gap where
-       *  the image previously ended prematurely. */}
+       *  match the content column height. */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.85fr] items-stretch gap-8 lg:gap-10">
-        {/* Left — Who We Are text column */}
+        {/* Left — Who We Are text column (three paragraphs only) */}
         <div className="reveal-up">
           <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-2">
             Who We Are
@@ -81,7 +65,7 @@ export default function AboutIntro() {
             infrastructure operations across multiple sectors.
           </p>
 
-          <p className="text-body text-be-grey-650 leading-relaxed mb-5">
+          <p className="text-body text-be-grey-650 leading-relaxed mb-4">
             With a strong focus on quality, durability, and regulatory
             compliance, our solutions are designed to meet the highest Indian
             standards and serve industries such as power, construction,
@@ -89,103 +73,21 @@ export default function AboutIntro() {
             utilities.
           </p>
 
-          {/* ── Product Scope ── */}
-          <p className="text-sm font-bold uppercase tracking-wider text-be-charcoal-950 mb-3">
-            Our wide product range includes:
+          <p className="text-body text-be-grey-650 leading-relaxed">
+            At Bharat Electrosafe, we combine engineering excellence,
+            compliance assurance, and customer-centric innovation to deliver
+            reliable, durable, and standards-compliant solutions for modern
+            industry and infrastructure.
           </p>
-
-          <ul className="flex flex-col gap-3 mb-0">
-            {/* 1. High Voltage Electrical Insulating Mats */}
-            <li className="flex items-start gap-2.5">
-              <CheckCircle2
-                className="h-4 w-4 text-be-yellow-text mt-1.5 shrink-0"
-                aria-hidden="true"
-              />
-              <div>
-                <p className="text-body font-bold text-be-charcoal-950 leading-snug">
-                  High Voltage Electrical Insulating Mats
-                </p>
-                <p className="text-body text-be-grey-650 leading-snug mt-0.5">
-                  (As per IS 15652 &amp; IEC 61111 standards; ERDA-tested and BIS-certified)
-                </p>
-              </div>
-            </li>
-
-            {/* 2. Geo Membrane Lining Solutions */}
-            <li className="flex items-start gap-2.5">
-              <CheckCircle2
-                className="h-4 w-4 text-be-yellow-text mt-1.5 shrink-0"
-                aria-hidden="true"
-              />
-              <div>
-                <p className="text-body font-bold text-be-charcoal-950 leading-snug">
-                  Geo Membrane Lining Solutions
-                </p>
-                <p className="text-body text-be-grey-650 leading-snug mt-0.5">
-                  (As per IS 15909:2020 for containment, lining, and environmental protection applications)
-                </p>
-              </div>
-            </li>
-
-            {/* 3. Water Proofing Solutions */}
-            <li className="flex items-start gap-2.5">
-              <CheckCircle2
-                className="h-4 w-4 text-be-yellow-text mt-1.5 shrink-0"
-                aria-hidden="true"
-              />
-              <div>
-                <p className="text-body font-bold text-be-charcoal-950 leading-snug">
-                  Water Proofing Solutions
-                </p>
-                <p className="text-body text-be-grey-650 leading-snug mt-0.5">
-                  (Including BharatHydro Water Stop Seals as per IS 15058:2002 for concrete joint sealing and water leakage prevention)
-                </p>
-              </div>
-            </li>
-
-            {/* 4. PVC Flooring Solutions */}
-            <li className="flex items-start gap-2.5">
-              <CheckCircle2
-                className="h-4 w-4 text-be-yellow-text mt-1.5 shrink-0"
-                aria-hidden="true"
-              />
-              <div>
-                <p className="text-body font-bold text-be-charcoal-950 leading-snug">
-                  PVC Flooring Solutions
-                </p>
-                <p className="text-body text-be-grey-650 leading-snug mt-0.5">
-                  (As per IS 3462:1986 for industrial, electrical, and commercial flooring applications)
-                </p>
-              </div>
-            </li>
-
-            {/* 5. Other Products */}
-            <li className="flex items-start gap-2.5">
-              <CheckCircle2
-                className="h-4 w-4 text-be-yellow-text mt-1.5 shrink-0"
-                aria-hidden="true"
-              />
-              <div>
-                <p className="text-body text-be-charcoal-950 leading-snug">
-                  <span className="font-bold">Other Products:</span> Rubber Sheets, Rubber Hose Pipes, ESD Mats, Conveyor Belts, and other industrial rubber and safety solutions.
-                </p>
-              </div>
-            </li>
-          </ul>
         </div>
 
         {/* Right — Hero image — fills the full grid cell height on
          *  desktop. The grid item is `relative` so the absolutely
          *  positioned image container (`inset-0`) fills the entire
          *  stretched cell. On mobile, an in-flow aspect-[4/3] spacer
-         *  provides the container's natural height, and the absolute
-         *  image overlays it. */}
+         *  provides the container's natural height. */}
         <div className="reveal-up relative">
-          {/* In-flow spacer: gives the cell a natural height on mobile.
-           *   On desktop (lg+), aspect-auto removes the fixed ratio and
-           *   the grid stretch takes over as the height source. */}
           <div className="aspect-[4/3] lg:aspect-auto" aria-hidden="true" />
-          {/* Absolutely positioned image container: fills the grid cell. */}
           <div className="absolute inset-0 rounded-lg overflow-hidden">
             <Image
               src="/media/hero/bharat-electrosafe-insulating-mat-hero.webp"
@@ -195,40 +97,6 @@ export default function AboutIntro() {
               sizes="(max-width: 1024px) 100vw, 45vw"
             />
           </div>
-        </div>
-      </div>
-
-      {/* ── Lower area: poster image (left) + closing paragraph (right) ──
-       *  CSS Grid with items-stretch. The poster image (portrait) is
-       *  naturally taller than the short closing paragraph. The text
-       *  cell uses flex items-center to vertically center the text
-       *  beside the poster on desktop, creating a balanced
-       *  image/content relationship. */}
-      <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1fr] items-stretch gap-8 lg:gap-10 mt-10 lg:mt-14">
-        {/* Left — Client-supplied poster */}
-        <div className="reveal-up order-2 lg:order-1">
-          <div className="rounded-lg overflow-hidden bg-be-cream/40 p-3">
-            <Image
-              src="/media/about/electrical-insulation-mat-poster-client-provided.png"
-              alt="Bharat Electrosafe electrical insulation mat poster"
-              width={700}
-              height={900}
-              className="w-full h-auto object-contain"
-              sizes="(max-width: 1024px) 100vw, 45vw"
-            />
-          </div>
-        </div>
-
-        {/* Right — Closing company paragraph — vertically centered
-         *  beside the poster on desktop via flex-col + justify-center
-         *  within the stretched grid cell, for a balanced layout. */}
-        <div className="reveal-up order-1 lg:order-2 lg:flex lg:flex-col lg:justify-center">
-          <p className="text-body-large text-be-grey-650 leading-relaxed">
-            At Bharat Electrosafe, we combine engineering excellence,
-            compliance assurance, and customer-centric innovation to deliver
-            reliable, durable, and standards-compliant solutions for modern
-            industry and infrastructure.
-          </p>
         </div>
       </div>
     </SectionShell>
