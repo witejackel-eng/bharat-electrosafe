@@ -1,4 +1,4 @@
-'use client';
+use client';
 
 import Image from 'next/image';
 import { Download } from 'lucide-react';
@@ -30,11 +30,14 @@ import { allTrustMarks } from '@/data/trust';
  *
  * Item cell widths are fixed responsively so the rail reserves its
  * layout before images load (no CLS).
+ *
+ * Spacing: mb-4 on the header wrapper keeps the gap between the
+ * SectionHeader and the logo rail tight and visually balanced.
  */
 export default function CertificationsSection() {
   return (
     <SectionShell variant="standard" bg="bg-be-white" topRule className="reveal-up">
-      <div className="reveal-up mb-8">
+      <div className="reveal-up mb-4">
         <SectionHeader
           eyebrow="CERTIFICATIONS & MEMBERSHIPS"
           title="Industry Certifications, Testing & Registrations"
