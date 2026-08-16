@@ -62,7 +62,7 @@ export default function CertificationsSection() {
                     Slightly enlarged (~15%) for better recognisability.
                     Eager + unoptimized: these are tiny local WebP identity
                     assets drifting through a continuously moving rail. */}
-                <span className="relative flex h-[100px] sm:h-[120px] md:h-[136px] lg:h-[150px] w-full items-center justify-center">
+                <span className="relative flex aspect-[3/2] w-full items-center justify-center">
                   <Image
                     src={mark.logo}
                     alt={mark.alt}
