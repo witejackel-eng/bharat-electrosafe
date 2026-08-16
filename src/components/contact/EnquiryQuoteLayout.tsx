@@ -153,7 +153,7 @@ export default function EnquiryQuoteLayout() {
     return (
       <div className="reveal-up flex flex-col">
         <div className="flex flex-col gap-2 mb-6">
-          <h2 className="text-section-h2 text-be-charcoal-950">
+          <h2 className="text-enquiry-h2 text-be-charcoal-950">
             Send Us an Enquiry
           </h2>
           <p className="text-body-large text-be-grey-650">
@@ -194,7 +194,7 @@ export default function EnquiryQuoteLayout() {
     <div className="reveal-up flex flex-col">
       {/* Heading → supporting text → form spacing tightened */}
       <div className="flex flex-col gap-2 mb-6">
-        <h2 className="text-section-h2 text-be-charcoal-950">
+        <h2 className="text-enquiry-h2 text-be-charcoal-950">
           Send Us an Enquiry
         </h2>
         <p className="text-body-large text-be-grey-650">
