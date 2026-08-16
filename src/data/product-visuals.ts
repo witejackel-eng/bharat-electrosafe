@@ -171,7 +171,7 @@ export const autoGlowVisuals: ProductVisuals = {
     {
       src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-4.webp`,
       alt: 'Auto Glow insulating mat — product view 4',
-      fit: 'contain',
+      fit: 'cover',
     },
     {
       src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-17.webp`,
