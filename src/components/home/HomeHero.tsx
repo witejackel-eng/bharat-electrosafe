@@ -369,7 +369,7 @@ export default function HomeHero() {
 
         {/* ── Carousel controls: ← dots →  (order per client feedback) ── */}
         <div className="container-site page-horizontal-padding">
-          <div className="flex items-center justify-center gap-4 pb-1.5 pt-1.5">
+          <div className="flex items-center justify-center gap-2 sm:gap-4 pb-1.5 pt-1.5">
             {/* Prev arrow — minimal transparent style */}
             <button
               type="button"
