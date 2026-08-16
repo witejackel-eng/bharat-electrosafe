@@ -3,6 +3,7 @@ import { Footer } from '@/components/layout/Footer';
 import { BackToTop } from '@/components/ui/BackToTop';
 import { MobileStickyCTA } from '@/components/ui/MobileStickyCTA';
 import AboutIntro from '@/components/about/AboutIntro';
+import ProductScope from '@/components/about/ProductScope';
 import CompanyLeadership from '@/components/about/CompanyLeadership';
 import BrandsVisionMission from '@/components/about/BrandsVisionMission';
 import WhyBharatElectrosafe from '@/components/about/WhyBharatElectrosafe';
@@ -34,6 +35,7 @@ export default function AboutUsShell() {
       <main className="flex-1">
         {/* 1. Who We Are — single coherent About section with two-image layout */}
         <AboutIntro />
+      <ProductScope />
 
         {/* 2. Leadership — white bg, flip cards */}
         <CompanyLeadership />
