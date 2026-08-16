@@ -55,7 +55,7 @@ export default function AboutIntro() {
             Bharat Electrosafe
           </h1>
 
-          <p className="text-body text-be-grey-650 leading-relaxed mb-4">
+          <p className="text-about-body text-be-grey-650 leading-relaxed mb-4">
             At Bharat Electrosafe, we are India&rsquo;s trusted name in
             precision-engineered electrical safety, industrial safety,
             infrastructure protection, PVC flooring, and waterproofing
@@ -66,7 +66,7 @@ export default function AboutIntro() {
             infrastructure operations across multiple sectors.
           </p>
 
-          <p className="text-body text-be-grey-650 leading-relaxed mb-4">
+          <p className="text-about-body text-be-grey-650 leading-relaxed mb-4">
             With a strong focus on quality, durability, and regulatory
             compliance, our solutions are designed to meet the highest Indian
             standards and serve industries such as power, construction,
@@ -74,7 +74,7 @@ export default function AboutIntro() {
             utilities.
           </p>
 
-          <p className="text-body text-be-grey-650 leading-relaxed mb-5">
+          <p className="text-about-body text-be-grey-650 leading-relaxed mb-5">
             At Bharat Electrosafe, we combine engineering excellence,
             compliance assurance, and customer-centric innovation to deliver
             reliable, durable, and standards-compliant solutions for modern

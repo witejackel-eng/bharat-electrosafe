@@ -275,13 +275,23 @@
   }
   /* About-page-only title. Slightly smaller than text-page-h1 (~8-10%
      reduction) so the hero heading is proportionate beside the image
-     without affecting any other page heading. */
+     without affecting any other page heading.
+     Further refined (~4% smaller) for better balance with the body copy
+     in the About Us hero. Only used by AboutIntro.tsx. */
   .text-about-h1 {
-    font-size: clamp(2.4rem, 4.5vw, 4.25rem);
+    font-size: clamp(2.304rem, 4.32vw, 4.08rem);
     line-height: 1.1;
     letter-spacing: -0.01em;
     font-weight: 700;
     overflow-wrap: break-word;
+  }
+  /* About-hero-only body copy. ~3% larger than the shared .text-body
+     token for improved readability in the Who We Are intro, while
+     keeping the shared .text-body token unchanged across the rest of
+     the site. Only used by AboutIntro.tsx. */
+  .text-about-body {
+    font-size: 1.03rem;
+    line-height: 1.6;
   }
   .text-section-h2 {
     font-size: clamp(2.1rem, 4vw, 3.6rem);
