@@ -27,6 +27,12 @@ import {
   Wrench,
   Flame,
   Droplets,
+  Thermometer,
+  Scale,
+  FileText,
+  GripHorizontal,
+  MoveVertical,
+  Weight,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
@@ -45,86 +51,38 @@ import { cn } from '@/lib/utils';
 import { FeatureList } from '@/components/ui/FeatureList';
 import { company } from '@/data/company';
 import { iecVisuals } from '@/data/product-visuals';
+import {
+  iecClasses,
+  iecSpecialVariants,
+  iecApplications,
+  iecMaterialCharacteristics,
+  iecDimensions,
+  iecSafetyPrecautions,
+  iecInstallationSteps,
+  iecFaqItems,
+  iecAstmComparison,
+} from '@/data/iec-61111';
 
 /* ────────────────────────────────────────────
-   IEC 61111:2009 Class specification data
+   Applications with icons — mapped from data
    ──────────────────────────────────────────── */
 
-const iecClasses = [
-  { class: 'Class 0', maxWorkingVoltage: '500 V', proofTestVoltage: '5 kV', thickness: '2 mm' },
-  { class: 'Class 1', maxWorkingVoltage: '1 000 V', proofTestVoltage: '10 kV', thickness: '2 mm' },
-  { class: 'Class 2', maxWorkingVoltage: '7 000 V', proofTestVoltage: '20 kV', thickness: '2 mm' },
-  { class: 'Class 3', maxWorkingVoltage: '17 000 V', proofTestVoltage: '30 kV', thickness: '2 mm *' },
-  { class: 'Class 4', maxWorkingVoltage: '36 000 V', proofTestVoltage: '40 kV', thickness: '2 mm *' },
-];
+const appIconMap: Record<string, LucideIcon> = {
+  'Electrical Substations': Zap,
+  'Power Plants': Factory,
+  'High Voltage Rooms': Shield,
+  'Switchgear Rooms': Building2,
+  'Control Panels': ClipboardCheck,
+  'Data Centers': Server,
+  'Battery Rooms': BatteryCharging,
+  'Transformer Stations': Zap,
+  'Electrical Laboratories': FlaskConical,
+  'Railway Electrification Systems': Train,
+};
 
-/* ────────────────────────────────────────────
-   Applications — from client IEC 61111 brochure
-   ──────────────────────────────────────────── */
-
-const iecApplications: { icon: LucideIcon; label: string }[] = [
-  { icon: Zap, label: 'Electrical Substations' },
-  { icon: Factory, label: 'Power Plants' },
-  { icon: Shield, label: 'High Voltage Rooms' },
-  { icon: Building2, label: 'Switchgear Rooms' },
-  { icon: ClipboardCheck, label: 'Control Panels' },
-  { icon: Server, label: 'Data Centers' },
-  { icon: BatteryCharging, label: 'Battery Rooms' },
-  { icon: Zap, label: 'Transformer Stations' },
-  { icon: FlaskConical, label: 'Electrical Laboratories' },
-  { icon: Train, label: 'Railway Electrification Systems' },
-];
-
-/* Use & Safety precautions — conservative, technical wording. */
-const iecSafetyPrecautions: string[] = [
-  'Carry out regular visual inspection of mats before use.',
-  'Remove any damaged or worn mats from service immediately.',
-  'Select the correct voltage class for the working environment.',
-  'Ensure complete work-area coverage so the operator is fully protected.',
-  'Position mats correctly around the live equipment.',
-  'Avoid overlapping adjacent mats — edges can create trip and insulation gaps.',
-  'Keep the mat surface clean and free of conductive contamination.',
-  'Avoid contact with sharp objects that can puncture the insulating compound.',
-  'Use appropriate personal protective equipment alongside the mat.',
-  'Follow the manufacturer\u2019s installation and use instructions.',
-  'Ensure personnel are trained in correct mat selection and use.',
-];
-
-/* Installation steps — verbatim from brochure, no added adhesive advice. */
-const iecInstallationSteps: string[] = [
-  'Clean the installation area thoroughly before placement.',
-  'Place the mats in the required work locations around live equipment.',
-  'Ensure complete work-area coverage for operator protection.',
-  'Mats rely on their own weight and surface friction to remain in position.',
-];
-
-/* IEC FAQ — concise rewrites preserving brochure meaning. */
-const iecFaqItems: { q: string; a: string }[] = [
-  {
-    q: 'What does IEC 61111 cover?',
-    a: 'IEC 61111:2009 specifies requirements for insulating mats used for live working on electrical installations. It covers materials, classification by voltage, marking, testing and dimensions for mats that protect operators from electric shock.',
-  },
-  {
-    q: 'What are the electrical mat classes under IEC 61111?',
-    a: 'IEC 61111 defines five classes (0 through 4) based on maximum working voltage. Each class is tested at a proof voltage well above its working voltage to confirm the mat withstands the electrical stress of its intended environment.',
-  },
-  {
-    q: 'How are thickness and class related?',
-    a: 'Higher voltage classes generally require greater insulating thickness. The specific thickness for each class should be confirmed against the current standard text and the manufacturer\u2019s type-test documentation for the product being supplied.',
-  },
-  {
-    q: 'What other mat properties matter besides class?',
-    a: 'Beyond voltage class, consider mechanical durability, surface finish (anti-skid patterns), resistance to flame/oil/moisture where relevant, marking legibility, and whether a wear-indicator (bi-colour) or visibility (auto-glow) feature is needed for the application.',
-  },
-  {
-    q: 'What is the difference between IEC 61111 and ASTM D178?',
-    a: 'IEC 61111 is the international standard used in IEC-member markets; ASTM D178 is the North American standard for rubber insulating blankets and mats. They use different class systems and test methods. A mat certified to one standard is not automatically certified to the other.',
-  },
-  {
-    q: 'Why choose certified mats over non-certified mats?',
-    a: 'Certified mats carry type-test evidence from an accredited laboratory and carry permanently moulded marking that confirms the class, voltage and manufacturer. Non-certified mats lack this evidence and cannot be relied upon for operator protection near live equipment.',
-  },
-];
+const iecApplicationsWithIcons: { icon: LucideIcon; label: string }[] = iecApplications.map(
+  (label) => ({ icon: appIconMap[label] ?? Shield, label }),
+);
 
 /* ────────────────────────────────────────────
    Breadcrumb items
@@ -169,9 +127,8 @@ export default function IECClient() {
               </h1>
 
               <p className="product-hero-intro text-body-large text-be-grey-650 leading-relaxed mb-4 lg:mb-5">
-                IEC 61111:2009 insulating mats for live working up to 36 000 V.
-                Available in three variants — HV, Auto Glow, and Bi-Colour —
-                across Classes 0 through 4 for IEC-member markets worldwide.
+                Available across IEC 61111:2009 Classes 0–4, with maximum working
+                voltage up to 36,000 V AC for Class 4.
               </p>
 
               <div className="flex flex-wrap gap-3">
@@ -179,7 +136,7 @@ export default function IECClient() {
                   Request a Quote
                 </PrimaryButton>
                 <SecondaryButton href="#specifications">
-                  View Class Table
+                  View Class Specifications
                 </SecondaryButton>
               </div>
             </div>
@@ -253,10 +210,10 @@ export default function IECClient() {
               {[
                 { icon: Award, label: 'Standard', value: 'IEC 61111:2009' },
                 { icon: Zap, label: 'Classes', value: '0, 1, 2, 3, 4' },
-                { icon: Ruler, label: 'Max Voltage', value: '36 000 V' },
-                { icon: Layers, label: 'Min. Thickness', value: '2 mm' },
-                { icon: Shield, label: 'Testing', value: 'CPRI / NABL' },
-                { icon: Globe, label: 'Markets', value: 'IEC-member' },
+                { icon: Ruler, label: 'Max Working Voltage', value: '36,000 V AC' },
+                { icon: Layers, label: 'Recommended Thickness', value: '2.0–5.0 mm' },
+                { icon: Shield, label: 'Testing', value: 'Test documentation supplied' },
+                { icon: Globe, label: 'Markets', value: 'International / Global' },
               ].map(({ icon: Icon, label, value }) => (
                 <li key={label} className="flex flex-col items-center sm:items-start gap-1">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-be-white border border-be-yellow-100" aria-hidden="true">
@@ -301,7 +258,7 @@ export default function IECClient() {
                 <p className="text-body text-be-grey-650 flex-1">
                   Standard high-voltage insulating mats. All five IEC classes with moulded
                   voltage identification marking. Reliable operator protection at installations
-                  up to 36 000 V.
+                  up to 36,000 V AC.
                 </p>
                 <PrimaryButton href="/contact-us?type=quote&product=iec-hv-insulating-mats" className="mt-1 self-start">
                   Get Quote
@@ -369,32 +326,38 @@ export default function IECClient() {
         </SectionShell>
 
         {/* ══════════════════════════════════════
-            4. IEC CLASS / VOLTAGE TABLE
+            4. IEC CLASS / VOLTAGE TABLE — all 5 classes, all columns
             ══════════════════════════════════════ */}
         <SectionShell variant="technical" bg="bg-be-cream" id="specifications" ariaLabel="IEC 61111 Classifications">
           <SectionHeader
             eyebrow="Technical Specifications"
             title="IEC 61111:2009 Classification Table"
-            supportingText="Voltage class, maximum working voltage, and proof test voltage per IEC 61111:2009. Classes 0–2 have a minimum mat thickness of 2 mm; higher classes may require greater thickness — confirm against the manufacturer's type-test documentation."
+            supportingText="All five classes with recommended thickness, maximum allowed thickness, maximum working voltage, AC proof voltage, dielectric strength, and approximate weight per IEC 61111:2009 Table 1."
           />
 
-          <div className="mt-6 overflow-x-auto">
-            <table className="w-full min-w-[480px] border-collapse text-body">
+          <div className="mt-6 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <table className="w-full min-w-[720px] border-collapse text-body">
               <thead>
                 <tr className="border-b-2 border-be-yellow-500">
-                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950">Class</th>
-                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950">Maximum Working Voltage</th>
-                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950">Proof Test Voltage</th>
-                  <th className="text-left py-3 font-semibold text-be-charcoal-950">Min. Thickness</th>
+                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950 whitespace-nowrap">Class</th>
+                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950 whitespace-nowrap">Recommended Thickness</th>
+                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950 whitespace-nowrap">Max Thickness Allowed</th>
+                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950 whitespace-nowrap">Max Working Voltage</th>
+                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950 whitespace-nowrap">AC Proof Voltage</th>
+                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950 whitespace-nowrap">Dielectric Strength</th>
+                  <th className="text-left py-3 font-semibold text-be-charcoal-950 whitespace-nowrap">Approx. Weight</th>
                 </tr>
               </thead>
               <tbody>
                 {iecClasses.map((row) => (
-                  <tr key={row.class} className="border-b border-be-grey-250 hover:bg-be-yellow-50/50 transition-colors">
-                    <td className="py-3 pr-4 font-semibold text-be-charcoal-950">{row.class}</td>
+                  <tr key={row.classLabel} className="border-b border-be-grey-250 hover:bg-be-yellow-50/50 transition-colors">
+                    <td className="py-3 pr-4 font-semibold text-be-charcoal-950">{row.classLabel}</td>
+                    <td className="py-3 pr-4 text-be-charcoal-800">{row.recommendedThickness}</td>
+                    <td className="py-3 pr-4 text-be-charcoal-800">{row.maxThicknessAllowed}</td>
                     <td className="py-3 pr-4 text-be-charcoal-800">{row.maxWorkingVoltage}</td>
-                    <td className="py-3 pr-4 text-be-charcoal-800">{row.proofTestVoltage}</td>
-                    <td className="py-3 text-be-charcoal-800">{row.thickness}</td>
+                    <td className="py-3 pr-4 text-be-charcoal-800">{row.acProofVoltage}</td>
+                    <td className="py-3 pr-4 text-be-charcoal-800">{row.dielectricStrength}</td>
+                    <td className="py-3 text-be-charcoal-800">{row.approxWeight}</td>
                   </tr>
                 ))}
               </tbody>
@@ -404,20 +367,82 @@ export default function IECClient() {
           <div className="mt-4 flex items-start gap-2 text-metadata text-be-grey-650">
             <Shield className="size-4 shrink-0 mt-0.5 text-be-yellow-text" aria-hidden="true" />
             <p>
-              All values per IEC 61111:2009 Table 1. Proof test voltage is the
-              withstand voltage applied during routine verification. These are
+              All values per IEC 61111:2009 Table 1. AC proof voltage is the withstand
+              voltage applied during routine verification. Dielectric strength is the
+              voltage at which the insulation breaks down during type testing. These are
               IEC classifications — do not confuse with IS 15652:2006 Classes A–D.
-              {' '}* Minimum thickness for Class 3 and 4 may exceed 2 mm depending on
-              the manufacturer and type-test documentation; confirm against the
-              specific product datasheet.
             </p>
           </div>
         </SectionShell>
 
         {/* ══════════════════════════════════════
-            5. PRODUCT CONSTRUCTION & REQUIREMENTS
+            5. SPECIAL RIBBED VARIANTS
             ══════════════════════════════════════ */}
-        <SectionShell variant="standard" bg="bg-be-white" topRule>
+        <SectionShell variant="standard" bg="bg-be-white" topRule ariaLabel="Special ribbed variants">
+          <SectionHeader
+            eyebrow="Special Variants"
+            title="Ribbed & Custom Variants"
+            supportingText="Special surface-profiled mats and custom specifications for installations requiring enhanced grip or tailored dimensions."
+          />
+
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            {iecSpecialVariants.map((variant) => (
+              <div
+                key={variant.modelCode}
+                className="flex flex-col rounded-xl border border-be-grey-250 bg-be-cream overflow-hidden"
+              >
+                <div className="px-5 pt-5 pb-3 border-b border-be-grey-250 bg-be-white">
+                  <div className="flex items-center gap-2 mb-1">
+                    <GripHorizontal className="size-4 text-be-yellow-text" aria-hidden="true" />
+                    <h3 className="text-base font-semibold text-be-charcoal-950">{variant.modelCode}</h3>
+                  </div>
+                  <p className="text-sm text-be-grey-650">{variant.description}</p>
+                </div>
+                <div className="px-5 py-4 flex flex-col gap-2">
+                  {variant.modelCode !== 'BES CD' ? (
+                    <>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-be-grey-650">Class range</span>
+                        <span className="font-medium text-be-charcoal-950">{variant.classRange}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-be-grey-650">Thickness</span>
+                        <span className="font-medium text-be-charcoal-950">{variant.thickness}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-be-grey-650">Max working voltage</span>
+                        <span className="font-medium text-be-charcoal-950">{variant.maxWorkingVoltage}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-be-grey-650">Proof voltage</span>
+                        <span className="font-medium text-be-charcoal-950">{variant.proofVoltage}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-be-grey-650">Dielectric strength</span>
+                        <span className="font-medium text-be-charcoal-950">{variant.dielectricStrength}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-be-grey-650">Approx. weight</span>
+                        <span className="font-medium text-be-charcoal-950">{variant.approxWeight}</span>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-sm text-be-grey-650 leading-relaxed">
+                      Custom specifications including dimensions, class, and surface profile
+                      are available on request. Contact Bharat Electrosafe with your
+                      installation requirements.
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </SectionShell>
+
+        {/* ══════════════════════════════════════
+            6. PRODUCT CONSTRUCTION & REQUIREMENTS
+            ══════════════════════════════════════ */}
+        <SectionShell variant="standard" bg="bg-be-cream" topRule>
           <SectionHeader
             eyebrow="Construction & Requirements"
             title="Product Construction & Requirements"
@@ -432,11 +457,12 @@ export default function IECClient() {
               </h3>
               <FeatureList
                 items={[
-                  { icon: Shield, text: 'Elastomeric insulating compound, minimum 2 mm thickness' },
-                  { icon: Zap, text: 'Type-tested at NABL-accredited laboratory (CPRI)' },
+                  { icon: Shield, text: 'Elastomeric insulating compound (natural rubber and synthetic polymers)' },
+                  { icon: Zap, text: 'Classes 0–4: maximum working voltage 1.0 kV to 36.0 kV' },
                   { icon: Eye, text: 'Permanently moulded IEC marking: standard, class, voltage, manufacturer, date' },
                   { icon: Globe, text: 'Recognised in all IEC-member country markets' },
-                  { icon: Ruler, text: 'Available in Classes 0, 1, 2, 3 and 4 (500 V to 36 000 V)' },
+                  { icon: Ruler, text: 'Recommended thickness 2.0–5.0 mm depending on class' },
+                  { icon: FileText, text: 'Test documentation supplied with every supply' },
                   { icon: Award, text: 'Custom sizes available on request' },
                 ]}
               />
@@ -483,9 +509,9 @@ export default function IECClient() {
         </SectionShell>
 
         {/* ══════════════════════════════════════
-            6. MARKING / TRACEABILITY
+            7. MARKING / TRACEABILITY
             ══════════════════════════════════════ */}
-        <SectionShell variant="compact" bg="bg-be-cream" topRule ariaLabel="IEC Marking and Traceability">
+        <SectionShell variant="compact" bg="bg-be-white" topRule ariaLabel="IEC Marking and Traceability">
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
             {/* Text */}
             <div className="lg:w-[55%] flex flex-col gap-5">
@@ -500,7 +526,7 @@ export default function IECClient() {
                   {[
                     'Standard reference: IEC 61111:2009',
                     'Class designation (e.g. Class 2)',
-                    'Maximum working voltage (e.g. 17 000 V)',
+                    'Maximum working voltage (e.g. 17.0 kV)',
                     'Manufacturer name: Bharat Electrosafe',
                     'Month and year of manufacture',
                   ].map((item) => (
@@ -539,19 +565,158 @@ export default function IECClient() {
         </SectionShell>
 
         {/* ══════════════════════════════════════
-            7. APPLICATIONS
+            8. MATERIAL & PERFORMANCE CHARACTERISTICS
             ══════════════════════════════════════ */}
-        <SectionShell variant="standard" bg="bg-be-white" topRule>
+        <SectionShell variant="standard" bg="bg-be-cream" topRule ariaLabel="Material and performance characteristics">
+          <SectionHeader
+            eyebrow="Material & Performance"
+            title="Material & Performance Characteristics"
+            supportingText="Key material properties and performance requirements per IEC 61111:2009."
+          />
+
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Left column */}
+            <div className="flex flex-col gap-4">
+              <div className="p-4 rounded-lg border border-be-grey-250 bg-be-white">
+                <div className="flex items-center gap-2 mb-2">
+                  <Layers className="size-4 text-be-yellow-text" aria-hidden="true" />
+                  <h4 className="text-sm font-semibold text-be-charcoal-950">Material</h4>
+                </div>
+                <p className="text-body text-be-charcoal-800">{iecMaterialCharacteristics.material}</p>
+              </div>
+
+              <div className="p-4 rounded-lg border border-be-grey-250 bg-be-white">
+                <div className="flex items-center gap-2 mb-2">
+                  <Shield className="size-4 text-be-yellow-text" aria-hidden="true" />
+                  <h4 className="text-sm font-semibold text-be-charcoal-950">Mechanical Puncture Resistance</h4>
+                </div>
+                <p className="text-body text-be-charcoal-800">{iecMaterialCharacteristics.mechanicalPunctureResistance}</p>
+              </div>
+
+              <div className="p-4 rounded-lg border border-be-grey-250 bg-be-white">
+                <div className="flex items-center gap-2 mb-2">
+                  <GripHorizontal className="size-4 text-be-yellow-text" aria-hidden="true" />
+                  <h4 className="text-sm font-semibold text-be-charcoal-950">Slip Resistance</h4>
+                </div>
+                <p className="text-body text-be-charcoal-800">{iecMaterialCharacteristics.slipResistance}</p>
+              </div>
+
+              <div className="p-4 rounded-lg border border-be-grey-250 bg-be-white">
+                <div className="flex items-center gap-2 mb-2">
+                  <Thermometer className="size-4 text-be-yellow-text" aria-hidden="true" />
+                  <h4 className="text-sm font-semibold text-be-charcoal-950">Working Temperature</h4>
+                </div>
+                <p className="text-body text-be-charcoal-800">{iecMaterialCharacteristics.workingTemperature}</p>
+              </div>
+            </div>
+
+            {/* Right column */}
+            <div className="flex flex-col gap-4">
+              <div className="p-4 rounded-lg border border-be-grey-250 bg-be-white">
+                <div className="flex items-center gap-2 mb-2">
+                  <Flame className="size-4 text-be-yellow-text" aria-hidden="true" />
+                  <h4 className="text-sm font-semibold text-be-charcoal-950">Flame</h4>
+                </div>
+                <p className="text-body text-be-charcoal-800">{iecMaterialCharacteristics.flame}</p>
+              </div>
+
+              <div className="p-4 rounded-lg border border-be-grey-250 bg-be-white">
+                <div className="flex items-center gap-2 mb-2">
+                  <Sun className="size-4 text-be-yellow-text" aria-hidden="true" />
+                  <h4 className="text-sm font-semibold text-be-charcoal-950">Ageing</h4>
+                </div>
+                <p className="text-body text-be-charcoal-800">{iecMaterialCharacteristics.ageing}</p>
+              </div>
+
+              <div className="p-4 rounded-lg border border-be-grey-250 bg-be-white">
+                <div className="flex items-center gap-2 mb-2">
+                  <Thermometer className="size-4 text-be-yellow-text" aria-hidden="true" />
+                  <h4 className="text-sm font-semibold text-be-charcoal-950">Low-Temperature Behaviour</h4>
+                </div>
+                <p className="text-body text-be-charcoal-800">{iecMaterialCharacteristics.lowTemperatureBehaviour}</p>
+              </div>
+
+              <div className="p-4 rounded-lg border border-be-grey-250 bg-be-white">
+                <div className="flex items-center gap-2 mb-2">
+                  <FlaskConical className="size-4 text-be-yellow-text" aria-hidden="true" />
+                  <h4 className="text-sm font-semibold text-be-charcoal-950">Acid Resistance</h4>
+                </div>
+                <p className="text-body text-be-charcoal-800">{iecMaterialCharacteristics.acidResistance}</p>
+              </div>
+
+              <div className="p-4 rounded-lg border border-be-grey-250 bg-be-white">
+                <div className="flex items-center gap-2 mb-2">
+                  <Droplets className="size-4 text-be-yellow-text" aria-hidden="true" />
+                  <h4 className="text-sm font-semibold text-be-charcoal-950">Oil Resistance</h4>
+                </div>
+                <p className="text-body text-be-charcoal-800">{iecMaterialCharacteristics.oilResistance}</p>
+              </div>
+            </div>
+          </div>
+
+          <p className="mt-4 text-metadata text-be-grey-650 leading-relaxed">
+            These are requirements and test methods specified in IEC 61111:2009. Specific performance should be confirmed against the type-test documentation for the class and variant supplied.
+          </p>
+        </SectionShell>
+
+        {/* ══════════════════════════════════════
+            9. DIMENSIONS & CUSTOMIZATION
+            ══════════════════════════════════════ */}
+        <SectionShell variant="compact" bg="bg-be-white" topRule ariaLabel="Dimensions and customization">
+          <SectionHeader
+            eyebrow="Dimensions"
+            title="Dimensions & Customization"
+            supportingText="Standard and custom size options for IEC 61111:2009 insulating mats."
+          />
+
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-5 rounded-lg border border-be-grey-250 bg-be-cream">
+              <div className="flex items-center gap-2 mb-3">
+                <Ruler className="size-4 text-be-yellow-text" aria-hidden="true" />
+                <h4 className="text-sm font-semibold text-be-charcoal-950">Standard Sizes</h4>
+              </div>
+              <ul className="flex flex-col gap-1.5">
+                {iecDimensions.standardSizes.map((size) => (
+                  <li key={size} className="flex items-start gap-2 text-body text-be-charcoal-800">
+                    <Check className="size-4 shrink-0 mt-0.5 text-be-yellow-text" aria-hidden="true" />
+                    <span>{size}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="p-5 rounded-lg border border-be-grey-250 bg-be-cream">
+              <div className="flex items-center gap-2 mb-3">
+                <Wrench className="size-4 text-be-yellow-text" aria-hidden="true" />
+                <h4 className="text-sm font-semibold text-be-charcoal-950">Custom Sizes</h4>
+              </div>
+              <p className="text-body text-be-charcoal-800">{iecDimensions.custom}</p>
+            </div>
+
+            <div className="p-5 rounded-lg border border-be-grey-250 bg-be-cream">
+              <div className="flex items-center gap-2 mb-3">
+                <Palette className="size-4 text-be-yellow-text" aria-hidden="true" />
+                <h4 className="text-sm font-semibold text-be-charcoal-950">Standard Colour</h4>
+              </div>
+              <p className="text-body text-be-charcoal-800">{iecDimensions.standardColour}</p>
+            </div>
+          </div>
+        </SectionShell>
+
+        {/* ══════════════════════════════════════
+            10. APPLICATIONS
+            ══════════════════════════════════════ */}
+        <SectionShell variant="standard" bg="bg-be-cream" topRule>
           <SectionHeader
             eyebrow="Applications"
             title="Where IEC 61111 Mats Are Used"
             supportingText="Typical applications for insulating mats across electrical and industrial installations."
           />
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {iecApplications.map(({ icon: Icon, label }) => (
+            {iecApplicationsWithIcons.map(({ icon: Icon, label }) => (
               <div
                 key={label}
-                className="flex flex-col items-center gap-2 p-4 rounded-lg border border-be-grey-250 bg-be-cream text-center"
+                className="flex flex-col items-center gap-2 p-4 rounded-lg border border-be-grey-250 bg-be-white text-center"
               >
                 <Icon className="size-5 text-be-yellow-text" aria-hidden="true" />
                 <span className="text-sm font-medium text-be-charcoal-950 leading-tight">
@@ -563,24 +728,26 @@ export default function IECClient() {
         </SectionShell>
 
         {/* ══════════════════════════════════════
-            8. MATERIAL / RESISTANCE CONSIDERATIONS
+            11. RESISTANCE CONSIDERATIONS (enhanced)
             ══════════════════════════════════════ */}
-        <SectionShell variant="compact" bg="bg-be-cream" topRule ariaLabel="Material and resistance considerations">
+        <SectionShell variant="compact" bg="bg-be-white" topRule ariaLabel="Material and resistance considerations">
           <SectionHeader
             eyebrow="Material & Resistance"
             title="Resistance Considerations"
-            supportingText="Product documentation references resistance considerations including flame, mild acid/alkali, oil/water and moisture. Specific performance should be confirmed against the type-test documentation for the class and variant supplied."
+            supportingText="IEC 61111:2009 specifies test methods and requirements for resistance to flame, ageing, low temperature, acid, and oil. Specific performance should be confirmed against the type-test documentation for the class and variant supplied."
           />
           <div className="mt-6 flex flex-wrap gap-3">
             {[
               { icon: Flame, label: 'Flame resistance' },
-              { icon: FlaskConical, label: 'Mild acid & alkali' },
-              { icon: Droplets, label: 'Oil & water' },
+              { icon: Sun, label: 'Ageing resistance' },
+              { icon: Thermometer, label: 'Low-temperature behaviour' },
+              { icon: FlaskConical, label: 'Acid resistance' },
+              { icon: Droplets, label: 'Oil resistance' },
               { icon: Eye, label: 'Moisture' },
             ].map(({ icon: Icon, label }) => (
               <div
                 key={label}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-be-grey-250 bg-be-white"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-be-grey-250 bg-be-cream"
               >
                 <Icon className="size-4 text-be-yellow-text" aria-hidden="true" />
                 <span className="text-sm font-medium text-be-charcoal-950">{label}</span>
@@ -588,14 +755,14 @@ export default function IECClient() {
             ))}
           </div>
           <p className="mt-4 text-metadata text-be-grey-650 leading-relaxed">
-            These are material considerations referenced in the product documentation, not independent performance guarantees. Confirm suitability for a specific environment during quotation.
+            These are material requirements and test methods referenced in IEC 61111:2009, not independent performance guarantees. Confirm suitability for a specific environment during quotation.
           </p>
         </SectionShell>
 
         {/* ══════════════════════════════════════
-            9. USE & SAFETY
+            12. USE & SAFETY
             ══════════════════════════════════════ */}
-        <SectionShell variant="standard" bg="bg-be-white" topRule ariaLabel="Use and safety">
+        <SectionShell variant="standard" bg="bg-be-cream" topRule ariaLabel="Use and safety">
           <SectionHeader
             eyebrow="Use & Safety"
             title="Safe Use and Precautions"
@@ -612,9 +779,9 @@ export default function IECClient() {
         </SectionShell>
 
         {/* ══════════════════════════════════════
-            10. INSTALLATION
+            13. INSTALLATION
             ══════════════════════════════════════ */}
-        <SectionShell variant="compact" bg="bg-be-cream" topRule ariaLabel="Installation">
+        <SectionShell variant="compact" bg="bg-be-white" topRule ariaLabel="Installation">
           <SectionHeader
             eyebrow="Installation"
             title="Installation Guidance"
@@ -633,7 +800,45 @@ export default function IECClient() {
         </SectionShell>
 
         {/* ══════════════════════════════════════
-            11. IEC FAQ
+            14. ASTM D178 COMPARISON
+            ══════════════════════════════════════ */}
+        <SectionShell variant="standard" bg="bg-be-cream" topRule ariaLabel="IEC 61111 vs ASTM D178 comparison">
+          <SectionHeader
+            eyebrow="Standards Comparison"
+            title={iecAstmComparison.title}
+            supportingText={iecAstmComparison.intro}
+          />
+
+          <div className="mt-6 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <table className="w-full min-w-[560px] border-collapse text-body">
+              <thead>
+                <tr className="border-b-2 border-be-yellow-500">
+                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950">Aspect</th>
+                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950">IEC 61111:2009</th>
+                  <th className="text-left py-3 font-semibold text-be-charcoal-950">ASTM D178</th>
+                </tr>
+              </thead>
+              <tbody>
+                {iecAstmComparison.rows.map((row) => (
+                  <tr key={row.aspect} className="border-b border-be-grey-250 hover:bg-be-yellow-50/50 transition-colors">
+                    <td className="py-3 pr-4 font-medium text-be-charcoal-950">{row.aspect}</td>
+                    <td className="py-3 pr-4 text-be-charcoal-800">{row.iec}</td>
+                    <td className="py-3 text-be-charcoal-800">{row.astm}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p className="mt-4 text-metadata text-be-grey-650 leading-relaxed">
+            Neither standard is inherently superior. The appropriate standard depends on the
+            market jurisdiction, regulatory framework, and specific installation requirements.
+            A mat certified to one standard is not automatically certified to the other.
+          </p>
+        </SectionShell>
+
+        {/* ══════════════════════════════════════
+            15. IEC FAQ — 10 questions
             ══════════════════════════════════════ */}
         <SectionShell variant="standard" bg="bg-be-white" topRule ariaLabel="IEC frequently asked questions">
           <SectionHeader
@@ -652,7 +857,7 @@ export default function IECClient() {
         </SectionShell>
 
         {/* ══════════════════════════════════════
-            12. QUOTE CTA
+            16. QUOTE CTA
             ══════════════════════════════════════ */}
         <SectionShell variant="conversion" bg="bg-be-yellow-50" yellowAccent>
           <div className="flex flex-col items-center text-center gap-6 max-w-2xl mx-auto">
@@ -661,7 +866,8 @@ export default function IECClient() {
             </h2>
             <p className="text-body-large text-be-grey-650">
               Get pricing, custom dimensions, and delivery timelines for your project.
-              Our sales team responds within 24 hours.
+              Test documentation is supplied with every supply. Our sales team responds
+              within 24 hours.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <PrimaryButton href="/contact-us?type=quote" size="lg">
