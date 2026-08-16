@@ -51,11 +51,11 @@ export default function AboutIntro() {
             Who We Are
           </p>
           {/* Single-line on desktop (lg+), natural wrap on mobile */}
-          <h1 className="text-page-h1 text-be-charcoal-950 mb-5 whitespace-normal lg:whitespace-nowrap">
+          <h1 className="text-about-h1 text-be-charcoal-950 mb-5 whitespace-normal lg:whitespace-nowrap">
             Bharat Electrosafe
           </h1>
 
-          <p className="text-body-large text-be-grey-650 leading-relaxed mb-4">
+          <p className="text-body text-be-grey-650 leading-relaxed mb-4">
             At Bharat Electrosafe, we are India&rsquo;s trusted name in
             precision-engineered electrical safety, industrial safety,
             infrastructure protection, PVC flooring, and waterproofing
