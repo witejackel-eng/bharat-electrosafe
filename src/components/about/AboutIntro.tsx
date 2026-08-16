@@ -123,41 +123,38 @@ export default function AboutIntro() {
             utilities.
           </p>
 
-          {/* ── Compact 2 × 2 standards / product-reference panel ──
-           *   ONE unified containing area (single border + soft tint)
-           *   holding four items in a two-column / two-row grid.
-           *   No individual card borders — the four entries share
-           *   the same panel so they read as one specification
-           *   block, matching the supplied reference. Icons are
-           *   small, vertically aligned with each title; the
-           *   title line is bold, the standards line is lighter
-           *   and smaller. Replaces the previous credential
-           *   badge row (BIS / ERDA / ISO). */}
-          <div className="rounded-lg border border-be-grey-250 bg-be-cream/40 p-4">
-            <div className="grid grid-cols-2 gap-x-5 gap-y-3.5">
-              {STANDARD_ITEMS.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={item.title}
-                    className="flex items-start gap-2.5"
-                  >
-                    <Icon
-                      className="size-4 text-be-yellow-text mt-0.5 shrink-0"
-                      aria-hidden="true"
-                    />
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold text-be-charcoal-950 leading-tight">
-                        {item.title}
-                      </p>
-                      <p className="text-xs text-be-grey-650 leading-snug mt-0.5">
-                        {item.standard}
-                      </p>
-                    </div>
+          {/* ── Compact 2 × 2 standards / product-reference grid ──
+           *   Four items in a two-column / two-row grid, sitting
+           *   naturally in the Who We Are text column with no
+           *   enclosing box, border, background, or shadow —
+           *   only the grid spacing and the icon + title + standards
+           *   typography remain. Icons are small, vertically aligned
+           *   with each title; the title line is bold, the standards
+           *   line is lighter and smaller. Replaces the previous
+           *   credential badge row (BIS / ERDA / ISO). */}
+          <div className="grid grid-cols-2 gap-x-5 gap-y-3.5">
+            {STANDARD_ITEMS.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.title}
+                  className="flex items-start gap-2.5"
+                >
+                  <Icon
+                    className="size-4 text-be-yellow-text mt-0.5 shrink-0"
+                    aria-hidden="true"
+                  />
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-be-charcoal-950 leading-tight">
+                      {item.title}
+                    </p>
+                    <p className="text-xs text-be-grey-650 leading-snug mt-0.5">
+                      {item.standard}
+                    </p>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
