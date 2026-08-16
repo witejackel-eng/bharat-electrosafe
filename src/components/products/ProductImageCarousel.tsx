@@ -2,14 +2,16 @@
 
 import { useCallback, useState } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import type { ProductVisualRole } from '@/data/product-visuals';
 
 interface ProductImageCarouselProps {
   /** Hero image — shown by default as the large image. */
   hero: ProductVisualRole;
-  /** Gallery images — shown as thumbnails. Max 5 displayed. */
+  /** Gallery images — shown as thumbnails. */
   gallery: ProductVisualRole[];
+  /** Optional product video — appears as the last carousel item. */
+  video?: ProductVisualRole;
   /** Product name — for assistive technology labels. */
   productName: string;
   className?: string;
@@ -24,17 +26,30 @@ interface ProductImageCarouselProps {
  * - Wrap-around: Last→Next→First, First→Prev→Last
  * - No autoplay, no parallax, no zoom
  * - Desktop arrows: 44×44, mobile: 40×40
+ * - Video support: when a video prop is provided, it appears as the
+ *   last item in the carousel with a play-icon thumbnail.
  */
+
+/** Check if a src path points to a video file. */
+function isVideoSrc(src: string): boolean {
+  return /\.(mp4|webm|ogg|mov)(\?|$)/i.test(src);
+}
+
 export function ProductImageCarousel({
   hero,
   gallery,
+  video,
   productName,
   className = '',
 }: ProductImageCarouselProps) {
-  // Combine hero + gallery into a single list; hero is index 0
-  const allImages: ProductVisualRole[] = [hero, ...gallery.slice(0, 5)];
+  // Combine hero + gallery + optional video into a single list; hero is index 0
+  const allItems: ProductVisualRole[] = [
+    hero,
+    ...gallery.slice(0, 5),
+    ...(video ? [video] : []),
+  ];
   const [active, setActive] = useState(0);
-  const count = allImages.length;
+  const count = allItems.length;
 
   const show = useCallback(
     (next: number) => {
@@ -59,8 +74,9 @@ export function ProductImageCarousel({
     action();
   }
 
-  const current = allImages[active];
+  const current = allItems[active];
   const isContain = current.fit === 'contain';
+  const currentIsVideo = isVideoSrc(current.src);
 
   return (
     <div
@@ -70,25 +86,37 @@ export function ProductImageCarousel({
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
-      {/* ── Large image viewport with arrows ── */}
-      {/* max-w-full prevents the aspect-[4/3] + min-h-[240px] combo from
-          forcing the box wider than its parent column on narrow viewports
-          (when min-h kicks in, aspect-ratio would otherwise grow the width). */}
+      {/* ── Large viewport with arrows ── */}
       <div className="relative aspect-[4/3] min-h-[240px] max-w-full overflow-hidden rounded-2xl border border-be-grey-200 bg-[#FAFAF7] group/carousel">
-        <Image
-          src={current.src}
-          alt={current.alt}
-          fill
-          className={
-            isContain
-              ? 'object-contain p-6 md:p-9'
-              : 'object-cover'
-          }
-          sizes="(min-width: 1024px) 52vw, 100vw"
-          priority={active === 0}
-        />
+        {currentIsVideo ? (
+          <video
+            src={current.src}
+            controls
+            preload="metadata"
+            playsInline
+            aria-label={current.alt}
+            className={`absolute inset-0 w-full h-full ${
+              isContain ? 'object-contain p-6 md:p-9' : 'object-cover'
+            }`}
+          >
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <Image
+            src={current.src}
+            alt={current.alt}
+            fill
+            className={
+              isContain
+                ? 'object-contain p-6 md:p-9'
+                : 'object-cover'
+            }
+            sizes="(min-width: 1024px) 52vw, 100vw"
+            priority={active === 0}
+          />
+        )}
 
-        {/* ── Prev/Next arrows (only when >1 image) ── */}
+        {/* ── Prev/Next arrows (only when >1 item) ── */}
         {count > 1 && (
           <>
             <button
@@ -134,40 +162,52 @@ export function ProductImageCarousel({
           role="tablist"
           aria-label="Select product image"
         >
-          {allImages.map((image, index) => (
-            <button
-              key={image.src}
-              type="button"
-              onClick={() => show(index)}
-              role="tab"
-              aria-selected={index === active}
-              aria-label={`View: ${image.alt}`}
-              className={`relative h-14 w-[72px] shrink-0 overflow-hidden rounded-lg border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-1 sm:h-16 sm:w-20 ${
-                index === active
-                  ? 'border-be-yellow-500 ring-2 ring-be-yellow-500'
-                  : 'border-be-grey-200 opacity-70 hover:opacity-100'
-              }`}
-            >
-              <Image
-                src={image.src}
-                alt=""
-                fill
-                className={
-                  image.fit === 'contain'
-                    ? 'object-contain p-1.5'
-                    : 'object-cover'
-                }
-                sizes="96px"
-                loading="lazy"
-              />
-            </button>
-          ))}
+          {allItems.map((item, index) => {
+            const itemIsVideo = isVideoSrc(item.src);
+            return (
+              <button
+                key={item.src}
+                type="button"
+                onClick={() => show(index)}
+                role="tab"
+                aria-selected={index === active}
+                aria-label={`View: ${item.alt}`}
+                className={`relative h-14 w-[72px] shrink-0 overflow-hidden rounded-lg border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-1 sm:h-16 sm:w-20 ${
+                  index === active
+                    ? 'border-be-yellow-500 ring-2 ring-be-yellow-500'
+                    : 'border-be-grey-200 opacity-70 hover:opacity-100'
+                }`}
+              >
+                {itemIsVideo ? (
+                  /* Video thumbnail: dark bg with centered play icon */
+                  <div className="absolute inset-0 flex items-center justify-center bg-be-charcoal-950">
+                    <Play className="size-5 text-white fill-white" aria-hidden="true" />
+                  </div>
+                ) : (
+                  <Image
+                    src={item.src}
+                    alt=""
+                    fill
+                    className={
+                      item.fit === 'contain'
+                        ? 'object-contain p-1.5'
+                        : 'object-cover'
+                    }
+                    sizes="96px"
+                    loading="lazy"
+                  />
+                )}
+              </button>
+            );
+          })}
         </div>
       )}
 
       {/* Screen-reader live region */}
       <p aria-live="polite" className="sr-only">
-        {`Image ${active + 1} of ${count}: ${current.alt}`}
+        {currentIsVideo
+          ? `Video ${active + 1} of ${count}: ${current.alt}`
+          : `Image ${active + 1} of ${count}: ${current.alt}`}
       </p>
     </div>
   );
