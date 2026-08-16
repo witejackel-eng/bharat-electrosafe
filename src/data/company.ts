@@ -73,7 +73,7 @@ export const company = {
   legalName: 'Bharat Electrosafe',
   tagline: 'Electrical Safety. Engineered Right.',
   description:
-    'At Bharat Electrosafe, we are India's trusted name in precision-engineered electrical safety, industrial safety, infrastructure protection, PVC flooring, and waterproofing solutions. Proudly contributing to the nation's safety and development under the Make in India initiative, we are committed to delivering high-quality products that protect lives, ensure compliance, and support critical industrial, commercial, and infrastructure operations across multiple sectors.',
+    'At Bharat Electrosafe, we are India\'s trusted name in precision-engineered electrical safety, industrial safety, infrastructure protection, PVC flooring, and waterproofing solutions. Proudly contributing to the nation\'s safety and development under the Make in India initiative, we are committed to delivering high-quality products that protect lives, ensure compliance, and support critical industrial, commercial, and infrastructure operations across multiple sectors.',
 
   // Contact details — single source of truth
   // Legacy named accessors for backward compatibility
