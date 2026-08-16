@@ -87,7 +87,7 @@ export function ProductImageCarousel({
       tabIndex={0}
     >
       {/* ── Large viewport with arrows ── */}
-      <div className="relative aspect-[4/3] min-h-[240px] max-w-full overflow-hidden rounded-2xl border border-be-grey-200 bg-[#FAFAF7] group/carousel">
+      <div className="relative aspect-[4/3] min-h-[240px] max-w-full overflow-hidden rounded-2xl bg-[#FAFAF7] group/carousel">
         {currentIsVideo ? (
           <video
             src={current.src}
