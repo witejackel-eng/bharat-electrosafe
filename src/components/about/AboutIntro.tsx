@@ -1,4 +1,4 @@
-use client';
+'use client';
 
 import Image from 'next/image';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
