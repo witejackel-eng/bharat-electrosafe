@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
@@ -362,6 +362,135 @@ function DomesticFeatureCard({ product }: { product: DomesticProduct }) {
 }
 
 /* ────────────────────────────────────────────
+   Shared category feature card
+   ────────────────────────────────────────────
+   One card layout shared across the PVC Flooring
+   and Other Products category sections so every
+   category tab presents its headline product in
+   the same visual footprint as the Waterproofing
+   feature cards (vertical card, 16:10 image area
+   on top, p-5 content area with bottom-aligned
+   CTA).
+
+   Mirrors the exact classes used by the
+   Waterproofing cards in Section 4 — same border,
+   shadow, hover lift, rounded corners, image
+   container and content padding — so the cards
+   read as one consistent product-category family.
+
+   `href` (optional): when provided the whole card
+   is a single clickable Link (matches the
+   Waterproofing Geo Membrane / Water Stop cards).
+   When omitted, the card renders as a <div> and
+   the CTA is a standalone Link — used when the
+   card body contains additional internal links
+   (e.g. the Other Products icon list), since <a>
+   cannot be nested inside <a>. */
+interface CategoryFeatureCardProps {
+  imageSrc: string;
+  imageAlt: string;
+  objectFit: 'contain' | 'cover';
+  title: string;
+  description: string;
+  ctaLabel: string;
+  ctaHref: string;
+  /** Whole-card link. Omit when the card body contains nested links. */
+  href?: string;
+  /** Optional small label above the title (matches Waterproofing eyebrow). */
+  eyebrow?: string;
+  /** Optional extra content rendered between the description and the CTA. */
+  children?: ReactNode;
+  sizes?: string;
+}
+
+function CategoryFeatureCard({
+  imageSrc,
+  imageAlt,
+  objectFit,
+  title,
+  description,
+  ctaLabel,
+  ctaHref,
+  href,
+  eyebrow,
+  children,
+  sizes = '(max-width: 768px) 100vw, 50vw',
+}: CategoryFeatureCardProps) {
+  const cardClassName =
+    'group relative flex flex-col rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.09)] hover:-translate-y-0.5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500';
+
+  const ctaClassName =
+    'mt-auto pt-3 text-sm font-medium text-be-yellow-text group-hover:text-be-yellow-text-hover transition-colors inline-flex items-center gap-1';
+  const ctaInner = (
+    <>
+      {ctaLabel} <ChevronRight className="size-3.5" aria-hidden="true" />
+    </>
+  );
+
+  const imageArea = (
+    <div className="relative w-full overflow-hidden bg-[#f8f8f6] aspect-[16/10]">
+      <Image
+        src={imageSrc}
+        alt={imageAlt}
+        fill
+        className={objectFit === 'contain' ? 'object-contain p-6' : 'object-cover'}
+        sizes={sizes}
+      />
+      <div className="absolute inset-0 bg-be-charcoal-950/0 group-hover:bg-be-charcoal-950/5 transition-colors duration-300" />
+    </div>
+  );
+
+  // Whole-card link: render as a single <Link> with the CTA as a visual
+  // element (no nested anchor). Matches the Waterproofing card behaviour.
+  if (href) {
+    return (
+      <Link href={href} className={cardClassName}>
+        {imageArea}
+        <div className="flex flex-col gap-1.5 p-5 flex-1">
+          {eyebrow && (
+            <span className="text-xs font-medium text-be-grey-650">{eyebrow}</span>
+          )}
+          <h3 className="text-xl font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
+            {title}
+          </h3>
+          <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed line-clamp-2">
+            {description}
+          </p>
+          {children}
+          <div className={ctaClassName}>{ctaInner}</div>
+        </div>
+      </Link>
+    );
+  }
+
+  // No whole-card link: render as a <div> with the CTA as a standalone
+  // <Link> so the body can host additional internal links (icon list).
+  return (
+    <div className={cardClassName}>
+      {imageArea}
+      <div className="flex flex-col gap-1.5 p-5 flex-1">
+        {eyebrow && (
+          <span className="text-xs font-medium text-be-grey-650">{eyebrow}</span>
+        )}
+        <h3 className="text-xl font-semibold text-be-charcoal-950 group-hover:text-be-yellow-text-hover transition-colors">
+          {title}
+        </h3>
+        <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed line-clamp-2">
+          {description}
+        </p>
+        {children}
+        <Link
+          href={ctaHref}
+          className={`${ctaClassName} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded`}
+        >
+          {ctaInner}
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/* ────────────────────────────────────────────
    Section 3: Electrical Insulating Mats
    ──────────────────────────────────────────── */
 
@@ -537,14 +666,18 @@ function WaterproofingSection() {
 /* ────────────────────────────────────────────
    Section 5: PVC Flooring Solutions (03)
    ────────────────────────────────────────────
-   Split out of the former "03 INDUSTRIAL &
-   FLOORING SOLUTIONS" combined section. Preserves
-   all existing PVC content: the homePreview image,
-   BharatSmart Floor™ copy, the IS 3462:1986 pill,
-   and the "Explore Flooring" link to the detail
-   page. Rendered as a standalone full-width
-   section with the same card visual quality as the
-   other product families. */
+   Uses the shared CategoryFeatureCard so the PVC
+   Flooring card shares the exact same visual
+   footprint as the Waterproofing feature cards:
+   vertical card, 16:10 image area on top, p-5
+   content area with bottom-aligned CTA. All
+   existing PVC content is preserved — the
+   homePreview image, BharatSmart Floor™ copy, the
+   IS 3462:1986 standard label (now rendered as
+   the card eyebrow to match the reference card
+   hierarchy), and the "Explore Flooring" CTA
+   linking to the detail page. The whole card is
+   clickable, matching the Waterproofing cards. */
 
 function PvcFlooringSection() {
   return (
@@ -561,39 +694,19 @@ function PvcFlooringSection() {
           </p>
         </div>
 
-        {/* PVC Flooring feature panel — text + image composition */}
-        <div className="rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)] flex flex-col md:flex-row">
-          {/* Visual area */}
-          <div className="relative w-full md:w-1/2 aspect-[16/9] md:aspect-auto bg-[#f8f8f6] overflow-hidden">
-            <Image
-              src={pvcFlooringVisuals.homePreview.src}
-              alt={pvcFlooringVisuals.homePreview.alt}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-          </div>
-          {/* Text content */}
-          <div className="flex flex-col justify-center p-6 md:p-8 md:w-1/2">
-            <h3 className="text-2xl font-semibold text-be-charcoal-950 mb-2">
-              PVC Flooring Solutions
-            </h3>
-            <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed mb-3">
-              BharatSmart Floor™ — PVC flooring for homes, offices and commercial interiors.
-            </p>
-            <span className="text-xs font-medium text-be-grey-650 bg-be-grey-150 px-2.5 py-0.5 rounded-full inline-block mb-5 w-fit">
-              IS 3462:1986
-            </span>
-            <div>
-              <Link
-                href="/products/pvc-flooring-solutions"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-be-yellow-text hover:text-be-yellow-text-hover transition-colors group/link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded"
-              >
-                Explore Flooring
-                <ChevronRight className="size-4 group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true" />
-              </Link>
-            </div>
-          </div>
+        {/* PVC Flooring feature card — same layout as the Waterproofing cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
+          <CategoryFeatureCard
+            href="/products/pvc-flooring-solutions"
+            imageSrc={pvcFlooringVisuals.homePreview.src}
+            imageAlt={pvcFlooringVisuals.homePreview.alt}
+            objectFit={pvcFlooringVisuals.homePreview.fit}
+            eyebrow="IS 3462:1986"
+            title="PVC Flooring Solutions"
+            description="BharatSmart Floor™ — PVC flooring for homes, offices and commercial interiors."
+            ctaLabel="Explore Flooring"
+            ctaHref="/products/pvc-flooring-solutions"
+          />
         </div>
       </div>
     </section>
@@ -603,14 +716,24 @@ function PvcFlooringSection() {
 /* ────────────────────────────────────────────
    Section 6: Other Products (04)
    ────────────────────────────────────────────
-   Split out of the former "03 INDUSTRIAL &
-   FLOORING SOLUTIONS" combined section. Preserves
-   all existing Other Products content: the
-   introductory copy, the 4-item icon list
-   (Rubber Sheet, Rubber Hose Pipe, ESD Mat,
-   Conveyor Belt) with their anchor links, and the
-   "Explore Products" link. Rendered as a
-   standalone full-width section. */
+   Uses the shared CategoryFeatureCard so the
+   Other Products card shares the exact same
+   visual footprint as the Waterproofing feature
+   cards: vertical card, 16:10 image area on top
+   (using the existing /media/categories/other-
+   products-category.png asset referenced via
+   otherProductsVisuals.homePreview), p-5 content
+   area with bottom-aligned CTA.
+
+   All existing Other Products content is
+   preserved: the introductory copy, the 4-item
+   icon list (Rubber Sheet, Rubber Hose Pipe, ESD
+   Mat, Conveyor Belt) with their anchor links,
+   and the "Explore Products" CTA. Because the
+   card body hosts the icon-list anchor links,
+   the card itself is NOT a wrapping link — only
+   the CTA and icon items are clickable, matching
+   the original Other Products behaviour. */
 
 function OtherProductsSection() {
   return (
@@ -627,19 +750,20 @@ function OtherProductsSection() {
           </p>
         </div>
 
-        {/* Other Products panel */}
-        <div className="rounded-2xl border border-be-grey-250 bg-be-white overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
-          <div className="p-6 md:p-8">
-            {/* Top accent — preserved from the original Other Products panel */}
-            <div className="h-1 w-full bg-gradient-to-r from-be-yellow-500 via-be-yellow-400 to-be-yellow-500 rounded-t mb-6 -mt-6 -mx-6 md:-mx-8 w-[calc(100%+3rem)] md:w-[calc(100%+4rem)]" aria-hidden="true" />
-            <h3 className="text-2xl font-semibold text-be-charcoal-950 mb-2">
-              Other Products
-            </h3>
-            <p className="text-[0.9375rem] text-be-grey-650 leading-relaxed mb-6">
-              Industrial rubber and electrostatic-discharge products for general and specialist environments.
-            </p>
+        {/* Other Products feature card — same layout as the Waterproofing cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
+          <CategoryFeatureCard
+            imageSrc={otherProductsVisuals.homePreview.src}
+            imageAlt={otherProductsVisuals.homePreview.alt}
+            objectFit={otherProductsVisuals.homePreview.fit}
+            eyebrow="Industrial Range"
+            title="Other Products"
+            description="Industrial rubber and electrostatic-discharge products for general and specialist environments."
+            ctaLabel="Explore Products"
+            ctaHref="/products/other-products"
+          >
             {/* Icon list — preserved exactly (4 items + anchor links) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
               {OTHER_PRODUCTS_ITEMS.map((item) => (
                 <Link
                   key={item.name}
@@ -653,16 +777,7 @@ function OtherProductsSection() {
                 </Link>
               ))}
             </div>
-            <div>
-              <Link
-                href="/products/other-products"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-be-yellow-text hover:text-be-yellow-text-hover transition-colors group/link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded"
-              >
-                Explore Products
-                <ChevronRight className="size-4 group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true" />
-              </Link>
-            </div>
-          </div>
+          </CategoryFeatureCard>
         </div>
       </div>
     </section>
