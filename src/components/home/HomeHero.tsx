@@ -367,15 +367,22 @@ export default function HomeHero() {
           </div>
         </div>
 
-        {/* ── Carousel controls: ← dots →  (order per client feedback) ── */}
+        {/* ── Carousel controls: ← dots →  (tight cluster, lower-right) ──
+            Prev arrow, dot indicators and next arrow are grouped into a
+            single flex cluster (gap-3) and right-aligned (justify-end) so
+            they sit together in the lower-right corner of the hero instead
+            of spreading across the full card width. Arrow touch targets are
+            44×44px (size-11). All behaviour (loop, autoplay, pause on
+            hover/focus, prefers-reduced-motion, dot/arrow navigation) is
+            unchanged — only the controls-row layout classes moved. */}
         <div className="container-site page-horizontal-padding">
-          <div className="flex items-center justify-center gap-2 sm:gap-4 pb-1.5 pt-1.5">
-            {/* Prev arrow — minimal transparent style */}
+          <div className="flex items-center justify-end gap-3 pb-1.5 pt-1.5">
+            {/* Prev arrow — minimal transparent style, 44px touch target */}
             <button
               type="button"
               onClick={scrollPrev}
               aria-label="Previous slide"
-              className="flex items-center justify-center size-10 rounded-full text-be-charcoal-800/50 hover:text-be-charcoal-800 hover:bg-be-charcoal-800/5 active:bg-be-charcoal-800/10 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-charcoal-800/30 focus-visible:ring-offset-2"
+              className="flex items-center justify-center size-11 rounded-full text-be-charcoal-800/50 hover:text-be-charcoal-800 hover:bg-be-charcoal-800/5 active:bg-be-charcoal-800/10 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-charcoal-800/30 focus-visible:ring-offset-2"
             >
               <ArrowLeft className="size-4" aria-hidden="true" />
             </button>
@@ -404,12 +411,12 @@ export default function HomeHero() {
               ))}
             </div>
 
-            {/* Next arrow — minimal transparent style */}
+            {/* Next arrow — minimal transparent style, 44px touch target */}
             <button
               type="button"
               onClick={scrollNext}
               aria-label="Next slide"
-              className="flex items-center justify-center size-10 rounded-full text-be-charcoal-800/50 hover:text-be-charcoal-800 hover:bg-be-charcoal-800/5 active:bg-be-charcoal-800/10 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-charcoal-800/30 focus-visible:ring-offset-2"
+              className="flex items-center justify-center size-11 rounded-full text-be-charcoal-800/50 hover:text-be-charcoal-800 hover:bg-be-charcoal-800/5 active:bg-be-charcoal-800/10 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-charcoal-800/30 focus-visible:ring-offset-2"
             >
               <ArrowRight className="size-4" aria-hidden="true" />
             </button>
