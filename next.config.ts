@@ -1,3 +1,4 @@
+// Redeploy: 2026-08-16-restructure
 import type { NextConfig } from 'next';
 
 const isProduction = process.env.NODE_ENV === 'production';
