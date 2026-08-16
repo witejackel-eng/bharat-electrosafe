@@ -18,6 +18,8 @@ interface ImageFrameProps {
   /** Set on the single above-the-fold image of a page. */
   priority?: boolean;
   sizes?: string;
+  /** Remove frame (border, radius, bg, padding) — for images that should render flush. */
+  flush?: boolean;
 }
 
 const aspectRatioClasses = {
@@ -37,6 +39,7 @@ export function ImageFrame({
   fit = 'cover',
   priority = false,
   sizes = '(max-width: 768px) 100vw, (max-width: 1360px) 50vw, 680px',
+  flush = false,
 }: ImageFrameProps) {
   const [hasError, setHasError] = useState(false);
 
@@ -52,9 +55,10 @@ export function ImageFrame({
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-lg border border-be-grey-250',
+        'relative overflow-hidden',
+        !flush && 'rounded-lg border border-be-grey-250',
         aspectRatioClasses[aspectRatio],
-        fit === 'contain' && 'bg-be-white',
+        fit === 'contain' && !flush && 'bg-be-white',
         className
       )}
     >
@@ -64,7 +68,8 @@ export function ImageFrame({
           alt={alt}
           fill
           className={cn(
-            fit === 'contain' ? 'object-contain p-3' : 'hover-image-scale object-cover'
+            fit === 'contain' ? 'object-contain' : 'hover-image-scale object-cover',
+            fit === 'contain' && !flush && 'p-3'
           )}
           style={{ objectPosition: resolvedPosition }}
           onError={() => setHasError(true)}
