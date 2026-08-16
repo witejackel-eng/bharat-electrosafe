@@ -1,4 +1,4 @@
-'use client';
+use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
@@ -24,6 +24,10 @@ import { awards, allTrustMarks } from '@/data/trust';
  *
  * Certification cards show LOGO + NAME only — no long description.
  * Logo → name gap is tight (gap-1.5) with no empty vertical whitespace.
+ *
+ * The certification header and logo rail are wrapped in a tighter
+ * flex-col gap-4 container so the spacing between them matches the
+ * homepage certifications section (mb-4 on the header wrapper).
  *
  * Reliance is NOT shown here — it is an industry reference/client,
  * not a certification. It appears in the Industry References section
@@ -166,97 +170,101 @@ export default function AwardsCertifications() {
           </div>
         </div>
 
-        {/* ── Certifications and memberships — infinite logo rail ── */}
-        <div className="reveal-up">
-          <SectionHeader
-            eyebrow="Certifications and memberships"
-            title="Standards, testing and registrations"
-            supportingText="Marks the company holds, each labelled for what it actually is."
-          />
-        </div>
+        {/* ── Certifications and memberships — wrapped in a tighter
+            container so the gap between header and logo rail matches
+            the homepage certifications section (mb-4 equivalent). ── */}
+        <div className="flex flex-col gap-4">
+          <div className="reveal-up">
+            <SectionHeader
+              eyebrow="Certifications and memberships"
+              title="Standards, testing and registrations"
+              supportingText="Marks the company holds, each labelled for what it actually is."
+            />
+          </div>
 
-        <div className="reveal-up">
-          <InfiniteLogoRail
-            ariaLabel="Certifications and memberships"
-            duration={42}
-            pauseOnHover
-            pauseOnFocus
-            itemSpacingClassName="pr-2 sm:pr-3 md:pr-4"
-          >
-            {allTrustMarks.map((mark) => {
-              const isDownloadable = !!mark.document;
+          <div className="reveal-up">
+            <InfiniteLogoRail
+              ariaLabel="Certifications and memberships"
+              duration={42}
+              pauseOnHover
+              pauseOnFocus
+              itemSpacingClassName="pr-2 sm:pr-3 md:pr-4"
+            >
+              {allTrustMarks.map((mark) => {
+                const isDownloadable = !!mark.document;
 
-              const inner = (
-                <>
-                  {/* Logo — object-contain never crops. Slightly enlarged
-                      for better recognisability (~15% larger than previous). */}
-                  <span className="relative flex h-16 sm:h-[72px] md:h-[84px] lg:h-[92px] w-full items-center justify-center">
-                    <Image
-                      src={mark.logo}
-                      alt={mark.alt}
-                      fill
-                      className="object-contain"
-                      sizes="(max-width: 639px) 150px, (max-width: 767px) 170px, (max-width: 1023px) 195px, 210px"
-                      loading="eager"
-                      unoptimized
-                    />
-                  </span>
-                  {/* Certification name — logo + name only, no description */}
-                  <span className="text-sm font-semibold text-be-charcoal-950 text-center leading-tight">
-                    {mark.label}
-                  </span>
-                  {/* Download hover/focus affordance */}
-                  {isDownloadable && (
-                    <span
-                      className="flex items-center gap-1 text-[0.65rem] font-semibold text-be-yellow-text
-                                 opacity-0 translate-y-1
-                                 group-hover/mark:opacity-100 group-hover/mark:translate-y-0
-                                 group-focus-visible/mark:opacity-100 group-focus-visible/mark:translate-y-0
-                                 transition-all duration-200 ease-out
-                                 sm:opacity-0 sm:translate-y-1"
-                      aria-hidden="true"
-                    >
-                      <Download className="size-3" />
-                      Download
+                const inner = (
+                  <>
+                    {/* Logo — object-contain never crops. Slightly enlarged
+                        for better recognisability (~15% larger than previous). */}
+                    <span className="relative flex h-16 sm:h-[72px] md:h-[84px] lg:h-[92px] w-full items-center justify-center">
+                      <Image
+                        src={mark.logo}
+                        alt={mark.alt}
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 639px) 150px, (max-width: 767px) 170px, (max-width: 1023px) 195px, 210px"
+                        loading="eager"
+                        unoptimized
+                      />
                     </span>
-                  )}
-                  {/* Mobile touch indicator */}
-                  {isDownloadable && (
-                    <span
-                      className="flex items-center justify-center sm:hidden"
-                      aria-hidden="true"
-                    >
-                      <Download className="size-3 text-be-yellow-text/70" />
+                    {/* Certification name — logo + name only, no description */}
+                    <span className="text-sm font-semibold text-be-charcoal-950 text-center leading-tight">
+                      {mark.label}
                     </span>
-                  )}
-                </>
-              );
+                    {/* Download hover/focus affordance */}
+                    {isDownloadable && (
+                      <span
+                        className="flex items-center gap-1 text-[0.65rem] font-semibold text-be-yellow-text
+                                   opacity-0 translate-y-1
+                                   group-hover/mark:opacity-100 group-hover/mark:translate-y-0
+                                   group-focus-visible/mark:opacity-100 group-focus-visible/mark:translate-y-0
+                                   transition-all duration-200 ease-out
+                                   sm:opacity-0 sm:translate-y-1"
+                        aria-hidden="true"
+                      >
+                        <Download className="size-3" />
+                        Download
+                      </span>
+                    )}
+                    {/* Mobile touch indicator */}
+                    {isDownloadable && (
+                      <span
+                        className="flex items-center justify-center sm:hidden"
+                        aria-hidden="true"
+                      >
+                        <Download className="size-3 text-be-yellow-text/70" />
+                      </span>
+                    )}
+                  </>
+                );
 
-              if (isDownloadable) {
+                if (isDownloadable) {
+                  return (
+                    <a
+                      key={mark.label}
+                      href={mark.document}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Download ${mark.label} document`}
+                      className="group/mark w-[150px] sm:w-[170px] md:w-[190px] lg:w-[210px] xl:w-[215px] flex flex-col items-center gap-1.5 py-1 text-center cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+                    >
+                      {inner}
+                    </a>
+                  );
+                }
+
                 return (
-                  <a
+                  <div
                     key={mark.label}
-                    href={mark.document}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Download ${mark.label} document`}
-                    className="group/mark w-[150px] sm:w-[170px] md:w-[190px] lg:w-[210px] xl:w-[215px] flex flex-col items-center gap-1.5 py-1 text-center cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 focus-visible:ring-offset-2"
+                    className="w-[150px] sm:w-[170px] md:w-[190px] lg:w-[210px] xl:w-[215px] flex flex-col items-center gap-1.5 py-1 text-center"
                   >
                     {inner}
-                  </a>
+                  </div>
                 );
-              }
-
-              return (
-                <div
-                  key={mark.label}
-                  className="w-[150px] sm:w-[170px] md:w-[190px] lg:w-[210px] xl:w-[215px] flex flex-col items-center gap-1.5 py-1 text-center"
-                >
-                  {inner}
-                </div>
-              );
-            })}
-          </InfiniteLogoRail>
+              })}
+            </InfiniteLogoRail>
+          </div>
         </div>
       </div>
     </SectionShell>
