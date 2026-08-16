@@ -719,23 +719,15 @@ function PvcFlooringSection() {
    Uses the shared CategoryFeatureCard so the
    Other Products card shares the exact same
    visual footprint as the Waterproofing feature
-   cards: vertical card, 16:10 image area on top
-   (using the existing /media/categories/other-
-   products-category.png asset referenced via
-   otherProductsVisuals.homePreview), p-5 content
-   area with bottom-aligned CTA.
-
-   All existing Other Products content is
-   preserved: the introductory copy, the 4-item
-   icon list (Rubber Sheet, Rubber Hose Pipe, ESD
-   Mat, Conveyor Belt) with their anchor links,
-   and the "Explore Products" CTA. Because the
-   card body hosts the icon-list anchor links,
-   the card itself is NOT a wrapping link — only
-   the CTA and icon items are clickable, matching
-   the original Other Products behaviour. */
+   cards. The entire card is a wrapping <Link>
+   (href="/products/other-products"), matching
+   the Electrical Insulating Mats and PVC Flooring
+   card behaviour. The 4-item icon list navigates
+   via router.push to avoid nested anchor elements. */
 
 function OtherProductsSection() {
+  const router = useRouter();
+
   return (
     <section id="other-products" className="bg-be-warm-white">
       <div className="container-site page-horizontal-padding py-16 lg:py-20">
@@ -750,9 +742,13 @@ function OtherProductsSection() {
           </p>
         </div>
 
-        {/* Other Products feature card — same layout as the Waterproofing cards */}
+        {/* Other Products feature card — whole-card link matches
+            Waterproofing/PVC Flooring card behaviour. Icon list items
+            navigate via router.push (not <Link>) to avoid nested
+            anchor elements inside the wrapping card <Link>. */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
           <CategoryFeatureCard
+            href="/products/other-products"
             imageSrc={otherProductsVisuals.homePreview.src}
             imageAlt={otherProductsVisuals.homePreview.alt}
             objectFit={otherProductsVisuals.homePreview.fit}
@@ -762,19 +758,20 @@ function OtherProductsSection() {
             ctaLabel="Explore Products"
             ctaHref="/products/other-products"
           >
-            {/* Icon list — preserved exactly (4 items + anchor links) */}
+            {/* Icon list — navigates via router.push to avoid nested anchors */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
               {OTHER_PRODUCTS_ITEMS.map((item) => (
-                <Link
+                <button
+                  type="button"
                   key={item.name}
-                  href={item.href}
-                  className="flex items-center gap-3 text-sm font-medium text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors group/item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded p-2 -m-2"
+                  onClick={(e) => { e.stopPropagation(); router.push(item.href); }}
+                  className="flex items-center gap-3 text-sm font-medium text-be-charcoal-800 hover:text-be-yellow-text-hover transition-colors group/item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-500 rounded p-2 -m-2 text-left"
                 >
                   <span className="flex items-center justify-center size-8 rounded-lg bg-be-grey-150 text-be-grey-650 group-hover/item:bg-be-yellow-50 group-hover/item:text-be-yellow-text transition-colors">
                     <item.Icon className="size-4" aria-hidden="true" />
                   </span>
                   {item.name}
-                </Link>
+                </button>
               ))}
             </div>
           </CategoryFeatureCard>
@@ -1221,3 +1218,4 @@ export default function ProductsClient() {
     </Suspense>
   );
 }
+
