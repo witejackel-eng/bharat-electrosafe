@@ -85,6 +85,7 @@ export function ProductHero({ product, visuals, breadcrumbItems: overrideBreadcr
             <ProductImageCarousel
               hero={visuals.hero}
               gallery={visuals.gallery}
+              video={visuals.video}
               productName={displayName ?? product.name}
               className="product-hero-carousel"
             />
