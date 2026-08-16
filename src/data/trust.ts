@@ -178,7 +178,6 @@ export const allTrustMarks: TrustMark[] = [
     note: 'Certificate of Compliance ACL25053002 — Accura Certification Limited — Expired 29 May 2026',
     logo: '/media/certifications/acl.webp',
     alt: 'ACL certification mark',
-    document: '/documents/certifications/acl25053002-bharat-electrosafe.pdf',
   },
 ];
 
@@ -460,3 +459,4 @@ export const manufacturingImage = {
    The CompanyStatistic type and companyStatistics array are
    defined above (line ~330). They power the homepage credibility
    strip with defensible, company-stated figures. */
+
