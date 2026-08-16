@@ -268,7 +268,7 @@
      maximum of two lines on large desktop. Does not affect any other
      page heading. */
   .text-contact-h1 {
-    font-size: clamp(2.1rem, 3.6vw, 3.2rem);
+    font-size: 2.75rem;
     line-height: 1.06;
     letter-spacing: -0.01em;
     font-weight: 700;
@@ -279,7 +279,7 @@
      Further refined (~4% smaller) for better balance with the body copy
      in the About Us hero. Only used by AboutIntro.tsx. */
   .text-about-h1 {
-    font-size: clamp(2.304rem, 4.32vw, 4.08rem);
+    font-size: 2.75rem;
     line-height: 1.1;
     letter-spacing: -0.01em;
     font-weight: 700;
@@ -299,11 +299,17 @@
     letter-spacing: -0.01em;
     font-weight: 700;
   }
+  .text-enquiry-h2 {
+    font-size: 2.75rem;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+  }
   /* Products-overview hero H1 — compact editorial heading for the /products
      page. Smaller than text-hero-h1 to avoid excessive line-wrapping on the
      overview page. Does not affect homepage or product-detail headings. */
   .text-products-hero-h1 {
-    font-size: clamp(2.75rem, 4.2vw, 4rem);
+    font-size: 2.75rem;
     line-height: 1.04;
     letter-spacing: -0.02em;
     font-weight: 700;
@@ -2107,4 +2113,3 @@
     transition: none;
   }
 }
-
