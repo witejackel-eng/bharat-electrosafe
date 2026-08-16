@@ -10,27 +10,15 @@ import { CheckCircle2 } from 'lucide-react';
  *
  * Layout (desktop):
  *   ┌──────────────────────────┬──────────────────────────┐
- *   │                          │  PRODUCT SCOPE          │
- *   │                          │  Our Wide Product Range  │
- *   │ electrical-insulation    │                          │
- *   │ poster image             │  ┌─────────┬─────────┐  │
- *   │                          │  │Electrical│Industrial│  │
- *   │                          │  │ Safety   │ / Infra. │  │
- *   │                          │  │ • HV Mat │ • Geo    │  │
- *   │                          │  │          │ • Water  │  │
- *   │                          │  │          │ • PVC    │  │
- *   │                          │  └─────────┴─────────┘  │
- *   │                          │  Other Products: ...     │
- *   │                          │  [closing paragraph]     │
+ *   │                          │                          │
+ *   │ electrical-insulation    │  PRODUCT SCOPE          │
+ *   │ poster image             │  • High Voltage ...     │
+ *   │                          │  • Geo Membrane ...     │
+ *   │                          │  • Water Proofing ...   │
+ *   │                          │  • PVC Flooring ...     │
+ *   │                          │  • Other Products ...   │
+ *   │                          │  [closing paragraph]    │
  *   └──────────────────────────┴──────────────────────────┘
- *
- * The right column is now organised into two visually coherent
- * groups — "Electrical Safety" and "Industrial / Infrastructure
- * Safety" — rendered side-by-side on >=sm viewports so the
- * section reads as a structured overview rather than a long
- * vertical list. "Other Products" and the closing engineering-
- * excellence paragraph sit full-width beneath the two groups,
- * preserving the existing wording verbatim.
  *
  * CSS Grid with items-stretch. The poster image (portrait) is
  * naturally taller. The product list is vertically centered
@@ -40,6 +28,10 @@ import { CheckCircle2 } from 'lucide-react';
  *
  * Product names are bold (font-bold), standards/descriptions
  * remain normal weight.
+ *
+ * The closing engineering-excellence paragraph sits immediately
+ * beneath the "Other Products" bullet as a natural conclusion
+ * to the Product Scope.
  *
  * Content source: client-approved restructured copy — verbatim.
  */
@@ -62,7 +54,7 @@ export default function ProductScope() {
           </div>
         </div>
 
-        {/* Right — Product Scope list (grouped) */}
+        {/* Right — Product Scope list */}
         <div className="reveal-up order-1 lg:order-2 lg:flex lg:flex-col lg:justify-center">
           <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-2">
             Product Scope
@@ -71,94 +63,71 @@ export default function ProductScope() {
             Our Wide Product Range
           </h2>
 
-          {/* ── Two grouped columns — Electrical Safety | Industrial /
-           *   Infrastructure Safety. Existing bullet wording is
-           *   preserved verbatim; only the grouping/headers are new. */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mb-5">
-            {/* Electrical Safety group */}
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-be-yellow-text mb-2.5">
-                Electrical Safety
-              </p>
-              <ul className="flex flex-col gap-3">
-                {/* 1. High Voltage Electrical Insulating Mats */}
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2
-                    className="h-4 w-4 text-be-yellow-text mt-1.5 shrink-0"
-                    aria-hidden="true"
-                  />
-                  <div>
-                    <p className="text-body font-bold text-be-charcoal-950 leading-snug">
-                      High Voltage Electrical Insulating Mats
-                    </p>
-                    <p className="text-body text-be-grey-650 leading-snug mt-0.5">
-                      (As per IS 15652 &amp; IEC 61111 standards; ERDA-tested and BIS-certified)
-                    </p>
-                  </div>
-                </li>
-              </ul>
-            </div>
+          <ul className="flex flex-col gap-3 mb-5">
+            {/* 1. High Voltage Electrical Insulating Mats */}
+            <li className="flex items-start gap-2.5">
+              <CheckCircle2
+                className="h-4 w-4 text-be-yellow-text mt-1.5 shrink-0"
+                aria-hidden="true"
+              />
+              <div>
+                <p className="text-body font-bold text-be-charcoal-950 leading-snug">
+                  High Voltage Electrical Insulating Mats
+                </p>
+                <p className="text-body text-be-grey-650 leading-snug mt-0.5">
+                  (As per IS 15652 &amp; IEC 61111 standards; ERDA-tested and BIS-certified)
+                </p>
+              </div>
+            </li>
 
-            {/* Industrial / Infrastructure Safety group */}
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-be-yellow-text mb-2.5">
-                Industrial / Infrastructure Safety
-              </p>
-              <ul className="flex flex-col gap-3">
-                {/* 2. Geo Membrane Lining Solutions */}
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2
-                    className="h-4 w-4 text-be-yellow-text mt-1.5 shrink-0"
-                    aria-hidden="true"
-                  />
-                  <div>
-                    <p className="text-body font-bold text-be-charcoal-950 leading-snug">
-                      Geo Membrane Lining Solutions
-                    </p>
-                    <p className="text-body text-be-grey-650 leading-snug mt-0.5">
-                      (As per IS 15909:2020 for containment, lining, and environmental protection applications)
-                    </p>
-                  </div>
-                </li>
+            {/* 2. Geo Membrane Lining Solutions */}
+            <li className="flex items-start gap-2.5">
+              <CheckCircle2
+                className="h-4 w-4 text-be-yellow-text mt-1.5 shrink-0"
+                aria-hidden="true"
+              />
+              <div>
+                <p className="text-body font-bold text-be-charcoal-950 leading-snug">
+                  Geo Membrane Lining Solutions
+                </p>
+                <p className="text-body text-be-grey-650 leading-snug mt-0.5">
+                  (As per IS 15909:2020 for containment, lining, and environmental protection applications)
+                </p>
+              </div>
+            </li>
 
-                {/* 3. Water Proofing Solutions */}
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2
-                    className="h-4 w-4 text-be-yellow-text mt-1.5 shrink-0"
-                    aria-hidden="true"
-                  />
-                  <div>
-                    <p className="text-body font-bold text-be-charcoal-950 leading-snug">
-                      Water Proofing Solutions
-                    </p>
-                    <p className="text-body text-be-grey-650 leading-snug mt-0.5">
-                      (Including BharatHydro Water Stop Seals as per IS 15058:2002 for concrete joint sealing and water leakage prevention)
-                    </p>
-                  </div>
-                </li>
+            {/* 3. Water Proofing Solutions */}
+            <li className="flex items-start gap-2.5">
+              <CheckCircle2
+                className="h-4 w-4 text-be-yellow-text mt-1.5 shrink-0"
+                aria-hidden="true"
+              />
+              <div>
+                <p className="text-body font-bold text-be-charcoal-950 leading-snug">
+                  Water Proofing Solutions
+                </p>
+                <p className="text-body text-be-grey-650 leading-snug mt-0.5">
+                  (Including BharatHydro Water Stop Seals as per IS 15058:2002 for concrete joint sealing and water leakage prevention)
+                </p>
+              </div>
+            </li>
 
-                {/* 4. PVC Flooring Solutions */}
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2
-                    className="h-4 w-4 text-be-yellow-text mt-1.5 shrink-0"
-                    aria-hidden="true"
-                  />
-                  <div>
-                    <p className="text-body font-bold text-be-charcoal-950 leading-snug">
-                      PVC Flooring Solutions
-                    </p>
-                    <p className="text-body text-be-grey-650 leading-snug mt-0.5">
-                      (As per IS 3462:1986 for industrial, electrical, and commercial flooring applications)
-                    </p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
+            {/* 4. PVC Flooring Solutions */}
+            <li className="flex items-start gap-2.5">
+              <CheckCircle2
+                className="h-4 w-4 text-be-yellow-text mt-1.5 shrink-0"
+                aria-hidden="true"
+              />
+              <div>
+                <p className="text-body font-bold text-be-charcoal-950 leading-snug">
+                  PVC Flooring Solutions
+                </p>
+                <p className="text-body text-be-grey-650 leading-snug mt-0.5">
+                  (As per IS 3462:1986 for industrial, electrical, and commercial flooring applications)
+                </p>
+              </div>
+            </li>
 
-          {/* ── Other Products (full-width of the right column) ──
-           *   Existing wording preserved verbatim. */}
-          <ul className="flex flex-col gap-3 mb-4">
             {/* 5. Other Products */}
             <li className="flex items-start gap-2.5">
               <CheckCircle2
@@ -173,8 +142,9 @@ export default function ProductScope() {
             </li>
           </ul>
 
-          {/* ── Closing paragraph (moved here from the Who We Are
-           *   hero so it sits immediately beneath "Other Products").
+          {/* ── Closing paragraph — moved here from the Who We Are
+           *   hero so it sits immediately beneath "Other Products"
+           *   and reads as the conclusion of the Product Scope.
            *   Wording preserved verbatim — appears exactly once. */}
           <p className="text-body text-be-grey-650 leading-relaxed">
             At Bharat Electrosafe, we combine engineering excellence,
