@@ -63,6 +63,31 @@ export function ProductDetailTemplate({
         {/* 4. Overview + key features */}
         <ProductOverview product={product} />
 
+        {/* 4b. Product video — shown when visuals.video is provided */}
+        {visuals.video && (
+          <section aria-label="Product video" className="bg-be-white border-t border-be-grey-250 py-10 md:py-14 lg:py-16">
+            <div className="container-site page-horizontal-padding">
+              <div className="max-w-4xl mx-auto">
+                <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-3">
+                  Product Video
+                </p>
+                <div className="relative aspect-video overflow-hidden rounded-2xl border border-be-grey-200 bg-[#FAFAF7]">
+                  <video
+                    src={visuals.video.src}
+                    controls
+                    preload="metadata"
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-contain"
+                    aria-label={visuals.video.alt}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* 5. Applications */}
         <ProductApplications product={product} />
 
