@@ -77,33 +77,8 @@ export default function CertificationsSection() {
                 <span className="text-metadata text-center font-semibold text-be-charcoal-950 leading-tight">
                   {mark.label}
                 </span>
-                {/* Download hover/focus affordance — only for items with a document.
-                    On mobile (no hover), a small persistent download icon indicator
-                    is shown instead so touch users can discover the interaction. */}
-                {isDownloadable && (
-                  <span
-                    className="flex items-center gap-1 text-[0.65rem] font-semibold text-be-yellow-text
-                               opacity-0 translate-y-1
-                               group-hover/mark:opacity-100 group-hover/mark:translate-y-0
-                               group-focus-visible/mark:opacity-100 group-focus-visible/mark:translate-y-0
-                               transition-all duration-200 ease-out
-                               sm:opacity-0 sm:translate-y-1"
-                    aria-hidden="true"
-                  >
-                    <Download className="size-3" />
-                    Download
-                  </span>
-                )}
-                {/* Mobile touch indicator — small persistent icon for downloadable items.
-                    Hidden on sm+ where hover works reliably. */}
-                {isDownloadable && (
-                  <span
-                    className="flex items-center justify-center sm:hidden"
-                    aria-hidden="true"
-                  >
-                    <Download className="size-3 text-be-yellow-text/70" />
-                  </span>
-                )}
+
+
               </>
             );
 
