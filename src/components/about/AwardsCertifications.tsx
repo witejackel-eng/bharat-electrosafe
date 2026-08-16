@@ -212,30 +212,8 @@ export default function AwardsCertifications() {
                     <span className="text-sm font-semibold text-be-charcoal-950 text-center leading-tight">
                       {mark.label}
                     </span>
-                    {/* Download hover/focus affordance */}
-                    {isDownloadable && (
-                      <span
-                        className="flex items-center gap-1 text-[0.65rem] font-semibold text-be-yellow-text
-                                   opacity-0 translate-y-1
-                                   group-hover/mark:opacity-100 group-hover/mark:translate-y-0
-                                   group-focus-visible/mark:opacity-100 group-focus-visible/mark:translate-y-0
-                                   transition-all duration-200 ease-out
-                                   sm:opacity-0 sm:translate-y-1"
-                        aria-hidden="true"
-                      >
-                        <Download className="size-3" />
-                        Download
-                      </span>
-                    )}
-                    {/* Mobile touch indicator */}
-                    {isDownloadable && (
-                      <span
-                        className="flex items-center justify-center sm:hidden"
-                        aria-hidden="true"
-                      >
-                        <Download className="size-3 text-be-yellow-text/70" />
-                      </span>
-                    )}
+
+
                   </>
                 );
 
