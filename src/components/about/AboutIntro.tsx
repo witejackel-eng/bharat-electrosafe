@@ -1,9 +1,8 @@
-'use client';
+use client';
 
 import Image from 'next/image';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { SectionShell } from '@/components/ui/SectionShell';
-import { CheckCircle2 } from 'lucide-react';
 
 /**
  * AboutIntro — "Who We Are" section (intro only, no product list).
@@ -12,19 +11,21 @@ import { CheckCircle2 } from 'lucide-react';
  *   ┌──────────────────────────┬──────────────────────────┐
  *   │ WHO WE ARE               │                          │
  *   │ Bharat Electrosafe       │  insulating-mat hero     │
- *   │ profile paragraph 1      │  image (stretched to     │
- *   │ profile paragraph 2      │  match content height)   │
- *   │ profile paragraph 3      │                          │
+ *   │ profile paragraph 1      │  image (centered         │
+ *   │ profile paragraph 2      │  vertically beside       │
+ *   │ profile paragraph 3      │  the text content)       │
+ *   │ [BIS · ERDA · ISO]      │                          │
  *   └──────────────────────────┴──────────────────────────┘
  *
- * CSS Grid with items-stretch. The image column uses `position:
- * relative` on the grid item and `position: absolute; inset: 0`
- * on the image container, guaranteeing the image fills the full
- * stretched grid cell height. On mobile, an in-flow aspect-[4/3]
- * spacer provides natural height.
+ * CSS Grid with items-center: the image column is vertically
+ * centered beside the text column. The image uses a fixed
+ * aspect-[4/3] ratio container on all viewports.
  *
- * The product bullet list has been moved to a separate
- * ProductScope component that pairs with the poster image.
+ * Compact trust-badge row beneath the third paragraph adds
+ * visual weight and reinforces credibility at a glance.
+ *
+ * The product bullet list lives in the separate ProductScope
+ * component that pairs with the poster image.
  *
  * "Bharat Electrosafe" is a single-line heading on desktop
  * (whitespace-nowrap at lg+), natural wrap on smaller viewports.
@@ -41,10 +42,10 @@ export default function AboutIntro() {
       </div>
 
       {/* ── Who We Are text (left) + hero image (right) ──
-       *  CSS Grid with items-stretch: the image column stretches to
-       *  match the content column height. */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.85fr] items-stretch gap-8 lg:gap-10">
-        {/* Left — Who We Are text column (three paragraphs only) */}
+       *  CSS Grid with items-center: the image is vertically
+       *  centered beside the text column. */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.85fr] items-center gap-8 lg:gap-10">
+        {/* Left — Who We Are text column (three paragraphs + badge row) */}
         <div className="reveal-up">
           <p className="text-metadata font-semibold uppercase tracking-wider text-be-yellow-text mb-2">
             Who We Are
@@ -73,22 +74,32 @@ export default function AboutIntro() {
             utilities.
           </p>
 
-          <p className="text-body text-be-grey-650 leading-relaxed">
+          <p className="text-body text-be-grey-650 leading-relaxed mb-5">
             At Bharat Electrosafe, we combine engineering excellence,
             compliance assurance, and customer-centric innovation to deliver
             reliable, durable, and standards-compliant solutions for modern
             industry and infrastructure.
           </p>
+
+          {/* Compact trust-badge row — adds visual weight and
+           * reinforces credibility at a glance. */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center rounded-full bg-be-yellow-50 border border-be-yellow-400/60 px-3 py-1 text-xs font-semibold text-be-charcoal-950 tracking-wide">
+              BIS Licensed
+            </span>
+            <span className="inline-flex items-center rounded-full bg-be-yellow-50 border border-be-yellow-400/60 px-3 py-1 text-xs font-semibold text-be-charcoal-950 tracking-wide">
+              ERDA Tested
+            </span>
+            <span className="inline-flex items-center rounded-full bg-be-yellow-50 border border-be-yellow-400/60 px-3 py-1 text-xs font-semibold text-be-charcoal-950 tracking-wide">
+              ISO 9001:2015
+            </span>
+          </div>
         </div>
 
-        {/* Right — Hero image — fills the full grid cell height on
-         *  desktop. The grid item is `relative` so the absolutely
-         *  positioned image container (`inset-0`) fills the entire
-         *  stretched cell. On mobile, an in-flow aspect-[4/3] spacer
-         *  provides the container's natural height. */}
-        <div className="reveal-up relative">
-          <div className="aspect-[4/3] lg:aspect-auto" aria-hidden="true" />
-          <div className="absolute inset-0 rounded-lg overflow-hidden">
+        {/* Right — Hero image — fixed aspect ratio, centered
+         *  vertically beside the text column via items-center. */}
+        <div className="reveal-up">
+          <div className="aspect-[4/3] rounded-lg overflow-hidden">
             <Image
               src="/media/hero/bharat-electrosafe-insulating-mat-hero.webp"
               alt="Bharat Electrosafe electrical insulating mat in use"
