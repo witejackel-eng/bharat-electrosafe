@@ -28,6 +28,7 @@ export interface ProductVisuals {
   gallery: ProductVisualRole[];
   application?: ProductVisualRole;
   technicalDetail?: ProductVisualRole;
+  video?: ProductVisualRole;
   menuPreview: ProductVisualRole;
   homePreview: ProductVisualRole;
 }
@@ -182,6 +183,11 @@ export const autoGlowVisuals: ProductVisuals = {
     src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-3.webp`,
     alt: 'Auto Glow mat in application',
     fit: 'cover',
+  },
+  video: {
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-video-11.mp4`,
+    alt: 'Auto Glow reflective band insulating mat — product demonstration video',
+    fit: 'contain',
   },
   menuPreview: {
     src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-1.webp`,
