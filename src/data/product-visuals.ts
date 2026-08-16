@@ -47,45 +47,95 @@ const BRAND = '/brand';
 
 export const hvVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/electrical-insulating-mats/eim-product-card-black-yellow-mat.webp`,
-    alt: 'Black insulating mat with a central yellow safety strip and raised circular surface texture',
+    src: `${PROD}/electrical-insulating-mats/client-hv/coined-insulating-mat-11.webp`,
+    alt: 'Coined pattern high voltage insulating mat — complete product view',
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/electrical-insulating-mats/client-hv/coined-insulating-mat-11.png`,
+    src: `${PROD}/electrical-insulating-mats/client-hv/coined-insulating-mat-11.webp`,
     alt: 'Coined pattern high voltage insulating mat — complete product view',
     fit: 'contain',
   },
   gallery: [
     {
-      src: `${PROD}/electrical-insulating-mats/client-hv/coined-insulating-mat-3.png`,
-      alt: 'Coined pattern insulating mat — alternate view',
-      fit: 'contain',
-    },
-    {
-      src: `${PROD}/electrical-insulating-mats/client-hv/dotted-insulating-mat-7.jpg`,
+      src: `${PROD}/electrical-insulating-mats/client-hv/dotted-insulating-mat-7.webp`,
       alt: 'Dotted pattern insulating mat — product view',
       fit: 'contain',
     },
     {
-      src: `${PROD}/electrical-insulating-mats/client-hv/dotted-mat-with-guided-strip-2.png`,
-      alt: 'Dotted insulating mat with guided strip — hexagon pattern detail',
+      src: `${PROD}/electrical-insulating-mats/client-hv/dotted-mat-guided-strip-2.webp`,
+      alt: 'Dotted insulating mat with guided strip — product view',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv/hexagon-insulating-mat-02.webp`,
+      alt: 'Hexagon pattern insulating mat — view 02',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv/hexagon-insulating-mat-03.webp`,
+      alt: 'Hexagon pattern insulating mat — view 03',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv/hexagon-insulating-mat-04.webp`,
+      alt: 'Hexagon pattern insulating mat — view 04',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv/hexagon-insulating-mat-05.webp`,
+      alt: 'Hexagon pattern insulating mat — view 05',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv/hexagon-insulating-mat-06.webp`,
+      alt: 'Hexagon pattern insulating mat — view 06',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv/hexagon-insulating-mat-07.webp`,
+      alt: 'Hexagon pattern insulating mat — view 07',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv/hexagon-insulating-mat-thumb-02.webp`,
+      alt: 'Hexagon insulating mat thumbnail — view 02',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv/hexagon-insulating-mat-thumb-03.webp`,
+      alt: 'Hexagon insulating mat thumbnail — view 03',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv/hexagon-insulating-mat-thumb-04.webp`,
+      alt: 'Hexagon insulating mat thumbnail — view 04',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv/hexagon-insulating-mat-thumb-05.webp`,
+      alt: 'Hexagon insulating mat thumbnail — view 05',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/electrical-insulating-mats/client-hv/hexagon-insulating-mat-thumb-06.webp`,
+      alt: 'Hexagon insulating mat thumbnail — view 06',
       fit: 'contain',
     },
   ],
   application: {
-    src: `${PROD}/electrical-insulating-mats/eim-application-switchgear-floor.webp`,
-    alt: 'Blue insulating mat installed along electrical switchgear',
+    src: `${PROD}/electrical-insulating-mats/client-hv/hexagon-insulating-mat-04.webp`,
+    alt: 'Hexagon insulating mat in application',
     fit: 'cover',
   },
   menuPreview: {
-    src: `${PROD}/electrical-insulating-mats/eim-hero-electrical-insulating-mat.webp`,
+    src: `${PROD}/electrical-insulating-mats/client-hv/coined-insulating-mat-11.webp`,
     alt: 'HV insulating mat preview',
     fit: 'cover',
   },
   homePreview: {
-    src: `${PROD}/electrical-insulating-mats/electrical-insulating-mats-black-yellow-card.webp`,
-    alt: 'Black electrical insulating mat with a yellow guided center strip and raised circular dot surface texture',
+    src: `${PROD}/electrical-insulating-mats/client-hv/coined-insulating-mat-11.webp`,
+    alt: 'Coined insulating mat preview',
     fit: 'cover',
   },
 };
@@ -97,45 +147,50 @@ export const hvVisuals: ProductVisuals = {
 
 export const autoGlowVisuals: ProductVisuals = {
   card: {
-    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow1-client-provided.webp`,
-    alt: 'Blue Auto Glow insulating mat with yellow and white visibility bands',
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-1.webp`,
+    alt: 'Auto Glow insulating mat — product view 1',
     fit: 'cover',
   },
   hero: {
-    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-clean-product.webp`,
-    alt: 'Auto Glow reflective band insulating mat — clean product view',
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-1.webp`,
+    alt: 'Auto Glow reflective band insulating mat — product view',
     fit: 'contain',
   },
   gallery: [
     {
-      src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-card-dark.webp`,
-      alt: 'Auto Glow reflective band — dark card view',
+      src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-2.webp`,
+      alt: 'Auto Glow insulating mat — product view 2',
       fit: 'contain',
     },
     {
-      src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/auto-glow-application-dark.webp`,
-      alt: 'Auto Glow mat in low-light application',
+      src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-3.webp`,
+      alt: 'Auto Glow insulating mat — product view 3',
       fit: 'contain',
     },
     {
-      src: `${PROD}/auto-glow-reflective-band-insulating-mats/product-demo-glowing-dark.png`,
-      alt: 'Auto Glow mat demonstrating glow visibility in dark conditions',
+      src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-4.webp`,
+      alt: 'Auto Glow insulating mat — product view 4',
+      fit: 'contain',
+    },
+    {
+      src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-17.webp`,
+      alt: 'Auto Glow insulating mat — product view 17',
       fit: 'contain',
     },
   ],
   application: {
-    src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-application-low-light-switchgear.webp`,
-    alt: 'Auto Glow mat in low-light switchgear application',
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-3.webp`,
+    alt: 'Auto Glow mat in application',
     fit: 'cover',
   },
   menuPreview: {
-    src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-hero-auto-glow-mat.webp`,
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-1.webp`,
     alt: 'Auto Glow mat preview',
     fit: 'cover',
   },
   homePreview: {
-    src: `${PROD}/auto-glow-reflective-band-insulating-mats/agrim-hero-auto-glow-mat.webp`,
-    alt: 'Auto Glow reflective band in low light',
+    src: `${PROD}/auto-glow-reflective-band-insulating-mats/client-approved/autoglow-1.webp`,
+    alt: 'Auto Glow reflective band preview',
     fit: 'cover',
   },
 };
