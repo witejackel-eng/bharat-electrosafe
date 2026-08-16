@@ -39,7 +39,19 @@ interface HeroSlide {
   eyebrow: string;
   /** Heading level: 'h1' for slide 1, 'h2' for slides 2-4 */
   headingTag: 'h1' | 'h2';
-  heading: string;
+  /** Headline text, split into the intended desktop line groups.
+   *
+   *   slide 1 → 4 lines, slides 2–4 → 3 lines.
+   *
+   *   Rendering: each entry becomes a <span className="xl:block">.
+   *   Below the `xl` breakpoint (1280px) the spans are inline so the
+   *   headline reflows naturally on tablet/mobile, preserving the exact
+   *   wording without forcing awkward wraps. At `xl`+ each span becomes
+   *   a block, producing the controlled desktop line composition.
+   *
+   *   Accessibility: the spans sit inside a single semantic <h1>/<h2>,
+   *   so screen readers announce the headline as one continuous string. */
+  headingLines: string[];
   lede: string;
   primaryCta: { label: string; href: string };
   secondaryCta: { label: string; href: string };
@@ -59,8 +71,12 @@ const HERO_SLIDES: HeroSlide[] = [
   {
     eyebrow: 'ELECTRICAL INSULATING MATS · IS 15652:2006',
     headingTag: 'h1',
-    heading:
-      'Electrical insulating mats for safer work around switchgear and electrical systems',
+    headingLines: [
+      'Electrical insulating mats',
+      'for safer work around',
+      'switchgear and',
+      'electrical systems',
+    ],
     lede: 'Bharat Electrosafe manufactures insulating mats for electrical work areas, with IS 15652:2006 domestic configurations and a separate IEC 61111:2009 range for international requirements.',
     primaryCta: { label: 'Explore Products', href: '/products' },
     secondaryCta: { label: 'Request a Quote', href: '/contact-us' },
@@ -81,8 +97,11 @@ const HERO_SLIDES: HeroSlide[] = [
   {
     eyebrow: 'WATERPROOFING SOLUTIONS · IS 15909:2020 / IS 15058:2002',
     headingTag: 'h2',
-    heading:
-      'Electrical safety for safer work every day',
+    headingLines: [
+      'Electrical safety',
+      'for safer work',
+      'every day',
+    ],
     lede: 'Geo Membrane Lining supports tunnel, containment and lining applications, while Water Stop Seal is designed for concrete construction and expansion joints.',
     primaryCta: { label: 'Explore Waterproofing', href: '/products/waterproofing-solutions' },
     secondaryCta: { label: 'Request a Quote', href: '/contact-us?type=quote' },
@@ -101,8 +120,11 @@ const HERO_SLIDES: HeroSlide[] = [
   {
     eyebrow: 'PVC FLOORING · BHARATSMART FLOOR™',
     headingTag: 'h2',
-    heading:
-      'Industrial safety for safer workplaces and equipment',
+    headingLines: [
+      'Industrial safety',
+      'for safer workplaces',
+      'and equipment',
+    ],
     lede: 'BharatSmart Floor™ provides PVC flooring for residential, office and commercial interiors, including homes, workspaces, reception areas, retail spaces and similar indoor environments.',
     primaryCta: { label: 'Explore PVC Flooring', href: '/products/pvc-flooring-solutions' },
     secondaryCta: { label: 'Request a Quote', href: '/contact-us?type=quote' },
@@ -121,8 +143,11 @@ const HERO_SLIDES: HeroSlide[] = [
   {
     eyebrow: 'OTHER INDUSTRIAL PRODUCTS',
     headingTag: 'h2',
-    heading:
-      'Protection products for safer workplaces and infrastructure',
+    headingLines: [
+      'Protection products',
+      'for safer workplaces',
+      'and infrastructure',
+    ],
     lede: 'Rubber sheets, rubber hose pipes, ESD mats and conveyor belts for industrial rubber and safety applications.',
     primaryCta: { label: 'Explore Other Products', href: '/products/other-products' },
     secondaryCta: { label: 'Request a Quote', href: '/contact-us?type=quote' },
@@ -157,7 +182,16 @@ function HeroSlideContent({ slide }: { slide: HeroSlide }) {
         </div>
 
         <HeadingTag className="be-split-hero__headline text-be-charcoal-950">
-          {slide.heading}
+          {slide.headingLines.map((line, i, arr) => (
+            <span key={i} className="xl:block">
+              {line}
+              {/* Trailing space keeps words separated when the spans are
+                  inline (below xl). When the spans become block at xl+,
+                  trailing whitespace inside a block is collapsed, so the
+                  desktop line composition stays clean. */}
+              {i < arr.length - 1 ? ' ' : null}
+            </span>
+          ))}
         </HeadingTag>
       </div>
 
