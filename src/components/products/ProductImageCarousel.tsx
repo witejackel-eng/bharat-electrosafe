@@ -87,7 +87,7 @@ export function ProductImageCarousel({
       tabIndex={0}
     >
       {/* ── Large viewport with arrows ── */}
-      <div className="relative aspect-[4/3] min-h-[240px] max-w-full overflow-hidden rounded-2xl group/carousel">
+      <div className="relative aspect-[4/3] min-h-[240px] max-w-full overflow-hidden rounded-2xl bg-[#FAFAF7] group/carousel">
         {currentIsVideo ? (
           <video
             src={current.src}
@@ -96,7 +96,7 @@ export function ProductImageCarousel({
             playsInline
             aria-label={current.alt}
             className={`absolute inset-0 w-full h-full ${
-              isContain ? 'object-contain' : 'object-cover'
+              isContain ? 'object-contain p-6 md:p-9' : 'object-cover'
             }`}
           >
             Your browser does not support the video tag.
@@ -108,7 +108,7 @@ export function ProductImageCarousel({
             fill
             className={
               isContain
-                ? 'object-contain'
+                ? 'object-contain p-6 md:p-9'
                 : 'object-cover'
             }
             sizes="(min-width: 1024px) 52vw, 100vw"
@@ -172,7 +172,7 @@ export function ProductImageCarousel({
                 role="tab"
                 aria-selected={index === active}
                 aria-label={`View: ${item.alt}`}
-                className={`relative h-14 w-[72px] shrink-0 overflow-hidden rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-1 sm:h-16 sm:w-20 ${
+                className={`relative h-14 w-[72px] shrink-0 overflow-hidden rounded-lg border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-be-yellow-400 focus-visible:ring-offset-1 sm:h-16 sm:w-20 ${
                   index === active
                     ? 'border-be-yellow-500 ring-2 ring-be-yellow-500'
                     : 'border-be-grey-200 opacity-70 hover:opacity-100'
