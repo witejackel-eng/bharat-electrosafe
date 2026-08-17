@@ -61,6 +61,7 @@ import {
   iecInstallationSteps,
   iecFaqItems,
   iecAstmComparison,
+  iecBrochureClaims,
 } from '@/data/iec-61111';
 
 /* ────────────────────────────────────────────
@@ -212,7 +213,7 @@ export default function IECClient() {
                 { icon: Zap, label: 'Classes', value: '0, 1, 2, 3, 4' },
                 { icon: Ruler, label: 'Max Working Voltage', value: '36,000 V AC' },
                 { icon: Layers, label: 'Thickness', value: '2.0–4.0 mm' },
-                { icon: Shield, label: 'Testing', value: 'Test documentation supplied' },
+                { icon: Shield, label: 'Testing', value: 'Test certificate with every supply' },
                 { icon: Globe, label: 'Markets', value: 'International / Global' },
               ].map(({ icon: Icon, label, value }) => (
                 <li key={label} className="flex flex-col items-center sm:items-start gap-1">
@@ -284,9 +285,7 @@ export default function IECClient() {
                   <h3 className="text-lg font-semibold text-be-charcoal-950">Auto-Glow Mats</h3>
                 </div>
                 <p className="text-body text-be-grey-650 flex-1">
-                  Enhanced with a photoluminescent strip that remains visible in darkness.
-                  Operators can locate mat boundaries during power outages — no external
-                  power source needed.
+                  Auto-Glow variant with photoluminescent strip.
                 </p>
                 <PrimaryButton href="/contact-us?type=quote&product=iec-auto-glow" className="mt-1 self-start">
                   Get Quote
@@ -312,9 +311,7 @@ export default function IECClient() {
                   <h3 className="text-lg font-semibold text-be-charcoal-950">Bi-Colour Mats</h3>
                 </div>
                 <p className="text-body text-be-grey-650 flex-1">
-                  Dual-colour layers — dark working surface over a contrasting inner layer.
-                  When wear exposes the inner colour, it signals the mat needs replacement.
-                  No measuring instruments needed.
+                  Bi-Colour variant with dual-colour layers.
                 </p>
                 <PrimaryButton href="/contact-us?type=quote&product=iec-bi-colour" className="mt-1 self-start">
                   Get Quote
@@ -465,10 +462,12 @@ export default function IECClient() {
                 items={[
                   { icon: Shield, text: 'Elastomeric insulating compound (natural rubber and synthetic polymers)' },
                   { icon: Zap, text: 'Classes 0–4: maximum working voltage 1.0 kV to 36.0 kV' },
-                  { icon: Eye, text: 'Permanently moulded IEC marking: standard, class, voltage, manufacturer, date' },
-                  { icon: Globe, text: 'Recognised in all IEC-member country markets' },
+                  { icon: Eye, text: 'Product name marking provided on the mat.' },
+                  { icon: Globe, text: 'International / Global IEC 61111:2009 applications' },
                   { icon: Ruler, text: 'Thickness 2.0–4.0 mm depending on class' },
-                  { icon: FileText, text: 'Test documentation supplied with every supply' },
+                  { icon: FileText, text: 'Test certificate supplied with every supply.' },
+                  { icon: Shield, text: 'Tested in accredited and internationally recognized laboratories' },
+                  { icon: GripHorizontal, text: 'Anti-slip surface with 50 N minimum slip resistance' },
                   { icon: Award, text: 'Custom sizes available on request' },
                 ]}
               />
@@ -490,24 +489,20 @@ export default function IECClient() {
               <div className="border-t border-be-grey-250 pt-5">
                 <div className="flex items-center gap-2 mb-3">
                   <Sparkles className="size-4 text-be-yellow-text" aria-hidden="true" />
-                  <h3 className="text-base font-semibold text-be-charcoal-950">Auto Glow — Photoluminescent</h3>
+                  <h3 className="text-base font-semibold text-be-charcoal-950">Auto Glow</h3>
                 </div>
                 <p className="text-body text-be-grey-650">
-                  Adds a photoluminescent strip integrated during moulding. Charges under
-                  ambient/UV light; emits afterglow in darkness. Ideal for substations,
-                  low-light switchgear rooms, and emergency egress routes.
+                  Auto-Glow variant with photoluminescent strip.
                 </p>
               </div>
 
               <div className="border-t border-be-grey-250 pt-5">
                 <div className="flex items-center gap-2 mb-3">
                   <Palette className="size-4 text-be-yellow-text" aria-hidden="true" />
-                  <h3 className="text-base font-semibold text-be-charcoal-950">Bi-Colour — Visual Wear Indicator</h3>
+                  <h3 className="text-base font-semibold text-be-charcoal-950">Bi-Colour</h3>
                 </div>
                 <p className="text-body text-be-grey-650">
-                  Dark working surface over a contrasting inner layer. When abrasion or
-                  damage exposes the inner colour, operators receive an immediate visual
-                  signal that replacement is required — no instruments needed.
+                  Bi-Colour variant with dual-colour layers.
                 </p>
               </div>
             </div>
@@ -524,17 +519,15 @@ export default function IECClient() {
               <SectionHeader
                 eyebrow="Identification & Traceability"
                 title="IEC 61111 Moulded Marking"
-                supportingText="Every mat carries a permanently moulded marking on the upper surface — it cannot rub off, fade, or peel — providing the information required by the standard for unambiguous identification and safe use."
+                supportingText="Product name marking provided on every metre, moulded on the upper surface."
               />
               <div className="flex flex-col gap-2 text-body text-be-charcoal-800">
-                <p className="font-medium">The moulded IEC marking includes:</p>
+                <p className="font-medium">The marking includes:</p>
                 <ul className="flex flex-col gap-1.5 ml-1">
                   {[
                     'Standard reference: IEC 61111:2009',
                     'Class designation (e.g. Class 2)',
                     'Maximum working voltage (e.g. 17.0 kV)',
-                    'Manufacturer name: Bharat Electrosafe',
-                    'Month and year of manufacture',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2">
                       <ChevronRight className="size-4 shrink-0 mt-0.5 text-be-yellow-text" aria-hidden="true" />
@@ -749,12 +742,12 @@ export default function IECClient() {
           />
           <div className="mt-6 flex flex-wrap gap-3">
             {[
-              { icon: Flame, label: 'Flame resistance' },
+              { icon: Flame, label: 'Resistance to flame' },
               { icon: Sun, label: 'Ageing resistance' },
               { icon: Thermometer, label: 'Low-temperature behaviour' },
-              { icon: FlaskConical, label: 'Acid resistance' },
-              { icon: Droplets, label: 'Oil resistance' },
-              { icon: Eye, label: 'Moisture' },
+              { icon: FlaskConical, label: 'Resistance to mild acid & alkali' },
+              { icon: Droplets, label: 'Resistance to oil & water' },
+              { icon: Droplets, label: 'Moisture resistance' },
             ].map(({ icon: Icon, label }) => (
               <div
                 key={label}
@@ -877,7 +870,7 @@ export default function IECClient() {
             </h2>
             <p className="text-body-large text-be-grey-650">
               Get pricing, custom dimensions, and delivery timelines for your project.
-              Test documentation is supplied with every supply. Our sales team responds
+              Test certificate supplied with every supply. Our sales team responds
               within 24 hours.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
