@@ -285,7 +285,7 @@ export default function IECClient() {
                   <h3 className="text-lg font-semibold text-be-charcoal-950">Auto-Glow Mats</h3>
                 </div>
                 <p className="text-body text-be-grey-650 flex-1">
-                  Auto-Glow variant with photoluminescent strip.
+                  Auto-Glow variant.
                 </p>
                 <PrimaryButton href="/contact-us?type=quote&product=iec-auto-glow" className="mt-1 self-start">
                   Get Quote
@@ -492,7 +492,7 @@ export default function IECClient() {
                   <h3 className="text-base font-semibold text-be-charcoal-950">Auto Glow</h3>
                 </div>
                 <p className="text-body text-be-grey-650">
-                  Auto-Glow variant with photoluminescent strip.
+                  Auto-Glow variant.
                 </p>
               </div>
 
