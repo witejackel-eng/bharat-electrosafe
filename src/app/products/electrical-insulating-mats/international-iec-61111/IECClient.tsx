@@ -211,7 +211,7 @@ export default function IECClient() {
                 { icon: Award, label: 'Standard', value: 'IEC 61111:2009' },
                 { icon: Zap, label: 'Classes', value: '0, 1, 2, 3, 4' },
                 { icon: Ruler, label: 'Max Working Voltage', value: '36,000 V AC' },
-                { icon: Layers, label: 'Recommended Thickness', value: '2.0–5.0 mm' },
+                { icon: Layers, label: 'Thickness', value: '2.0–4.0 mm' },
                 { icon: Shield, label: 'Testing', value: 'Test documentation supplied' },
                 { icon: Globe, label: 'Markets', value: 'International / Global' },
               ].map(({ icon: Icon, label, value }) => (
@@ -332,15 +332,16 @@ export default function IECClient() {
           <SectionHeader
             eyebrow="Technical Specifications"
             title="IEC 61111:2009 Classification Table"
-            supportingText="All five classes with recommended thickness, maximum allowed thickness, maximum working voltage, AC proof voltage, dielectric strength, and approximate weight per IEC 61111:2009 Table 1."
+            supportingText="All five classes with thickness, maximum allowed thickness, maximum working voltage, AC proof voltage, dielectric strength, and approximate weight per IEC 61111:2009 Table 1."
           />
 
           <div className="mt-6 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-            <table className="w-full min-w-[720px] border-collapse text-body">
+            <table className="w-full min-w-[820px] border-collapse text-body">
               <thead>
                 <tr className="border-b-2 border-be-yellow-500">
+                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950 whitespace-nowrap">Product Code</th>
                   <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950 whitespace-nowrap">Class</th>
-                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950 whitespace-nowrap">Recommended Thickness</th>
+                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950 whitespace-nowrap">Thickness</th>
                   <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950 whitespace-nowrap">Max Thickness Allowed</th>
                   <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950 whitespace-nowrap">Max Working Voltage</th>
                   <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950 whitespace-nowrap">AC Proof Voltage</th>
@@ -351,8 +352,9 @@ export default function IECClient() {
               <tbody>
                 {iecClasses.map((row) => (
                   <tr key={row.classLabel} className="border-b border-be-grey-250 hover:bg-be-yellow-50/50 transition-colors">
+                    <td className="py-3 pr-4 font-semibold text-be-charcoal-950">{row.productCode}</td>
                     <td className="py-3 pr-4 font-semibold text-be-charcoal-950">{row.classLabel}</td>
-                    <td className="py-3 pr-4 text-be-charcoal-800">{row.recommendedThickness}</td>
+                    <td className="py-3 pr-4 text-be-charcoal-800">{row.thickness}</td>
                     <td className="py-3 pr-4 text-be-charcoal-800">{row.maxThicknessAllowed}</td>
                     <td className="py-3 pr-4 text-be-charcoal-800">{row.maxWorkingVoltage}</td>
                     <td className="py-3 pr-4 text-be-charcoal-800">{row.acProofVoltage}</td>
@@ -360,6 +362,16 @@ export default function IECClient() {
                     <td className="py-3 text-be-charcoal-800">{row.approxWeight}</td>
                   </tr>
                 ))}
+                <tr className="border-b border-be-grey-250 bg-be-cream/50">
+                  <td className="py-3 pr-4 font-semibold text-be-charcoal-950">BES CD</td>
+                  <td className="py-3 pr-4 text-be-charcoal-800 italic">Custom</td>
+                  <td className="py-3 pr-4 text-be-charcoal-800">Up to 2.0 mm</td>
+                  <td className="py-3 pr-4 text-be-charcoal-800">Up to 14.0 mm</td>
+                  <td className="py-3 pr-4 text-be-charcoal-800">Up to 36.0 kV</td>
+                  <td className="py-3 pr-4 text-be-charcoal-800">Up to 40.0 kV</td>
+                  <td className="py-3 pr-4 text-be-charcoal-800">Up to 40.0 kV</td>
+                  <td className="py-3 text-be-charcoal-800">—</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -380,13 +392,13 @@ export default function IECClient() {
             ══════════════════════════════════════ */}
         <SectionShell variant="standard" bg="bg-be-white" topRule ariaLabel="Special ribbed variants">
           <SectionHeader
-            eyebrow="Special Variants"
-            title="Ribbed & Custom Variants"
-            supportingText="Special surface-profiled mats and custom specifications for installations requiring enhanced grip or tailored dimensions."
+            eyebrow="Fine Ribbed Top & Textured Bottom Surface"
+            title="Fine Ribbed Variants"
+            supportingText="Fine ribbed top surface with textured bottom surface. Available on request."
           />
 
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {iecSpecialVariants.map((variant) => (
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {iecSpecialVariants.filter(v => v.modelCode !== 'BES CD').map((variant) => (
               <div
                 key={variant.modelCode}
                 className="flex flex-col rounded-xl border border-be-grey-250 bg-be-cream overflow-hidden"
@@ -399,40 +411,34 @@ export default function IECClient() {
                   <p className="text-sm text-be-grey-650">{variant.description}</p>
                 </div>
                 <div className="px-5 py-4 flex flex-col gap-2">
-                  {variant.modelCode !== 'BES CD' ? (
-                    <>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-be-grey-650">Class range</span>
-                        <span className="font-medium text-be-charcoal-950">{variant.classRange}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-be-grey-650">Thickness</span>
-                        <span className="font-medium text-be-charcoal-950">{variant.thickness}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-be-grey-650">Max working voltage</span>
-                        <span className="font-medium text-be-charcoal-950">{variant.maxWorkingVoltage}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-be-grey-650">Proof voltage</span>
-                        <span className="font-medium text-be-charcoal-950">{variant.proofVoltage}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-be-grey-650">Dielectric strength</span>
-                        <span className="font-medium text-be-charcoal-950">{variant.dielectricStrength}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-be-grey-650">Approx. weight</span>
-                        <span className="font-medium text-be-charcoal-950">{variant.approxWeight}</span>
-                      </div>
-                    </>
-                  ) : (
-                    <p className="text-sm text-be-grey-650 leading-relaxed">
-                      Custom specifications including dimensions, class, and surface profile
-                      are available on request. Contact Bharat Electrosafe with your
-                      installation requirements.
-                    </p>
-                  )}
+                  <div className="flex justify-between text-sm">
+                    <span className="text-be-grey-650">Class range</span>
+                    <span className="font-medium text-be-charcoal-950">{variant.classRange}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-be-grey-650">Thickness</span>
+                    <span className="font-medium text-be-charcoal-950">{variant.thickness}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-be-grey-650">Max thickness allowed</span>
+                    <span className="font-medium text-be-charcoal-950">{variant.maxThicknessAllowed}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-be-grey-650">Max working voltage</span>
+                    <span className="font-medium text-be-charcoal-950">{variant.maxWorkingVoltage}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-be-grey-650">Proof voltage</span>
+                    <span className="font-medium text-be-charcoal-950">{variant.proofVoltage}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-be-grey-650">Dielectric strength</span>
+                    <span className="font-medium text-be-charcoal-950">{variant.dielectricStrength}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-be-grey-650">Approx. weight</span>
+                    <span className="font-medium text-be-charcoal-950">{variant.approxWeight}</span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -461,7 +467,7 @@ export default function IECClient() {
                   { icon: Zap, text: 'Classes 0–4: maximum working voltage 1.0 kV to 36.0 kV' },
                   { icon: Eye, text: 'Permanently moulded IEC marking: standard, class, voltage, manufacturer, date' },
                   { icon: Globe, text: 'Recognised in all IEC-member country markets' },
-                  { icon: Ruler, text: 'Recommended thickness 2.0–5.0 mm depending on class' },
+                  { icon: Ruler, text: 'Thickness 2.0–4.0 mm depending on class' },
                   { icon: FileText, text: 'Test documentation supplied with every supply' },
                   { icon: Award, text: 'Custom sizes available on request' },
                 ]}
@@ -691,6 +697,7 @@ export default function IECClient() {
                 <h4 className="text-sm font-semibold text-be-charcoal-950">Custom Sizes</h4>
               </div>
               <p className="text-body text-be-charcoal-800">{iecDimensions.custom}</p>
+              <p className="text-body text-be-charcoal-800 mt-2">{iecDimensions.customizationNote}</p>
             </div>
 
             <div className="p-5 rounded-lg border border-be-grey-250 bg-be-cream">
@@ -699,6 +706,10 @@ export default function IECClient() {
                 <h4 className="text-sm font-semibold text-be-charcoal-950">Standard Colour</h4>
               </div>
               <p className="text-body text-be-charcoal-800">{iecDimensions.standardColour}</p>
+              <div className="flex items-start gap-2 mt-4">
+                <Ruler className="size-4 shrink-0 mt-0.5 text-be-yellow-text" aria-hidden="true" />
+                <p className="text-body text-be-charcoal-800">Manufacturing tolerance: {iecDimensions.manufacturingTolerance}</p>
+              </div>
             </div>
           </div>
         </SectionShell>
