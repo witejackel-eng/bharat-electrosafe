@@ -250,50 +250,15 @@ export const iecFaqItems: { q: string; a: string }[] = [
 ];
 
 /* ────────────────────────────────────────────
-   ASTM D178 Comparison — neutral technical comparison
+   ASTM D178 Comparison — neutral statement
    ──────────────────────────────────────────── */
 
 export const iecAstmComparison = {
-  title: 'IEC 61111:2009 vs ASTM D178 — Technical Comparison',
-  intro:
-    'The following is a neutral technical comparison of the two most widely referenced standards for insulating mats. Neither standard is inherently superior; the appropriate choice depends on the market, regulatory framework, and installation requirements.',
-  rows: [
-    {
-      aspect: 'Standard',
-      iec: 'IEC 61111:2009',
-      astm: 'ASTM D178',
-    },
-    {
-      aspect: 'Scope',
-      iec: 'Insulating mats for live working on electrical installations',
-      astm: 'Rubber insulating blankets (including mats) for electrical protection',
-    },
-    {
-      aspect: 'Material terminology',
-      iec: 'Elastomeric compound (natural rubber and synthetic polymers)',
-      astm: 'Rubber (Type I — ozone-resistant, Type II — other elastomers)',
-    },
-    {
-      aspect: 'Classification / Type system',
-      iec: '5 classes (0–4) by maximum working voltage',
-      astm: '6 types (I–VI) by proof test voltage',
-    },
-    {
-      aspect: 'Typical thickness context',
-      iec: '2.0–4.0 mm by class',
-      astm: 'Nominal thickness per type, generally thicker',
-    },
-    {
-      aspect: 'Colour identification context',
-      iec: 'Black (standard); no colour coding by class in the standard',
-      astm: 'Colour coding by Type (e.g. orange for Type II)',
-    },
-    {
-      aspect: 'Market / standards context',
-      iec: 'IEC-member countries (international)',
-      astm: 'North America and ASTM-adopting jurisdictions',
-    },
-  ],
+  title: 'IEC 61111:2009 and ASTM D178',
+  statement:
+    'IEC 61111:2009 and ASTM D178 are different electrical-insulating-material standards with different classification and testing frameworks. The appropriate standard depends on the market, regulatory framework, and installation requirements. A mat certified to one standard is not automatically certified to the other.',
+  guidance:
+    'For project-specific requirements, contact Bharat Electrosafe for technical guidance.',
 } as const;
 
 /* ────────────────────────────────────────────
