@@ -195,7 +195,7 @@ export default function IECClient() {
                   />
                 </div>
                 <span className="text-metadata text-be-grey-650">
-                  IEC 61111:2009 moulded marking — Class&nbsp;0 through Class&nbsp;4
+                  Product name marking provided on every metre.
                 </span>
               </div>
             </div>
@@ -235,7 +235,7 @@ export default function IECClient() {
           <SectionHeader
             eyebrow="Product Variants"
             title="Available IEC 61111:2009 Variants"
-            supportingText="Three insulating mat variants — each fully compliant with IEC 61111:2009 across all five voltage classes, with distinct safety enhancements."
+            supportingText="Three IEC 61111:2009 insulating mat variants, with class and configuration selected according to application requirements."
             align="center"
           />
 
@@ -518,24 +518,12 @@ export default function IECClient() {
             <div className="lg:w-[55%] flex flex-col gap-5">
               <SectionHeader
                 eyebrow="Identification & Traceability"
-                title="IEC 61111 Moulded Marking"
-                supportingText="Product name marking provided on every metre, moulded on the upper surface."
+                title="Product Identification & Marking"
+                supportingText="Product name marking is provided on every metre of the mat, as specified in the product literature."
               />
-              <div className="flex flex-col gap-2 text-body text-be-charcoal-800">
-                <p className="font-medium">The marking includes:</p>
-                <ul className="flex flex-col gap-1.5 ml-1">
-                  {[
-                    'Standard reference: IEC 61111:2009',
-                    'Class designation (e.g. Class 2)',
-                    'Maximum working voltage (e.g. 17.0 kV)',
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <ChevronRight className="size-4 shrink-0 mt-0.5 text-be-yellow-text" aria-hidden="true" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <p className="text-body text-be-charcoal-800">
+                Product name marking provided on every metre.
+              </p>
             </div>
 
             {/* Marking image gallery — small, contained */}
@@ -806,38 +794,16 @@ export default function IECClient() {
         {/* ══════════════════════════════════════
             14. ASTM D178 COMPARISON
             ══════════════════════════════════════ */}
-        <SectionShell variant="standard" bg="bg-be-cream" topRule ariaLabel="IEC 61111 vs ASTM D178 comparison">
+        <SectionShell variant="compact" bg="bg-be-cream" topRule ariaLabel="IEC 61111 vs ASTM D178 comparison">
           <SectionHeader
             eyebrow="Standards Comparison"
             title={iecAstmComparison.title}
-            supportingText={iecAstmComparison.intro}
           />
-
-          <div className="mt-6 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-            <table className="w-full min-w-[560px] border-collapse text-body">
-              <thead>
-                <tr className="border-b-2 border-be-yellow-500">
-                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950">Aspect</th>
-                  <th className="text-left py-3 pr-4 font-semibold text-be-charcoal-950">IEC 61111:2009</th>
-                  <th className="text-left py-3 font-semibold text-be-charcoal-950">ASTM D178</th>
-                </tr>
-              </thead>
-              <tbody>
-                {iecAstmComparison.rows.map((row) => (
-                  <tr key={row.aspect} className="border-b border-be-grey-250 hover:bg-be-yellow-50/50 transition-colors">
-                    <td className="py-3 pr-4 font-medium text-be-charcoal-950">{row.aspect}</td>
-                    <td className="py-3 pr-4 text-be-charcoal-800">{row.iec}</td>
-                    <td className="py-3 text-be-charcoal-800">{row.astm}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <p className="mt-4 text-metadata text-be-grey-650 leading-relaxed">
-            Neither standard is inherently superior. The appropriate standard depends on the
-            market jurisdiction, regulatory framework, and specific installation requirements.
-            A mat certified to one standard is not automatically certified to the other.
+          <p className="mt-4 text-body text-be-charcoal-800 leading-relaxed max-w-3xl">
+            {iecAstmComparison.statement}
+          </p>
+          <p className="mt-3 text-body text-be-charcoal-800 leading-relaxed max-w-3xl">
+            {iecAstmComparison.guidance}
           </p>
         </SectionShell>
 
