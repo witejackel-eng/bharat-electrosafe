@@ -241,7 +241,7 @@ export const iecFaqItems: { q: string; a: string }[] = [
   },
   {
     q: 'What documentation is supplied?',
-    a: 'Test documentation is supplied with every supply, confirming the mat meets the type-test requirements of IEC 61111:2009 for the designated class. This includes electrical and mechanical test records.',
+    a: 'Test certificate supplied with every supply, confirming the mat meets the type-test requirements of IEC 61111:2009 for the designated class.',
   },
   {
     q: 'Which IEC class should I choose?',
@@ -295,3 +295,21 @@ export const iecAstmComparison = {
     },
   ],
 } as const;
+/* ────────────────────────────────────────────
+   Brochure-Supported Claims
+   ──────────────────────────────────────────── */
+
+export const iecBrochureClaims = {
+  testCertificate: 'Test certificate supplied with every supply.',
+  labTesting: 'Tested in accredited and internationally recognized laboratories.',
+  marking: 'Product name marking provided on the mat.',
+  antiSlip: 'Anti-slip surface with 50 N minimum slip resistance.',
+  positioning: 'International / Global IEC 61111:2009 insulating mats for international and global applications.',
+  resistance: [
+    'Flame',
+    'Mild acid & alkali',
+    'Oil & water',
+    'Moisture',
+  ],
+} as const;
+
