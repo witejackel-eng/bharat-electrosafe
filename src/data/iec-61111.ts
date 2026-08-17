@@ -295,6 +295,7 @@ export const iecAstmComparison = {
     },
   ],
 } as const;
+
 /* ────────────────────────────────────────────
    Brochure-Supported Claims
    ──────────────────────────────────────────── */
